@@ -1,0 +1,534 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import '../../core/constants/app_colors.dart';
+import '../../core/constants/app_typography.dart';
+import '../../core/utils/formatters.dart';
+import '../../models/cart_item.dart';
+import '../../models/product.dart';
+import '../../providers/cart_provider.dart';
+import '../../providers/providers.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+
+class CartScreen extends ConsumerWidget {
+  const CartScreen({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final cartState = ref.watch(cartProvider);
+    final productsAsync = ref.watch(allProductsProvider); // For upsell strip
+
+    return Scaffold(
+      backgroundColor: AppColors.backgroundLight,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        surfaceTintColor: Colors.transparent,
+        title: Column(
+          children: [
+            Text('Your Cart', style: AppTypography.h3),
+            Text(
+              'HAND-HARVESTED TREASURES',
+              style: AppTypography.label.copyWith(fontSize: 10, color: AppColors.neutralGold, letterSpacing: 1.5),
+            ),
+          ],
+        ),
+        centerTitle: true,
+        actions: [
+          if (cartState.items.isNotEmpty)
+            TextButton(
+              onPressed: () => ref.read(cartProvider.notifier).clearCart(),
+              child: Text('CLEAR', style: AppTypography.label.copyWith(color: AppColors.error)),
+            ),
+        ],
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(1),
+          child: Container(height: 1, color: AppColors.borderLight),
+        ),
+      ),
+      body: cartState.items.isEmpty
+          ? _buildEmptyState(context)
+          : Column(
+              children: [
+                _buildFreeShippingWidget(cartState.subtotal, cartState.freeThreshold),
+                Expanded(
+                  child: ListView(
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    children: [
+                      ...cartState.items.map((item) => _buildCartItem(context, ref, item)),
+                    ],
+                  ),
+                ),
+                _buildOrderSummaryFooter(context, ref, cartState, productsAsync),
+              ],
+            ),
+    );
+  }
+
+  // ── Gamified Free Shipping Widget ─────────────────────────────────────────
+  Widget _buildFreeShippingWidget(double subtotal, double freeThreshold) {
+    final isUnlocked = subtotal >= freeThreshold;
+    final progress = (subtotal / freeThreshold).clamp(0.0, 1.0);
+    final remaining = freeThreshold - subtotal;
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+      decoration: BoxDecoration(
+        color: AppColors.primary.withValues(alpha: 0.05),
+        border: Border(bottom: BorderSide(color: AppColors.primary.withValues(alpha: 0.1))),
+      ),
+      child: Column(
+        children: [
+          if (isUnlocked)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  width: 8,
+                  height: 8,
+                  decoration: const BoxDecoration(color: AppColors.success, shape: BoxShape.circle),
+                ),
+                const SizedBox(width: 8),
+                Text('FREE EXPRESS SHIPPING UNLOCKED', style: AppTypography.label.copyWith(color: AppColors.success, letterSpacing: 1.2)),
+              ],
+            )
+          else
+            RichText(
+              textAlign: TextAlign.center,
+              text: TextSpan(
+                style: AppTypography.bodySM.copyWith(fontWeight: FontWeight.w600, color: AppColors.deepCharcoal),
+                children: [
+                  const TextSpan(text: 'You are just '),
+                  TextSpan(text: formatPrice(remaining), style: const TextStyle(color: AppColors.primary, fontWeight: FontWeight.bold)),
+                  const TextSpan(text: ' away from '),
+                  const TextSpan(text: 'Free Shipping! 🚀', style: TextStyle(color: AppColors.primary, fontWeight: FontWeight.bold)),
+                ],
+              ),
+            ),
+          const SizedBox(height: 12),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: LinearProgressIndicator(
+              value: progress,
+              minHeight: 6,
+              backgroundColor: AppColors.primary.withValues(alpha: 0.2),
+              valueColor: AlwaysStoppedAnimation<Color>(isUnlocked ? AppColors.success : AppColors.primary),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ── Cart Item (Glassmorphism + Enhanced UI) ──────────────────────────────
+  Widget _buildCartItem(BuildContext context, WidgetRef ref, CartItem item) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.6),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: AppColors.primary.withValues(alpha: 0.15)),
+        boxShadow: [
+          BoxShadow(color: AppColors.deepCharcoal.withValues(alpha: 0.05), blurRadius: 10, offset: const Offset(0, 4)),
+        ],
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: 80,
+            height: 80,
+            decoration: BoxDecoration(
+              color: AppColors.primary.withValues(alpha: 0.05),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: AppColors.primary.withValues(alpha: 0.1)),
+              image: item.product.primaryImage.isNotEmpty
+                  ? DecorationImage(
+                      image: NetworkImage(item.product.primaryImage),
+                      fit: BoxFit.cover,
+                      colorFilter: const ColorFilter.mode(Colors.black12, BlendMode.multiply),
+                    )
+                  : null,
+            ),
+            child: item.product.primaryImage.isEmpty
+                ? const Icon(Icons.image_outlined, color: AppColors.neutralGold)
+                : null,
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        item.product.name,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: AppTypography.bodySM.copyWith(fontWeight: FontWeight.w800, color: AppColors.deepCharcoal),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () => ref.read(cartProvider.notifier).removeItem(item.cartItemId),
+                      child: Container(
+                        padding: const EdgeInsets.all(4),
+                        decoration: BoxDecoration(color: AppColors.error.withValues(alpha: 0.1), shape: BoxShape.circle),
+                        child: const Icon(Icons.close_rounded, size: 14, color: AppColors.error),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 4),
+                Row(
+                  children: [
+                    Text(item.selectedWeight ?? item.product.weight, style: AppTypography.label.copyWith(fontSize: 10, color: AppColors.neutralGold)),
+                    if (item.product.stockCount > 0 && item.product.stockCount <= 5) ...[
+                      const SizedBox(width: 8),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                        decoration: BoxDecoration(color: AppColors.error.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(4)),
+                        child: Text('ONLY ${item.product.stockCount} LEFT', style: AppTypography.label.copyWith(fontSize: 8, color: AppColors.error)),
+                      ),
+                    ],
+                  ],
+                ),
+                const SizedBox(height: 12),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(color: AppColors.primary.withValues(alpha: 0.2)),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Row(
+                        children: [
+                          InkWell(
+                            onTap: () => ref.read(cartProvider.notifier).updateQuantity(item.cartItemId, item.quantity - 1),
+                            child: const Padding(padding: EdgeInsets.all(6), child: Icon(Icons.remove, size: 14)),
+                          ),
+                          SizedBox(width: 20, child: Text('${item.quantity}', textAlign: TextAlign.center, style: AppTypography.bodySM.copyWith(fontWeight: FontWeight.bold))),
+                          InkWell(
+                            onTap: item.quantity < item.product.stockCount
+                                ? () => ref.read(cartProvider.notifier).updateQuantity(item.cartItemId, item.quantity + 1)
+                                : null,
+                            child: Padding(
+                              padding: const EdgeInsets.all(6),
+                              child: Icon(Icons.add, size: 14, color: item.quantity < item.product.stockCount ? AppColors.deepCharcoal : AppColors.borderLight),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Text(formatPrice(item.effectivePrice * item.quantity), style: AppTypography.price.copyWith(fontSize: 14, color: AppColors.deepCharcoal)),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ── Upsell Strip & Footer ──────────────────────────────────────────────────
+  Widget _buildOrderSummaryFooter(BuildContext context, WidgetRef ref, CartState state, AsyncValue<List<Product>> productsAsync) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), offset: const Offset(0, -10), blurRadius: 30)],
+      ),
+      child: Column(
+        children: [
+          // ── Upsell Strip ──
+          productsAsync.when(
+            data: (allProducts) {
+              // Mock upsell: grab 3 items not in cart
+              final cartIds = state.items.map((i) => i.product.id).toSet();
+              final upsells = allProducts.where((p) => !cartIds.contains(p.id) && p.inStock).take(3).toList();
+
+              if (upsells.isEmpty) return const SizedBox.shrink();
+
+              return Container(
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                decoration: BoxDecoration(
+                  color: AppColors.primary.withValues(alpha: 0.05),
+                  border: Border(bottom: BorderSide(color: AppColors.primary.withValues(alpha: 0.1))),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Row(
+                        children: [
+                          const Icon(Icons.auto_awesome_rounded, size: 14, color: AppColors.primary),
+                          const SizedBox(width: 6),
+                          Text('FREQUENTLY PAIRED WITH YOUR SELECTION', style: AppTypography.label.copyWith(fontSize: 9, color: AppColors.primary, letterSpacing: 1.5)),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    SizedBox(
+                      height: 100,
+                      child: ListView.separated(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        scrollDirection: Axis.horizontal,
+                        itemCount: upsells.length,
+                        separatorBuilder: (_, __) => const SizedBox(width: 12),
+                        itemBuilder: (context, index) {
+                          final p = upsells[index];
+                          return Container(
+                            width: 200,
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(color: AppColors.primary.withValues(alpha: 0.15)),
+                            ),
+                            child: Row(
+                              children: [
+                                Container(
+                                  width: 50,
+                                  height: 50,
+                                  decoration: BoxDecoration(
+                                    color: AppColors.primary.withValues(alpha: 0.05),
+                                    borderRadius: BorderRadius.circular(8),
+                                    image: p.primaryImage.isNotEmpty ? DecorationImage(image: NetworkImage(p.primaryImage), fit: BoxFit.cover) : null,
+                                  ),
+                                ),
+                                const SizedBox(width: 10),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(p.name, maxLines: 2, overflow: TextOverflow.ellipsis, style: AppTypography.bodySM.copyWith(fontSize: 10, fontWeight: FontWeight.bold)),
+                                      const SizedBox(height: 4),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(formatPrice(p.price), style: AppTypography.price.copyWith(fontSize: 12, color: AppColors.success)),
+                                          GestureDetector(
+                                            onTap: () => ref.read(cartProvider.notifier).addItem(p, qty: 1),
+                                            child: const Icon(Icons.add_circle_rounded, size: 20, color: AppColors.primary),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+            loading: () => const SizedBox.shrink(),
+            error: (_, __) => const SizedBox.shrink(),
+          ),
+
+          // ── Pricing Summary ──
+          Padding(
+            padding: const EdgeInsets.fromLTRB(24, 20, 24, 16),
+            child: Column(
+              children: [
+                // Apply Promo Button
+                GestureDetector(
+                  onTap: () => context.push('/cart/promos'),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    decoration: BoxDecoration(
+                      color: state.appliedPromo != null ? AppColors.success.withValues(alpha: 0.1) : AppColors.primary.withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: state.appliedPromo != null ? AppColors.success : AppColors.primary, width: 1.5),
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(state.appliedPromo != null ? Icons.check_circle_outline_rounded : Icons.local_offer_outlined, size: 20, color: state.appliedPromo != null ? AppColors.success : AppColors.primary),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(state.appliedPromo != null ? '\'${state.appliedPromo!.code}\' Applied' : 'Apply Promo Code', style: AppTypography.bodySM.copyWith(fontWeight: FontWeight.w800, color: state.appliedPromo != null ? AppColors.success : AppColors.deepCharcoal)),
+                              if (state.appliedPromo != null) Text('You saved ${formatPrice(state.discount)}', style: AppTypography.label.copyWith(fontSize: 10, color: AppColors.success)),
+                            ],
+                          ),
+                        ),
+                        const Icon(Icons.chevron_right_rounded, color: AppColors.neutralGold),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                
+                _buildSummaryRow('Subtotal', state.subtotal),
+                const SizedBox(height: 8),
+                if (state.shipping == 0)
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Shipping Delivery', style: AppTypography.bodySM.copyWith(fontWeight: FontWeight.w600, color: AppColors.success)),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                        decoration: BoxDecoration(color: AppColors.success.withValues(alpha: 0.1), border: Border.all(color: AppColors.success.withValues(alpha: 0.2)), borderRadius: BorderRadius.circular(12)),
+                        child: Text('FREE', style: AppTypography.label.copyWith(fontSize: 9, color: AppColors.success)),
+                      ),
+                    ],
+                  )
+                else
+                  _buildSummaryRow('Estimated Shipping', state.shipping),
+
+                const SizedBox(height: 8),
+                _buildSummaryRow('Estimated Taxes (${(state.gstRate * 100).toInt()}%)', state.gst),
+
+                const SizedBox(height: 16),
+                const Divider(color: AppColors.borderLight, height: 1),
+                const SizedBox(height: 16),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Estimated Total', style: AppTypography.bodySM.copyWith(fontWeight: FontWeight.bold, textBaseline: TextBaseline.alphabetic)),
+                        const SizedBox(height: 4),
+                        Text('Taxes & shipping verified at checkout', style: AppTypography.label.copyWith(fontSize: 9, color: AppColors.neutralGold)),
+                      ],
+                    ),
+                    Text(formatPrice(state.total), style: AppTypography.h2.copyWith(fontSize: 24, height: 1)),
+                  ],
+                ),
+                const SizedBox(height: 24),
+                
+                // Checkout Button
+                SizedBox(
+                  width: double.infinity,
+                  height: 56,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      final user = FirebaseAuth.instance.currentUser;
+                      if (user == null && state.appliedPromo != null &&
+                         (state.appliedPromo!.isFirstOrderOnly || state.appliedPromo!.oneTimeUsePerUser)) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('You need to log in to avail this exclusive promo code offer.'),
+                            backgroundColor: AppColors.error,
+                          ),
+                        );
+                        return;
+                      }
+                      context.push('/checkout');
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primary,
+                      foregroundColor: AppColors.deepCharcoal,
+                      elevation: 8,
+                      shadowColor: AppColors.primary.withValues(alpha: 0.3),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text('Proceed to Checkout', style: AppTypography.bodySM.copyWith(fontWeight: FontWeight.w800, fontSize: 16)),
+                        const SizedBox(width: 8),
+                        const Icon(Icons.arrow_forward_rounded, size: 20),
+                      ],
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 20),
+                
+                // Trust Badges
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    _buildTrustBadge(Icons.local_shipping_outlined, 'EXPRESS'),
+                    const SizedBox(width: 24),
+                    _buildTrustBadge(Icons.shield_outlined, 'SECURE'),
+                    const SizedBox(width: 24),
+                    _buildTrustBadge(Icons.verified_outlined, 'AUTHENTIC'),
+                  ],
+                ),
+                SizedBox(height: MediaQuery.of(context).padding.bottom),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTrustBadge(IconData icon, String label) {
+    return Column(
+      children: [
+        Icon(icon, size: 16, color: AppColors.deepCharcoal.withValues(alpha: 0.6)),
+        const SizedBox(height: 4),
+        Text(label, style: AppTypography.label.copyWith(fontSize: 8, color: AppColors.deepCharcoal.withValues(alpha: 0.6), letterSpacing: 1.5)),
+      ],
+    );
+  }
+
+  Widget _buildSummaryRow(String label, double value) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(label, style: AppTypography.bodySM.copyWith(color: AppColors.neutralGold, fontWeight: FontWeight.w500)),
+        Text(formatPrice(value), style: AppTypography.bodySM.copyWith(color: AppColors.deepCharcoal, fontWeight: FontWeight.w600)),
+      ],
+    );
+  }
+
+  Widget _buildEmptyState(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(32),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              width: 100,
+              height: 100,
+              decoration: BoxDecoration(color: AppColors.primary.withValues(alpha: 0.1), shape: BoxShape.circle, border: Border.all(color: AppColors.primary.withValues(alpha: 0.2))),
+              child: const Icon(Icons.shopping_bag_outlined, size: 40, color: AppColors.primary),
+            ),
+            const SizedBox(height: 24),
+            Text('Your cart is empty', style: AppTypography.h2),
+            const SizedBox(height: 12),
+            Text('Discover hand-harvested artisanal treasures curated from the wild valleys of Kashmir.', textAlign: TextAlign.center, style: AppTypography.bodySM.copyWith(color: AppColors.neutralGold, height: 1.5)),
+            const SizedBox(height: 32),
+            SizedBox(
+              width: double.infinity,
+              height: 56,
+              child: ElevatedButton(
+                onPressed: () => context.push('/shop'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.primary,
+                  foregroundColor: AppColors.deepCharcoal,
+                  elevation: 8,
+                  shadowColor: AppColors.primary.withValues(alpha: 0.3),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                ),
+                child: Text('Explore The Pantry', style: AppTypography.bodySM.copyWith(fontWeight: FontWeight.w800)),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
