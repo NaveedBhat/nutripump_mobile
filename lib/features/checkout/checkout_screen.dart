@@ -72,18 +72,18 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
       if (mounted) {
         context.pushReplacement('/orders/$orderId');
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Order placed successfully! 🎉', style: AppTypography.bodySM.copyWith(color: Colors.white)),
-            backgroundColor: AppColors.success,
-            behavior: SnackBarBehavior.floating,
-          )
+            SnackBar(
+              content: Text('Order placed successfully! 🎉', style: AppTypography.bodySM.copyWith(color: Colors.white)),
+              backgroundColor: AppColors.success,
+              behavior: SnackBarBehavior.floating,
+            )
         );
       }
     } catch (e) {
       ref.read(isProcessingProvider.notifier).state = false;
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Payment verification failed.', style: AppTypography.bodySM.copyWith(color: Colors.white)), backgroundColor: AppColors.error)
+            SnackBar(content: Text('Payment verification failed.', style: AppTypography.bodySM.copyWith(color: Colors.white)), backgroundColor: AppColors.error)
         );
       }
     }
@@ -97,7 +97,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
     ref.read(isProcessingProvider.notifier).state = false;
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Payment cancelled or failed.', style: AppTypography.bodySM.copyWith(color: Colors.white)), backgroundColor: AppColors.error)
+          SnackBar(content: Text('Payment cancelled or failed.', style: AppTypography.bodySM.copyWith(color: Colors.white)), backgroundColor: AppColors.error)
       );
     }
   }
@@ -115,7 +115,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
 
     ref.read(isProcessingProvider.notifier).state = true;
     final api = CheckoutApi();
-    
+
     try {
 
       if (paymentMethod == 'cod') {
@@ -128,15 +128,15 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
         );
         ref.read(cartProvider.notifier).clearCart();
         ref.read(isProcessingProvider.notifier).state = false;
-        
+
         if (mounted) {
           context.pushReplacement('/orders/$firestoreOrderId');
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Order placed successfully! 🎉', style: AppTypography.bodySM.copyWith(color: Colors.white)),
-              backgroundColor: AppColors.success,
-              behavior: SnackBarBehavior.floating,
-            )
+              SnackBar(
+                content: Text('Order placed successfully! 🎉', style: AppTypography.bodySM.copyWith(color: Colors.white)),
+                backgroundColor: AppColors.success,
+                behavior: SnackBarBehavior.floating,
+              )
           );
         }
       } else {
@@ -233,25 +233,25 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
       ),
       body: isProcessing
           ? Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const CircularProgressIndicator(color: AppColors.primary),
-                  const SizedBox(height: 24),
-                  Text('Processing your order...', style: AppTypography.bodySM.copyWith(fontWeight: FontWeight.w700)),
-                  const SizedBox(height: 8),
-                  Text('Please do not close this screen', style: AppTypography.label.copyWith(color: AppColors.neutralGold)),
-                ],
-              ),
-            )
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const CircularProgressIndicator(color: AppColors.primary),
+            const SizedBox(height: 24),
+            Text('Processing your order...', style: AppTypography.bodySM.copyWith(fontWeight: FontWeight.w700)),
+            const SizedBox(height: 8),
+            Text('Please do not close this screen', style: AppTypography.label.copyWith(color: AppColors.neutralGold)),
+          ],
+        ),
+      )
           : CustomScrollView(
-              slivers: [
-                SliverToBoxAdapter(child: _buildProgressBar(step)),
-                if (step == 0) _buildStep0Details(),
-                if (step == 1) _buildStep1Review(cartState),
-                SliverToBoxAdapter(child: SizedBox(height: MediaQuery.of(context).padding.bottom + 120)),
-              ],
-            ),
+        slivers: [
+          SliverToBoxAdapter(child: _buildProgressBar(step)),
+          if (step == 0) _buildStep0Details(),
+          if (step == 1) _buildStep1Review(cartState),
+          SliverToBoxAdapter(child: SizedBox(height: MediaQuery.of(context).padding.bottom + 120)),
+        ],
+      ),
       bottomSheet: isProcessing || cartState.items.isEmpty ? null : _buildBottomActions(step, cartState),
     );
   }
@@ -294,51 +294,51 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
               final isCompleted = i < currentStep;
               final isActive = i <= currentStep;
               final isCurrent = i == currentStep;
-              
+
               return GestureDetector(
-                onTap: isCompleted
-                    ? () => ref.read(checkoutStepProvider.notifier).state = i
-                    : null,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                  Container(
-                    width: 32,
-                    height: 32,
-                    decoration: BoxDecoration(
-                      color: isActive ? AppColors.primary : Colors.white,
-                      border: Border.all(
-                        color: isActive ? AppColors.primary : AppColors.borderLight,
-                        width: 2,
-                      ),
-                      shape: BoxShape.circle,
-                      boxShadow: isCurrent
-                          ? [BoxShadow(color: AppColors.primary.withValues(alpha: 0.35), blurRadius: 10, spreadRadius: 1)]
-                          : null,
-                    ),
-                    alignment: Alignment.center,
-                    child: isCompleted
-                        ? const Icon(Icons.check_rounded, size: 16, color: Colors.white)
-                        : Text(
-                            '${i + 1}',
-                            style: AppTypography.label.copyWith(
-                              color: isActive ? Colors.white : AppColors.neutralGold,
-                              fontWeight: FontWeight.w800,
-                            ),
+                  onTap: isCompleted
+                      ? () => ref.read(checkoutStepProvider.notifier).state = i
+                      : null,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        width: 32,
+                        height: 32,
+                        decoration: BoxDecoration(
+                          color: isActive ? AppColors.primary : Colors.white,
+                          border: Border.all(
+                            color: isActive ? AppColors.primary : AppColors.borderLight,
+                            width: 2,
                           ),
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    steps[i].toUpperCase(),
-                    style: AppTypography.label.copyWith(
-                      fontSize: 8,
-                      letterSpacing: 1.2,
-                      color: isActive ? AppColors.primary : AppColors.neutralGold,
-                      fontWeight: isActive ? FontWeight.w800 : FontWeight.w600,
-                    ),
-                  ),
-                ],
-              )
+                          shape: BoxShape.circle,
+                          boxShadow: isCurrent
+                              ? [BoxShadow(color: AppColors.primary.withValues(alpha: 0.35), blurRadius: 10, spreadRadius: 1)]
+                              : null,
+                        ),
+                        alignment: Alignment.center,
+                        child: isCompleted
+                            ? const Icon(Icons.check_rounded, size: 16, color: Colors.white)
+                            : Text(
+                          '${i + 1}',
+                          style: AppTypography.label.copyWith(
+                            color: isActive ? Colors.white : AppColors.neutralGold,
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Text(
+                        steps[i].toUpperCase(),
+                        style: AppTypography.label.copyWith(
+                          fontSize: 8,
+                          letterSpacing: 1.2,
+                          color: isActive ? AppColors.primary : AppColors.neutralGold,
+                          fontWeight: isActive ? FontWeight.w800 : FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  )
               );
             }),
           ),
@@ -387,7 +387,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
               ],
             ),
             const SizedBox(height: 24),
-            
+
             // Delivery Review
             Container(
               padding: const EdgeInsets.all(20),
@@ -404,27 +404,27 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                   ),
                   const SizedBox(height: 12),
                   Consumer(
-                    builder: (context, ref, _) {
-                      final address = ref.watch(selectedAddressProvider);
-                      if (address == null) return const Text('No address selected');
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(address.fullName, style: AppTypography.bodySM.copyWith(fontWeight: FontWeight.w800, fontSize: 15)),
-                          const SizedBox(height: 4),
-                          Text('${address.addressLine1}${address.locality != null ? ', ${address.locality}' : ''}', style: AppTypography.bodySM.copyWith(color: AppColors.neutralGold)),
-                          Text('${address.city}, ${address.state} - ${address.pincode}', style: AppTypography.bodySM.copyWith(color: AppColors.neutralGold)),
-                          const SizedBox(height: 6),
-                          Text(address.phone, style: AppTypography.bodySM.copyWith(fontWeight: FontWeight.w600)),
-                        ],
-                      );
-                    }
+                      builder: (context, ref, _) {
+                        final address = ref.watch(selectedAddressProvider);
+                        if (address == null) return const Text('No address selected');
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(address.fullName, style: AppTypography.bodySM.copyWith(fontWeight: FontWeight.w800, fontSize: 15)),
+                            const SizedBox(height: 4),
+                            Text('${address.addressLine1}${address.locality != null ? ', ${address.locality}' : ''}', style: AppTypography.bodySM.copyWith(color: AppColors.neutralGold)),
+                            Text('${address.city}, ${address.state} - ${address.pincode}', style: AppTypography.bodySM.copyWith(color: AppColors.neutralGold)),
+                            const SizedBox(height: 6),
+                            Text(address.phone, style: AppTypography.bodySM.copyWith(fontWeight: FontWeight.w600)),
+                          ],
+                        );
+                      }
                   ),
                 ],
               ),
             ),
             const SizedBox(height: 16),
-            
+
             // Payment Review
             Container(
               padding: const EdgeInsets.all(20),
@@ -441,18 +441,18 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                   ),
                   const SizedBox(height: 12),
                   Consumer(
-                    builder: (context, ref, _) {
-                      final method = ref.watch(paymentMethodProvider);
-                      final label = method == 'upi' ? 'UPI' : method == 'card' ? 'Credit/Debit Card' : method == 'netbanking' ? 'Net Banking' : 'Cash on Delivery';
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(label, style: AppTypography.bodySM.copyWith(fontWeight: FontWeight.w800, fontSize: 15)),
-                          const SizedBox(height: 4),
-                          Text(method == 'cod' ? 'Awaiting payment upon confirmed delivery.' : 'Secured digitally via Razorpay gateway.', style: AppTypography.bodySM.copyWith(color: AppColors.neutralGold)),
-                        ],
-                      );
-                    }
+                      builder: (context, ref, _) {
+                        final method = ref.watch(paymentMethodProvider);
+                        final label = method == 'upi' ? 'UPI' : method == 'card' ? 'Credit/Debit Card' : method == 'netbanking' ? 'Net Banking' : 'Cash on Delivery';
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(label, style: AppTypography.bodySM.copyWith(fontWeight: FontWeight.w800, fontSize: 15)),
+                            const SizedBox(height: 4),
+                            Text(method == 'cod' ? 'Awaiting payment upon confirmed delivery.' : 'Secured digitally via Razorpay gateway.', style: AppTypography.bodySM.copyWith(color: AppColors.neutralGold)),
+                          ],
+                        );
+                      }
                   ),
                 ],
               ),
@@ -738,7 +738,7 @@ class _PaymentSelectionSectionState
       data: (settings) {
         final isCodAvailableByAmount =
             cartState.subtotal >= settings.codMinOrder ||
-            settings.codMinOrder == 0;
+                settings.codMinOrder == 0;
 
         return Column(
           children: [
@@ -756,8 +756,8 @@ class _PaymentSelectionSectionState
               lockedReason: (!settings.cod)
                   ? null
                   : (!isCodAvailableByAmount
-                      ? 'Min order ₹${settings.codMinOrder.toInt()}'
-                      : null),
+                  ? 'Min order ₹${settings.codMinOrder.toInt()}'
+                  : null),
               codCharge: settings.codCharge,
             ),
           ],
@@ -785,19 +785,19 @@ class _PaymentSelectionSectionState
         margin: const EdgeInsets.only(bottom: 12),
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: !isEnabled 
-              ? AppColors.borderLight.withValues(alpha: 0.3) 
-              : isSelected 
-                  ? AppColors.primary.withValues(alpha: 0.05) 
-                  : Colors.white,
+          color: !isEnabled
+              ? AppColors.borderLight.withValues(alpha: 0.3)
+              : isSelected
+              ? AppColors.primary.withValues(alpha: 0.05)
+              : Colors.white,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: !isEnabled 
-                ? AppColors.borderLight.withValues(alpha: 0.5) 
-                : isSelected 
-                    ? AppColors.primary 
-                    : AppColors.borderLight, 
-            width: isSelected ? 2 : 1
+              color: !isEnabled
+                  ? AppColors.borderLight.withValues(alpha: 0.5)
+                  : isSelected
+                  ? AppColors.primary
+                  : AppColors.borderLight,
+              width: isSelected ? 2 : 1
           ),
         ),
         child: Row(
@@ -805,13 +805,13 @@ class _PaymentSelectionSectionState
             Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: !isEnabled ? AppColors.borderLight : isSelected ? AppColors.primary : AppColors.backgroundLight, 
-                borderRadius: BorderRadius.circular(8)
+                  color: !isEnabled ? AppColors.borderLight : isSelected ? AppColors.primary : AppColors.backgroundLight,
+                  borderRadius: BorderRadius.circular(8)
               ),
               child: Icon(
-                !isEnabled ? Icons.lock_outline : icon, 
-                color: !isEnabled ? AppColors.neutralGold.withValues(alpha: 0.5) : isSelected ? AppColors.deepCharcoal : AppColors.neutralGold, 
-                size: 20
+                  !isEnabled ? Icons.lock_outline : icon,
+                  color: !isEnabled ? AppColors.neutralGold.withValues(alpha: 0.5) : isSelected ? AppColors.deepCharcoal : AppColors.neutralGold,
+                  size: 20
               ),
             ),
             const SizedBox(width: 16),
@@ -819,25 +819,24 @@ class _PaymentSelectionSectionState
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
+                  Wrap(
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    spacing: 8,
+                    runSpacing: 4,
                     children: [
                       Text(title, style: AppTypography.bodySM.copyWith(fontWeight: FontWeight.bold, color: !isEnabled ? AppColors.neutralGold : AppColors.deepCharcoal)),
-                      if (!isEnabled) ...[
-                        const SizedBox(width: 8),
+                      if (!isEnabled)
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                           decoration: BoxDecoration(color: AppColors.borderLight, borderRadius: BorderRadius.circular(4)),
                           child: Text(lockedReason ?? 'UNAVAILABLE', style: AppTypography.label.copyWith(fontSize: 8, color: AppColors.neutralGold)),
                         ),
-                      ],
-                      if (isEnabled && id == 'cod' && isSelected && codCharge > 0) ...[
-                        const SizedBox(width: 8),
+                      if (isEnabled && id == 'cod' && isSelected && codCharge > 0)
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                           decoration: BoxDecoration(color: Colors.amber.shade100, borderRadius: BorderRadius.circular(4), border: Border.all(color: Colors.amber.shade300)),
                           child: Text('+₹${codCharge.toInt()} COD charge', style: AppTypography.label.copyWith(fontSize: 8, color: Colors.amber.shade900)),
                         ),
-                      ],
                     ],
                   ),
                   Text(subtitle, style: AppTypography.label.copyWith(fontSize: 10, color: !isEnabled ? AppColors.neutralGold.withValues(alpha: 0.5) : AppColors.neutralGold)),
@@ -851,3 +850,4 @@ class _PaymentSelectionSectionState
     );
   }
 }
+
