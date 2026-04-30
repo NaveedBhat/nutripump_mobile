@@ -1,45 +1,119 @@
-# Miscellaneous
-*.class
-*.log
-*.pyc
-*.swp
-.DS_Store
-.atom/
-.build/
-.buildlog/
-.history
-.svn/
-.swiftpm/
-migrate_working_dir/
+# ==============================================================================
+# NutriPump Mobile — Production .gitignore
+# Flutter / Dart / iOS / Android
+# ==============================================================================
 
-# IntelliJ related
-*.iml
-*.ipr
-*.iws
-.idea/
 
-# The .vscode folder contains launch configuration and tasks you configure in
-# VS Code which you may wish to be included in version control, so this line
-# is commented out by default.
-#.vscode/
+# ── Secrets & Credentials ──────────────────────────────────────────────────────
+# NEVER commit Firebase configs, API keys, or any secrets to version control.
+# These must be provisioned per-environment via CI/CD secrets or manually.
+.env
+.env.*
+!.env.example
 
-# Flutter/Dart/Pub related
-**/doc/api/
-**/ios/Flutter/.last_build_id
+# Firebase / Google credentials
+google-services.json
+GoogleService-Info.plist
+firebase_options.dart
+*.jks
+*.keystore
+key.properties
+upload-keystore.jks
+
+
+# ── Flutter / Dart Build Artifacts ─────────────────────────────────────────────
 .dart_tool/
+.flutter-plugins
 .flutter-plugins-dependencies
 .pub-cache/
 .pub/
-/build/
+build/
 /coverage/
 
-# Symbolication related
-app.*.symbols
+# Generated files
+*.g.dart
+*.freezed.dart
+*.mocks.dart
+*.gr.dart
 
-# Obfuscation related
+# Symbol / obfuscation maps (contain sensitive stack trace info)
+app.*.symbols
 app.*.map.json
 
-# Android Studio will place build artifacts here
-/android/app/debug
-/android/app/profile
-/android/app/release
+
+# ── iOS ────────────────────────────────────────────────────────────────────────
+**/ios/Flutter/.last_build_id
+ios/Pods/
+ios/.symlinks/
+ios/Flutter/Flutter.framework/
+ios/Flutter/Flutter.podspec
+ios/Flutter/Generated.xcconfig
+ios/Flutter/app.flx
+ios/Flutter/app.zip
+ios/Flutter/flutter_assets/
+ios/Runner/GeneratedPluginRegistrant.*
+ios/ServiceDefinitions.json
+
+# Xcode workspace user data
+ios/**/*.xcworkspace/xcuserdata/
+ios/**/*.xcodeproj/xcuserdata/
+ios/**/*.xcodeproj/project.xcworkspace/xcuserdata/
+
+# Xcode build artifacts
+ios/DerivedData/
+ios/build/
+
+
+# ── Android ────────────────────────────────────────────────────────────────────
+android/.gradle/
+android/app/debug/
+android/app/profile/
+android/app/release/
+android/captures/
+android/local.properties
+android/gradlew
+android/gradlew.bat
+android/.idea/
+
+# APK / AAB outputs
+*.apk
+*.aab
+
+
+# ── macOS (if building desktop) ────────────────────────────────────────────────
+macos/Flutter/GeneratedPluginRegistrant.swift
+macos/Flutter/ephemeral/
+
+
+# ── VS Code ────────────────────────────────────────────────────────────────────
+# Keep launch.json out — contains local paths and debugging config
+.vscode/launch.json
+.vscode/settings.json
+# Allow tasks.json and extensions.json (useful for team)
+!.vscode/tasks.json
+!.vscode/extensions.json
+
+
+# ── JetBrains / Android Studio ────────────────────────────────────────────────
+.idea/
+*.iml
+*.ipr
+*.iws
+.editorconfig
+
+
+# ── OS Artifacts ──────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+
+# ── Debug & Test Logs ─────────────────────────────────────────────────────────
+*.log
+crash-*.json
+
+
+# ── Dart Doc ──────────────────────────────────────────────────────────────────
+doc/api/
