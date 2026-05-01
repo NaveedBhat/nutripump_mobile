@@ -3,6 +3,8 @@ plugins {
     id("kotlin-android")
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
+    id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
 }
 
 android {
@@ -48,5 +50,5 @@ dependencies {
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")
     // RzpAssist (needed for Razorpay OTP/UPI flow) was moved from checkout into this artifact
     // in checkout 1.6.33+. It is not declared as a mandatory dependency so must be explicit.
-    implementation("com.razorpay:customui:3.9.22")
+   implementation("com.razorpay:customui:3.9.22")
 }
