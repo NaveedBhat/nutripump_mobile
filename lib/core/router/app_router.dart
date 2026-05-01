@@ -30,6 +30,8 @@ import '../../features/shop/shop_screen.dart';
 import '../../features/search/search_screen.dart';
 import '../../features/taste_profiler/taste_profiler_screen.dart';
 import '../../features/wishlist/wishlist_screen.dart';
+import '../../features/legal/privacy_policy_screen.dart';
+import '../../features/legal/terms_of_service_screen.dart';
 import '../../providers/providers.dart';
 import 'main_shell.dart';
 import '../../../main.dart' show navigatorKey;
@@ -176,5 +178,7 @@ final appRouter = GoRouter(
       ),
     ),
     GoRoute(path: '/find-us', builder: (_, __) => const FindUsScreen()),
+    GoRoute(path: '/privacy', builder: (_, __) => const PrivacyPolicyScreen()),
+    GoRoute(path: '/terms', builder: (_, __) => const TermsOfServiceScreen()),
   ],
 );

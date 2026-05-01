@@ -179,6 +179,18 @@ class _AccountView extends StatelessWidget {
                   label: 'Journal',
                   subtitle: 'Heritage stories & recipes',
                   onTap: () => context.push('/journal'),
+                ),
+                _NavTile(
+                  icon: Icons.privacy_tip_outlined,
+                  label: 'Privacy Policy',
+                  subtitle: 'How we handle your data',
+                  onTap: () => context.push('/privacy'),
+                ),
+                _NavTile(
+                  icon: Icons.gavel_outlined,
+                  label: 'Terms of Service',
+                  subtitle: 'Our legal agreement',
+                  onTap: () => context.push('/terms'),
                   showDivider: false,
                 ),
 
