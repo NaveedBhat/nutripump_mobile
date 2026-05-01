@@ -149,7 +149,7 @@ class WishlistScreen extends ConsumerWidget {
   void _moveAllToCart(
       BuildContext context, WidgetRef ref, List<Product> items) {
     for (final p in items) {
-      ref.read(cartProvider.notifier).addItem(p);
+      ref.read(cartProvider.notifier).addItem(p, weight: p.weight);
     }
     ref.read(wishlistProvider.notifier).clear();
     HapticFeedback.mediumImpact();
@@ -383,7 +383,10 @@ class _WishlistCardState extends ConsumerState<_WishlistCard>
 
   void _addToCart() {
     HapticFeedback.mediumImpact();
-    ref.read(cartProvider.notifier).addItem(widget.product);
+    ref.read(cartProvider.notifier).addItem(
+      widget.product,
+      weight: widget.product.weight,
+    );
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('${widget.product.name} added to cart'),

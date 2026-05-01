@@ -171,7 +171,10 @@ class ProductCard extends ConsumerWidget {
                       // Add to Cart button
                       GestureDetector(
                         onTap: () {
-                          ref.read(cartProvider.notifier).addItem(product);
+                          ref.read(cartProvider.notifier).addItem(
+                            product,
+                            weight: product.weight,
+                          );
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text('${product.name} added to cart'),

@@ -281,13 +281,22 @@ class _OrderCard extends ConsumerWidget {
                                 overflow: TextOverflow.ellipsis,
                               ),
                               const SizedBox(height: 2),
-                              Text(
-                                'Qty: ${item.quantity} • ${p.weight} • ${p.category}',
-                                style: AppTypography.bodySM.copyWith(
-                                  color: AppColors.neutralGold,
-                                  fontSize: 11,
-                                ),
-                              ),
+                              () {
+                                final displayWeight = item.selectedWeight?.isNotEmpty == true
+                                    ? item.selectedWeight!
+                                    : p.weight.isNotEmpty ? p.weight : null;
+                                return Text(
+                                  [
+                                    'Qty: ${item.quantity}',
+                                    if (displayWeight != null) displayWeight,
+                                    if (p.category.isNotEmpty) p.category,
+                                  ].join(' • '),
+                                  style: AppTypography.bodySM.copyWith(
+                                    color: AppColors.neutralGold,
+                                    fontSize: 11,
+                                  ),
+                                );
+                              }(),
                               const SizedBox(height: 4),
                               Text(
                                 formatPrice(item.effectivePrice * item.quantity),

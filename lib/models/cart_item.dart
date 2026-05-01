@@ -35,14 +35,20 @@ class CartItem {
     );
   }
 
-  CartItem copyWith({int? quantity, String? selectedWeight}) => CartItem(
+  CartItem copyWith({
+    int? quantity,
+    String? selectedWeight,
+    double? bundlePrice,
+    bool? isGiftBox,
+    String? giftNote,
+  }) => CartItem(
     cartItemId: cartItemId,
     product: product,
     quantity: quantity ?? this.quantity,
     selectedWeight: selectedWeight ?? this.selectedWeight,
-    bundlePrice: bundlePrice,
-    isGiftBox: isGiftBox,
-    giftNote: giftNote,
+    bundlePrice: bundlePrice ?? this.bundlePrice,
+    isGiftBox: isGiftBox ?? this.isGiftBox,
+    giftNote: giftNote ?? this.giftNote,
   );
 
   Map<String, dynamic> toMap() => {

@@ -643,7 +643,15 @@ class _ItemRow extends StatelessWidget {
                     style: AppTypography.bodySM.copyWith(fontWeight: FontWeight.w700, fontSize: 13),
                     maxLines: 2, overflow: TextOverflow.ellipsis),
                 const SizedBox(height: 2),
-                Text('Qty: ${item.quantity}',
+                Text(
+                    () {
+                      final w = (item.selectedWeight?.isNotEmpty == true
+                          ? item.selectedWeight!
+                          : item.product.weight.isNotEmpty
+                              ? item.product.weight
+                              : null);
+                      return w != null ? '$w · Qty: ${item.quantity}' : 'Qty: ${item.quantity}';
+                    }(),
                     style: AppTypography.bodySM.copyWith(fontSize: 12, color: AppColors.neutralGold)),
               ],
             ),

@@ -134,7 +134,10 @@ class CartNotifier extends StateNotifier<CartState> {
          for (var guest in guestItems) {
             final exists = guest.isGiftBox 
                ? cloudItems.any((ci) => ci.cartItemId == guest.cartItemId)
-               : cloudItems.any((ci) => ci.product.id == guest.product.id);
+               : cloudItems.any((ci) =>
+                   ci.product.id == guest.product.id &&
+                   (ci.selectedWeight ?? ci.product.weight) ==
+                       (guest.selectedWeight ?? guest.product.weight));
             if (!exists) merged.add(guest);
          }
          
@@ -224,11 +227,17 @@ class CartNotifier extends StateNotifier<CartState> {
       return;
     }
 
+    // Match by product ID + selectedWeight so different sizes are separate cart lines
+    final effectiveWeight = weight ?? product.weight;
     final idx = state.items.indexWhere(
-      (i) => i.product.id == product.id && !i.isGiftBox);
+      (i) => i.product.id == product.id && !i.isGiftBox &&
+             (i.selectedWeight ?? i.product.weight) == effectiveWeight);
     if (idx >= 0) {
       final updated = List<CartItem>.from(state.items);
-      updated[idx] = updated[idx].copyWith(quantity: updated[idx].quantity + qty);
+      updated[idx] = updated[idx].copyWith(
+        quantity: updated[idx].quantity + qty,
+        selectedWeight: effectiveWeight,
+      );
       state = state.copyWith(items: updated);
     } else {
       state = state.copyWith(items: [
@@ -237,7 +246,7 @@ class CartNotifier extends StateNotifier<CartState> {
           cartItemId: _uuid.v4(),
           product: product,
           quantity: qty,
-          selectedWeight: weight,
+          selectedWeight: effectiveWeight,
           bundlePrice: bundlePrice,
         ),
       ]);
