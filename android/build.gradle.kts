@@ -3,14 +3,6 @@ allprojects {
         google()
         mavenCentral()
     }
-
-    // Force a stable Razorpay checkout version that bundles RzpAssist correctly.
-    // Versions 1.6.27+ moved RzpAssist to a separate artifact that is not on Maven Central.
-    configurations.all {
-        resolutionStrategy {
-            force("com.razorpay:checkout:1.6.26")
-        }
-    }
 }
 
 val newBuildDir: Directory =
