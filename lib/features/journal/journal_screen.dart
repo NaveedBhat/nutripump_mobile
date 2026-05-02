@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_typography.dart';
+import '../../core/utils/responsive.dart';
 import '../../models/article.dart';
 import '../../providers/journal_provider.dart';
 
@@ -22,7 +23,7 @@ class JournalScreen extends ConsumerWidget {
         elevation: 0,
         surfaceTintColor: Colors.transparent,
         centerTitle: true,
-        title: Text('Journal', style: AppTypography.h3(context)),
+        title: Text('Journal', style: AppTypography.h3(context).copyWith(fontSize: R.sp(context, 16))),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1),
           child: Container(height: 1, color: AppColors.borderLight),
@@ -39,16 +40,16 @@ class JournalScreen extends ConsumerWidget {
           // ── Categories ────────────────────────────────────────
           SliverToBoxAdapter(
             child: SizedBox(
-              height: 60,
+              height: R.h(context, 60),
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                padding: EdgeInsets.symmetric(horizontal: R.w(context, 16), vertical: R.h(context, 12)),
                 itemCount: categories.length,
                 itemBuilder: (context, index) {
                   final category = categories[index];
                   final isSelected = category == selectedCategory;
                   return Padding(
-                    padding: const EdgeInsets.only(right: 8),
+                    padding: EdgeInsets.only(right: R.w(context, 8)),
                     child: ChoiceChip(
                       label: Text(category,
                           style: AppTypography.bodySM(context).copyWith(
@@ -62,7 +63,7 @@ class JournalScreen extends ConsumerWidget {
                       side: BorderSide(
                         color: isSelected ? AppColors.primary : AppColors.borderLight,
                       ),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(R.w(context, 20))),
                       showCheckmark: false,
                     ),
                   );
@@ -73,12 +74,12 @@ class JournalScreen extends ConsumerWidget {
 
           // ── Article List ──────────────────────────────────────
           SliverPadding(
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
+            padding: EdgeInsets.fromLTRB(R.w(context, 16), R.h(context, 8), R.w(context, 16), R.h(context, 24)),
             sliver: articles.isEmpty
                 ? SliverToBoxAdapter(
                     child: Center(
                       child: Padding(
-                        padding: const EdgeInsets.all(40),
+                        padding: EdgeInsets.all(R.w(context, 40)),
                         child: Text('No articles found.', style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold)),
                       ),
                     ),
@@ -109,10 +110,10 @@ class _FeaturedArticleCard extends StatelessWidget {
     return GestureDetector(
       onTap: () => context.push('/journal/${article.id}'),
       child: Container(
-        margin: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-        height: 240,
+        margin: EdgeInsets.fromLTRB(R.w(context, 16), R.h(context, 16), R.w(context, 16), R.h(context, 8)),
+        height: R.h(context, 240),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(R.w(context, 16)),
           image: DecorationImage(
             image: NetworkImage(article.imageUrl),
             fit: BoxFit.cover,
@@ -127,29 +128,29 @@ class _FeaturedArticleCard extends StatelessWidget {
           ],
         ),
         child: Padding(
-          padding: const EdgeInsets.all(20),
+          padding: EdgeInsets.all(R.w(context, 20)),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                decoration: BoxDecoration(color: AppColors.primary, borderRadius: BorderRadius.circular(20)),
-                child: Text(article.category.toUpperCase(), style: AppTypography.label(context).copyWith(fontSize: 10, color: AppColors.deepCharcoal)),
+                padding: EdgeInsets.symmetric(horizontal: R.w(context, 10), vertical: R.h(context, 4)),
+                decoration: BoxDecoration(color: AppColors.primary, borderRadius: BorderRadius.circular(R.w(context, 20))),
+                child: Text(article.category.toUpperCase(), style: AppTypography.label(context).copyWith(fontSize: R.sp(context, 10), color: AppColors.deepCharcoal)),
               ),
-              const SizedBox(height: 12),
+              SizedBox(height: R.h(context, 12)),
               Text(
                 article.title,
-                style: AppTypography.h2(context).copyWith(color: Colors.white, fontSize: 22, height: 1.2),
+                style: AppTypography.h2(context).copyWith(color: Colors.white, fontSize: R.sp(context, 22), height: 1.2),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
-              const SizedBox(height: 8),
+              SizedBox(height: R.h(context, 8)),
               Row(
                 children: [
-                  const Icon(Icons.access_time_rounded, size: 14, color: Colors.white70),
-                  const SizedBox(width: 4),
-                  Text('${article.readTimeMinutes} min read', style: AppTypography.bodySM(context).copyWith(color: Colors.white70, fontSize: 12)),
+                  Icon(Icons.access_time_rounded, size: R.sp(context, 14), color: Colors.white70),
+                  SizedBox(width: R.w(context, 4)),
+                  Text('${article.readTimeMinutes} min read', style: AppTypography.bodySM(context).copyWith(color: Colors.white70, fontSize: R.sp(context, 12))),
                 ],
               ),
             ],
@@ -169,50 +170,50 @@ class _ArticleCard extends StatelessWidget {
     return GestureDetector(
       onTap: () => context.push('/journal/${article.id}'),
       child: Container(
-        margin: const EdgeInsets.only(bottom: 16),
+        margin: EdgeInsets.only(bottom: R.h(context, 16)),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(R.w(context, 12)),
           border: Border.all(color: AppColors.borderLight),
           boxShadow: [BoxShadow(color: AppColors.deepCharcoal.withValues(alpha: 0.02), blurRadius: 6, offset: const Offset(0, 2))],
         ),
         child: Row(
           children: [
             ClipRRect(
-              borderRadius: const BorderRadius.only(topLeft: Radius.circular(12), bottomLeft: Radius.circular(12)),
+              borderRadius: BorderRadius.only(topLeft: Radius.circular(R.w(context, 12)), bottomLeft: Radius.circular(R.w(context, 12))),
               child: Image.network(
                 article.imageUrl,
-                width: 100,
-                height: 110,
+                width: R.w(context, 100),
+                height: R.w(context, 110),
                 fit: BoxFit.cover,
                 errorBuilder: (_, __, ___) => Container(
-                  width: 100, height: 110, color: AppColors.backgroundLight,
+                  width: R.w(context, 100), height: R.w(context, 110), color: AppColors.backgroundLight,
                   child: const Icon(Icons.image_outlined, color: AppColors.neutralGold),
                 ),
               ),
             ),
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.all(12),
+                padding: EdgeInsets.all(R.w(context, 12)),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(article.category.toUpperCase(),
-                        style: AppTypography.label(context).copyWith(fontSize: 10, color: AppColors.primary)),
-                    const SizedBox(height: 4),
+                        style: AppTypography.label(context).copyWith(fontSize: R.sp(context, 10), color: AppColors.primary)),
+                    SizedBox(height: R.h(context, 4)),
                     Text(
                       article.title,
-                      style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: 14, height: 1.2),
+                      style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: R.sp(context, 14), height: 1.2),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    const SizedBox(height: 8),
+                    SizedBox(height: R.h(context, 8)),
                     Row(
                       children: [
-                        const Icon(Icons.access_time_rounded, size: 12, color: AppColors.neutralGold),
-                        const SizedBox(width: 4),
+                        Icon(Icons.access_time_rounded, size: R.sp(context, 12), color: AppColors.neutralGold),
+                        SizedBox(width: R.w(context, 4)),
                         Text('${article.readTimeMinutes} min read',
-                            style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, fontSize: 11)),
+                            style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, fontSize: R.sp(context, 11))),
                       ],
                     ),
                   ],

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_typography.dart';
+import '../../core/utils/responsive.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class SecurityScreen extends ConsumerStatefulWidget {
@@ -79,29 +80,29 @@ class _SecurityScreenState extends ConsumerState<SecurityScreen> {
         backgroundColor: Colors.white,
         elevation: 0,
         centerTitle: true,
-        title: Text('Security', style: AppTypography.h3(context)),
+        title: Text('Security', style: AppTypography.h3(context).copyWith(fontSize: R.sp(context, 16))),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1),
           child: Container(height: 1, color: AppColors.borderLight),
         ),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24),
+        padding: EdgeInsets.all(R.w(context, 24)),
         child: Form(
           key: _formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Change Password', style: AppTypography.h3(context)),
-              const SizedBox(height: 8),
+              Text('Change Password', style: AppTypography.h3(context).copyWith(fontSize: R.sp(context, 16))),
+              SizedBox(height: R.h(context, 8)),
               Text(
                 'Ensure your account is using a long, random password to stay secure.',
                 style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold),
               ),
-              const SizedBox(height: 24),
+              SizedBox(height: R.h(context, 24)),
 
-              Text('Current Password', style: AppTypography.label(context).copyWith(fontSize: 11)),
-              const SizedBox(height: 6),
+              Text('Current Password', style: AppTypography.label(context).copyWith(fontSize: R.sp(context, 11))),
+              SizedBox(height: R.h(context, 6)),
               TextFormField(
                 controller: _oldPasswordCtrl,
                 obscureText: _obscurePassword,
@@ -109,17 +110,17 @@ class _SecurityScreenState extends ConsumerState<SecurityScreen> {
                 style: AppTypography.bodySM(context),
                 decoration: _inputDecoration('Enter current password').copyWith(
                   suffixIcon: IconButton(
-                    icon: Icon(_obscurePassword ? Icons.visibility_off_outlined : Icons.visibility_outlined, size: 20, color: AppColors.neutralGold),
+                    icon: Icon(_obscurePassword ? Icons.visibility_off_outlined : Icons.visibility_outlined, size: R.sp(context, 20), color: AppColors.neutralGold),
                     onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
                   ),
                 ),
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: R.h(context, 16)),
               const Divider(color: AppColors.borderLight),
-              const SizedBox(height: 16),
+              SizedBox(height: R.h(context, 16)),
 
-              Text('New Password', style: AppTypography.label(context).copyWith(fontSize: 11)),
-              const SizedBox(height: 6),
+              Text('New Password', style: AppTypography.label(context).copyWith(fontSize: R.sp(context, 11))),
+              SizedBox(height: R.h(context, 6)),
               TextFormField(
                 controller: _passwordCtrl,
                 obscureText: _obscurePassword,
@@ -127,10 +128,10 @@ class _SecurityScreenState extends ConsumerState<SecurityScreen> {
                 style: AppTypography.bodySM(context),
                 decoration: _inputDecoration('Enter new password'),
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: R.h(context, 16)),
 
-              Text('Confirm New Password', style: AppTypography.label(context).copyWith(fontSize: 11)),
-              const SizedBox(height: 6),
+              Text('Confirm New Password', style: AppTypography.label(context).copyWith(fontSize: R.sp(context, 11))),
+              SizedBox(height: R.h(context, 6)),
               TextFormField(
                 controller: _confirmPasswordCtrl,
                 obscureText: _obscurePassword,
@@ -138,7 +139,7 @@ class _SecurityScreenState extends ConsumerState<SecurityScreen> {
                 style: AppTypography.bodySM(context),
                 decoration: _inputDecoration('Confirm new password'),
               ),
-              const SizedBox(height: 24),
+              SizedBox(height: R.h(context, 24)),
 
               SizedBox(
                 width: double.infinity,
@@ -148,12 +149,12 @@ class _SecurityScreenState extends ConsumerState<SecurityScreen> {
                     backgroundColor: AppColors.primary,
                     foregroundColor: AppColors.deepCharcoal,
                     elevation: 0,
-                    padding: const EdgeInsets.symmetric(vertical: 14),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    padding: EdgeInsets.symmetric(vertical: R.h(context, 14)),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(R.w(context, 12))),
                   ),
                   child: _isLoading
-                      ? const SizedBox(width: 24, height: 24, child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.deepCharcoal))
-                      : Text('Update Password', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: 16)),
+                      ? SizedBox(width: R.w(context, 24), height: R.w(context, 24), child: const CircularProgressIndicator(strokeWidth: 2, color: AppColors.deepCharcoal))
+                      : Text('Update Password', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: R.sp(context, 16))),
                 ),
               ),
             ],
@@ -167,13 +168,13 @@ class _SecurityScreenState extends ConsumerState<SecurityScreen> {
     return InputDecoration(
       hintText: hint,
       hintStyle: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold.withValues(alpha: 0.5)),
-      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      contentPadding: EdgeInsets.symmetric(horizontal: R.w(context, 16), vertical: R.h(context, 16)),
       filled: true,
       fillColor: Colors.white,
-      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: AppColors.borderLight)),
-      enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: AppColors.borderLight)),
-      focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: AppColors.primary)),
-      errorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: AppColors.error)),
+      border: OutlineInputBorder(borderRadius: BorderRadius.circular(R.w(context, 12)), borderSide: const BorderSide(color: AppColors.borderLight)),
+      enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(R.w(context, 12)), borderSide: const BorderSide(color: AppColors.borderLight)),
+      focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(R.w(context, 12)), borderSide: const BorderSide(color: AppColors.primary)),
+      errorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(R.w(context, 12)), borderSide: const BorderSide(color: AppColors.error)),
     );
   }
 }

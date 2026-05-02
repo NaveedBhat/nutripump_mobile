@@ -7,6 +7,7 @@ import '../../core/constants/app_typography.dart';
 import '../../models/models.dart';
 import '../../providers/promo_provider.dart';
 import '../../providers/cart_provider.dart';
+import '../../core/utils/responsive.dart';
 
 class PromoCodesScreen extends ConsumerStatefulWidget {
   const PromoCodesScreen({super.key});
@@ -133,31 +134,31 @@ class _PromoCodesScreenState extends ConsumerState<PromoCodesScreen> {
         elevation: 0,
         surfaceTintColor: Colors.transparent,
         centerTitle: true,
-        title: Text('Apply Promo Code', style: AppTypography.h3(context)),
+        title: Text('Apply Promo Code', style: AppTypography.h3(context).copyWith(fontSize: R.sp(context, 16))),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1),
           child: Container(height: 1, color: AppColors.borderLight),
         ),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(R.w(context, 16)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // ── Manual Code Entry ────────────────────────────────
             Container(
-              padding: const EdgeInsets.all(16),
+              padding: EdgeInsets.all(R.w(context, 16)),
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(R.w(context, 12)),
                 border: Border.all(color: AppColors.borderLight),
                 boxShadow: [BoxShadow(color: AppColors.deepCharcoal.withValues(alpha: 0.02), blurRadius: 6, offset: const Offset(0, 2))],
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Have a promo code?', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: 14)),
-                  const SizedBox(height: 12),
+                  Text('Have a promo code?', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: R.sp(context, 14))),
+                  SizedBox(height: R.h(context, 12)),
                   Row(
                     children: [
                       Expanded(
@@ -168,14 +169,14 @@ class _PromoCodesScreenState extends ConsumerState<PromoCodesScreen> {
                           decoration: InputDecoration(
                             hintText: 'Enter code here',
                             hintStyle: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold.withValues(alpha: 0.5)),
-                            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                            contentPadding: EdgeInsets.symmetric(horizontal: R.w(context, 16), vertical: R.h(context, 12)),
                             filled: true,
                             fillColor: AppColors.backgroundLight,
-                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide.none),
+                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(R.w(context, 8)), borderSide: BorderSide.none),
                           ),
                         ),
                       ),
-                      const SizedBox(width: 12),
+                      SizedBox(width: R.w(context, 12)),
                       ElevatedButton(
                         onPressed: () async {
                           if (availablePromosAsync.hasValue) {
@@ -186,8 +187,8 @@ class _PromoCodesScreenState extends ConsumerState<PromoCodesScreen> {
                           backgroundColor: AppColors.deepCharcoal,
                           foregroundColor: Colors.white,
                           elevation: 0,
-                          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                          padding: EdgeInsets.symmetric(horizontal: R.w(context, 24), vertical: R.h(context, 14)),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(R.w(context, 8))),
                         ),
                         child: Text('Apply', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, color: Colors.white)),
                       ),
@@ -196,18 +197,18 @@ class _PromoCodesScreenState extends ConsumerState<PromoCodesScreen> {
                 ],
               ),
             ),
-            const SizedBox(height: 24),
+            SizedBox(height: R.h(context, 24)),
 
             // ── Available Offers ─────────────────────────────────
-            Text('Available Offers', style: AppTypography.h3(context)),
-            const SizedBox(height: 16),
+            Text('Available Offers', style: AppTypography.h3(context).copyWith(fontSize: R.sp(context, 16))),
+            SizedBox(height: R.h(context, 16)),
 
             availablePromosAsync.when(
               data: (promos) {
                 if (promos.isEmpty) {
                   return Center(
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 32),
+                      padding: EdgeInsets.symmetric(vertical: R.h(context, 32)),
                       child: Text('No promo codes available right now.', style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold)),
                     ),
                   );
@@ -266,10 +267,10 @@ class _PromoCard extends StatelessWidget {
     return Opacity(
       opacity: isAlreadyUsed ? 0.6 : 1.0,
       child: Container(
-        margin: const EdgeInsets.only(bottom: 16),
+        margin: EdgeInsets.only(bottom: R.h(context, 16)),
         decoration: BoxDecoration(
           color: isApplied ? AppColors.success.withValues(alpha: 0.05) : Colors.white,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(R.w(context, 12)),
           border: Border.all(
             color: isApplied ? AppColors.success : AppColors.borderLight,
             width: isApplied ? 2 : 1,
@@ -281,17 +282,17 @@ class _PromoCard extends StatelessWidget {
           children: [
             // ── Header (Code & Action) ──────────────────────────
             Padding(
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 12),
+              padding: EdgeInsets.fromLTRB(R.w(context, 16), R.h(context, 16), R.w(context, 16), R.h(context, 12)),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    padding: EdgeInsets.symmetric(horizontal: R.w(context, 12), vertical: R.h(context, 6)),
                     decoration: BoxDecoration(
                       color: isAlreadyUsed
                           ? AppColors.neutralGold.withValues(alpha: 0.1)
                           : AppColors.primary.withValues(alpha: 0.15),
-                      borderRadius: BorderRadius.circular(6),
+                      borderRadius: BorderRadius.circular(R.w(context, 6)),
                       border: Border.all(
                         color: isAlreadyUsed
                             ? AppColors.neutralGold.withValues(alpha: 0.3)
@@ -301,9 +302,9 @@ class _PromoCard extends StatelessWidget {
                     ),
                     child: Row(
                       children: [
-                        Icon(Icons.local_offer_rounded, size: 14,
+                        Icon(Icons.local_offer_rounded, size: R.sp(context, 14),
                             color: isAlreadyUsed ? AppColors.neutralGold : AppColors.primary),
-                        const SizedBox(width: 6),
+                        SizedBox(width: R.w(context, 6)),
                         Text(promo.code,
                             style: AppTypography.bodySM(context).copyWith(
                                 fontWeight: FontWeight.w800,
@@ -313,20 +314,20 @@ class _PromoCard extends StatelessWidget {
                   ),
                   if (isAlreadyUsed)
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                      padding: EdgeInsets.symmetric(horizontal: R.w(context, 10), vertical: R.h(context, 5)),
                       decoration: BoxDecoration(
                         color: AppColors.neutralGold.withValues(alpha: 0.08),
-                        borderRadius: BorderRadius.circular(20),
+                        borderRadius: BorderRadius.circular(R.w(context, 20)),
                         border: Border.all(color: AppColors.neutralGold.withValues(alpha: 0.3)),
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          const Icon(Icons.check_circle_outline_rounded, size: 12, color: AppColors.neutralGold),
-                          const SizedBox(width: 4),
+                          Icon(Icons.check_circle_outline_rounded, size: R.sp(context, 12), color: AppColors.neutralGold),
+                          SizedBox(width: R.w(context, 4)),
                           Text('Already Availed',
                               style: AppTypography.label(context).copyWith(
-                                  fontSize: 10, fontWeight: FontWeight.w700, color: AppColors.neutralGold)),
+                                  fontSize: R.sp(context, 10), fontWeight: FontWeight.w700, color: AppColors.neutralGold)),
                         ],
                       ),
                     )
@@ -335,7 +336,7 @@ class _PromoCard extends StatelessWidget {
                       onPressed: onRemove,
                       style: TextButton.styleFrom(
                         foregroundColor: AppColors.error,
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        padding: EdgeInsets.symmetric(horizontal: R.w(context, 8)),
                         minimumSize: Size.zero,
                         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       ),
@@ -346,7 +347,7 @@ class _PromoCard extends StatelessWidget {
                       onPressed: onApply,
                       style: TextButton.styleFrom(
                         foregroundColor: AppColors.primary,
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        padding: EdgeInsets.symmetric(horizontal: R.w(context, 8)),
                         minimumSize: Size.zero,
                         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       ),
@@ -360,22 +361,22 @@ class _PromoCard extends StatelessWidget {
 
             // ── Details ─────────────────────────────────────────
             Padding(
-              padding: const EdgeInsets.all(16),
+              padding: EdgeInsets.all(R.w(context, 16)),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(promo.title, style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: 15)),
+                  Text(promo.title, style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: R.sp(context, 15))),
                   if (promo.description.isNotEmpty) ...[
-                    const SizedBox(height: 6),
+                    SizedBox(height: R.h(context, 6)),
                     Text(promo.description, style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, height: 1.4)),
                   ],
                   if (promo.productId != null && promo.productName != null) ...[
-                    const SizedBox(height: 8),
+                    SizedBox(height: R.h(context, 8)),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      padding: EdgeInsets.symmetric(horizontal: R.w(context, 8), vertical: R.h(context, 4)),
                       decoration: BoxDecoration(
                         color: AppColors.deepCharcoal.withValues(alpha: 0.05),
-                        borderRadius: BorderRadius.circular(4),
+                        borderRadius: BorderRadius.circular(R.w(context, 4)),
                       ),
                       child: Text('Valid only on ${promo.productName}', style: AppTypography.label(context).copyWith(color: AppColors.deepCharcoal, fontWeight: FontWeight.w600)),
                     ),
@@ -387,18 +388,18 @@ class _PromoCard extends StatelessWidget {
             // ── Footer (Terms) ──────────────────────────────────
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-              decoration: const BoxDecoration(
+              padding: EdgeInsets.symmetric(horizontal: R.w(context, 16), vertical: R.h(context, 10)),
+              decoration: BoxDecoration(
                 color: AppColors.backgroundLight,
-                borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10)),
+                borderRadius: BorderRadius.only(bottomLeft: Radius.circular(R.w(context, 10)), bottomRight: Radius.circular(R.w(context, 10))),
               ),
               child: Row(
                 children: [
-                  const Icon(Icons.info_outline_rounded, size: 14, color: AppColors.neutralGold),
-                  const SizedBox(width: 6),
+                  Icon(Icons.info_outline_rounded, size: R.sp(context, 14), color: AppColors.neutralGold),
+                  SizedBox(width: R.w(context, 6)),
                   Expanded(
                     child: Text('Min. order: ₹${promo.minOrderValue.toInt()}${promo.expiresAt != null ? ' | Valid till ${_formatDate(promo.expiresAt!)}' : ''}',
-                      style: AppTypography.label(context).copyWith(fontSize: 10, color: AppColors.neutralGold)),
+                      style: AppTypography.label(context).copyWith(fontSize: R.sp(context, 10), color: AppColors.neutralGold)),
                   ),
                 ],
               ),

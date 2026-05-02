@@ -4,6 +4,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:intl/intl.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_typography.dart';
+import '../../core/utils/responsive.dart';
 import '../../providers/legal_provider.dart';
 import '../../providers/providers.dart';
 import 'legal_widgets.dart';
@@ -33,7 +34,7 @@ class PrivacyPolicyScreen extends ConsumerWidget {
             ),
             title: Text(
               'Privacy Policy',
-              style: AppTypography.h3(context).copyWith(color: Colors.white),
+              style: AppTypography.h3(context).copyWith(color: Colors.white, fontSize: R.sp(context, 16)),
             ),
             bottom: PreferredSize(
               preferredSize: const Size.fromHeight(1),
@@ -51,17 +52,17 @@ class PrivacyPolicyScreen extends ConsumerWidget {
             error: (err, stack) => SliverFillRemaining(
               child: Center(
                 child: Padding(
-                  padding: const EdgeInsets.all(24),
+                  padding: EdgeInsets.all(R.w(context, 24)),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Icon(Icons.error_outline, color: Colors.red, size: 48),
-                      const SizedBox(height: 16),
+                      Icon(Icons.error_outline, color: Colors.red, size: R.sp(context, 48)),
+                      SizedBox(height: R.h(context, 16)),
                       Text(
                         'Failed to load privacy policy.',
                         style: AppTypography.bodySM(context),
                       ),
-                      const SizedBox(height: 16),
+                      SizedBox(height: R.h(context, 16)),
                       ElevatedButton(
                         onPressed: () => ref.refresh(privacyPageProvider),
                         child: const Text('Retry'),
@@ -90,16 +91,16 @@ class PrivacyPolicyScreen extends ConsumerWidget {
                     Container(
                       width: double.infinity,
                       color: AppColors.deepCharcoal,
-                      padding: const EdgeInsets.fromLTRB(24, 24, 24, 32),
+                      padding: EdgeInsets.fromLTRB(R.w(context, 24), R.h(context, 24), R.w(context, 24), R.h(context, 32)),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: R.w(context, 10), vertical: R.h(context, 5)),
                             decoration: BoxDecoration(
                               color: AppColors.primary.withValues(alpha: 0.12),
-                              borderRadius: BorderRadius.circular(20),
+                              borderRadius: BorderRadius.circular(R.w(context, 20)),
                               border: Border.all(
                                   color:
                                       AppColors.primary.withValues(alpha: 0.2)),
@@ -108,34 +109,34 @@ class PrivacyPolicyScreen extends ConsumerWidget {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Icon(Icons.shield_outlined,
-                                    color: AppColors.primary, size: 11),
-                                const SizedBox(width: 5),
+                                    color: AppColors.primary, size: R.sp(context, 11)),
+                                SizedBox(width: R.w(context, 5)),
                                 Text(
                                   'YOUR PRIVACY MATTERS',
                                   style: AppTypography.label(context).copyWith(
                                     color: AppColors.primary,
-                                    fontSize: 9,
+                                    fontSize: R.sp(context, 9),
                                     letterSpacing: 1.5,
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                          const SizedBox(height: 12),
+                          SizedBox(height: R.h(context, 12)),
                           Text(
                             page.intro,
                             style: AppTypography.bodySM(context).copyWith(
                               color: Colors.white.withValues(alpha: 0.6),
-                              fontSize: 13,
+                              fontSize: R.sp(context, 13),
                               height: 1.6,
                             ),
                           ),
-                          const SizedBox(height: 10),
+                          SizedBox(height: R.h(context, 10)),
                           Text(
                             'Last updated: $lastUpdated',
                             style: AppTypography.label(context).copyWith(
                               color: Colors.white.withValues(alpha: 0.3),
-                              fontSize: 10,
+                              fontSize: R.sp(context, 10),
                               fontFamily: 'monospace',
                             ),
                           ),
@@ -145,12 +146,12 @@ class PrivacyPolicyScreen extends ConsumerWidget {
 
                     // ── Intro Card ────────────────────────────────────────
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+                      padding: EdgeInsets.fromLTRB(R.w(context, 16), R.h(context, 16), R.w(context, 16), 0),
                       child: Container(
-                        padding: const EdgeInsets.all(18),
+                        padding: EdgeInsets.all(R.w(context, 18)),
                         decoration: BoxDecoration(
                           color: Colors.white,
-                          borderRadius: BorderRadius.circular(16),
+                          borderRadius: BorderRadius.circular(R.w(context, 16)),
                           border: Border.all(
                               color: AppColors.primary.withValues(alpha: 0.15)),
                           boxShadow: [
@@ -165,7 +166,7 @@ class PrivacyPolicyScreen extends ConsumerWidget {
                         child: Text(
                           'This Privacy Policy applies to all products and services offered by NutriPump Artisanal ("NutriPump", "we", "our", or "us"), including our website at nutripump.com and our mobile applications. By using our services, you agree to the collection and use of information in accordance with this policy.',
                           style: AppTypography.bodySM(context).copyWith(
-                            fontSize: 13,
+                            fontSize: R.sp(context, 13),
                             height: 1.7,
                             color:
                                 AppColors.deepCharcoal.withValues(alpha: 0.75),
@@ -174,7 +175,7 @@ class PrivacyPolicyScreen extends ConsumerWidget {
                       ),
                     ),
 
-                    const SizedBox(height: 24),
+                    SizedBox(height: R.h(context, 24)),
 
                     // ── Sections ─────────────────────────────────────────
                     ...page.sections.asMap().entries.map((entry) =>
@@ -183,12 +184,12 @@ class PrivacyPolicyScreen extends ConsumerWidget {
 
                     // ── Contact Block ─────────────────────────────────────
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(16, 0, 16, 32),
+                      padding: EdgeInsets.fromLTRB(R.w(context, 16), 0, R.w(context, 16), R.h(context, 32)),
                       child: Container(
-                        padding: const EdgeInsets.all(24),
+                        padding: EdgeInsets.all(R.w(context, 24)),
                         decoration: BoxDecoration(
                           color: AppColors.deepCharcoal,
-                          borderRadius: BorderRadius.circular(20),
+                          borderRadius: BorderRadius.circular(R.w(context, 20)),
                         ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -198,16 +199,16 @@ class PrivacyPolicyScreen extends ConsumerWidget {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Container(
-                                  width: 42,
-                                  height: 42,
+                                  width: R.w(context, 42),
+                                  height: R.w(context, 42),
                                   decoration: BoxDecoration(
                                     color: AppColors.primary.withValues(alpha: 0.15),
-                                    borderRadius: BorderRadius.circular(12),
+                                    borderRadius: BorderRadius.circular(R.w(context, 12)),
                                   ),
                                   child: Icon(Icons.shield_outlined,
-                                      color: AppColors.primary, size: 20),
+                                      color: AppColors.primary, size: R.sp(context, 20)),
                                 ),
-                                const SizedBox(width: 14),
+                                SizedBox(width: R.w(context, 14)),
                                 Expanded(
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -217,15 +218,15 @@ class PrivacyPolicyScreen extends ConsumerWidget {
                                         style: AppTypography.bodySM(context).copyWith(
                                           color: Colors.white,
                                           fontWeight: FontWeight.w700,
-                                          fontSize: 15,
+                                          fontSize: R.sp(context, 15),
                                         ),
                                       ),
-                                      const SizedBox(height: 3),
+                                      SizedBox(height: R.h(context, 3)),
                                       Text(
                                         'Our privacy team is here to help',
                                         style: AppTypography.label(context).copyWith(
                                           color: Colors.white.withValues(alpha: 0.45),
-                                          fontSize: 11,
+                                          fontSize: R.sp(context, 11),
                                         ),
                                       ),
                                     ],
@@ -234,23 +235,23 @@ class PrivacyPolicyScreen extends ConsumerWidget {
                               ],
                             ),
 
-                            const SizedBox(height: 16),
+                            SizedBox(height: R.h(context, 16)),
                             Container(
                                 height: 1,
                                 color: Colors.white.withValues(alpha: 0.08)),
-                            const SizedBox(height: 16),
+                            SizedBox(height: R.h(context, 16)),
 
                             // Description
                             Text(
                               'If you have any questions, requests, or complaints about this Privacy Policy or our data practices, please reach out.',
                               style: AppTypography.bodySM(context).copyWith(
                                 color: Colors.white.withValues(alpha: 0.55),
-                                fontSize: 12.5,
+                                fontSize: R.sp(context, 12.5),
                                 height: 1.6,
                               ),
                             ),
 
-                            const SizedBox(height: 20),
+                            SizedBox(height: R.h(context, 20)),
 
                             // Email CTA
                             GestureDetector(
@@ -258,24 +259,24 @@ class PrivacyPolicyScreen extends ConsumerWidget {
                                   Uri.parse('mailto:$contactEmail')),
                               child: Container(
                                 width: double.infinity,
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 18, vertical: 14),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: R.w(context, 18), vertical: R.h(context, 14)),
                                 decoration: BoxDecoration(
                                   color: AppColors.primary,
-                                  borderRadius: BorderRadius.circular(12),
+                                  borderRadius: BorderRadius.circular(R.w(context, 12)),
                                 ),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    const Icon(Icons.mail_outline_rounded,
-                                        color: AppColors.deepCharcoal, size: 17),
-                                    const SizedBox(width: 8),
+                                    Icon(Icons.mail_outline_rounded,
+                                        color: AppColors.deepCharcoal, size: R.sp(context, 17)),
+                                    SizedBox(width: R.w(context, 8)),
                                     Text(
                                       contactEmail,
                                       style: AppTypography.bodySM(context).copyWith(
                                         color: AppColors.deepCharcoal,
                                         fontWeight: FontWeight.w700,
-                                        fontSize: 13,
+                                        fontSize: R.sp(context, 13),
                                       ),
                                     ),
                                   ],
@@ -283,7 +284,7 @@ class PrivacyPolicyScreen extends ConsumerWidget {
                               ),
                             ),
 
-                            const SizedBox(height: 12),
+                            SizedBox(height: R.h(context, 12)),
 
                             // Response footnote
                             Center(
@@ -291,7 +292,7 @@ class PrivacyPolicyScreen extends ConsumerWidget {
                                 'We respond within 5 business days',
                                 style: AppTypography.label(context).copyWith(
                                   color: Colors.white.withValues(alpha: 0.3),
-                                  fontSize: 10,
+                                  fontSize: R.sp(context, 10),
                                   letterSpacing: 0.3,
                                 ),
                               ),

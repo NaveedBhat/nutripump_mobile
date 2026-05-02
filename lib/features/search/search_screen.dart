@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_typography.dart';
+import '../../core/utils/responsive.dart';
 import '../../core/widgets/product_card.dart';
 import '../../providers/providers.dart';
 import 'widgets/voice_search_bottom_sheet.dart';
@@ -70,10 +71,10 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
           onPressed: () => context.pop(),
         ),
         title: Container(
-          height: 40,
+          height: R.h(context, 40),
           decoration: BoxDecoration(
             color: const Color(0xFFF5F3EE),
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(R.w(context, 10)),
           ),
           child: TextField(
             controller: _searchController,
@@ -82,19 +83,19 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
             decoration: InputDecoration(
               hintText: 'Search honey, saffron, nuts...',
               hintStyle: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold.withValues(alpha: 0.7)),
-              prefixIcon: const Icon(Icons.search_rounded, color: AppColors.neutralGold, size: 20),
+              prefixIcon: Icon(Icons.search_rounded, color: AppColors.neutralGold, size: R.sp(context, 20)),
               border: InputBorder.none,
-              contentPadding: const EdgeInsets.symmetric(vertical: 10),
+              contentPadding: EdgeInsets.symmetric(vertical: R.h(context, 10)),
               suffixIcon: _query.isNotEmpty
                   ? IconButton(
-                      icon: const Icon(Icons.close, size: 18, color: AppColors.neutralGold),
+                      icon: Icon(Icons.close, size: R.sp(context, 18), color: AppColors.neutralGold),
                       onPressed: () {
                         _searchController.clear();
                         setState(() => _query = '');
                       },
                     )
                   : IconButton(
-                      icon: const Icon(Icons.mic_none, size: 18, color: AppColors.neutralGold),
+                      icon: Icon(Icons.mic_none, size: R.sp(context, 18), color: AppColors.neutralGold),
                       onPressed: _startVoiceSearch,
                     ),
             ),
@@ -120,25 +121,25 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
           if (_query.isEmpty) {
             return Center(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 40),
+                padding: EdgeInsets.symmetric(horizontal: R.w(context, 40)),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                      padding: const EdgeInsets.all(24),
+                      padding: EdgeInsets.all(R.w(context, 24)),
                       decoration: BoxDecoration(
                         color: AppColors.primary.withValues(alpha: 0.08),
                         shape: BoxShape.circle,
                       ),
-                      child: const Icon(Icons.search_rounded, size: 32, color: AppColors.primary),
+                      child: Icon(Icons.search_rounded, size: R.sp(context, 32), color: AppColors.primary),
                     ),
-                    const SizedBox(height: 24),
+                    SizedBox(height: R.h(context, 24)),
                     Text(
                       'What are you looking for?',
                       textAlign: TextAlign.center,
-                      style: AppTypography.h2(context).copyWith(fontSize: 18),
+                      style: AppTypography.h2(context).copyWith(fontSize: R.sp(context, 18)),
                     ),
-                    const SizedBox(height: 12),
+                    SizedBox(height: R.h(context, 12)),
                     Text(
                       'Search for pure honey, premium saffron, dry fruits, or specific collections.',
                       textAlign: TextAlign.center,
@@ -153,25 +154,25 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
           if (results.isEmpty) {
             return Center(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 40),
+                padding: EdgeInsets.symmetric(horizontal: R.w(context, 40)),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                      padding: const EdgeInsets.all(24),
+                      padding: EdgeInsets.all(R.w(context, 24)),
                       decoration: BoxDecoration(
                         color: AppColors.borderLight.withValues(alpha: 0.5),
                         shape: BoxShape.circle,
                       ),
-                      child: const Icon(Icons.search_off_rounded, size: 32, color: AppColors.neutralGold),
+                      child: Icon(Icons.search_off_rounded, size: R.sp(context, 32), color: AppColors.neutralGold),
                     ),
-                    const SizedBox(height: 24),
+                    SizedBox(height: R.h(context, 24)),
                     Text(
                       'No results found',
                       textAlign: TextAlign.center,
-                      style: AppTypography.h2(context).copyWith(fontSize: 18),
+                      style: AppTypography.h2(context).copyWith(fontSize: R.sp(context, 18)),
                     ),
-                    const SizedBox(height: 12),
+                    SizedBox(height: R.h(context, 12)),
                     Text(
                       'We couldn\'t find anything matching "$_query".\nTry checking your spelling or use more general terms.',
                       textAlign: TextAlign.center,
@@ -184,12 +185,12 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
           }
 
           return GridView.builder(
-            padding: const EdgeInsets.all(20),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            padding: EdgeInsets.all(R.w(context, 20)),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
               childAspectRatio: 0.65,
-              crossAxisSpacing: 16,
-              mainAxisSpacing: 24,
+              crossAxisSpacing: R.w(context, 16),
+              mainAxisSpacing: R.h(context, 24),
             ),
             itemCount: results.length,
             itemBuilder: (context, index) {

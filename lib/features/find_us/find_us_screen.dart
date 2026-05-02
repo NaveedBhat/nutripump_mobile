@@ -4,6 +4,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_typography.dart';
+import '../../core/utils/responsive.dart';
 import '../../core/widgets/primary_button.dart';
 import '../../core/widgets/custom_network_image.dart';
 
@@ -93,7 +94,7 @@ class _FindUsScreenState extends State<FindUsScreen> {
 
   Widget _buildHero() {
     return SliverAppBar(
-      expandedHeight: 300,
+      expandedHeight: R.h(context, 300),
       pinned: true,
       backgroundColor: AppColors.deepCharcoal,
       iconTheme: const IconThemeData(color: Colors.white),
@@ -115,17 +116,17 @@ class _FindUsScreenState extends State<FindUsScreen> {
               ),
             ),
             Positioned(
-              left: 24,
-              bottom: 40,
-              right: 24,
+              left: R.w(context, 24),
+              bottom: R.h(context, 40),
+              right: R.w(context, 24),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     'Our Presence',
-                    style: AppTypography.h1(context).copyWith(color: Colors.white, fontSize: 40),
+                    style: AppTypography.h1(context).copyWith(color: Colors.white, fontSize: R.sp(context, 40)),
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: R.h(context, 8)),
                   Text(
                     'Where heritage meets the world.',
                     style: AppTypography.body(context).copyWith(
@@ -144,18 +145,18 @@ class _FindUsScreenState extends State<FindUsScreen> {
 
   Widget _buildDigitalSoul() {
     return Padding(
-      padding: const EdgeInsets.all(24),
+      padding: EdgeInsets.all(R.w(context, 24)),
       child: Column(
         children: [
-          const SizedBox(height: 24),
-          const Icon(Icons.language_rounded, size: 48, color: AppColors.primary),
-          const SizedBox(height: 24),
+          SizedBox(height: R.h(context, 24)),
+          Icon(Icons.language_rounded, size: R.sp(context, 48), color: AppColors.primary),
+          SizedBox(height: R.h(context, 24)),
           Text(
             'Digital Soul, Global Reach',
             style: AppTypography.h2(context),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: R.h(context, 16)),
           Text(
             'NutriPump is an online-first destination, meticulously designed to bring the heritage of Kashmir directly to your doorstep. We\'ve eliminated the traditional storefront to focus entirely on the quality of our craftsmanship and the efficiency of our global delivery.',
             style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, height: 1.6),
@@ -168,7 +169,7 @@ class _FindUsScreenState extends State<FindUsScreen> {
 
   Widget _buildValuesGrid() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24),
+      padding: EdgeInsets.symmetric(horizontal: R.w(context, 24)),
       child: Column(
         children: [
           _buildValueCard(
@@ -176,19 +177,19 @@ class _FindUsScreenState extends State<FindUsScreen> {
             'Seamless Ordering',
             'A refined digital experience tailored for breezy browsing and effortless checkout.',
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: R.h(context, 16)),
           _buildValueCard(
             Icons.local_shipping_outlined,
             'Global Shipping',
             'Global delivery partners ensure our craft reaches you safely and swiftly anywhere.',
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: R.h(context, 16)),
           _buildValueCard(
             Icons.shield_outlined,
             'Direct Trust',
             'By removing intermediaries, we guarantee the provenance of every piece.',
           ),
-          const SizedBox(height: 48),
+          SizedBox(height: R.h(context, 48)),
         ],
       ),
     );
@@ -197,10 +198,10 @@ class _FindUsScreenState extends State<FindUsScreen> {
   Widget _buildValueCard(IconData icon, String title, String desc) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(24),
+      padding: EdgeInsets.all(R.w(context, 24)),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(R.w(context, 20)),
         border: Border.all(color: AppColors.primary.withValues(alpha: 0.1)),
         boxShadow: [
           BoxShadow(
@@ -213,16 +214,16 @@ class _FindUsScreenState extends State<FindUsScreen> {
       child: Column(
         children: [
           Container(
-            padding: const EdgeInsets.all(12),
+            padding: EdgeInsets.all(R.w(context, 12)),
             decoration: BoxDecoration(
               color: AppColors.primary.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(R.w(context, 16)),
             ),
-            child: Icon(icon, color: AppColors.primary, size: 28),
+            child: Icon(icon, color: AppColors.primary, size: R.sp(context, 28)),
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: R.h(context, 16)),
           Text(title, style: AppTypography.h3(context)),
-          const SizedBox(height: 8),
+          SizedBox(height: R.h(context, 8)),
           Text(
             desc,
             style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, height: 1.5),
@@ -236,13 +237,13 @@ class _FindUsScreenState extends State<FindUsScreen> {
   Widget _buildHabbakadal() {
     return Container(
       color: AppColors.primary.withValues(alpha: 0.05),
-      padding: const EdgeInsets.all(24),
+      padding: EdgeInsets.all(R.w(context, 24)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(height: 24),
+          SizedBox(height: R.h(context, 24)),
           ClipRRect(
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(R.w(context, 20)),
             child: const AspectRatio(
               aspectRatio: 4/3,
               child: CustomNetworkImage(
@@ -251,22 +252,22 @@ class _FindUsScreenState extends State<FindUsScreen> {
               ),
             ),
           ),
-          const SizedBox(height: 32),
+          SizedBox(height: R.h(context, 32)),
           Text('ROOTED IN', style: AppTypography.labelGold(context)),
-          const SizedBox(height: 8),
+          SizedBox(height: R.h(context, 8)),
           Text('Heritage of Habbakadal', style: AppTypography.h2(context)),
-          const SizedBox(height: 16),
+          SizedBox(height: R.h(context, 16)),
           Text(
             'Habbakadal is the heart of Srinagar\'s craftsmanship. In these narrow, storied lanes, tradition meets modern logistics. It is where our master artisans gather, where the threads of tradition are woven into every piece, and where the soul of NutriPump resides.',
             style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, height: 1.6),
           ),
-          const SizedBox(height: 24),
+          SizedBox(height: R.h(context, 24)),
           TextButton.icon(
             onPressed: () => _launchUrl('https://maps.google.com'),
             icon: const Icon(Icons.location_on_outlined, color: AppColors.primary),
             label: Text('Explore Habbakadal, Kashmir', style: AppTypography.labelGold(context)),
           ),
-          const SizedBox(height: 24),
+          SizedBox(height: R.h(context, 24)),
         ],
       ),
     );
@@ -275,34 +276,34 @@ class _FindUsScreenState extends State<FindUsScreen> {
   Widget _buildContactForm() {
     return Container(
       color: AppColors.deepCharcoal,
-      padding: const EdgeInsets.all(24),
+      padding: EdgeInsets.all(R.w(context, 24)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(height: 24),
+          SizedBox(height: R.h(context, 24)),
           Text('GET IN TOUCH', style: AppTypography.labelGold(context)),
-          const SizedBox(height: 8),
+          SizedBox(height: R.h(context, 8)),
           Text('Contact Us', style: AppTypography.h2(context).copyWith(color: Colors.white)),
-          const SizedBox(height: 16),
+          SizedBox(height: R.h(context, 16)),
           Text(
             'Questions, bulk orders, or a simple hello — our team responds personally within 24 hours.',
             style: AppTypography.bodySM(context).copyWith(color: Colors.white70, height: 1.5),
           ),
-          const SizedBox(height: 32),
+          SizedBox(height: R.h(context, 32)),
 
           _buildContactMethods(),
-          const SizedBox(height: 32),
+          SizedBox(height: R.h(context, 32)),
 
           Container(
-            padding: const EdgeInsets.all(24),
+            padding: EdgeInsets.all(R.w(context, 24)),
             decoration: BoxDecoration(
               color: Colors.white.withValues(alpha: 0.05),
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(R.w(context, 20)),
               border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
             ),
             child: _sent ? _buildSuccess() : _buildForm(),
           ),
-          const SizedBox(height: 48),
+          SizedBox(height: R.h(context, 48)),
         ],
       ),
     );
@@ -312,9 +313,9 @@ class _FindUsScreenState extends State<FindUsScreen> {
     return Column(
       children: [
         _contactCard(Icons.message_outlined, 'WhatsApp Us', 'Instant replies', 'https://wa.me/919149621219'),
-        const SizedBox(height: 12),
+        SizedBox(height: R.h(context, 12)),
         _contactCard(Icons.email_outlined, 'support@nutripump.com', 'We reply within 24 hours', 'mailto:support@nutripump.com'),
-        const SizedBox(height: 12),
+        SizedBox(height: R.h(context, 12)),
         _contactCard(Icons.phone_outlined, '+91 91496 21219', 'Mon – Sat, 10am – 7pm', 'tel:+919149621219'),
       ],
     );
@@ -324,33 +325,33 @@ class _FindUsScreenState extends State<FindUsScreen> {
     return GestureDetector(
       onTap: () => _launchUrl(url),
       child: Container(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(R.w(context, 16)),
         decoration: BoxDecoration(
           color: Colors.white.withValues(alpha: 0.05),
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(R.w(context, 16)),
           border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
         ),
         child: Row(
           children: [
             Container(
-              padding: const EdgeInsets.all(10),
+              padding: EdgeInsets.all(R.w(context, 10)),
               decoration: BoxDecoration(
                 color: AppColors.primary.withValues(alpha: 0.15),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(R.w(context, 12)),
               ),
-              child: Icon(icon, color: AppColors.primary, size: 20),
+              child: Icon(icon, color: AppColors.primary, size: R.sp(context, 20)),
             ),
-            const SizedBox(width: 16),
+            SizedBox(width: R.w(context, 16)),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(title, style: AppTypography.body(context).copyWith(color: Colors.white, fontWeight: FontWeight.bold)),
-                  Text(subtitle, style: AppTypography.bodySM(context).copyWith(color: Colors.white54, fontSize: 12)),
+                  Text(subtitle, style: AppTypography.bodySM(context).copyWith(color: Colors.white54, fontSize: R.sp(context, 12))),
                 ],
               ),
             ),
-            const Icon(Icons.arrow_forward_ios_rounded, color: Colors.white24, size: 14),
+            Icon(Icons.arrow_forward_ios_rounded, color: Colors.white24, size: R.sp(context, 14)),
           ],
         ),
       ),
@@ -364,24 +365,24 @@ class _FindUsScreenState extends State<FindUsScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text('Send a Message', style: AppTypography.h3(context).copyWith(color: Colors.white)),
-          const SizedBox(height: 24),
+          SizedBox(height: R.h(context, 24)),
           
           _inputLabel('Name *'),
           _buildInput(onSaved: (v) => _name = v!),
 
-          const SizedBox(height: 16),
+          SizedBox(height: R.h(context, 16)),
           _inputLabel('Email *'),
           _buildInput(onSaved: (v) => _email = v!, keyboardType: TextInputType.emailAddress),
 
-          const SizedBox(height: 16),
+          SizedBox(height: R.h(context, 16)),
           _inputLabel('Subject'),
           _buildInput(onSaved: (v) => _subject = v!, isRequired: false),
 
-          const SizedBox(height: 16),
+          SizedBox(height: R.h(context, 16)),
           _inputLabel('Message *'),
           _buildInput(onSaved: (v) => _message = v!, maxLines: 4),
 
-          const SizedBox(height: 32),
+          SizedBox(height: R.h(context, 32)),
           PrimaryButton(
             text: 'Send Message',
             isLoading: _isSending,
@@ -395,28 +396,28 @@ class _FindUsScreenState extends State<FindUsScreen> {
   Widget _buildSuccess() {
     return Column(
       children: [
-        const SizedBox(height: 24),
+        SizedBox(height: R.h(context, 24)),
         Container(
-          width: 64,
-          height: 64,
+          width: R.w(context, 64),
+          height: R.w(context, 64),
           decoration: BoxDecoration(
             color: AppColors.primary.withValues(alpha: 0.15),
             shape: BoxShape.circle,
             border: Border.all(color: AppColors.primary.withValues(alpha: 0.3)),
           ),
-          child: const Icon(Icons.check_rounded, color: AppColors.primary, size: 32),
+          child: Icon(Icons.check_rounded, color: AppColors.primary, size: R.sp(context, 32)),
         ),
-        const SizedBox(height: 24),
+        SizedBox(height: R.h(context, 24)),
         Text('Message Delivered', style: AppTypography.labelGold(context)),
-        const SizedBox(height: 8),
+        SizedBox(height: R.h(context, 8)),
         Text('We\'ve got your note!', style: AppTypography.h3(context).copyWith(color: Colors.white)),
-        const SizedBox(height: 12),
+        SizedBox(height: R.h(context, 12)),
         Text(
           'Our team will personally reply within 24 hours. Thank you for reaching out.',
           style: AppTypography.bodySM(context).copyWith(color: Colors.white70, height: 1.5),
           textAlign: TextAlign.center,
         ),
-        const SizedBox(height: 32),
+        SizedBox(height: R.h(context, 32)),
         TextButton(
           onPressed: () => setState(() => _sent = false),
           child: Text('Send another message', style: AppTypography.bodySM(context).copyWith(color: AppColors.primary)),
@@ -427,7 +428,7 @@ class _FindUsScreenState extends State<FindUsScreen> {
 
   Widget _inputLabel(String text) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
+      padding: EdgeInsets.only(bottom: R.h(context, 8)),
       child: Text(
         text.toUpperCase(),
         style: AppTypography.label(context).copyWith(color: Colors.white54, fontWeight: FontWeight.bold),
@@ -448,17 +449,17 @@ class _FindUsScreenState extends State<FindUsScreen> {
       decoration: InputDecoration(
         filled: true,
         fillColor: Colors.white.withValues(alpha: 0.05),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        contentPadding: EdgeInsets.symmetric(horizontal: R.w(context, 16), vertical: R.h(context, 16)),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(R.w(context, 12)),
           borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.1)),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(R.w(context, 12)),
           borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.1)),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(R.w(context, 12)),
           borderSide: const BorderSide(color: AppColors.primary, width: 1.5),
         ),
       ),

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_typography.dart';
+import '../../core/utils/responsive.dart';
 import '../../providers/providers.dart';
 
 class EditProfileScreen extends ConsumerStatefulWidget {
@@ -121,26 +122,26 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
         elevation: 0,
         surfaceTintColor: Colors.transparent,
         centerTitle: true,
-        title: Text('Edit Profile', style: AppTypography.h3(context)),
+        title: Text('Edit Profile', style: AppTypography.h3(context).copyWith(fontSize: R.sp(context, 16))),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1),
           child: Container(height: 1, color: AppColors.borderLight),
         ),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24),
+        padding: EdgeInsets.all(R.w(context, 24)),
         child: Form(
           key: _formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Personal Information', style: AppTypography.h3(context)),
-              const SizedBox(height: 8),
+              Text('Personal Information', style: AppTypography.h3(context).copyWith(fontSize: R.sp(context, 16))),
+              SizedBox(height: R.h(context, 8)),
               Text(
                 'Update your details to ensure smooth deliveries and personalized recommendations.',
                 style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold),
               ),
-              const SizedBox(height: 32),
+              SizedBox(height: R.h(context, 32)),
 
               // Full Name
               _buildLabel('Full Name'),
@@ -150,7 +151,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                 style: AppTypography.bodySM(context),
                 decoration: _inputDecoration('e.g. Naveed Bhat'),
               ),
-              const SizedBox(height: 20),
+              SizedBox(height: R.h(context, 20)),
 
               // Phone Number
               _buildLabel('Phone Number'),
@@ -160,7 +161,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                 style: AppTypography.bodySM(context),
                 decoration: _inputDecoration('e.g. +91 9876543210'),
               ),
-              const SizedBox(height: 20),
+              SizedBox(height: R.h(context, 20)),
 
               // Date of Birth
               _buildLabel('Date of Birth'),
@@ -171,12 +172,12 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                     controller: _dobCtrl,
                     style: AppTypography.bodySM(context),
                     decoration: _inputDecoration('YYYY-MM-DD').copyWith(
-                      suffixIcon: const Icon(Icons.calendar_today_rounded, size: 20, color: AppColors.neutralGold),
+                      suffixIcon: Icon(Icons.calendar_today_rounded, size: R.sp(context, 20), color: AppColors.neutralGold),
                     ),
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
+              SizedBox(height: R.h(context, 20)),
 
               // Gender
               _buildLabel('Gender (Optional)'),
@@ -193,26 +194,26 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                 icon: const Icon(Icons.keyboard_arrow_down_rounded, color: AppColors.neutralGold),
               ),
 
-              const SizedBox(height: 48),
+              SizedBox(height: R.h(context, 48)),
 
               // Save Button
               SizedBox(
                 width: double.infinity,
-                height: 54,
+                height: R.h(context, 54),
                 child: ElevatedButton(
                   onPressed: _isLoading ? null : _saveProfile,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primary,
                     foregroundColor: AppColors.deepCharcoal,
                     elevation: 0,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(R.w(context, 12))),
                   ),
                   child: _isLoading
-                      ? const SizedBox(
-                          width: 24, height: 24,
-                          child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.deepCharcoal),
+                      ? SizedBox(
+                          width: R.w(context, 24), height: R.w(context, 24),
+                          child: const CircularProgressIndicator(strokeWidth: 2, color: AppColors.deepCharcoal),
                         )
-                      : Text('Save Changes', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: 16)),
+                      : Text('Save Changes', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: R.sp(context, 16))),
                 ),
               ),
             ],
@@ -224,8 +225,8 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
 
   Widget _buildLabel(String text) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
-      child: Text(text, style: AppTypography.label(context).copyWith(fontSize: 11)),
+      padding: EdgeInsets.only(bottom: R.h(context, 8)),
+      child: Text(text, style: AppTypography.label(context).copyWith(fontSize: R.sp(context, 11))),
     );
   }
 
@@ -233,23 +234,23 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
     return InputDecoration(
       hintText: hint,
       hintStyle: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold.withValues(alpha: 0.5)),
-      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      contentPadding: EdgeInsets.symmetric(horizontal: R.w(context, 16), vertical: R.h(context, 16)),
       filled: true,
       fillColor: Colors.white,
       border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(R.w(context, 12)),
         borderSide: const BorderSide(color: AppColors.borderLight),
       ),
       enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(R.w(context, 12)),
         borderSide: const BorderSide(color: AppColors.borderLight),
       ),
       focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(R.w(context, 12)),
         borderSide: const BorderSide(color: AppColors.primary),
       ),
       errorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(R.w(context, 12)),
         borderSide: const BorderSide(color: AppColors.error),
       ),
     );

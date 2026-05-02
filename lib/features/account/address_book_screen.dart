@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_typography.dart';
+import '../../core/utils/responsive.dart';
 import '../../providers/providers.dart';
 import '../../models/cart_item.dart';
 
@@ -19,7 +20,7 @@ class AddressBookScreen extends ConsumerWidget {
         elevation: 0,
         surfaceTintColor: Colors.transparent,
         centerTitle: true,
-        title: Text('Address Book', style: AppTypography.h3(context)),
+        title: Text('Address Book', style: AppTypography.h3(context).copyWith(fontSize: R.sp(context, 16))),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1),
           child: Container(height: 1, color: AppColors.borderLight),
@@ -51,33 +52,33 @@ class AddressBookScreen extends ConsumerWidget {
                 child: addresses.isEmpty
                     ? ListView(
                         physics: const AlwaysScrollableScrollPhysics(),
-                        padding: const EdgeInsets.all(40),
+                        padding: EdgeInsets.all(R.w(context, 40)),
                         children: [
-                          const SizedBox(height: 60),
+                          SizedBox(height: R.h(context, 60)),
                           Container(
-                            width: 88,
-                            height: 88,
+                            width: R.w(context, 88),
+                            height: R.w(context, 88),
                             decoration: BoxDecoration(
                               color: AppColors.primary.withValues(alpha: 0.10),
                               shape: BoxShape.circle,
                               border: Border.all(color: AppColors.primary.withValues(alpha: 0.15), width: 1.5),
                             ),
-                            child: const Icon(Icons.location_on_outlined, size: 40, color: AppColors.primary),
+                            child: Icon(Icons.location_on_outlined, size: R.sp(context, 40), color: AppColors.primary),
                           ),
-                          const SizedBox(height: 24),
-                          Text('No addresses found', textAlign: TextAlign.center, style: AppTypography.h2(context).copyWith(fontSize: 22)),
-                          const SizedBox(height: 10),
+                          SizedBox(height: R.h(context, 24)),
+                          Text('No addresses found', textAlign: TextAlign.center, style: AppTypography.h2(context).copyWith(fontSize: R.sp(context, 22))),
+                          SizedBox(height: R.h(context, 10)),
                           Text(
                             'Add a delivery address to make checkout faster and easier.',
                             textAlign: TextAlign.center,
-                            style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, height: 1.6, fontSize: 14),
+                            style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, height: 1.6, fontSize: R.sp(context, 14)),
                           ),
                         ],
                       )
                     : ListView.separated(
-                        padding: const EdgeInsets.all(16),
+                        padding: EdgeInsets.all(R.w(context, 16)),
                         itemCount: addresses.length,
-                        separatorBuilder: (_, __) => const SizedBox(height: 16),
+                        separatorBuilder: (_, __) => SizedBox(height: R.h(context, 16)),
                         itemBuilder: (context, index) {
                           final address = addresses[index];
                           return _AddressCard(
@@ -102,24 +103,24 @@ class AddressBookScreen extends ConsumerWidget {
       bottomNavigationBar: userAsync.value != null
           ? Container(
               padding: EdgeInsets.only(
-                left: 24,
-                right: 24,
-                top: 16,
-                bottom: MediaQuery.of(context).padding.bottom + 24,
+                left: R.w(context, 24),
+                right: R.w(context, 24),
+                top: R.h(context, 16),
+                bottom: MediaQuery.of(context).padding.bottom + R.h(context, 24),
               ),
               child: SizedBox(
                 width: double.infinity,
-                height: 46,
+                height: R.h(context, 46),
                 child: ElevatedButton.icon(
                   onPressed: () => _showAddressForm(context, ref, userAsync.value!.uid),
-                  icon: const Icon(Icons.add_rounded, size: 20),
-                  label: Text('Add New Address', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: 14)),
+                  icon: Icon(Icons.add_rounded, size: R.sp(context, 20)),
+                  label: Text('Add New Address', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: R.sp(context, 14))),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primary,
                     foregroundColor: AppColors.deepCharcoal,
                     elevation: 0,
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    padding: EdgeInsets.symmetric(horizontal: R.w(context, 16), vertical: 0),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(R.w(context, 12))),
                   ),
                 ),
               ),
@@ -175,10 +176,10 @@ class _AddressCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(R.w(context, 16)),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(R.w(context, 12)),
         border: Border.all(color: address.isDefault ? AppColors.primary.withValues(alpha: 0.5) : AppColors.borderLight),
         boxShadow: [
           BoxShadow(
@@ -199,20 +200,20 @@ class _AddressCard extends StatelessWidget {
                   children: [
                     Text(
                       address.fullName,
-                      style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: 15),
+                      style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: R.sp(context, 15)),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
                     if (address.isDefault) ...[
-                      const SizedBox(width: 8),
+                      SizedBox(width: R.w(context, 8)),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                        padding: EdgeInsets.symmetric(horizontal: R.w(context, 6), vertical: R.h(context, 2)),
                         decoration: BoxDecoration(
                           color: AppColors.primary.withValues(alpha: 0.1),
                           border: Border.all(color: AppColors.primary.withValues(alpha: 0.3)),
-                          borderRadius: BorderRadius.circular(4),
+                          borderRadius: BorderRadius.circular(R.w(context, 4)),
                         ),
-                        child: Text('DEFAULT', style: AppTypography.label(context).copyWith(fontSize: 9, color: AppColors.primaryDark)),
+                        child: Text('DEFAULT', style: AppTypography.label(context).copyWith(fontSize: R.sp(context, 9), color: AppColors.primaryDark)),
                       ),
                     ],
                   ],
@@ -223,30 +224,30 @@ class _AddressCard extends StatelessWidget {
                 children: [
                   GestureDetector(
                     onTap: onEdit,
-                    child: const Padding(
-                      padding: EdgeInsets.all(4.0),
-                      child: Icon(Icons.edit_outlined, size: 18, color: AppColors.neutralGold),
+                    child: Padding(
+                      padding: EdgeInsets.all(R.w(context, 4)),
+                      child: Icon(Icons.edit_outlined, size: R.sp(context, 18), color: AppColors.neutralGold),
                     ),
                   ),
-                  const SizedBox(width: 8),
+                  SizedBox(width: R.w(context, 8)),
                   GestureDetector(
                     onTap: onDelete,
-                    child: const Padding(
-                      padding: EdgeInsets.all(4.0),
-                      child: Icon(Icons.delete_outline_rounded, size: 18, color: Colors.red),
+                    child: Padding(
+                      padding: EdgeInsets.all(R.w(context, 4)),
+                      child: Icon(Icons.delete_outline_rounded, size: R.sp(context, 18), color: Colors.red),
                     ),
                   ),
                 ],
               ),
             ],
           ),
-          const SizedBox(height: 12),
-          Text(address.phone, style: AppTypography.bodySM(context).copyWith(fontSize: 13)),
-          const SizedBox(height: 6),
-          Text(address.oneLineAddress, style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, fontSize: 13, height: 1.4)),
+          SizedBox(height: R.h(context, 12)),
+          Text(address.phone, style: AppTypography.bodySM(context).copyWith(fontSize: R.sp(context, 13))),
+          SizedBox(height: R.h(context, 6)),
+          Text(address.oneLineAddress, style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, fontSize: R.sp(context, 13), height: 1.4)),
           
           if (!address.isDefault) ...[
-            const SizedBox(height: 16),
+            SizedBox(height: R.h(context, 16)),
             Consumer(
               builder: (context, ref, child) {
                 return SizedBox(
@@ -259,12 +260,12 @@ class _AddressCard extends StatelessWidget {
                     style: OutlinedButton.styleFrom(
                       foregroundColor: AppColors.deepCharcoal,
                       side: const BorderSide(color: AppColors.borderLight),
-                      padding: const EdgeInsets.symmetric(vertical: 8),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+                      padding: EdgeInsets.symmetric(vertical: R.h(context, 8)),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(R.w(context, 6))),
                     ),
                     child: Text(
                       'Set as Default',
-                      style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: 12),
+                      style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: R.sp(context, 12)),
                     ),
                   ),
                 );
@@ -384,15 +385,15 @@ class _AddressFormSheetState extends State<AddressFormSheet> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(R.w(context, 20))),
       ),
       padding: EdgeInsets.only(
-        left: 24,
-        right: 24,
-        top: 24,
-        bottom: MediaQuery.of(context).viewInsets.bottom + 24,
+        left: R.w(context, 24),
+        right: R.w(context, 24),
+        top: R.h(context, 24),
+        bottom: MediaQuery.of(context).viewInsets.bottom + R.h(context, 24),
       ),
       child: SafeArea(
         child: SingleChildScrollView(
@@ -405,49 +406,49 @@ class _AddressFormSheetState extends State<AddressFormSheet> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(widget.address == null ? 'Add New Address' : 'Edit Address', style: AppTypography.h3(context)),
+                    Text(widget.address == null ? 'Add New Address' : 'Edit Address', style: AppTypography.h3(context).copyWith(fontSize: R.sp(context, 16))),
                     GestureDetector(
                       onTap: () => Navigator.pop(context),
                       child: const Icon(Icons.close_rounded, color: AppColors.neutralGold),
                     ),
                   ],
                 ),
-                const SizedBox(height: 24),
+                SizedBox(height: R.h(context, 24)),
                 
                 Row(
                   children: [
                     Expanded(child: _buildField('Full Name', _nameCtrl)),
-                    const SizedBox(width: 16),
+                    SizedBox(width: R.w(context, 16)),
                     Expanded(child: _buildField('Phone Number', _phoneCtrl, isPhone: true)),
                   ],
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: R.h(context, 16)),
                 _buildField('Address Line 1 (Flat, House no., Building)', _line1Ctrl),
-                const SizedBox(height: 16),
+                SizedBox(height: R.h(context, 16)),
                 _buildField('Address Line 2 (Area, Street, Sector)', _line2Ctrl, isRequired: false),
-                const SizedBox(height: 16),
+                SizedBox(height: R.h(context, 16)),
                 Row(
                   children: [
                     Expanded(child: _buildField('Landmark (Locality)', _localityCtrl, isRequired: false)),
-                    const SizedBox(width: 16),
+                    SizedBox(width: R.w(context, 16)),
                     Expanded(child: _buildField('Pincode', _pincodeCtrl, isNumber: true)),
                   ],
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: R.h(context, 16)),
                 Row(
                   children: [
                     Expanded(child: _buildField('City', _cityCtrl)),
-                    const SizedBox(width: 16),
+                    SizedBox(width: R.w(context, 16)),
                     Expanded(child: _buildField('State', _stateCtrl)),
                   ],
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: R.h(context, 16)),
                 
                 Row(
                   children: [
                     SizedBox(
-                      height: 24,
-                      width: 24,
+                      height: R.w(context, 24),
+                      width: R.w(context, 24),
                       child: Checkbox(
                         value: _isDefault,
                         onChanged: (v) => setState(() => _isDefault = v ?? false),
@@ -455,27 +456,27 @@ class _AddressFormSheetState extends State<AddressFormSheet> {
                         checkColor: AppColors.deepCharcoal,
                       ),
                     ),
-                    const SizedBox(width: 8),
+                    SizedBox(width: R.w(context, 8)),
                     Text('Make this my default address', style: AppTypography.bodySM(context)),
                   ],
                 ),
                 
-                const SizedBox(height: 32),
+                SizedBox(height: R.h(context, 32)),
                 SizedBox(
                   width: double.infinity,
-                  height: 46,
+                  height: R.h(context, 46),
                   child: ElevatedButton(
                     onPressed: _isLoading ? null : _save,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.primary,
                       foregroundColor: AppColors.deepCharcoal,
                       elevation: 0,
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                      padding: EdgeInsets.symmetric(horizontal: R.w(context, 16), vertical: 0),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(R.w(context, 12))),
                     ),
                     child: _isLoading
-                        ? const SizedBox(width: 24, height: 24, child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.deepCharcoal))
-                        : Text('Save Address', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: 16)),
+                        ? SizedBox(width: R.w(context, 24), height: R.w(context, 24), child: const CircularProgressIndicator(strokeWidth: 2, color: AppColors.deepCharcoal))
+                        : Text('Save Address', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: R.sp(context, 16))),
                   ),
                 ),
               ],
@@ -490,20 +491,20 @@ class _AddressFormSheetState extends State<AddressFormSheet> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: AppTypography.label(context).copyWith(fontSize: 10)),
-        const SizedBox(height: 6),
+        Text(label, style: AppTypography.label(context).copyWith(fontSize: R.sp(context, 10))),
+        SizedBox(height: R.h(context, 6)),
         TextFormField(
           controller: controller,
           keyboardType: isPhone ? TextInputType.phone : (isNumber ? TextInputType.number : TextInputType.text),
           validator: isRequired ? (v) => v == null || v.trim().isEmpty ? 'Required' : null : null,
           style: AppTypography.bodySM(context),
           decoration: InputDecoration(
-            contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+            contentPadding: EdgeInsets.symmetric(horizontal: R.w(context, 12), vertical: R.h(context, 12)),
             filled: true,
             fillColor: AppColors.backgroundLight,
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide.none),
-            focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: AppColors.primary)),
-            errorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: AppColors.error)),
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(R.w(context, 8)), borderSide: BorderSide.none),
+            focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(R.w(context, 8)), borderSide: const BorderSide(color: AppColors.primary)),
+            errorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(R.w(context, 8)), borderSide: const BorderSide(color: AppColors.error)),
           ),
         ),
       ],

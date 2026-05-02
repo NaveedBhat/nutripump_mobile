@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_typography.dart';
+import '../../core/utils/responsive.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
@@ -110,56 +111,56 @@ class _ContactScreenState extends State<ContactScreen> {
         elevation: 0,
         surfaceTintColor: Colors.transparent,
         centerTitle: true,
-        title: Text('Contact Us', style: AppTypography.h3(context)),
+        title: Text('Contact Us', style: AppTypography.h3(context).copyWith(fontSize: R.sp(context, 16))),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1),
           child: Container(height: 1, color: AppColors.borderLight),
         ),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24),
+        padding: EdgeInsets.all(R.w(context, 24)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Header banner
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.all(20),
+              padding: EdgeInsets.all(R.w(context, 20)),
               decoration: BoxDecoration(
                 color: AppColors.primary.withValues(alpha: 0.08),
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(R.w(context, 16)),
                 border: Border.all(color: AppColors.primary.withValues(alpha: 0.15)),
               ),
               child: Row(
                 children: [
                   Container(
-                    width: 48,
-                    height: 48,
+                    width: R.w(context, 48),
+                    height: R.w(context, 48),
                     decoration: BoxDecoration(
                       color: AppColors.primary.withValues(alpha: 0.15),
                       shape: BoxShape.circle,
                     ),
-                    child: const Icon(Icons.support_agent_rounded, size: 26, color: AppColors.primary),
+                    child: Icon(Icons.support_agent_rounded, size: R.sp(context, 26), color: AppColors.primary),
                   ),
-                  const SizedBox(width: 16),
+                  SizedBox(width: R.w(context, 16)),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('We\'re here to help!', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: 15)),
-                        const SizedBox(height: 4),
-                        Text('Typically reply within 2–4 hours', style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, fontSize: 12)),
+                        Text('We\'re here to help!', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: R.sp(context, 15))),
+                        SizedBox(height: R.h(context, 4)),
+                        Text('Typically reply within 2–4 hours', style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, fontSize: R.sp(context, 12))),
                       ],
                     ),
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: 32),
+            SizedBox(height: R.h(context, 32)),
 
             // Quick contact options
-            Text('Reach Us Directly', style: AppTypography.h3(context)),
-            const SizedBox(height: 16),
+            Text('Reach Us Directly', style: AppTypography.h3(context).copyWith(fontSize: R.sp(context, 16))),
+            SizedBox(height: R.h(context, 16)),
 
             _ContactTile(
               icon: Icons.email_outlined,
@@ -168,7 +169,7 @@ class _ContactScreenState extends State<ContactScreen> {
               onTap: () => _launchUrl('mailto:support@nutripump.store'),
               trailingIcon: Icons.open_in_new_rounded,
             ),
-            const SizedBox(height: 12),
+            SizedBox(height: R.h(context, 12)),
             _ContactTile(
               icon: Icons.chat_bubble_outline_rounded,
               title: 'WhatsApp',
@@ -176,7 +177,7 @@ class _ContactScreenState extends State<ContactScreen> {
               onTap: () => _launchUrl('https://wa.me/919149621219'),
               trailingIcon: Icons.open_in_new_rounded,
             ),
-            const SizedBox(height: 12),
+            SizedBox(height: R.h(context, 12)),
             _ContactTile(
               icon: Icons.language_rounded,
               title: 'Help Centre',
@@ -184,7 +185,7 @@ class _ContactScreenState extends State<ContactScreen> {
               onTap: () => _launchUrl('https://nutripump.store/support'),
               trailingIcon: Icons.open_in_new_rounded,
             ),
-            const SizedBox(height: 12),
+            SizedBox(height: R.h(context, 12)),
             _ContactTile(
               icon: Icons.alternate_email_rounded,
               title: 'Instagram',
@@ -193,45 +194,45 @@ class _ContactScreenState extends State<ContactScreen> {
               trailingIcon: Icons.open_in_new_rounded,
             ),
 
-            const SizedBox(height: 40),
+            SizedBox(height: R.h(context, 40)),
 
             // Email compose form
-            Text('Send a Message', style: AppTypography.h3(context)),
-            const SizedBox(height: 8),
+            Text('Send a Message', style: AppTypography.h3(context).copyWith(fontSize: R.sp(context, 16))),
+            SizedBox(height: R.h(context, 8)),
             Text('Fill in the form and we\'ll reply to your registered email address.',
                 style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold)),
-            const SizedBox(height: 24),
+            SizedBox(height: R.h(context, 24)),
 
             if (_isSuccess)
               Container(
                 width: double.infinity,
-                padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
+                padding: EdgeInsets.symmetric(vertical: R.h(context, 40), horizontal: R.w(context, 20)),
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(R.w(context, 16)),
                   border: Border.all(color: AppColors.borderLight),
                 ),
                 child: Column(
                   children: [
                     Container(
-                      width: 64,
-                      height: 64,
+                      width: R.w(context, 64),
+                      height: R.w(context, 64),
                       decoration: BoxDecoration(
                         color: AppColors.primary.withValues(alpha: 0.15),
                         shape: BoxShape.circle,
                       ),
-                      child: const Icon(Icons.check_circle_rounded, color: AppColors.primary, size: 32),
+                      child: Icon(Icons.check_circle_rounded, color: AppColors.primary, size: R.sp(context, 32)),
                     ),
-                    const SizedBox(height: 24),
-                    Text('Message Delivered', style: AppTypography.label(context).copyWith(color: AppColors.primary, fontSize: 11)),
-                    const SizedBox(height: 8),
-                    Text('We\'ve got your note!', style: AppTypography.h3(context)),
-                    const SizedBox(height: 8),
+                    SizedBox(height: R.h(context, 24)),
+                    Text('Message Delivered', style: AppTypography.label(context).copyWith(color: AppColors.primary, fontSize: R.sp(context, 11))),
+                    SizedBox(height: R.h(context, 8)),
+                    Text('We\'ve got your note!', style: AppTypography.h3(context).copyWith(fontSize: R.sp(context, 16))),
+                    SizedBox(height: R.h(context, 8)),
                     Text('Our team will personally reply within 24 hours. Thank you for reaching out.', textAlign: TextAlign.center, style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold)),
-                    const SizedBox(height: 24),
+                    SizedBox(height: R.h(context, 24)),
                     TextButton.icon(
                       onPressed: () => setState(() => _isSuccess = false),
-                      icon: const Icon(Icons.send_rounded, size: 14),
+                      icon: Icon(Icons.send_rounded, size: R.sp(context, 14)),
                       label: Text('Send another message', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700)),
                       style: TextButton.styleFrom(foregroundColor: AppColors.primaryDark),
                     ),
@@ -250,8 +251,8 @@ class _ContactScreenState extends State<ContactScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('FIRST NAME', style: AppTypography.label(context).copyWith(fontSize: 10)),
-                              const SizedBox(height: 6),
+                              Text('FIRST NAME', style: AppTypography.label(context).copyWith(fontSize: R.sp(context, 10))),
+                              SizedBox(height: R.h(context, 6)),
                               TextFormField(
                                 controller: _firstNameCtrl,
                                 validator: (v) => v == null || v.trim().isEmpty ? 'Required' : null,
@@ -261,13 +262,13 @@ class _ContactScreenState extends State<ContactScreen> {
                             ],
                           ),
                         ),
-                        const SizedBox(width: 16),
+                        SizedBox(width: R.w(context, 16)),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('LAST NAME', style: AppTypography.label(context).copyWith(fontSize: 10)),
-                              const SizedBox(height: 6),
+                              Text('LAST NAME', style: AppTypography.label(context).copyWith(fontSize: R.sp(context, 10))),
+                              SizedBox(height: R.h(context, 6)),
                               TextFormField(
                                 controller: _lastNameCtrl,
                                 validator: (v) => v == null || v.trim().isEmpty ? 'Required' : null,
@@ -279,10 +280,10 @@ class _ContactScreenState extends State<ContactScreen> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 16),
+                    SizedBox(height: R.h(context, 16)),
 
-                    Text('EMAIL ADDRESS', style: AppTypography.label(context).copyWith(fontSize: 10)),
-                    const SizedBox(height: 6),
+                    Text('EMAIL ADDRESS', style: AppTypography.label(context).copyWith(fontSize: R.sp(context, 10))),
+                    SizedBox(height: R.h(context, 6)),
                     TextFormField(
                       controller: _emailCtrl,
                       validator: (v) => v == null || !v.contains('@') ? 'Valid email required' : null,
@@ -290,10 +291,10 @@ class _ContactScreenState extends State<ContactScreen> {
                       decoration: _inputDecoration('jane@example.com'),
                       keyboardType: TextInputType.emailAddress,
                     ),
-                    const SizedBox(height: 16),
+                    SizedBox(height: R.h(context, 16)),
 
-                    Text('INQUIRY TYPE', style: AppTypography.label(context).copyWith(fontSize: 10)),
-                    const SizedBox(height: 6),
+                    Text('INQUIRY TYPE', style: AppTypography.label(context).copyWith(fontSize: R.sp(context, 10))),
+                    SizedBox(height: R.h(context, 6)),
                     DropdownButtonFormField<String>(
                       initialValue: _inquiryType,
                       decoration: _inputDecoration(''),
@@ -308,22 +309,22 @@ class _ContactScreenState extends State<ContactScreen> {
                         if (v != null) setState(() => _inquiryType = v);
                       },
                     ),
-                    const SizedBox(height: 16),
+                    SizedBox(height: R.h(context, 16)),
 
                     if (_inquiryType == 'wholesale') ...[
-                      Text('COMPANY / RESTAURANT NAME', style: AppTypography.label(context).copyWith(fontSize: 10)),
-                      const SizedBox(height: 6),
+                      Text('COMPANY / RESTAURANT NAME', style: AppTypography.label(context).copyWith(fontSize: R.sp(context, 10))),
+                      SizedBox(height: R.h(context, 6)),
                       TextFormField(
                         controller: _companyCtrl,
                         validator: (v) => v == null || v.trim().isEmpty ? 'Required' : null,
                         style: AppTypography.bodySM(context),
                         decoration: _inputDecoration('The Heritage Hotel'),
                       ),
-                      const SizedBox(height: 16),
+                      SizedBox(height: R.h(context, 16)),
                     ],
 
-                    Text('MESSAGE', style: AppTypography.label(context).copyWith(fontSize: 10)),
-                    const SizedBox(height: 6),
+                    Text('MESSAGE', style: AppTypography.label(context).copyWith(fontSize: R.sp(context, 10))),
+                    SizedBox(height: R.h(context, 6)),
                     TextFormField(
                       controller: _messageCtrl,
                       validator: (v) => v == null || v.trim().length < 10 ? 'Please enter at least 10 characters' : null,
@@ -331,25 +332,25 @@ class _ContactScreenState extends State<ContactScreen> {
                       style: AppTypography.bodySM(context),
                       decoration: _inputDecoration(_inquiryType == 'wholesale' ? 'Tell us about your volume needs...' : 'How can we help?'),
                     ),
-                    const SizedBox(height: 24),
+                    SizedBox(height: R.h(context, 24)),
 
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton.icon(
                         onPressed: _isSending ? null : _submitForm,
                         icon: _isSending
-                            ? const SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.deepCharcoal))
-                            : const Icon(Icons.send_rounded, size: 18),
+                            ? SizedBox(width: R.w(context, 18), height: R.w(context, 18), child: const CircularProgressIndicator(strokeWidth: 2, color: AppColors.deepCharcoal))
+                            : Icon(Icons.send_rounded, size: R.sp(context, 18)),
                         label: Text(
                           _isSending ? 'Sending...' : (_inquiryType == 'wholesale' ? 'Request Kit' : 'Send Message'),
-                          style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: 15),
+                          style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: R.sp(context, 15)),
                         ),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.primary,
                           foregroundColor: AppColors.deepCharcoal,
                           elevation: 0,
-                          padding: const EdgeInsets.symmetric(vertical: 14),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                          padding: EdgeInsets.symmetric(vertical: R.h(context, 14)),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(R.w(context, 12))),
                         ),
                       ),
                     ),
@@ -357,15 +358,15 @@ class _ContactScreenState extends State<ContactScreen> {
                 ),
               ),
 
-            const SizedBox(height: 40),
+            SizedBox(height: R.h(context, 40)),
 
             // Business hours
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.all(20),
+              padding: EdgeInsets.all(R.w(context, 20)),
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(R.w(context, 12)),
                 border: Border.all(color: AppColors.borderLight),
               ),
               child: Column(
@@ -373,21 +374,21 @@ class _ContactScreenState extends State<ContactScreen> {
                 children: [
                   Row(
                     children: [
-                      const Icon(Icons.access_time_rounded, size: 18, color: AppColors.neutralGold),
-                      const SizedBox(width: 8),
+                      Icon(Icons.access_time_rounded, size: R.sp(context, 18), color: AppColors.neutralGold),
+                      SizedBox(width: R.w(context, 8)),
                       Text('Business Hours', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800)),
                     ],
                   ),
-                  const SizedBox(height: 12),
+                  SizedBox(height: R.h(context, 12)),
                   const _HoursRow(day: 'Mon – Fri', hours: '10:00 AM – 7:00 PM'),
-                  const SizedBox(height: 6),
+                  SizedBox(height: R.h(context, 6)),
                   const _HoursRow(day: 'Saturday', hours: '10:00 AM – 4:00 PM'),
-                  const SizedBox(height: 6),
+                  SizedBox(height: R.h(context, 6)),
                   const _HoursRow(day: 'Sunday', hours: 'Closed'),
                 ],
               ),
             ),
-            const SizedBox(height: 24),
+            SizedBox(height: R.h(context, 24)),
           ],
         ),
       ),
@@ -398,13 +399,13 @@ class _ContactScreenState extends State<ContactScreen> {
     return InputDecoration(
       hintText: hint,
       hintStyle: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold.withValues(alpha: 0.5)),
-      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+      contentPadding: EdgeInsets.symmetric(horizontal: R.w(context, 16), vertical: R.h(context, 14)),
       filled: true,
       fillColor: Colors.white,
-      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: AppColors.borderLight)),
-      enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: AppColors.borderLight)),
-      focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: AppColors.primary)),
-      errorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: AppColors.error)),
+      border: OutlineInputBorder(borderRadius: BorderRadius.circular(R.w(context, 12)), borderSide: const BorderSide(color: AppColors.borderLight)),
+      enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(R.w(context, 12)), borderSide: const BorderSide(color: AppColors.borderLight)),
+      focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(R.w(context, 12)), borderSide: const BorderSide(color: AppColors.primary)),
+      errorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(R.w(context, 12)), borderSide: const BorderSide(color: AppColors.error)),
     );
   }
 }
@@ -429,10 +430,10 @@ class _ContactTile extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        padding: EdgeInsets.symmetric(horizontal: R.w(context, 16), vertical: R.h(context, 14)),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(R.w(context, 12)),
           border: Border.all(color: AppColors.borderLight),
           boxShadow: [
             BoxShadow(
@@ -445,26 +446,26 @@ class _ContactTile extends StatelessWidget {
         child: Row(
           children: [
             Container(
-              width: 40,
-              height: 40,
+              width: R.w(context, 40),
+              height: R.w(context, 40),
               decoration: BoxDecoration(
                 color: AppColors.primary.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(R.w(context, 10)),
               ),
-              child: Icon(icon, size: 20, color: AppColors.primary),
+              child: Icon(icon, size: R.sp(context, 20), color: AppColors.primary),
             ),
-            const SizedBox(width: 14),
+            SizedBox(width: R.w(context, 14)),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(title, style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: 14)),
-                  const SizedBox(height: 2),
-                  Text(subtitle, style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, fontSize: 12)),
+                  Text(title, style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: R.sp(context, 14))),
+                  SizedBox(height: R.h(context, 2)),
+                  Text(subtitle, style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, fontSize: R.sp(context, 12))),
                 ],
               ),
             ),
-            Icon(trailingIcon, size: 16, color: AppColors.neutralGold),
+            Icon(trailingIcon, size: R.sp(context, 16), color: AppColors.neutralGold),
           ],
         ),
       ),
@@ -482,8 +483,8 @@ class _HoursRow extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(day, style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, fontSize: 13)),
-        Text(hours, style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: 13)),
+        Text(day, style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, fontSize: R.sp(context, 13))),
+        Text(hours, style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: R.sp(context, 13))),
       ],
     );
   }

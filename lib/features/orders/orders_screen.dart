@@ -5,6 +5,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_typography.dart';
 import '../../core/utils/formatters.dart';
+import '../../core/utils/responsive.dart';
 import '../../providers/providers.dart';
 import '../../models/order.dart';
 
@@ -23,10 +24,10 @@ class OrdersScreen extends ConsumerWidget {
         surfaceTintColor: Colors.transparent,
         centerTitle: true,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 18),
+          icon: Icon(Icons.arrow_back_ios_new_rounded, size: R.sp(context, 16)),
           onPressed: () => context.canPop() ? context.pop() : context.go('/'),
         ),
-        title: Text('My Orders', style: AppTypography.h3(context)),
+        title: Text('My Orders', style: AppTypography.h3(context).copyWith(fontSize: R.sp(context, 16))),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1),
           child: Container(height: 1, color: AppColors.borderLight),
@@ -56,13 +57,13 @@ class OrdersScreen extends ConsumerWidget {
               if (orders.isEmpty) {
                 return Center(
                   child: Padding(
-                    padding: const EdgeInsets.all(40),
+                    padding: EdgeInsets.symmetric(horizontal: R.w(context, 40)),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Container(
-                          width: 88,
-                          height: 88,
+                          width: R.w(context, 76),
+                          height: R.w(context, 76),
                           decoration: BoxDecoration(
                             color: AppColors.primary.withValues(alpha: 0.10),
                             shape: BoxShape.circle,
@@ -70,37 +71,37 @@ class OrdersScreen extends ConsumerWidget {
                                 color: AppColors.primary.withValues(alpha: 0.15),
                                 width: 1.5),
                           ),
-                          child: const Icon(Icons.inventory_2_outlined,
-                              size: 40, color: AppColors.primary),
+                          child: Icon(Icons.inventory_2_outlined,
+                              size: R.sp(context, 32), color: AppColors.primary),
                         ),
-                        const SizedBox(height: 24),
+                        SizedBox(height: R.h(context, 20)),
                         Text('No orders yet',
-                            style: AppTypography.h2(context).copyWith(fontSize: 22)),
-                        const SizedBox(height: 10),
+                            style: AppTypography.h2(context).copyWith(fontSize: R.sp(context, 18))),
+                        SizedBox(height: R.h(context, 8)),
                         Text(
                           'Your artisanal pantry awaits.',
                           textAlign: TextAlign.center,
                           style: AppTypography.bodySM(context).copyWith(
                             color: AppColors.neutralGold,
                             height: 1.6,
-                            fontSize: 14,
+                            fontSize: R.sp(context, 13),
                           ),
                         ),
-                        const SizedBox(height: 36),
+                        SizedBox(height: R.h(context, 32)),
                         ElevatedButton(
                           onPressed: () => context.go('/shop'),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.primary,
                             foregroundColor: AppColors.deepCharcoal,
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 15, horizontal: 32),
+                            padding: EdgeInsets.symmetric(
+                                vertical: R.h(context, 14), horizontal: R.w(context, 32)),
                             shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(14)),
+                                borderRadius: BorderRadius.circular(R.w(context, 12))),
                             elevation: 0,
                           ),
                           child: Text('Start Shopping',
                               style: AppTypography.bodySM(context).copyWith(
-                                  fontWeight: FontWeight.w800, fontSize: 15)),
+                                  fontWeight: FontWeight.w800, fontSize: R.sp(context, 14))),
                         ),
                       ],
                     ),
@@ -109,9 +110,9 @@ class OrdersScreen extends ConsumerWidget {
               }
 
               return ListView.separated(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                padding: EdgeInsets.symmetric(horizontal: R.w(context, 16), vertical: R.h(context, 12)),
                 itemCount: orders.length,
-                separatorBuilder: (_, __) => const SizedBox(height: 12),
+                separatorBuilder: (_, __) => SizedBox(height: R.h(context, 12)),
                 itemBuilder: (context, index) {
                   return _OrderCard(order: orders[index]);
                 },
@@ -145,7 +146,7 @@ class _OrderCard extends ConsumerWidget {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(R.w(context, 12)),
         border: Border.all(color: AppColors.primary.withValues(alpha: 0.2)),
         boxShadow: [
           BoxShadow(
@@ -160,10 +161,10 @@ class _OrderCard extends ConsumerWidget {
         children: [
           // ── Header ──────────────────────────────────────────────────────────
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+            padding: EdgeInsets.symmetric(horizontal: R.w(context, 12), vertical: R.h(context, 10)),
             decoration: BoxDecoration(
               color: AppColors.primary.withValues(alpha: 0.05),
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(11)),
+              borderRadius: BorderRadius.vertical(top: Radius.circular(R.w(context, 11))),
               border: Border(
                 bottom: BorderSide(color: AppColors.primary.withValues(alpha: 0.15)),
               ),
@@ -174,12 +175,12 @@ class _OrderCard extends ConsumerWidget {
                   label: 'Date Placed',
                   value: _formatDate(order.createdAt),
                 ),
-                const SizedBox(width: 12),
+                SizedBox(width: R.w(context, 12)),
                 _HeaderInfoBlock(
                   label: 'Total',
                   value: formatPrice(order.total),
                 ),
-                const SizedBox(width: 12),
+                SizedBox(width: R.w(context, 12)),
                 _HeaderInfoBlock(
                   label: 'Order #',
                   value: formatOrderId(order.id),
@@ -189,7 +190,7 @@ class _OrderCard extends ConsumerWidget {
           ),
 
           Padding(
-            padding: const EdgeInsets.all(12),
+            padding: EdgeInsets.all(R.w(context, 12)),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -197,15 +198,15 @@ class _OrderCard extends ConsumerWidget {
                 Row(
                   children: [
                     Container(
-                      width: 32,
-                      height: 32,
+                      width: R.w(context, 32),
+                      height: R.w(context, 32),
                       decoration: BoxDecoration(
                         color: statusBg,
                         shape: BoxShape.circle,
                       ),
-                      child: Icon(statusIcon, size: 16, color: statusColor),
+                      child: Icon(statusIcon, size: R.sp(context, 16), color: statusColor),
                     ),
-                    const SizedBox(width: 12),
+                    SizedBox(width: R.w(context, 12)),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -216,10 +217,10 @@ class _OrderCard extends ConsumerWidget {
                                 : 'Status: ${order.status.label}',
                             style: AppTypography.bodySM(context).copyWith(
                               fontWeight: FontWeight.w700,
-                              fontSize: 14,
+                              fontSize: R.sp(context, 13),
                             ),
                           ),
-                          const SizedBox(height: 2),
+                          SizedBox(height: R.h(context, 2)),
                           Text(
                             order.status == OrderStatus.delivered
                                 ? 'Your order has been delivered. Enjoy!'
@@ -228,7 +229,7 @@ class _OrderCard extends ConsumerWidget {
                                     : 'Your order is moving through our artisan network.',
                             style: AppTypography.bodySM(context).copyWith(
                               color: AppColors.neutralGold,
-                              fontSize: 11,
+                              fontSize: R.sp(context, 11),
                             ),
                           ),
                         ],
@@ -236,27 +237,27 @@ class _OrderCard extends ConsumerWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 10),
+                SizedBox(height: R.h(context, 10)),
 
                 // ── Items (Up to 2) ───────────────────────────────────────
                 ...order.items.take(2).map((item) {
                   final p = item.product;
                   return Padding(
-                    padding: const EdgeInsets.only(bottom: 8),
+                    padding: EdgeInsets.only(bottom: R.h(context, 8)),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
-                          width: 56,
-                          height: 56,
+                          width: R.w(context, 56),
+                          height: R.w(context, 56),
                           decoration: BoxDecoration(
                             color: AppColors.primary.withValues(alpha: 0.05),
-                            borderRadius: BorderRadius.circular(8),
+                            borderRadius: BorderRadius.circular(R.w(context, 8)),
                             border: Border.all(
                                 color: AppColors.primary.withValues(alpha: 0.1)),
                           ),
                           child: ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
+                            borderRadius: BorderRadius.circular(R.w(context, 8)),
                             child: p.images.isNotEmpty
                                 ? CachedNetworkImage(
                                     imageUrl: p.images.first,
@@ -266,7 +267,7 @@ class _OrderCard extends ConsumerWidget {
                                     color: AppColors.borderLight),
                           ),
                         ),
-                        const SizedBox(width: 12),
+                        SizedBox(width: R.w(context, 12)),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -275,12 +276,12 @@ class _OrderCard extends ConsumerWidget {
                                 p.name,
                                 style: AppTypography.bodySM(context).copyWith(
                                   fontWeight: FontWeight.w700,
-                                  fontSize: 13,
+                                  fontSize: R.sp(context, 13),
                                 ),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                               ),
-                              const SizedBox(height: 2),
+                              SizedBox(height: R.h(context, 2)),
                               () {
                                 final displayWeight = item.selectedWeight?.isNotEmpty == true
                                     ? item.selectedWeight!
@@ -293,17 +294,17 @@ class _OrderCard extends ConsumerWidget {
                                   ].join(' • '),
                                   style: AppTypography.bodySM(context).copyWith(
                                     color: AppColors.neutralGold,
-                                    fontSize: 11,
+                                    fontSize: R.sp(context, 11),
                                   ),
                                 );
                               }(),
-                              const SizedBox(height: 4),
+                              SizedBox(height: R.h(context, 4)),
                               Text(
                                 formatPrice(item.effectivePrice * item.quantity),
                                 style: AppTypography.bodySM(context).copyWith(
                                   color: AppColors.primaryDark,
                                   fontWeight: FontWeight.w700,
-                                  fontSize: 12,
+                                  fontSize: R.sp(context, 12),
                                 ),
                               ),
                             ],
@@ -319,11 +320,11 @@ class _OrderCard extends ConsumerWidget {
                   Row(
                     children: [
                       Container(
-                        width: 56,
-                        height: 56,
+                        width: R.w(context, 56),
+                        height: R.w(context, 56),
                         decoration: BoxDecoration(
                           color: AppColors.primary.withValues(alpha: 0.1),
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(R.w(context, 8)),
                           border: Border.all(
                               color: AppColors.primary.withValues(alpha: 0.2)),
                         ),
@@ -332,12 +333,12 @@ class _OrderCard extends ConsumerWidget {
                             '+${order.items.length - 2}',
                             style: AppTypography.h3(context).copyWith(
                               color: AppColors.primaryDark,
-                              fontSize: 16,
+                              fontSize: R.sp(context, 16),
                             ),
                           ),
                         ),
                       ),
-                      const SizedBox(width: 12),
+                      SizedBox(width: R.w(context, 12)),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -346,15 +347,15 @@ class _OrderCard extends ConsumerWidget {
                               'More Items',
                               style: AppTypography.bodySM(context).copyWith(
                                 fontWeight: FontWeight.w700,
-                                fontSize: 13,
+                                fontSize: R.sp(context, 13),
                               ),
                             ),
-                            const SizedBox(height: 2),
+                            SizedBox(height: R.h(context, 2)),
                             Text(
                               'Included in this shipment securely packed.',
                               style: AppTypography.bodySM(context).copyWith(
                                 color: AppColors.neutralGold,
-                                fontSize: 11,
+                                fontSize: R.sp(context, 11),
                               ),
                             ),
                           ],
@@ -364,12 +365,12 @@ class _OrderCard extends ConsumerWidget {
                   ),
 
                 // ── Action Buttons ─────────────────────────────────────────
-                const SizedBox(height: 12),
+                SizedBox(height: R.h(context, 12)),
                 
                 // Cancellation countdown label
                 if (canCancel)
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 12),
+                    padding: EdgeInsets.only(bottom: R.h(context, 12)),
                     child: _TimeRemainingLabel(
                       icon: Icons.access_time_rounded,
                       text: _getCancelWithinText(order.createdAt, cancelHours),
@@ -380,7 +381,7 @@ class _OrderCard extends ConsumerWidget {
                 // Return countdown label
                 if (canReturn)
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 12),
+                    padding: EdgeInsets.only(bottom: R.h(context, 12)),
                     child: _TimeRemainingLabel(
                       icon: Icons.access_time_rounded,
                       text: _getReturnWithinText(order.updatedAt, returnDays),
@@ -400,13 +401,13 @@ class _OrderCard extends ConsumerWidget {
                             backgroundColor: AppColors.neutralGold.withValues(alpha: 0.05),
                             padding: EdgeInsets.zero,
                             minimumSize: const Size(0, 32),
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(R.w(context, 6))),
                           ),
-                          child: Text('View Details', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: 10)),
+                          child: Text('View Details', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: R.sp(context, 10))),
                         ),
                       ),
                       if (canReturn) ...[
-                        const SizedBox(width: 8),
+                        SizedBox(width: R.w(context, 8)),
                         Expanded(
                           child: ElevatedButton(
                             onPressed: () => context.push('/account/returns?orderId=${order.id}'),
@@ -416,9 +417,9 @@ class _OrderCard extends ConsumerWidget {
                               padding: EdgeInsets.zero,
                               minimumSize: const Size(0, 32),
                               elevation: 0,
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(R.w(context, 6))),
                             ),
-                            child: Text('Return Item', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: 10)),
+                            child: Text('Return Item', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: R.sp(context, 10))),
                           ),
                         ),
                       ],
@@ -437,12 +438,12 @@ class _OrderCard extends ConsumerWidget {
                               backgroundColor: AppColors.primary.withValues(alpha: 0.1),
                               padding: EdgeInsets.zero,
                               minimumSize: const Size(0, 32),
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(R.w(context, 6))),
                             ),
-                            child: Text('Track Live', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: 10), maxLines: 1, overflow: TextOverflow.ellipsis),
+                            child: Text('Track Live', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: R.sp(context, 10)), maxLines: 1, overflow: TextOverflow.ellipsis),
                           ),
                         ),
-                        const SizedBox(width: 6),
+                        SizedBox(width: R.w(context, 6)),
                       ],
                       Expanded(
                         child: OutlinedButton(
@@ -455,13 +456,13 @@ class _OrderCard extends ConsumerWidget {
                             backgroundColor: AppColors.neutralGold.withValues(alpha: 0.05),
                             padding: EdgeInsets.zero,
                             minimumSize: const Size(0, 32),
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(R.w(context, 6))),
                           ),
-                          child: Text('Contact', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: 10), maxLines: 1, overflow: TextOverflow.ellipsis),
+                          child: Text('Contact', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: R.sp(context, 10)), maxLines: 1, overflow: TextOverflow.ellipsis),
                         ),
                       ),
                       if (canCancel) ...[
-                        const SizedBox(width: 6),
+                        SizedBox(width: R.w(context, 6)),
                         Expanded(
                           child: OutlinedButton(
                             onPressed: () => _showCancelDialog(context, ref, order),
@@ -471,9 +472,9 @@ class _OrderCard extends ConsumerWidget {
                               backgroundColor: Colors.red.withValues(alpha: 0.05),
                               padding: EdgeInsets.zero,
                               minimumSize: const Size(0, 32),
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(R.w(context, 6))),
                             ),
-                            child: Text('Cancel', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, color: Colors.red, fontSize: 10), maxLines: 1, overflow: TextOverflow.ellipsis),
+                            child: Text('Cancel', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, color: Colors.red, fontSize: R.sp(context, 10)), maxLines: 1, overflow: TextOverflow.ellipsis),
                           ),
                         ),
                       ],
@@ -593,7 +594,7 @@ class _HeaderInfoBlock extends StatelessWidget {
             value,
             style: AppTypography.bodySM(context).copyWith(
               fontWeight: FontWeight.w800,
-              fontSize: 12,
+              fontSize: R.sp(context, 12),
             ),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
@@ -618,13 +619,13 @@ class _TimeRemainingLabel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Icon(icon, size: 10, color: color),
-        const SizedBox(width: 4),
+        Icon(icon, size: R.sp(context, 10), color: color),
+        SizedBox(width: R.w(context, 4)),
         Text(
           text,
           style: AppTypography.bodySM(context).copyWith(
             color: color,
-            fontSize: 9,
+            fontSize: R.sp(context, 9),
             fontWeight: FontWeight.w700,
           ),
         ),
@@ -680,9 +681,9 @@ class _CancelOrderDialogState extends ConsumerState<_CancelOrderDialog> {
           style: OutlinedButton.styleFrom(
             foregroundColor: AppColors.deepCharcoal,
             side: const BorderSide(color: AppColors.borderLight),
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            minimumSize: const Size(0, 36),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            padding: EdgeInsets.symmetric(horizontal: R.w(context, 16), vertical: R.h(context, 8)),
+            minimumSize: Size(0, R.h(context, 36)),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(R.w(context, 8))),
           ),
           child: Text('Keep Order', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700)),
         ),
@@ -691,13 +692,13 @@ class _CancelOrderDialogState extends ConsumerState<_CancelOrderDialog> {
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.red,
             foregroundColor: Colors.white,
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            minimumSize: const Size(0, 36),
+            padding: EdgeInsets.symmetric(horizontal: R.w(context, 16), vertical: R.h(context, 8)),
+            minimumSize: Size(0, R.h(context, 36)),
             elevation: 0,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(R.w(context, 8))),
           ),
           child: _isLoading
-              ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
+              ? SizedBox(width: R.w(context, 16), height: R.w(context, 16), child: const CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
               : Text('Confirm Cancel', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, color: Colors.white)),
         ),
       ],

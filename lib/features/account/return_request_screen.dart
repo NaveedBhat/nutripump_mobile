@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_typography.dart';
 import '../../core/utils/formatters.dart';
+import '../../core/utils/responsive.dart';
 import '../../models/order.dart';
 import '../../providers/providers.dart';
 
@@ -88,7 +89,7 @@ class _ReturnRequestScreenState extends ConsumerState<ReturnRequestScreen> {
         elevation: 0,
         surfaceTintColor: Colors.transparent,
         centerTitle: true,
-        title: Text('Return & Refund', style: AppTypography.h3(context)),
+        title: Text('Return & Refund', style: AppTypography.h3(context).copyWith(fontSize: R.sp(context, 16))),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1),
           child: Container(height: 1, color: AppColors.borderLight),
@@ -134,59 +135,59 @@ class _ReturnRequestScreenState extends ConsumerState<ReturnRequestScreen> {
               }
 
               return SingleChildScrollView(
-                padding: const EdgeInsets.all(16),
+                padding: EdgeInsets.all(R.w(context, 16)),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // ── Policy Banner (dynamic days from admin) ──────
                     Container(
                       width: double.infinity,
-                      padding: const EdgeInsets.all(16),
+                      padding: EdgeInsets.all(R.w(context, 16)),
                       decoration: BoxDecoration(
                         color: AppColors.primary.withValues(alpha: 0.07),
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(R.w(context, 12)),
                         border: Border.all(color: AppColors.primary.withValues(alpha: 0.15)),
                       ),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Icon(Icons.info_outline_rounded, size: 18, color: AppColors.primary),
-                          const SizedBox(width: 10),
+                          Icon(Icons.info_outline_rounded, size: R.sp(context, 18), color: AppColors.primary),
+                          SizedBox(width: R.w(context, 10)),
                           Expanded(
                             child: Text(
                               'Returns accepted within $returnDays days of delivery. '
                               'Refunds are processed within 5–7 business days after approval.',
-                              style: AppTypography.bodySM(context).copyWith(fontSize: 12, height: 1.5, color: AppColors.deepCharcoal),
+                              style: AppTypography.bodySM(context).copyWith(fontSize: R.sp(context, 12), height: 1.5, color: AppColors.deepCharcoal),
                             ),
                           ),
                         ],
                       ),
                     ),
-                    const SizedBox(height: 24),
+                    SizedBox(height: R.h(context, 24)),
 
                     // ── Order Selection ──────────────────────────
-                    Text('Select Order', style: AppTypography.h3(context)),
-                    const SizedBox(height: 12),
+                    Text('Select Order', style: AppTypography.h3(context).copyWith(fontSize: R.sp(context, 16))),
+                    SizedBox(height: R.h(context, 12)),
 
                     if (returnableOrders.isEmpty)
                       Container(
                         width: double.infinity,
-                        padding: const EdgeInsets.all(20),
+                        padding: EdgeInsets.all(R.w(context, 20)),
                         decoration: BoxDecoration(
                           color: Colors.white,
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(R.w(context, 12)),
                           border: Border.all(color: AppColors.borderLight),
                         ),
                         child: Column(
                           children: [
-                            const Icon(Icons.assignment_return_outlined, size: 40, color: AppColors.neutralGold),
-                            const SizedBox(height: 12),
+                            Icon(Icons.assignment_return_outlined, size: R.sp(context, 40), color: AppColors.neutralGold),
+                            SizedBox(height: R.h(context, 12)),
                             Text('No eligible orders', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700)),
-                            const SizedBox(height: 4),
+                            SizedBox(height: R.h(context, 4)),
                             Text(
                               'Only delivered orders within the $returnDays-day return window can be returned.',
                               textAlign: TextAlign.center,
-                              style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, fontSize: 12),
+                              style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, fontSize: R.sp(context, 12)),
                             ),
                           ],
                         ),
@@ -199,11 +200,11 @@ class _ReturnRequestScreenState extends ConsumerState<ReturnRequestScreen> {
                       )),
 
                     if (returnableOrders.isNotEmpty) ...[
-                      const SizedBox(height: 24),
+                      SizedBox(height: R.h(context, 24)),
 
                       // ── Return Reason ──────────────────────────
-                      Text('Reason for Return', style: AppTypography.h3(context)),
-                      const SizedBox(height: 12),
+                      Text('Reason for Return', style: AppTypography.h3(context).copyWith(fontSize: R.sp(context, 16))),
+                      SizedBox(height: R.h(context, 12)),
 
                       ..._reasons.map((reason) => _ReasonTile(
                         reason: reason,
@@ -212,9 +213,9 @@ class _ReturnRequestScreenState extends ConsumerState<ReturnRequestScreen> {
                       )),
 
                       if (_selectedReason == 'Other (please describe)') ...[
-                        const SizedBox(height: 12),
-                        Text('Describe your issue', style: AppTypography.label(context).copyWith(fontSize: 11)),
-                        const SizedBox(height: 6),
+                        SizedBox(height: R.h(context, 12)),
+                        Text('Describe your issue', style: AppTypography.label(context).copyWith(fontSize: R.sp(context, 11))),
+                        SizedBox(height: R.h(context, 6)),
                         TextFormField(
                           controller: _customReasonCtrl,
                           maxLines: 3,
@@ -222,16 +223,16 @@ class _ReturnRequestScreenState extends ConsumerState<ReturnRequestScreen> {
                           decoration: InputDecoration(
                             hintText: 'Tell us more about the issue...',
                             hintStyle: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold.withValues(alpha: 0.5)),
-                            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                            contentPadding: EdgeInsets.symmetric(horizontal: R.w(context, 16), vertical: R.h(context, 12)),
                             filled: true,
                             fillColor: Colors.white,
-                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: AppColors.borderLight)),
-                            focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: AppColors.primary)),
+                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(R.w(context, 12)), borderSide: const BorderSide(color: AppColors.borderLight)),
+                            focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(R.w(context, 12)), borderSide: const BorderSide(color: AppColors.primary)),
                           ),
                         ),
                       ],
 
-                      const SizedBox(height: 32),
+                      SizedBox(height: R.h(context, 32)),
 
                       // ── Submit Button ──────────────────────────
                       SizedBox(
@@ -244,15 +245,15 @@ class _ReturnRequestScreenState extends ConsumerState<ReturnRequestScreen> {
                             backgroundColor: AppColors.primary,
                             foregroundColor: AppColors.deepCharcoal,
                             elevation: 0,
-                            padding: const EdgeInsets.symmetric(vertical: 14),
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                            padding: EdgeInsets.symmetric(vertical: R.h(context, 14)),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(R.w(context, 12))),
                           ),
                           child: _isLoading
-                              ? const SizedBox(width: 24, height: 24, child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.deepCharcoal))
-                              : Text('Submit Return Request', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: 15)),
+                              ? SizedBox(width: R.w(context, 24), height: R.w(context, 24), child: const CircularProgressIndicator(strokeWidth: 2, color: AppColors.deepCharcoal))
+                              : Text('Submit Return Request', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: R.sp(context, 15))),
                         ),
                       ),
-                      const SizedBox(height: 24),
+                      SizedBox(height: R.h(context, 24)),
                     ],
                   ],
                 ),
@@ -277,11 +278,11 @@ class _OrderSelectionCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        margin: const EdgeInsets.only(bottom: 10),
-        padding: const EdgeInsets.all(14),
+        margin: EdgeInsets.only(bottom: R.h(context, 10)),
+        padding: EdgeInsets.all(R.w(context, 14)),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(R.w(context, 12)),
           border: Border.all(
             color: isSelected ? AppColors.primary : AppColors.borderLight,
             width: isSelected ? 2 : 1,
@@ -291,28 +292,28 @@ class _OrderSelectionCard extends StatelessWidget {
         child: Row(
           children: [
             Container(
-              width: 20,
-              height: 20,
+              width: R.w(context, 20),
+              height: R.w(context, 20),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: isSelected ? AppColors.primary : Colors.white,
                 border: Border.all(color: isSelected ? AppColors.primary : AppColors.borderLight, width: 1.5),
               ),
               child: isSelected
-                  ? const Icon(Icons.check_rounded, size: 12, color: AppColors.deepCharcoal)
+                  ? Icon(Icons.check_rounded, size: R.sp(context, 12), color: AppColors.deepCharcoal)
                   : null,
             ),
-            const SizedBox(width: 12),
+            SizedBox(width: R.w(context, 12)),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(formatOrderId(order.id),
-                      style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: 13)),
-                  const SizedBox(height: 2),
+                      style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: R.sp(context, 13))),
+                  SizedBox(height: R.h(context, 2)),
                   Text(
                     order.items.map((i) => i.product.name).where((n) => n.isNotEmpty).take(2).join(', '),
-                    style: AppTypography.bodySM(context).copyWith(fontSize: 11, color: AppColors.neutralGold),
+                    style: AppTypography.bodySM(context).copyWith(fontSize: R.sp(context, 11), color: AppColors.neutralGold),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -320,7 +321,7 @@ class _OrderSelectionCard extends StatelessWidget {
               ),
             ),
             Text(formatPrice(order.total),
-                style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: 13)),
+                style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: R.sp(context, 13))),
           ],
         ),
       ),
@@ -340,11 +341,11 @@ class _ReasonTile extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        margin: const EdgeInsets.only(bottom: 8),
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+        margin: EdgeInsets.only(bottom: R.h(context, 8)),
+        padding: EdgeInsets.symmetric(horizontal: R.w(context, 14), vertical: R.h(context, 12)),
         decoration: BoxDecoration(
           color: isSelected ? AppColors.primary.withValues(alpha: 0.05) : Colors.white,
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(R.w(context, 10)),
           border: Border.all(
             color: isSelected ? AppColors.primary : AppColors.borderLight,
             width: isSelected ? 1.5 : 1,
@@ -353,17 +354,17 @@ class _ReasonTile extends StatelessWidget {
         child: Row(
           children: [
             Container(
-              width: 18,
-              height: 18,
+              width: R.w(context, 18),
+              height: R.w(context, 18),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: isSelected ? AppColors.primary : Colors.white,
                 border: Border.all(color: isSelected ? AppColors.primary : AppColors.borderLight, width: 1.5),
               ),
-              child: isSelected ? const Icon(Icons.check_rounded, size: 10, color: AppColors.deepCharcoal) : null,
+              child: isSelected ? Icon(Icons.check_rounded, size: R.sp(context, 10), color: AppColors.deepCharcoal) : null,
             ),
-            const SizedBox(width: 10),
-            Text(reason, style: AppTypography.bodySM(context).copyWith(fontSize: 13)),
+            SizedBox(width: R.w(context, 10)),
+            Text(reason, style: AppTypography.bodySM(context).copyWith(fontSize: R.sp(context, 13))),
           ],
         ),
       ),
