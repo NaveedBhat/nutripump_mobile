@@ -6,6 +6,7 @@ import '../../models/product.dart';
 import '../constants/app_colors.dart';
 import '../constants/app_typography.dart';
 import '../utils/formatters.dart';
+import '../utils/responsive.dart';
 import 'custom_network_image.dart';
 
 // Mirrors the web BADGE_STYLES map exactly
@@ -42,12 +43,12 @@ class ProductCard extends ConsumerWidget {
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(14),
           boxShadow: [
             BoxShadow(
               color: AppColors.deepCharcoal.withValues(alpha: 0.06),
-              blurRadius: 12,
-              offset: const Offset(0, 4),
+              blurRadius: 10,
+              offset: const Offset(0, 3),
             ),
           ],
         ),
@@ -60,7 +61,7 @@ class ProductCard extends ConsumerWidget {
                 fit: StackFit.expand,
                 children: [
                   ClipRRect(
-                    borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+                    borderRadius: const BorderRadius.vertical(top: Radius.circular(14)),
                     child: CustomNetworkImage(
                       imageUrl: product.primaryImage,
                       fit: BoxFit.cover,
@@ -69,12 +70,13 @@ class ProductCard extends ConsumerWidget {
                   // Badge (top-left)
                   if (product.badge != null)
                     Positioned(
-                      top: 10,
-                      left: 10,
+                      top: R.h(context, 8),
+                      left: R.w(context, 8),
                       child: Builder(builder: (context) {
                         final colors = _badgeColors(product.badge!);
                         return Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: R.w(context, 5), vertical: R.h(context, 3)),
                           decoration: BoxDecoration(
                             color: colors.bg,
                             borderRadius: BorderRadius.circular(4),
@@ -82,7 +84,7 @@ class ProductCard extends ConsumerWidget {
                           child: Text(
                             product.badge!.toUpperCase(),
                             style: AppTypography.label.copyWith(
-                              fontSize: 6,
+                              fontSize: R.sp(context, 6),
                               color: colors.text,
                               fontWeight: FontWeight.w800,
                               letterSpacing: 1.0,
@@ -94,10 +96,11 @@ class ProductCard extends ConsumerWidget {
                   // Discount badge (top-right)
                   if (product.discountPercent > 0)
                     Positioned(
-                      top: 10,
-                      right: 10,
+                      top: R.h(context, 8),
+                      right: R.w(context, 8),
                       child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 3),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: R.w(context, 5), vertical: R.h(context, 3)),
                         decoration: BoxDecoration(
                           color: const Color(0xFFD32F2F),
                           borderRadius: BorderRadius.circular(4),
@@ -105,7 +108,7 @@ class ProductCard extends ConsumerWidget {
                         child: Text(
                           '-${product.discountPercent}%',
                           style: AppTypography.label.copyWith(
-                            fontSize: 7,
+                            fontSize: R.sp(context, 7),
                             color: Colors.white,
                             fontWeight: FontWeight.w800,
                           ),
@@ -118,7 +121,8 @@ class ProductCard extends ConsumerWidget {
 
             // ── Text + Add button ─────────────────────────────────
             Padding(
-              padding: const EdgeInsets.fromLTRB(11, 10, 11, 11),
+              padding: EdgeInsets.fromLTRB(
+                R.w(context, 10), R.h(context, 9), R.w(context, 10), R.h(context, 10)),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -128,11 +132,12 @@ class ProductCard extends ConsumerWidget {
                       if (product.origin.isNotEmpty) product.origin.toUpperCase(),
                       product.weight,
                     ].join(' · '),
-                    style: AppTypography.labelGold.copyWith(fontSize: compact ? 7.5 : 8.5, letterSpacing: 0.4),
+                    style: AppTypography.labelGold.copyWith(
+                      fontSize: R.sp(context, compact ? 7.5 : 8.5), letterSpacing: 0.4),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  const SizedBox(height: 3),
+                  SizedBox(height: R.h(context, 3)),
                   // Name
                   Text(
                     product.name,
@@ -140,11 +145,11 @@ class ProductCard extends ConsumerWidget {
                     overflow: TextOverflow.ellipsis,
                     style: AppTypography.bodySM.copyWith(
                       fontWeight: FontWeight.w700,
-                      fontSize: compact ? 11.5 : 13,
+                      fontSize: R.sp(context, compact ? 11 : 12.5),
                       height: 1.25,
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: R.h(context, 7)),
                   // Price row + Add button
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -156,13 +161,13 @@ class ProductCard extends ConsumerWidget {
                           children: [
                             Text(
                               formatPrice(product.price),
-                              style: AppTypography.priceSM.copyWith(fontSize: 15),
+                              style: AppTypography.priceSM.copyWith(fontSize: R.sp(context, 14)),
                             ),
                             if (product.compareAtPrice != null && product.compareAtPrice! > product.price) ...[
-                              const SizedBox(width: 5),
+                              SizedBox(width: R.w(context, 4)),
                               Text(
                                 formatPrice(product.compareAtPrice!),
-                                style: AppTypography.priceStrike.copyWith(fontSize: 10),
+                                style: AppTypography.priceStrike.copyWith(fontSize: R.sp(context, 10)),
                               ),
                             ],
                           ],
@@ -185,15 +190,15 @@ class ProductCard extends ConsumerWidget {
                           );
                         },
                         child: Container(
-                          width: 32,
-                          height: 32,
+                          width: R.w(context, 30),
+                          height: R.w(context, 30),
                           decoration: BoxDecoration(
                             color: AppColors.primary,
-                            borderRadius: BorderRadius.circular(8),
+                            borderRadius: BorderRadius.circular(7),
                           ),
-                          child: const Icon(
+                          child: Icon(
                             Icons.shopping_bag_outlined,
-                            size: 16,
+                            size: R.sp(context, 15),
                             color: AppColors.deepCharcoal,
                           ),
                         ),

@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_typography.dart';
+import '../../core/utils/responsive.dart';
 import '../../core/widgets/product_card.dart';
 import '../../core/widgets/custom_network_image.dart';
 import '../../providers/providers.dart';
@@ -38,21 +39,21 @@ class HomeScreen extends ConsumerWidget {
                 children: [
                   const _HeroCarousel(),
                   const _TrustStrip(),
-                  const SizedBox(height: 36),
+                  _SectionGap(),
                   _CategoriesSection(),
-                  const SizedBox(height: 36),
+                  _SectionGap(),
                   _FeaturedProductsSection(),
-                  const SizedBox(height: 36),
+                  _SectionGap(),
                   const _WhyNutriPump(),
-                  const SizedBox(height: 36),
+                  _SectionGap(),
                   const _TasteProfilerCta(),
-                  const SizedBox(height: 36),
+                  _SectionGap(),
                   const _HoneyWheelSection(),
-                  const SizedBox(height: 36),
+                  _SectionGap(),
                   _AllProductsSection(),
-                  const SizedBox(height: 36),
+                  _SectionGap(),
                   const _B2BSection(),
-                  const SizedBox(height: 36),
+                  _SectionGap(),
                 ],
               ),
             ),
@@ -68,6 +69,12 @@ class HomeScreen extends ConsumerWidget {
   }
 }
 
+// ── Responsive Section Gap ───────────────────────────────────
+class _SectionGap extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) => SizedBox(height: R.h(context, 24));
+}
+
 // ── App Bar ──────────────────────────────────────────────────
 class _HomeAppBar extends ConsumerWidget {
   @override
@@ -81,7 +88,7 @@ class _HomeAppBar extends ConsumerWidget {
       title: GestureDetector(
         onTap: () => context.push('/search'),
         child: Container(
-          height: 38,
+          height: R.h(context, 36),
           decoration: BoxDecoration(
             color: const Color(0xFFF5F3EE),
             borderRadius: BorderRadius.circular(10),
@@ -89,23 +96,23 @@ class _HomeAppBar extends ConsumerWidget {
           child: Row(
             children: [
               const SizedBox(width: 10),
-              const Icon(Icons.search_rounded, color: AppColors.neutralGold, size: 18),
+              Icon(Icons.search_rounded, color: AppColors.neutralGold, size: R.sp(context, 18)),
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
                   'Search honey, saffron, nuts...',
                   style: AppTypography.bodySM.copyWith(
                     color: AppColors.neutralGold,
-                    fontSize: 12,
+                    fontSize: R.sp(context, 12),
                   ),
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
               GestureDetector(
                 onTap: () => context.push('/search', extra: {'autoStartVoice': true}),
-                child: const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Icon(Icons.mic_none, color: AppColors.neutralGold, size: 18),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Icon(Icons.mic_none, color: AppColors.neutralGold, size: R.sp(context, 18)),
                 ),
               ),
               const SizedBox(width: 2),
@@ -129,13 +136,13 @@ class _HomeAppBar extends ConsumerWidget {
                     top: 8,
                     right: 8,
                     child: Container(
-                      width: 14,
-                      height: 14,
+                      width: R.w(context, 14),
+                      height: R.w(context, 14),
                       decoration: const BoxDecoration(color: AppColors.error, shape: BoxShape.circle),
                       child: Center(
                         child: Text(
                           unreadCount > 9 ? '9+' : '$unreadCount',
-                          style: const TextStyle(color: Colors.white, fontSize: 8, fontWeight: FontWeight.bold),
+                          style: TextStyle(color: Colors.white, fontSize: R.sp(context, 8), fontWeight: FontWeight.bold),
                         ),
                       ),
                     ),
@@ -160,11 +167,11 @@ class _HomeAppBar extends ConsumerWidget {
                     top: 6,
                     right: 4,
                     child: Container(
-                      width: 16,
-                      height: 16,
+                      width: R.w(context, 16),
+                      height: R.w(context, 16),
                       decoration: const BoxDecoration(color: AppColors.primary, shape: BoxShape.circle),
                       child: Center(
-                        child: Text('$count', style: const TextStyle(color: AppColors.deepCharcoal, fontSize: 9, fontWeight: FontWeight.w900)),
+                        child: Text('$count', style: TextStyle(color: AppColors.deepCharcoal, fontSize: R.sp(context, 9), fontWeight: FontWeight.w900)),
                       ),
                     ),
                   ),
@@ -175,7 +182,7 @@ class _HomeAppBar extends ConsumerWidget {
         const SizedBox(width: 4),
       ],
       bottom: PreferredSize(
-        preferredSize: const Size.fromHeight(1),
+        preferredSize: Size.fromHeight(R.h(context, 1)),
         child: Container(height: 1, color: AppColors.borderLight),
       ),
     );
@@ -227,7 +234,7 @@ class _HeroCarouselState extends ConsumerState<_HeroCarousel> {
     final productsAsync = ref.watch(allProductsProvider);
 
     return SizedBox(
-      height: 240,
+      height: R.h(context, 240),
       child: productsAsync.when(
         data: (products) {
           if (products.isEmpty) {
@@ -305,13 +312,15 @@ class _HeroCarouselState extends ConsumerState<_HeroCarousel> {
                         ),
                         // Content
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(24, 0, 24, 36),
+                          padding: EdgeInsets.fromLTRB(
+                            R.w(context, 20), 0, R.w(context, 20), R.h(context, 28)),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.end,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: R.w(context, 7), vertical: R.h(context, 3)),
                                 decoration: BoxDecoration(
                                   border: Border.all(color: AppColors.primary, width: 1),
                                   borderRadius: BorderRadius.circular(4),
@@ -319,46 +328,47 @@ class _HeroCarouselState extends ConsumerState<_HeroCarousel> {
                                 child: Text(
                                   slide['badge']!,
                                   style: AppTypography.label.copyWith(
-                                    fontSize: 8,
+                                    fontSize: R.sp(context, 8),
                                     color: AppColors.primary,
-                                    letterSpacing: 2.0,
+                                    letterSpacing: 1.5,
                                     fontWeight: FontWeight.w900,
                                   ),
                                 ),
                               ),
-                              const SizedBox(height: 10),
+                              SizedBox(height: R.h(context, 8)),
                               Text(
                                 slide['title']!,
                                 style: AppTypography.h1.copyWith(
                                   color: Colors.white,
-                                  fontSize: 24,
+                                  fontSize: R.sp(context, 20),
                                   height: 1.15,
                                   letterSpacing: -0.5,
                                 ),
                               ),
-                              const SizedBox(height: 6),
+                              SizedBox(height: R.h(context, 4)),
                               Text(
                                 slide['subtitle']!,
-                                maxLines: 2,
+                                maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: AppTypography.bodySM.copyWith(
                                   color: Colors.white.withValues(alpha: 0.7),
-                                  fontSize: 12,
+                                  fontSize: R.sp(context, 11),
                                 ),
                               ),
-                              const SizedBox(height: 16),
+                              SizedBox(height: R.h(context, 12)),
                               Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 9),
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: R.w(context, 14), vertical: R.h(context, 8)),
                                 decoration: BoxDecoration(
                                   color: AppColors.primary,
-                                  borderRadius: BorderRadius.circular(8),
+                                  borderRadius: BorderRadius.circular(7),
                                 ),
                                 child: Text(
                                   slide['cta']!,
                                   style: AppTypography.label.copyWith(
                                     color: AppColors.deepCharcoal,
                                     fontWeight: FontWeight.w900,
-                                    fontSize: 10,
+                                    fontSize: R.sp(context, 10),
                                     letterSpacing: 0.5,
                                   ),
                                 ),
@@ -445,7 +455,7 @@ class _TrustStripState extends State<_TrustStrip> with SingleTickerProviderState
 
     return Container(
       color: Colors.white,
-      height: 42,
+      height: R.h(context, 38),
       child: ListView.builder(
         controller: _scrollController,
         scrollDirection: Axis.horizontal,
@@ -453,22 +463,22 @@ class _TrustStripState extends State<_TrustStrip> with SingleTickerProviderState
         itemBuilder: (context, index) {
           final item = items[index % items.length];
           return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            padding: EdgeInsets.symmetric(horizontal: R.w(context, 14)),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(item.$1, size: 14, color: AppColors.primary),
-                const SizedBox(width: 6),
+                Icon(item.$1, size: R.sp(context, 13), color: AppColors.primary),
+                SizedBox(width: R.w(context, 6)),
                 Text(
                   item.$2,
                   style: AppTypography.label.copyWith(
-                    fontSize: 10,
+                    fontSize: R.sp(context, 10),
                     fontWeight: FontWeight.w700,
                     letterSpacing: 0.3,
                   ),
                 ),
-                const SizedBox(width: 32),
-                Container(width: 1, height: 12, color: AppColors.borderLight),
+                SizedBox(width: R.w(context, 28)),
+                Container(width: 1, height: R.h(context, 11), color: AppColors.borderLight),
               ],
             ),
           );
@@ -484,33 +494,40 @@ class _CategoriesSection extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final categoriesAsync = ref.watch(categoriesProvider);
 
+    final circleSize = R.w(context, 58);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          padding: EdgeInsets.symmetric(horizontal: R.w(context, 20)),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Shop by Category', style: AppTypography.h2.copyWith(fontSize: 18)),
+              Text('Shop by Category',
+                  style: AppTypography.h2.copyWith(fontSize: R.sp(context, 16))),
               GestureDetector(
                 onTap: () => context.push('/categories'),
-                child: Text('See All', style: AppTypography.label.copyWith(color: AppColors.primary, fontWeight: FontWeight.w800, fontSize: 11)),
+                child: Text('See All',
+                    style: AppTypography.label.copyWith(
+                      color: AppColors.primary,
+                      fontWeight: FontWeight.w800,
+                      fontSize: R.sp(context, 10),
+                    )),
               ),
             ],
           ),
         ),
-        const SizedBox(height: 16),
+        SizedBox(height: R.h(context, 12)),
         SizedBox(
-          height: 100,
+          height: circleSize + R.h(context, 26),
           child: categoriesAsync.when(
             data: (categories) {
               if (categories.isEmpty) return const SizedBox();
               return ListView.separated(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                padding: EdgeInsets.symmetric(horizontal: R.w(context, 20)),
                 scrollDirection: Axis.horizontal,
                 itemCount: categories.length,
-                separatorBuilder: (_, __) => const SizedBox(width: 12),
+                separatorBuilder: (_, __) => SizedBox(width: R.w(context, 12)),
                 itemBuilder: (context, index) {
                   final cat = categories[index];
                   return GestureDetector(
@@ -518,8 +535,8 @@ class _CategoriesSection extends ConsumerWidget {
                     child: Column(
                       children: [
                         Container(
-                          width: 66,
-                          height: 66,
+                          width: circleSize,
+                          height: circleSize,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: const Color(0xFFF0EBE0),
@@ -527,22 +544,25 @@ class _CategoriesSection extends ConsumerWidget {
                           ),
                           child: ClipOval(
                             child: Padding(
-                              padding: const EdgeInsets.all(4),
+                              padding: const EdgeInsets.all(3),
                               child: cat.image != null && cat.image!.isNotEmpty
                                   ? CustomNetworkImage(imageUrl: cat.image!)
                                   : CustomNetworkImage(imageUrl: _getCategoryFallbackImage(cat.name)),
                             ),
                           ),
                         ),
-                        const SizedBox(height: 8),
+                        SizedBox(height: R.h(context, 6)),
                         SizedBox(
-                          width: 66,
+                          width: circleSize,
                           child: Text(
                             cat.name,
                             textAlign: TextAlign.center,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: AppTypography.label.copyWith(fontSize: 10, fontWeight: FontWeight.w700),
+                            style: AppTypography.label.copyWith(
+                              fontSize: R.sp(context, 10),
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
                         ),
                       ],
@@ -588,7 +608,7 @@ class _FeaturedProductsSection extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          padding: EdgeInsets.symmetric(horizontal: R.w(context, 20)),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.end,
@@ -596,32 +616,44 @@ class _FeaturedProductsSection extends ConsumerWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('CURATED SELECTION', style: AppTypography.label.copyWith(color: AppColors.primary, fontSize: 9, letterSpacing: 2.0, fontWeight: FontWeight.w900)),
-                  const SizedBox(height: 4),
-                  Text('Featured Products', style: AppTypography.h2.copyWith(fontSize: 20)),
+                  Text('CURATED SELECTION',
+                      style: AppTypography.label.copyWith(
+                        color: AppColors.primary,
+                        fontSize: R.sp(context, 9),
+                        letterSpacing: 1.5,
+                        fontWeight: FontWeight.w900,
+                      )),
+                  SizedBox(height: R.h(context, 3)),
+                  Text('Featured Products',
+                      style: AppTypography.h2.copyWith(fontSize: R.sp(context, 17))),
                 ],
               ),
               GestureDetector(
                 onTap: () => context.push('/shop'),
-                child: Text('View All →', style: AppTypography.label.copyWith(color: AppColors.primary, fontWeight: FontWeight.w800, fontSize: 11)),
+                child: Text('View All →',
+                    style: AppTypography.label.copyWith(
+                      color: AppColors.primary,
+                      fontWeight: FontWeight.w800,
+                      fontSize: R.sp(context, 10),
+                    )),
               ),
             ],
           ),
         ),
-        const SizedBox(height: 16),
+        SizedBox(height: R.h(context, 14)),
         SizedBox(
-          height: 250,
+          height: R.h(context, 240),
           child: featuredAsync.when(
             data: (products) {
               if (products.isEmpty) return const SizedBox();
               return ListView.separated(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                padding: EdgeInsets.symmetric(horizontal: R.w(context, 20)),
                 scrollDirection: Axis.horizontal,
                 itemCount: products.length,
-                separatorBuilder: (_, __) => const SizedBox(width: 14),
+                separatorBuilder: (_, __) => SizedBox(width: R.w(context, 12)),
                 itemBuilder: (context, index) {
                   return SizedBox(
-                    width: 155,
+                    width: R.w(context, 150),
                     child: ProductCard(product: products[index], compact: true),
                   );
                 },
@@ -649,23 +681,23 @@ class _WhyNutriPump extends StatelessWidget {
     ];
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
+      padding: EdgeInsets.symmetric(horizontal: R.w(context, 20)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('WHY NUTRIPUMP', style: AppTypography.label.copyWith(color: AppColors.primary, fontSize: 9, letterSpacing: 2.0, fontWeight: FontWeight.w900)),
-          const SizedBox(height: 4),
-          Text('Crafted Different', style: AppTypography.h2.copyWith(fontSize: 20)),
-          const SizedBox(height: 16),
+          Text('WHY NUTRIPUMP', style: AppTypography.label.copyWith(color: AppColors.primary, fontSize: R.sp(context, 9), letterSpacing: 2.0, fontWeight: FontWeight.w900)),
+          SizedBox(height: R.h(context, 4)),
+          Text('Crafted Different', style: AppTypography.h2.copyWith(fontSize: R.sp(context, 18))),
+          SizedBox(height: R.h(context, 14)),
           Row(
             children: values.map((v) {
               return Expanded(
                 child: Container(
-                  margin: EdgeInsets.only(right: v == values.last ? 0 : 10),
-                  padding: const EdgeInsets.all(14),
+                  margin: EdgeInsets.only(right: v == values.last ? 0 : R.w(context, 10)),
+                  padding: EdgeInsets.all(R.w(context, 12)),
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(14),
                     border: Border.all(color: AppColors.borderLight),
                     boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 8, offset: const Offset(0, 2))],
                   ),
@@ -673,17 +705,17 @@ class _WhyNutriPump extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Container(
-                        padding: const EdgeInsets.all(8),
+                        padding: EdgeInsets.all(R.w(context, 7)),
                         decoration: BoxDecoration(
                           color: AppColors.primary.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        child: Icon(v.$1, color: AppColors.primary, size: 16),
+                        child: Icon(v.$1, color: AppColors.primary, size: R.sp(context, 15)),
                       ),
-                      const SizedBox(height: 10),
-                      Text(v.$2, textAlign: TextAlign.center, style: AppTypography.label.copyWith(fontWeight: FontWeight.w800, fontSize: 10, height: 1.2)),
-                      const SizedBox(height: 4),
-                      Text(v.$3, textAlign: TextAlign.center, style: AppTypography.label.copyWith(color: AppColors.neutralGold, fontSize: 8.5, height: 1.3)),
+                      SizedBox(height: R.h(context, 8)),
+                      Text(v.$2, textAlign: TextAlign.center, style: AppTypography.label.copyWith(fontWeight: FontWeight.w800, fontSize: R.sp(context, 10), height: 1.2)),
+                      SizedBox(height: R.h(context, 3)),
+                      Text(v.$3, textAlign: TextAlign.center, style: AppTypography.label.copyWith(color: AppColors.neutralGold, fontSize: R.sp(context, 8), height: 1.3)),
                     ],
                   ),
                 ),
@@ -709,7 +741,7 @@ class _AllProductsSection extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+              padding: EdgeInsets.symmetric(horizontal: R.w(context, 20)),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.end,
@@ -717,29 +749,29 @@ class _AllProductsSection extends ConsumerWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('THE FULL RANGE', style: AppTypography.label.copyWith(color: AppColors.primary, fontSize: 9, letterSpacing: 2.0, fontWeight: FontWeight.w900)),
-                      const SizedBox(height: 4),
-                      Text('All Products', style: AppTypography.h2.copyWith(fontSize: 20)),
+                      Text('THE FULL RANGE', style: AppTypography.label.copyWith(color: AppColors.primary, fontSize: R.sp(context, 9), letterSpacing: 2.0, fontWeight: FontWeight.w900)),
+                      SizedBox(height: R.h(context, 3)),
+                      Text('All Products', style: AppTypography.h2.copyWith(fontSize: R.sp(context, 18))),
                     ],
                   ),
                   GestureDetector(
                     onTap: () => context.push('/shop'),
-                    child: Text('Browse All →', style: AppTypography.label.copyWith(color: AppColors.primary, fontWeight: FontWeight.w800, fontSize: 11)),
+                    child: Text('Browse All →', style: AppTypography.label.copyWith(color: AppColors.primary, fontWeight: FontWeight.w800, fontSize: R.sp(context, 10))),
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: R.h(context, 14)),
             SizedBox(
-              height: 250,
+              height: R.h(context, 240),
               child: ListView.separated(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                padding: EdgeInsets.symmetric(horizontal: R.w(context, 20)),
                 scrollDirection: Axis.horizontal,
                 itemCount: products.length,
-                separatorBuilder: (_, __) => const SizedBox(width: 14),
+                separatorBuilder: (_, __) => SizedBox(width: R.w(context, 12)),
                 itemBuilder: (context, index) {
                   return SizedBox(
-                    width: 155,
+                    width: R.w(context, 150),
                     child: ProductCard(product: products[index], compact: true),
                   );
                 },
@@ -761,10 +793,10 @@ class _TasteProfilerCta extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20),
+      margin: EdgeInsets.symmetric(horizontal: R.w(context, 20)),
       decoration: BoxDecoration(
         color: const Color(0xFF1B3B36),
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(20),
         image: const DecorationImage(
           image: NetworkImage('https://images.unsplash.com/photo-1636800637091-3d54ec4dfffb?q=80&w=600&auto=format&fit=crop'),
           fit: BoxFit.cover,
@@ -772,48 +804,48 @@ class _TasteProfilerCta extends StatelessWidget {
         ),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(28),
+        padding: EdgeInsets.all(R.w(context, 22)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              padding: EdgeInsets.symmetric(horizontal: R.w(context, 8), vertical: R.h(context, 4)),
               decoration: BoxDecoration(
                 color: AppColors.primary.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(4),
               ),
-              child: Text('AI-POWERED', style: AppTypography.label.copyWith(color: AppColors.primary, fontSize: 8, letterSpacing: 2.0, fontWeight: FontWeight.w900)),
+              child: Text('AI-POWERED', style: AppTypography.label.copyWith(color: AppColors.primary, fontSize: R.sp(context, 8), letterSpacing: 2.0, fontWeight: FontWeight.w900)),
             ),
-            const SizedBox(height: 12),
+            SizedBox(height: R.h(context, 10)),
             Text(
               'Not sure where\nto start?',
-              style: AppTypography.h1.copyWith(color: Colors.white, fontSize: 26, height: 1.1),
+              style: AppTypography.h1.copyWith(color: Colors.white, fontSize: R.sp(context, 22), height: 1.1),
             ),
-            const SizedBox(height: 10),
+            SizedBox(height: R.h(context, 8)),
             Text(
               'Take our 1-minute Artisanal Pulse quiz and get a curated recommendation just for you.',
-              style: AppTypography.bodySM.copyWith(color: Colors.white.withValues(alpha: 0.7), fontSize: 12, height: 1.5),
+              style: AppTypography.bodySM.copyWith(color: Colors.white.withValues(alpha: 0.7), fontSize: R.sp(context, 12), height: 1.5),
             ),
-            const SizedBox(height: 24),
+            SizedBox(height: R.h(context, 20)),
             GestureDetector(
               onTap: () => context.push('/taste-profiler'),
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+                padding: EdgeInsets.symmetric(horizontal: R.w(context, 18), vertical: R.h(context, 12)),
                 decoration: BoxDecoration(
                   color: AppColors.primary,
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(10),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Icon(Icons.auto_awesome, color: AppColors.deepCharcoal, size: 14),
-                    const SizedBox(width: 8),
+                    Icon(Icons.auto_awesome, color: AppColors.deepCharcoal, size: R.sp(context, 13)),
+                    SizedBox(width: R.w(context, 7)),
                     Text(
                       'TAKE THE QUIZ',
                       style: AppTypography.label.copyWith(
                         color: AppColors.deepCharcoal,
                         fontWeight: FontWeight.w900,
-                        fontSize: 11,
+                        fontSize: R.sp(context, 10),
                         letterSpacing: 1.0,
                       ),
                     ),
@@ -842,97 +874,80 @@ class _B2BSection extends StatelessWidget {
     ];
 
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20),
+      margin: EdgeInsets.symmetric(horizontal: R.w(context, 20)),
       decoration: BoxDecoration(
         color: const Color(0xFF1A2E2A),
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(20),
       ),
       child: Stack(
         children: [
-          // Decorative accent
           Positioned(
             top: 0, right: 0, bottom: 0,
             child: ClipRRect(
               borderRadius: const BorderRadius.only(
-                topRight: Radius.circular(24),
-                bottomRight: Radius.circular(24),
+                topRight: Radius.circular(20),
+                bottomRight: Radius.circular(20),
               ),
               child: Container(
-                width: 80,
+                width: R.w(context, 70),
                 color: AppColors.primary.withValues(alpha: 0.06),
               ),
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(24),
+            padding: EdgeInsets.all(R.w(context, 20)),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'B2B & GASTRONOMY',
-                  style: AppTypography.label.copyWith(
-                    color: AppColors.primary,
-                    fontSize: 9,
-                    letterSpacing: 2.5,
-                    fontWeight: FontWeight.w900,
-                  ),
-                ),
-                const SizedBox(height: 8),
+                Text('B2B & GASTRONOMY', style: AppTypography.label.copyWith(color: AppColors.primary, fontSize: R.sp(context, 9), letterSpacing: 2.5, fontWeight: FontWeight.w900)),
+                SizedBox(height: R.h(context, 6)),
                 RichText(
                   text: TextSpan(
-                    style: AppTypography.h2.copyWith(color: Colors.white, fontSize: 22, height: 1.15),
+                    style: AppTypography.h2.copyWith(color: Colors.white, fontSize: R.sp(context, 19), height: 1.15),
                     children: [
                       const TextSpan(text: 'Elevate Your\nCulinary '),
                       TextSpan(
                         text: 'Signature',
-                        style: AppTypography.h2.copyWith(
-                          color: AppColors.primary,
-                          fontSize: 22,
-                          fontStyle: FontStyle.italic,
-                        ),
+                        style: AppTypography.h2.copyWith(color: AppColors.primary, fontSize: R.sp(context, 19), fontStyle: FontStyle.italic),
                       ),
                     ],
                   ),
                 ),
-                const SizedBox(height: 12),
+                SizedBox(height: R.h(context, 10)),
                 Text(
                   'We partner with restaurants, luxury hotels, and high-end retailers to provide premium, single-origin artisan products.',
-                  style: AppTypography.bodySM.copyWith(
-                    color: Colors.white.withValues(alpha: 0.6),
-                    fontSize: 12,
-                    height: 1.5,
-                  ),
+                  style: AppTypography.bodySM.copyWith(color: Colors.white.withValues(alpha: 0.6), fontSize: R.sp(context, 11), height: 1.5),
                 ),
-                const SizedBox(height: 20),
+                SizedBox(height: R.h(context, 16)),
                 GridView.count(
                   crossAxisCount: 2,
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                  mainAxisSpacing: 14,
-                  crossAxisSpacing: 14,
-                  childAspectRatio: 2.1,
+                  mainAxisSpacing: R.h(context, 12),
+                  crossAxisSpacing: R.w(context, 12),
+                  childAspectRatio: 2.2,
                   padding: EdgeInsets.zero,
                   children: features.map((f) {
                     return Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
-                          padding: const EdgeInsets.all(7),
+                          padding: EdgeInsets.all(R.w(context, 6)),
                           decoration: BoxDecoration(
                             color: AppColors.primary.withValues(alpha: 0.15),
-                            borderRadius: BorderRadius.circular(8),
+                            borderRadius: BorderRadius.circular(7),
                           ),
-                          child: Icon(f.$1, color: AppColors.primary, size: 14),
+                          child: Icon(f.$1, color: AppColors.primary, size: R.sp(context, 13)),
                         ),
-                        const SizedBox(width: 8),
+                        SizedBox(width: R.w(context, 7)),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text(f.$2, style: AppTypography.label.copyWith(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w800)),
-                              const SizedBox(height: 2),
-                              Text(f.$3, style: AppTypography.label.copyWith(color: Colors.white.withValues(alpha: 0.5), fontSize: 8.5, height: 1.3), maxLines: 2, overflow: TextOverflow.ellipsis),
+                              Text(f.$2, style: AppTypography.label.copyWith(color: Colors.white, fontSize: R.sp(context, 9), fontWeight: FontWeight.w800)),
+                              SizedBox(height: R.h(context, 2)),
+                              Text(f.$3, style: AppTypography.label.copyWith(color: Colors.white.withValues(alpha: 0.5), fontSize: R.sp(context, 8), height: 1.3), maxLines: 2, overflow: TextOverflow.ellipsis),
                             ],
                           ),
                         ),
@@ -940,35 +955,34 @@ class _B2BSection extends StatelessWidget {
                     );
                   }).toList(),
                 ),
-                const SizedBox(height: 20),
-                // Stat strip
+                SizedBox(height: R.h(context, 16)),
                 Container(
-                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                  padding: EdgeInsets.symmetric(vertical: R.h(context, 10), horizontal: R.w(context, 14)),
                   decoration: BoxDecoration(
                     color: Colors.white.withValues(alpha: 0.05),
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(10),
                     border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      _b2bStat('500+', 'Partners'),
-                      Container(width: 1, height: 24, color: Colors.white.withValues(alpha: 0.1)),
-                      _b2bStat('50+', 'Restaurants'),
-                      Container(width: 1, height: 24, color: Colors.white.withValues(alpha: 0.1)),
-                      _b2bStat('10+', 'Hotels'),
+                      _b2bStat(context, '500+', 'Partners'),
+                      Container(width: 1, height: R.h(context, 22), color: Colors.white.withValues(alpha: 0.1)),
+                      _b2bStat(context, '50+', 'Restaurants'),
+                      Container(width: 1, height: R.h(context, 22), color: Colors.white.withValues(alpha: 0.1)),
+                      _b2bStat(context, '10+', 'Hotels'),
                     ],
                   ),
                 ),
-                const SizedBox(height: 20),
+                SizedBox(height: R.h(context, 16)),
                 GestureDetector(
                   onTap: () => context.push('/contact?type=bulk'),
                   child: Container(
                     width: double.infinity,
-                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    padding: EdgeInsets.symmetric(vertical: R.h(context, 12)),
                     decoration: BoxDecoration(
                       color: AppColors.primary,
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(10),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -978,11 +992,11 @@ class _B2BSection extends StatelessWidget {
                           style: AppTypography.label.copyWith(
                             color: AppColors.deepCharcoal,
                             fontWeight: FontWeight.w900,
-                            fontSize: 12,
+                            fontSize: R.sp(context, 11),
                           ),
                         ),
-                        const SizedBox(width: 8),
-                        const Icon(Icons.arrow_forward, color: AppColors.deepCharcoal, size: 14),
+                        SizedBox(width: R.w(context, 7)),
+                        Icon(Icons.arrow_forward, color: AppColors.deepCharcoal, size: R.sp(context, 13)),
                       ],
                     ),
                   ),
@@ -995,11 +1009,11 @@ class _B2BSection extends StatelessWidget {
     );
   }
 
-  Widget _b2bStat(String value, String label) {
+  Widget _b2bStat(BuildContext context, String value, String label) {
     return Column(
       children: [
-        Text(value, style: AppTypography.h3.copyWith(color: AppColors.primary, fontSize: 18)),
-        Text(label, style: AppTypography.label.copyWith(color: Colors.white.withValues(alpha: 0.5), fontSize: 9)),
+        Text(value, style: AppTypography.h3.copyWith(color: AppColors.primary, fontSize: R.sp(context, 16))),
+        Text(label, style: AppTypography.label.copyWith(color: Colors.white.withValues(alpha: 0.5), fontSize: R.sp(context, 9))),
       ],
     );
   }
@@ -1071,29 +1085,31 @@ class _HoneyWheelSectionState extends State<_HoneyWheelSection>
   @override
   Widget build(BuildContext context) {
     final profile = _profiles[_active];
+    final wheelSize = R.w(context, 220);
+    final hubSize = R.w(context, 100);
 
     return Container(
       color: const Color(0xFF1A2820),
-      padding: const EdgeInsets.all(24),
+      padding: EdgeInsets.all(R.w(context, 20)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('EDUCATION', style: AppTypography.label.copyWith(color: AppColors.primary, fontSize: 9, letterSpacing: 2.5, fontWeight: FontWeight.w900)),
-          const SizedBox(height: 6),
-          Text("The Honey Taster's Wheel", style: AppTypography.h2.copyWith(color: Colors.white, fontSize: 22, height: 1.1)),
-          const SizedBox(height: 8),
+          Text('EDUCATION', style: AppTypography.label.copyWith(color: AppColors.primary, fontSize: R.sp(context, 9), letterSpacing: 2.5, fontWeight: FontWeight.w900)),
+          SizedBox(height: R.h(context, 5)),
+          Text("The Honey Taster's Wheel", style: AppTypography.h2.copyWith(color: Colors.white, fontSize: R.sp(context, 19), height: 1.1)),
+          SizedBox(height: R.h(context, 6)),
           Text(
             'Like fine wine, honey has complex aromatic compounds. Use our guide to identify the nuances in our artisanal selection.',
-            style: AppTypography.bodySM.copyWith(color: Colors.white.withValues(alpha: 0.55), fontSize: 12, height: 1.5),
+            style: AppTypography.bodySM.copyWith(color: Colors.white.withValues(alpha: 0.55), fontSize: R.sp(context, 11), height: 1.5),
           ),
-          const SizedBox(height: 24),
+          SizedBox(height: R.h(context, 20)),
           // Interactive wheel
           Center(
             child: GestureDetector(
               onTap: () => _switchTo((_active + 1) % _profiles.length),
               child: SizedBox(
-                width: 230,
-                height: 230,
+                width: wheelSize,
+                height: wheelSize,
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
@@ -1103,8 +1119,8 @@ class _HoneyWheelSectionState extends State<_HoneyWheelSection>
                       builder: (_, __) => Transform.rotate(
                         angle: _spinCtrl.value * 2 * 3.14159,
                         child: Container(
-                          width: 230,
-                          height: 230,
+                          width: wheelSize,
+                          height: wheelSize,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             border: Border.all(color: AppColors.primary.withValues(alpha: 0.2), width: 1),
@@ -1114,15 +1130,15 @@ class _HoneyWheelSectionState extends State<_HoneyWheelSection>
                     ),
                     // Color segmented ring
                     CustomPaint(
-                      size: const Size(200, 200),
+                      size: Size(wheelSize * 0.87, wheelSize * 0.87),
                       painter: _WheelPainter(activeIndex: _active, profiles: _profiles),
                     ),
                     // Center hub
                     FadeTransition(
                       opacity: _fadeAnim,
                       child: Container(
-                        width: 104,
-                        height: 104,
+                        width: hubSize,
+                        height: hubSize,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: const Color(0xFF1A2820),
@@ -1132,33 +1148,32 @@ class _HoneyWheelSectionState extends State<_HoneyWheelSection>
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(profile.emoji, style: const TextStyle(fontSize: 24)),
-                            const SizedBox(height: 6),
+                            Text(profile.emoji, style: TextStyle(fontSize: R.sp(context, 22))),
+                            SizedBox(height: R.h(context, 4)),
                             ...profile.notes.split(' • ').map((n) => Padding(
                               padding: const EdgeInsets.only(bottom: 2),
                               child: Text(
                                 n.toUpperCase(),
-                                style: TextStyle(color: profile.color, fontSize: 7.5, fontWeight: FontWeight.w900, letterSpacing: 0.5, height: 1.1),
+                                style: TextStyle(color: profile.color, fontSize: R.sp(context, 7), fontWeight: FontWeight.w900, letterSpacing: 0.5, height: 1.1),
                                 textAlign: TextAlign.center,
                               ),
                             )),
-                            const SizedBox(height: 3),
-                            Text('PROFILE', style: TextStyle(color: Colors.white.withValues(alpha: 0.3), fontSize: 7, fontWeight: FontWeight.w800, letterSpacing: 2.0)),
+                            SizedBox(height: R.h(context, 2)),
+                            Text('PROFILE', style: TextStyle(color: Colors.white.withValues(alpha: 0.3), fontSize: R.sp(context, 6.5), fontWeight: FontWeight.w800, letterSpacing: 2.0)),
                           ],
                         ),
                       ),
                     ),
-                    // Down arrow indicator
-                    const Positioned(
+                    Positioned(
                       top: 0,
-                      child: Icon(Icons.keyboard_arrow_down, color: AppColors.primary, size: 18),
+                      child: Icon(Icons.keyboard_arrow_down, color: AppColors.primary, size: R.sp(context, 18)),
                     ),
                   ],
                 ),
               ),
             ),
           ),
-          const SizedBox(height: 24),
+          SizedBox(height: R.h(context, 20)),
           // Profile selector list
           ...List.generate(_profiles.length, (i) {
             final p = _profiles[i];
@@ -1167,11 +1182,11 @@ class _HoneyWheelSectionState extends State<_HoneyWheelSection>
               onTap: () => _switchTo(i),
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 250),
-                margin: const EdgeInsets.only(bottom: 10),
-                padding: const EdgeInsets.all(14),
+                margin: EdgeInsets.only(bottom: R.h(context, 8)),
+                padding: EdgeInsets.all(R.w(context, 12)),
                 decoration: BoxDecoration(
                   color: isActive ? AppColors.primary.withValues(alpha: 0.1) : Colors.white.withValues(alpha: 0.04),
-                  borderRadius: BorderRadius.circular(14),
+                  borderRadius: BorderRadius.circular(12),
                   border: Border.all(
                     color: isActive ? AppColors.primary.withValues(alpha: 0.5) : Colors.white.withValues(alpha: 0.08),
                   ),
@@ -1180,19 +1195,19 @@ class _HoneyWheelSectionState extends State<_HoneyWheelSection>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      width: 10, height: 10,
+                      width: R.w(context, 9), height: R.w(context, 9),
                       margin: const EdgeInsets.only(top: 3),
                       decoration: BoxDecoration(color: p.color, shape: BoxShape.circle),
                     ),
-                    const SizedBox(width: 12),
+                    SizedBox(width: R.w(context, 10)),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(p.name, style: AppTypography.label.copyWith(color: Colors.white, fontWeight: FontWeight.w800, fontSize: 12)),
+                          Text(p.name, style: AppTypography.label.copyWith(color: Colors.white, fontWeight: FontWeight.w800, fontSize: R.sp(context, 11))),
                           if (isActive) ...[
-                            const SizedBox(height: 4),
-                            Text(p.desc, style: AppTypography.bodySM.copyWith(color: Colors.white.withValues(alpha: 0.55), fontSize: 11, height: 1.4)),
+                            SizedBox(height: R.h(context, 3)),
+                            Text(p.desc, style: AppTypography.bodySM.copyWith(color: Colors.white.withValues(alpha: 0.55), fontSize: R.sp(context, 11), height: 1.4)),
                           ],
                         ],
                       ),
@@ -1202,14 +1217,14 @@ class _HoneyWheelSectionState extends State<_HoneyWheelSection>
               ),
             );
           }),
-          const SizedBox(height: 16),
+          SizedBox(height: R.h(context, 12)),
           GestureDetector(
             onTap: () => context.push('/journal/honey-tasters-guide'),
             child: Row(
               children: [
-                Text('Explore Full Tasting Guide', style: AppTypography.label.copyWith(color: AppColors.primary, fontWeight: FontWeight.w800, fontSize: 12)),
-                const SizedBox(width: 6),
-                const Icon(Icons.arrow_forward, color: AppColors.primary, size: 14),
+                Text('Explore Full Tasting Guide', style: AppTypography.label.copyWith(color: AppColors.primary, fontWeight: FontWeight.w800, fontSize: R.sp(context, 11))),
+                SizedBox(width: R.w(context, 6)),
+                Icon(Icons.arrow_forward, color: AppColors.primary, size: R.sp(context, 13)),
               ],
             ),
           ),

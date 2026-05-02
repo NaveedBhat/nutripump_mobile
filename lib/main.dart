@@ -99,6 +99,16 @@ class NutriPumpApp extends ConsumerWidget {
       darkTheme: AppTheme.dark,
       themeMode: ThemeMode.system,
       routerConfig: appRouter,
+      builder: (context, child) {
+        // Cap text scale factor at 1.0 — prevents OS accessibility
+        // settings from inflating text beyond design intent.
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(
+            textScaler: const TextScaler.linear(1.0),
+          ),
+          child: child!,
+        );
+      },
     );
   }
 }
