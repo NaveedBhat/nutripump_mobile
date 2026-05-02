@@ -185,7 +185,7 @@ class WishlistScreen extends ConsumerWidget {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (dialogContext) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(R.w(context, 16))),
         title: Text('Clear Wishlist', style: AppTypography.h3(context)),
         content: Text(
           'Remove all items from your wishlist?',
@@ -204,7 +204,7 @@ class WishlistScreen extends ConsumerWidget {
               backgroundColor: AppColors.error,
               foregroundColor: Colors.white,
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)),
+                  borderRadius: BorderRadius.circular(R.w(context, 10))),
               elevation: 0,
             ),
             child: const Text('Clear All'),

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import '../features/legal/legal_defaults.dart';
 
 class LegalItem {
@@ -79,7 +80,7 @@ class LegalService {
       }
       return id == 'privacy_policy' ? defaultPrivacyPage : defaultTermsPage;
     } catch (e) {
-      print('Error fetching legal page $id: $e');
+      debugPrint('Error fetching legal page $id: $e');
       return id == 'privacy_policy' ? defaultPrivacyPage : defaultTermsPage;
     }
   }

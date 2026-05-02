@@ -270,7 +270,7 @@ class _AccountView extends StatelessWidget {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (dialogContext) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(R.w(context, 16))),
         title: Text('Sign Out', style: AppTypography.h3(context)),
         content: Text(
           'Are you sure you want to sign out?',
@@ -289,7 +289,7 @@ class _AccountView extends StatelessWidget {
               backgroundColor: AppColors.primary,
               foregroundColor: AppColors.deepCharcoal,
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)),
+                  borderRadius: BorderRadius.circular(R.w(context, 10))),
               elevation: 0,
             ),
             child: const Text('Sign Out'),

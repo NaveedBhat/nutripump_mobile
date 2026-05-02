@@ -91,13 +91,13 @@ class _HomeAppBar extends ConsumerWidget {
           height: R.h(context, 36),
           decoration: BoxDecoration(
             color: const Color(0xFFF5F3EE),
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(R.w(context, 10)),
           ),
           child: Row(
             children: [
-              const SizedBox(width: 10),
+              SizedBox(width: R.w(context, 10)),
               Icon(Icons.search_rounded, color: AppColors.neutralGold, size: R.sp(context, 18)),
-              const SizedBox(width: 8),
+              SizedBox(width: R.w(context, 8)),
               Expanded(
                 child: Text(
                   'Search honey, saffron, nuts...',
@@ -111,11 +111,11 @@ class _HomeAppBar extends ConsumerWidget {
               GestureDetector(
                 onTap: () => context.push('/search', extra: {'autoStartVoice': true}),
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: EdgeInsets.all(R.w(context, 8)),
                   child: Icon(Icons.mic_none, color: AppColors.neutralGold, size: R.sp(context, 18)),
                 ),
               ),
-              const SizedBox(width: 2),
+              SizedBox(width: R.w(context, 2)),
             ],
           ),
         ),
@@ -179,7 +179,7 @@ class _HomeAppBar extends ConsumerWidget {
             );
           },
         ),
-        const SizedBox(width: 4),
+        SizedBox(width: R.w(context, 4)),
       ],
       bottom: PreferredSize(
         preferredSize: const Size.fromHeight(1),
@@ -323,7 +323,7 @@ class _HeroCarouselState extends ConsumerState<_HeroCarousel> {
                                   horizontal: R.w(context, 7), vertical: R.h(context, 3)),
                                 decoration: BoxDecoration(
                                   border: Border.all(color: AppColors.primary, width: 1),
-                                  borderRadius: BorderRadius.circular(4),
+                                  borderRadius: BorderRadius.circular(R.w(context, 4)),
                                 ),
                                 child: Text(
                                   slide['badge']!,
@@ -361,7 +361,7 @@ class _HeroCarouselState extends ConsumerState<_HeroCarousel> {
                                   horizontal: R.w(context, 14), vertical: R.h(context, 8)),
                                 decoration: BoxDecoration(
                                   color: AppColors.primary,
-                                  borderRadius: BorderRadius.circular(7),
+                                  borderRadius: BorderRadius.circular(R.w(context, 7)),
                                 ),
                                 child: Text(
                                   slide['cta']!,
@@ -388,12 +388,12 @@ class _HeroCarouselState extends ConsumerState<_HeroCarousel> {
                 child: Row(
                   children: List.generate(slides.length, (index) => AnimatedContainer(
                     duration: const Duration(milliseconds: 300),
-                    margin: const EdgeInsets.only(left: 5),
-                    width: _currentPage == index ? 18 : 5,
-                    height: 5,
+                    margin: EdgeInsets.only(left: R.w(context, 5)),
+                    width: _currentPage == index ? R.w(context, 18) : R.w(context, 5),
+                    height: R.h(context, 5),
                     decoration: BoxDecoration(
                       color: _currentPage == index ? AppColors.primary : Colors.white.withValues(alpha: 0.5),
-                      borderRadius: BorderRadius.circular(3),
+                      borderRadius: BorderRadius.circular(R.w(context, 3)),
                     ),
                   )),
                 ),
@@ -544,7 +544,7 @@ class _CategoriesSection extends ConsumerWidget {
                           ),
                           child: ClipOval(
                             child: Padding(
-                              padding: const EdgeInsets.all(3),
+                              padding: EdgeInsets.all(R.w(context, 3)),
                               child: cat.image != null && cat.image!.isNotEmpty
                                   ? CustomNetworkImage(imageUrl: cat.image!)
                                   : CustomNetworkImage(imageUrl: _getCategoryFallbackImage(cat.name)),
@@ -697,7 +697,7 @@ class _WhyNutriPump extends StatelessWidget {
                   padding: EdgeInsets.all(R.w(context, 12)),
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(14),
+                    borderRadius: BorderRadius.circular(R.w(context, 14)),
                     border: Border.all(color: AppColors.borderLight),
                     boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 8, offset: const Offset(0, 2))],
                   ),
@@ -708,7 +708,7 @@ class _WhyNutriPump extends StatelessWidget {
                         padding: EdgeInsets.all(R.w(context, 7)),
                         decoration: BoxDecoration(
                           color: AppColors.primary.withValues(alpha: 0.1),
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(R.w(context, 8)),
                         ),
                         child: Icon(v.$1, color: AppColors.primary, size: R.sp(context, 15)),
                       ),
@@ -796,7 +796,7 @@ class _TasteProfilerCta extends StatelessWidget {
       margin: EdgeInsets.symmetric(horizontal: R.w(context, 20)),
       decoration: BoxDecoration(
         color: const Color(0xFF1B3B36),
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(R.w(context, 20)),
         image: const DecorationImage(
           image: NetworkImage('https://images.unsplash.com/photo-1636800637091-3d54ec4dfffb?q=80&w=600&auto=format&fit=crop'),
           fit: BoxFit.cover,
@@ -812,7 +812,7 @@ class _TasteProfilerCta extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: R.w(context, 8), vertical: R.h(context, 4)),
               decoration: BoxDecoration(
                 color: AppColors.primary.withValues(alpha: 0.2),
-                borderRadius: BorderRadius.circular(4),
+                borderRadius: BorderRadius.circular(R.w(context, 4)),
               ),
               child: Text('AI-POWERED', style: AppTypography.label(context).copyWith(color: AppColors.primary, fontSize: R.sp(context, 8), letterSpacing: 2.0, fontWeight: FontWeight.w900)),
             ),
@@ -833,7 +833,7 @@ class _TasteProfilerCta extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: R.w(context, 18), vertical: R.h(context, 12)),
                 decoration: BoxDecoration(
                   color: AppColors.primary,
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(R.w(context, 10)),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -877,16 +877,16 @@ class _B2BSection extends StatelessWidget {
       margin: EdgeInsets.symmetric(horizontal: R.w(context, 20)),
       decoration: BoxDecoration(
         color: const Color(0xFF1A2E2A),
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(R.w(context, 20)),
       ),
       child: Stack(
         children: [
           Positioned(
             top: 0, right: 0, bottom: 0,
             child: ClipRRect(
-              borderRadius: const BorderRadius.only(
-                topRight: Radius.circular(20),
-                bottomRight: Radius.circular(20),
+              borderRadius: BorderRadius.only(
+                topRight: Radius.circular(R.w(context, 20)),
+                bottomRight: Radius.circular(R.w(context, 20)),
               ),
               child: Container(
                 width: R.w(context, 70),
@@ -935,7 +935,7 @@ class _B2BSection extends StatelessWidget {
                           padding: EdgeInsets.all(R.w(context, 6)),
                           decoration: BoxDecoration(
                             color: AppColors.primary.withValues(alpha: 0.15),
-                            borderRadius: BorderRadius.circular(7),
+                            borderRadius: BorderRadius.circular(R.w(context, 7)),
                           ),
                           child: Icon(f.$1, color: AppColors.primary, size: R.sp(context, 13)),
                         ),
@@ -960,7 +960,7 @@ class _B2BSection extends StatelessWidget {
                   padding: EdgeInsets.symmetric(vertical: R.h(context, 10), horizontal: R.w(context, 14)),
                   decoration: BoxDecoration(
                     color: Colors.white.withValues(alpha: 0.05),
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(R.w(context, 10)),
                     border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
                   ),
                   child: Row(
@@ -982,7 +982,7 @@ class _B2BSection extends StatelessWidget {
                     padding: EdgeInsets.symmetric(vertical: R.h(context, 12)),
                     decoration: BoxDecoration(
                       color: AppColors.primary,
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(R.w(context, 10)),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -1151,7 +1151,7 @@ class _HoneyWheelSectionState extends State<_HoneyWheelSection>
                             Text(profile.emoji, style: TextStyle(fontSize: R.sp(context, 22))),
                             SizedBox(height: R.h(context, 4)),
                             ...profile.notes.split(' • ').map((n) => Padding(
-                              padding: const EdgeInsets.only(bottom: 2),
+                              padding: EdgeInsets.only(bottom: R.h(context, 2)),
                               child: Text(
                                 n.toUpperCase(),
                                 style: TextStyle(color: profile.color, fontSize: R.sp(context, 7), fontWeight: FontWeight.w900, letterSpacing: 0.5, height: 1.1),
@@ -1186,7 +1186,7 @@ class _HoneyWheelSectionState extends State<_HoneyWheelSection>
                 padding: EdgeInsets.all(R.w(context, 12)),
                 decoration: BoxDecoration(
                   color: isActive ? AppColors.primary.withValues(alpha: 0.1) : Colors.white.withValues(alpha: 0.04),
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(R.w(context, 12)),
                   border: Border.all(
                     color: isActive ? AppColors.primary.withValues(alpha: 0.5) : Colors.white.withValues(alpha: 0.08),
                   ),
@@ -1196,7 +1196,7 @@ class _HoneyWheelSectionState extends State<_HoneyWheelSection>
                   children: [
                     Container(
                       width: R.w(context, 9), height: R.w(context, 9),
-                      margin: const EdgeInsets.only(top: 3),
+                      margin: EdgeInsets.only(top: R.h(context, 3)),
                       decoration: BoxDecoration(color: p.color, shape: BoxShape.circle),
                     ),
                     SizedBox(width: R.w(context, 10)),

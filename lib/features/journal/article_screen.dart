@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_typography.dart';
+import '../../core/utils/responsive.dart';
 import '../../providers/journal_provider.dart';
 
 class ArticleScreen extends ConsumerWidget {
@@ -23,12 +24,12 @@ class ArticleScreen extends ConsumerWidget {
         slivers: [
           // ── App Bar / Header Image ────────────────────────────
           SliverAppBar(
-            expandedHeight: 300,
+            expandedHeight: R.h(context, 300),
             pinned: true,
             backgroundColor: Colors.white,
             elevation: 0,
             leading: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: EdgeInsets.all(R.w(context, 8)),
               child: CircleAvatar(
                 backgroundColor: Colors.white.withValues(alpha: 0.8),
                 child: IconButton(
@@ -63,12 +64,12 @@ class ArticleScreen extends ConsumerWidget {
           // ── Article Content ───────────────────────────────────
           SliverToBoxAdapter(
             child: Container(
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+                borderRadius: BorderRadius.vertical(top: Radius.circular(R.w(context, 24))),
               ),
-              transform: Matrix4.translationValues(0, -24, 0),
-              padding: const EdgeInsets.all(24),
+              transform: Matrix4.translationValues(0, -R.h(context, 24), 0),
+              padding: EdgeInsets.all(R.w(context, 24)),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -77,74 +78,74 @@ class ArticleScreen extends ConsumerWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                        padding: EdgeInsets.symmetric(horizontal: R.w(context, 10), vertical: R.h(context, 4)),
                         decoration: BoxDecoration(
                           color: AppColors.primary.withValues(alpha: 0.1),
-                          borderRadius: BorderRadius.circular(20),
+                          borderRadius: BorderRadius.circular(R.w(context, 20)),
                         ),
                         child: Text(article.category.toUpperCase(),
-                            style: AppTypography.label(context).copyWith(fontSize: 10, color: AppColors.primary)),
+                            style: AppTypography.label(context).copyWith(fontSize: R.sp(context, 10), color: AppColors.primary)),
                       ),
                       Row(
                         children: [
-                          const Icon(Icons.access_time_rounded, size: 14, color: AppColors.neutralGold),
-                          const SizedBox(width: 4),
+                          Icon(Icons.access_time_rounded, size: R.sp(context, 14), color: AppColors.neutralGold),
+                          SizedBox(width: R.w(context, 4)),
                           Text('${article.readTimeMinutes} min read',
-                              style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, fontSize: 12)),
+                              style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, fontSize: R.sp(context, 12))),
                         ],
                       ),
                     ],
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: R.h(context, 16)),
 
                   // Title
-                  Text(article.title, style: AppTypography.h2(context).copyWith(fontSize: 26, height: 1.2)),
-                  const SizedBox(height: 16),
+                  Text(article.title, style: AppTypography.h2(context).copyWith(fontSize: R.sp(context, 26), height: 1.2)),
+                  SizedBox(height: R.h(context, 16)),
 
                   // Author & Date
                   Row(
                     children: [
                       CircleAvatar(
-                        radius: 16,
+                        radius: R.w(context, 16),
                         backgroundColor: AppColors.backgroundLight,
                         child: Text(article.author[0], style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700)),
                       ),
-                      const SizedBox(width: 10),
+                      SizedBox(width: R.w(context, 10)),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(article.author, style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: 13)),
-                          Text(_formatDate(article.publishedAt), style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, fontSize: 11)),
+                          Text(article.author, style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: R.sp(context, 13))),
+                          Text(_formatDate(article.publishedAt), style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, fontSize: R.sp(context, 11))),
                         ],
                       ),
                     ],
                   ),
-                  const SizedBox(height: 24),
+                  SizedBox(height: R.h(context, 24)),
                   const Divider(color: AppColors.borderLight),
-                  const SizedBox(height: 24),
+                  SizedBox(height: R.h(context, 24)),
 
                   // Summary
                   Text(
                     article.summary,
                     style: AppTypography.bodySM(context).copyWith(
-                      fontSize: 16,
+                      fontSize: R.sp(context, 16),
                       fontWeight: FontWeight.w600,
                       height: 1.5,
                       color: AppColors.deepCharcoal.withValues(alpha: 0.8),
                     ),
                   ),
-                  const SizedBox(height: 24),
+                  SizedBox(height: R.h(context, 24)),
 
                   // Main Content
                   Text(
                     article.content,
                     style: AppTypography.bodySM(context).copyWith(
-                      fontSize: 15,
+                      fontSize: R.sp(context, 15),
                       height: 1.8,
                       color: AppColors.deepCharcoal,
                     ),
                   ),
-                  const SizedBox(height: 40),
+                  SizedBox(height: R.h(context, 40)),
                 ],
               ),
             ),
