@@ -69,7 +69,7 @@ class _AccountView extends StatelessWidget {
             surfaceTintColor: Colors.transparent,
             elevation: 0,
             centerTitle: true,
-            title: Text('My Account', style: AppTypography.h3),
+            title: Text('My Account', style: AppTypography.h3(context)),
             // actions: [
             //   IconButton(
             //     icon: const Icon(Icons.notifications_none_rounded,
@@ -234,7 +234,7 @@ class _AccountView extends StatelessWidget {
                       ),
                       title: Text(
                         'Sign Out',
-                        style: AppTypography.bodySM.copyWith(
+                        style: AppTypography.bodySM(context).copyWith(
                           fontWeight: FontWeight.w700,
                           color: AppColors.error,
                           fontSize: 14,
@@ -252,7 +252,7 @@ class _AccountView extends StatelessWidget {
                   padding: const EdgeInsets.only(bottom: 32),
                   child: Text(
                     'NutriPump Artisanal v1.0.0',
-                    style: AppTypography.labelGold
+                    style: AppTypography.labelGold(context)
                         .copyWith(fontSize: 10, letterSpacing: 1),
                   ),
                 ),
@@ -277,16 +277,16 @@ class _AccountView extends StatelessWidget {
       context: context,
       builder: (dialogContext) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        title: Text('Sign Out', style: AppTypography.h3),
+        title: Text('Sign Out', style: AppTypography.h3(context)),
         content: Text(
           'Are you sure you want to sign out?',
-          style: AppTypography.bodySM.copyWith(color: AppColors.neutralGold),
+          style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(dialogContext, false),
             child: Text('Cancel',
-                style: AppTypography.bodySM
+                style: AppTypography.bodySM(context)
                     .copyWith(color: AppColors.neutralGold)),
           ),
           ElevatedButton(
@@ -363,7 +363,7 @@ class _ProfileCard extends StatelessWidget {
                       child: Center(
                         child: Text(
                           user.initials as String,
-                          style: AppTypography.h2.copyWith(
+                          style: AppTypography.h2(context).copyWith(
                             color: AppColors.deepCharcoal,
                             fontSize: 26,
                           ),
@@ -401,7 +401,7 @@ class _ProfileCard extends StatelessWidget {
               children: [
                 Text(
                   (user.displayName as String?) ?? 'Artisanal Member',
-                  style: AppTypography.h3.copyWith(fontSize: 17),
+                  style: AppTypography.h3(context).copyWith(fontSize: 17),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -409,7 +409,7 @@ class _ProfileCard extends StatelessWidget {
                   const SizedBox(height: 2),
                   Text(
                     user.email as String,
-                    style: AppTypography.bodySM.copyWith(
+                    style: AppTypography.bodySM(context).copyWith(
                       color: AppColors.neutralGold,
                       fontSize: 12,
                     ),
@@ -427,7 +427,7 @@ class _ProfileCard extends StatelessWidget {
                   ),
                   child: Text(
                     '${(user.isAdmin as bool) ? 'Admin' : 'Heritage Member'} · $memberSince',
-                    style: AppTypography.label.copyWith(
+                    style: AppTypography.label(context).copyWith(
                       fontSize: 9,
                       color: AppColors.deepCharcoal,
                       letterSpacing: 0.5,
@@ -526,7 +526,7 @@ class _StatChip extends StatelessWidget {
           const SizedBox(height: 6),
           Text(
             value,
-            style: AppTypography.bodySM.copyWith(
+            style: AppTypography.bodySM(context).copyWith(
               fontWeight: FontWeight.w800,
               fontSize: 13,
               color: AppColors.deepCharcoal,
@@ -537,7 +537,7 @@ class _StatChip extends StatelessWidget {
           const SizedBox(height: 2),
           Text(
             label,
-            style: AppTypography.labelGold.copyWith(fontSize: 9),
+            style: AppTypography.labelGold(context).copyWith(fontSize: 9),
           ),
         ],
       ),
@@ -558,7 +558,7 @@ class _SectionHeader extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(20, 0, 20, 8),
       child: Text(
         title.toUpperCase(),
-        style: AppTypography.labelGold.copyWith(
+        style: AppTypography.labelGold(context).copyWith(
           fontSize: 10,
           letterSpacing: 2,
         ),
@@ -626,7 +626,7 @@ class _NavTile extends StatelessWidget {
                         children: [
                           Text(
                             label,
-                            style: AppTypography.bodySM.copyWith(
+                            style: AppTypography.bodySM(context).copyWith(
                               fontWeight: FontWeight.w700,
                               fontSize: 14,
                             ),
@@ -634,7 +634,7 @@ class _NavTile extends StatelessWidget {
                           const SizedBox(height: 1),
                           Text(
                             subtitle,
-                            style: AppTypography.labelGold.copyWith(
+                            style: AppTypography.labelGold(context).copyWith(
                               fontSize: 11,
                               fontWeight: FontWeight.w500,
                             ),

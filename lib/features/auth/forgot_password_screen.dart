@@ -108,13 +108,13 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Reset Password', style: AppTypography.h2.copyWith(fontSize: 28)),
+                        Text('Reset Password', style: AppTypography.h2(context).copyWith(fontSize: 28)),
                         const SizedBox(height: 6),
-                        Text('Enter your email to receive a password reset link.', style: AppTypography.bodySM.copyWith(color: AppColors.neutralGold, fontSize: 14, height: 1.5)),
+                        Text('Enter your email to receive a password reset link.', style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, fontSize: 14, height: 1.5)),
                         const SizedBox(height: 36),
 
                         // Email
-                        Text('EMAIL ADDRESS', style: AppTypography.label.copyWith(color: AppColors.neutralGold, fontSize: 10)),
+                        Text('EMAIL ADDRESS', style: AppTypography.label(context).copyWith(color: AppColors.neutralGold, fontSize: 10)),
                         const SizedBox(height: 8),
                         ReactiveTextField<String>(
                           formControlName: 'email',
@@ -123,7 +123,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                           onSubmitted: (_) => _handleResetPassword(),
                           decoration: InputDecoration(
                             hintText: 'you@example.com',
-                            hintStyle: AppTypography.bodySM.copyWith(color: AppColors.neutralGold.withValues(alpha: 0.5)),
+                            hintStyle: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold.withValues(alpha: 0.5)),
                             prefixIcon: const Icon(Icons.mail_outline_rounded, size: 18, color: AppColors.neutralGold),
                             filled: true, fillColor: Colors.white,
                             contentPadding: const EdgeInsets.symmetric(vertical: 16),
@@ -148,7 +148,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                               : Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text('Send Reset Link', style: AppTypography.bodySM.copyWith(fontWeight: FontWeight.w800, fontSize: 16)),
+                                    Text('Send Reset Link', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: 16)),
                                     const SizedBox(width: 8),
                                     const Icon(Icons.arrow_forward_rounded, size: 18),
                                   ],
@@ -160,10 +160,10 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text("Remembered your password? ", style: AppTypography.bodySM.copyWith(color: AppColors.neutralGold, fontSize: 14)),
+                            Text("Remembered your password? ", style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, fontSize: 14)),
                             GestureDetector(
                               onTap: () => context.pop(),
-                              child: Text('Sign In', style: AppTypography.bodySM.copyWith(color: AppColors.primaryDark, fontSize: 14, fontWeight: FontWeight.w700)),
+                              child: Text('Sign In', style: AppTypography.bodySM(context).copyWith(color: AppColors.primaryDark, fontSize: 14, fontWeight: FontWeight.w700)),
                             ),
                           ],
                         ),

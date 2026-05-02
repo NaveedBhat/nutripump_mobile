@@ -78,10 +78,10 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
           child: TextField(
             controller: _searchController,
             autofocus: true,
-            style: AppTypography.bodySM.copyWith(color: AppColors.deepCharcoal),
+            style: AppTypography.bodySM(context).copyWith(color: AppColors.deepCharcoal),
             decoration: InputDecoration(
               hintText: 'Search honey, saffron, nuts...',
-              hintStyle: AppTypography.bodySM.copyWith(color: AppColors.neutralGold.withValues(alpha: 0.7)),
+              hintStyle: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold.withValues(alpha: 0.7)),
               prefixIcon: const Icon(Icons.search_rounded, color: AppColors.neutralGold, size: 20),
               border: InputBorder.none,
               contentPadding: const EdgeInsets.symmetric(vertical: 10),
@@ -136,13 +136,13 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                     Text(
                       'What are you looking for?',
                       textAlign: TextAlign.center,
-                      style: AppTypography.h2.copyWith(fontSize: 18),
+                      style: AppTypography.h2(context).copyWith(fontSize: 18),
                     ),
                     const SizedBox(height: 12),
                     Text(
                       'Search for pure honey, premium saffron, dry fruits, or specific collections.',
                       textAlign: TextAlign.center,
-                      style: AppTypography.bodySM.copyWith(color: AppColors.neutralGold, height: 1.5),
+                      style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, height: 1.5),
                     ),
                   ],
                 ),
@@ -169,13 +169,13 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                     Text(
                       'No results found',
                       textAlign: TextAlign.center,
-                      style: AppTypography.h2.copyWith(fontSize: 18),
+                      style: AppTypography.h2(context).copyWith(fontSize: 18),
                     ),
                     const SizedBox(height: 12),
                     Text(
                       'We couldn\'t find anything matching "$_query".\nTry checking your spelling or use more general terms.',
                       textAlign: TextAlign.center,
-                      style: AppTypography.bodySM.copyWith(color: AppColors.neutralGold, height: 1.5),
+                      style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, height: 1.5),
                     ),
                   ],
                 ),

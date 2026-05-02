@@ -22,7 +22,7 @@ class JournalScreen extends ConsumerWidget {
         elevation: 0,
         surfaceTintColor: Colors.transparent,
         centerTitle: true,
-        title: Text('Journal', style: AppTypography.h3),
+        title: Text('Journal', style: AppTypography.h3(context)),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1),
           child: Container(height: 1, color: AppColors.borderLight),
@@ -51,7 +51,7 @@ class JournalScreen extends ConsumerWidget {
                     padding: const EdgeInsets.only(right: 8),
                     child: ChoiceChip(
                       label: Text(category,
-                          style: AppTypography.bodySM.copyWith(
+                          style: AppTypography.bodySM(context).copyWith(
                             color: isSelected ? Colors.white : AppColors.deepCharcoal,
                             fontWeight: isSelected ? FontWeight.w700 : FontWeight.w600,
                           )),
@@ -79,7 +79,7 @@ class JournalScreen extends ConsumerWidget {
                     child: Center(
                       child: Padding(
                         padding: const EdgeInsets.all(40),
-                        child: Text('No articles found.', style: AppTypography.bodySM.copyWith(color: AppColors.neutralGold)),
+                        child: Text('No articles found.', style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold)),
                       ),
                     ),
                   )
@@ -135,12 +135,12 @@ class _FeaturedArticleCard extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                 decoration: BoxDecoration(color: AppColors.primary, borderRadius: BorderRadius.circular(20)),
-                child: Text(article.category.toUpperCase(), style: AppTypography.label.copyWith(fontSize: 10, color: AppColors.deepCharcoal)),
+                child: Text(article.category.toUpperCase(), style: AppTypography.label(context).copyWith(fontSize: 10, color: AppColors.deepCharcoal)),
               ),
               const SizedBox(height: 12),
               Text(
                 article.title,
-                style: AppTypography.h2.copyWith(color: Colors.white, fontSize: 22, height: 1.2),
+                style: AppTypography.h2(context).copyWith(color: Colors.white, fontSize: 22, height: 1.2),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -149,7 +149,7 @@ class _FeaturedArticleCard extends StatelessWidget {
                 children: [
                   const Icon(Icons.access_time_rounded, size: 14, color: Colors.white70),
                   const SizedBox(width: 4),
-                  Text('${article.readTimeMinutes} min read', style: AppTypography.bodySM.copyWith(color: Colors.white70, fontSize: 12)),
+                  Text('${article.readTimeMinutes} min read', style: AppTypography.bodySM(context).copyWith(color: Colors.white70, fontSize: 12)),
                 ],
               ),
             ],
@@ -198,11 +198,11 @@ class _ArticleCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(article.category.toUpperCase(),
-                        style: AppTypography.label.copyWith(fontSize: 10, color: AppColors.primary)),
+                        style: AppTypography.label(context).copyWith(fontSize: 10, color: AppColors.primary)),
                     const SizedBox(height: 4),
                     Text(
                       article.title,
-                      style: AppTypography.bodySM.copyWith(fontWeight: FontWeight.w800, fontSize: 14, height: 1.2),
+                      style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: 14, height: 1.2),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -212,7 +212,7 @@ class _ArticleCard extends StatelessWidget {
                         const Icon(Icons.access_time_rounded, size: 12, color: AppColors.neutralGold),
                         const SizedBox(width: 4),
                         Text('${article.readTimeMinutes} min read',
-                            style: AppTypography.bodySM.copyWith(color: AppColors.neutralGold, fontSize: 11)),
+                            style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, fontSize: 11)),
                       ],
                     ),
                   ],

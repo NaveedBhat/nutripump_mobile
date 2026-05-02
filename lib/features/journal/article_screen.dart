@@ -83,14 +83,14 @@ class ArticleScreen extends ConsumerWidget {
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Text(article.category.toUpperCase(),
-                            style: AppTypography.label.copyWith(fontSize: 10, color: AppColors.primary)),
+                            style: AppTypography.label(context).copyWith(fontSize: 10, color: AppColors.primary)),
                       ),
                       Row(
                         children: [
                           const Icon(Icons.access_time_rounded, size: 14, color: AppColors.neutralGold),
                           const SizedBox(width: 4),
                           Text('${article.readTimeMinutes} min read',
-                              style: AppTypography.bodySM.copyWith(color: AppColors.neutralGold, fontSize: 12)),
+                              style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, fontSize: 12)),
                         ],
                       ),
                     ],
@@ -98,7 +98,7 @@ class ArticleScreen extends ConsumerWidget {
                   const SizedBox(height: 16),
 
                   // Title
-                  Text(article.title, style: AppTypography.h2.copyWith(fontSize: 26, height: 1.2)),
+                  Text(article.title, style: AppTypography.h2(context).copyWith(fontSize: 26, height: 1.2)),
                   const SizedBox(height: 16),
 
                   // Author & Date
@@ -107,14 +107,14 @@ class ArticleScreen extends ConsumerWidget {
                       CircleAvatar(
                         radius: 16,
                         backgroundColor: AppColors.backgroundLight,
-                        child: Text(article.author[0], style: AppTypography.bodySM.copyWith(fontWeight: FontWeight.w700)),
+                        child: Text(article.author[0], style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700)),
                       ),
                       const SizedBox(width: 10),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(article.author, style: AppTypography.bodySM.copyWith(fontWeight: FontWeight.w700, fontSize: 13)),
-                          Text(_formatDate(article.publishedAt), style: AppTypography.bodySM.copyWith(color: AppColors.neutralGold, fontSize: 11)),
+                          Text(article.author, style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: 13)),
+                          Text(_formatDate(article.publishedAt), style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, fontSize: 11)),
                         ],
                       ),
                     ],
@@ -126,7 +126,7 @@ class ArticleScreen extends ConsumerWidget {
                   // Summary
                   Text(
                     article.summary,
-                    style: AppTypography.bodySM.copyWith(
+                    style: AppTypography.bodySM(context).copyWith(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
                       height: 1.5,
@@ -138,7 +138,7 @@ class ArticleScreen extends ConsumerWidget {
                   // Main Content
                   Text(
                     article.content,
-                    style: AppTypography.bodySM.copyWith(
+                    style: AppTypography.bodySM(context).copyWith(
                       fontSize: 15,
                       height: 1.8,
                       color: AppColors.deepCharcoal,

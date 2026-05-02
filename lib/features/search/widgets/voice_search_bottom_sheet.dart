@@ -143,19 +143,19 @@ class _VoiceSearchBottomSheetState extends State<VoiceSearchBottomSheet> {
             const SizedBox(height: 24),
             Text(
               _isListening ? 'Listening...' : 'Shop faster with voice',
-              style: AppTypography.h2.copyWith(fontSize: 22),
+              style: AppTypography.h2(context).copyWith(fontSize: 22),
             ),
             const SizedBox(height: 8),
             if (_text.isNotEmpty && _isListening)
               Text(
                 '"$_text"',
-                style: AppTypography.body.copyWith(fontStyle: FontStyle.italic, color: AppColors.neutralGold),
+                style: AppTypography.body(context).copyWith(fontStyle: FontStyle.italic, color: AppColors.neutralGold),
                 textAlign: TextAlign.center,
               )
             else if (_hasSpeechError)
               Text(
                 'Could not understand. Tap microphone to try again.',
-                style: AppTypography.bodySM.copyWith(color: AppColors.error),
+                style: AppTypography.bodySM(context).copyWith(color: AppColors.error),
                 textAlign: TextAlign.center,
               ),
             const SizedBox(height: 32),
@@ -172,7 +172,7 @@ class _VoiceSearchBottomSheetState extends State<VoiceSearchBottomSheet> {
                   ),
                   child: Text(
                     _permissionStatus.isPermanentlyDenied ? 'Open Settings' : 'Turn on microphone',
-                    style: AppTypography.label.copyWith(color: AppColors.deepCharcoal, fontWeight: FontWeight.w800, fontSize: 14),
+                    style: AppTypography.label(context).copyWith(color: AppColors.deepCharcoal, fontWeight: FontWeight.w800, fontSize: 14),
                   ),
                 ),
               ),
@@ -180,7 +180,7 @@ class _VoiceSearchBottomSheetState extends State<VoiceSearchBottomSheet> {
             Text(
               'You can always turn it off in permissions settings.\n\nYour audio is transcribed in the cloud then automatically deleted. We store and use the transcripts as described in our Privacy Notice.',
               textAlign: TextAlign.center,
-              style: AppTypography.label.copyWith(
+              style: AppTypography.label(context).copyWith(
                 color: AppColors.neutralGold.withValues(alpha: 0.7),
                 fontSize: 10,
                 height: 1.5,

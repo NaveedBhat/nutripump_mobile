@@ -71,7 +71,7 @@ class _ReturnRequestScreenState extends ConsumerState<ReturnRequestScreen> {
 
   void _showSnack(String msg, {bool isError = false}) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(msg, style: AppTypography.bodySM.copyWith(color: Colors.white)),
+      content: Text(msg, style: AppTypography.bodySM(context).copyWith(color: Colors.white)),
       backgroundColor: isError ? AppColors.error : AppColors.success,
       behavior: SnackBarBehavior.floating,
     ));
@@ -88,7 +88,7 @@ class _ReturnRequestScreenState extends ConsumerState<ReturnRequestScreen> {
         elevation: 0,
         surfaceTintColor: Colors.transparent,
         centerTitle: true,
-        title: Text('Return & Refund', style: AppTypography.h3),
+        title: Text('Return & Refund', style: AppTypography.h3(context)),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1),
           child: Container(height: 1, color: AppColors.borderLight),
@@ -156,7 +156,7 @@ class _ReturnRequestScreenState extends ConsumerState<ReturnRequestScreen> {
                             child: Text(
                               'Returns accepted within $returnDays days of delivery. '
                               'Refunds are processed within 5–7 business days after approval.',
-                              style: AppTypography.bodySM.copyWith(fontSize: 12, height: 1.5, color: AppColors.deepCharcoal),
+                              style: AppTypography.bodySM(context).copyWith(fontSize: 12, height: 1.5, color: AppColors.deepCharcoal),
                             ),
                           ),
                         ],
@@ -165,7 +165,7 @@ class _ReturnRequestScreenState extends ConsumerState<ReturnRequestScreen> {
                     const SizedBox(height: 24),
 
                     // ── Order Selection ──────────────────────────
-                    Text('Select Order', style: AppTypography.h3),
+                    Text('Select Order', style: AppTypography.h3(context)),
                     const SizedBox(height: 12),
 
                     if (returnableOrders.isEmpty)
@@ -181,12 +181,12 @@ class _ReturnRequestScreenState extends ConsumerState<ReturnRequestScreen> {
                           children: [
                             const Icon(Icons.assignment_return_outlined, size: 40, color: AppColors.neutralGold),
                             const SizedBox(height: 12),
-                            Text('No eligible orders', style: AppTypography.bodySM.copyWith(fontWeight: FontWeight.w700)),
+                            Text('No eligible orders', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700)),
                             const SizedBox(height: 4),
                             Text(
                               'Only delivered orders within the $returnDays-day return window can be returned.',
                               textAlign: TextAlign.center,
-                              style: AppTypography.bodySM.copyWith(color: AppColors.neutralGold, fontSize: 12),
+                              style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, fontSize: 12),
                             ),
                           ],
                         ),
@@ -202,7 +202,7 @@ class _ReturnRequestScreenState extends ConsumerState<ReturnRequestScreen> {
                       const SizedBox(height: 24),
 
                       // ── Return Reason ──────────────────────────
-                      Text('Reason for Return', style: AppTypography.h3),
+                      Text('Reason for Return', style: AppTypography.h3(context)),
                       const SizedBox(height: 12),
 
                       ..._reasons.map((reason) => _ReasonTile(
@@ -213,15 +213,15 @@ class _ReturnRequestScreenState extends ConsumerState<ReturnRequestScreen> {
 
                       if (_selectedReason == 'Other (please describe)') ...[
                         const SizedBox(height: 12),
-                        Text('Describe your issue', style: AppTypography.label.copyWith(fontSize: 11)),
+                        Text('Describe your issue', style: AppTypography.label(context).copyWith(fontSize: 11)),
                         const SizedBox(height: 6),
                         TextFormField(
                           controller: _customReasonCtrl,
                           maxLines: 3,
-                          style: AppTypography.bodySM,
+                          style: AppTypography.bodySM(context),
                           decoration: InputDecoration(
                             hintText: 'Tell us more about the issue...',
-                            hintStyle: AppTypography.bodySM.copyWith(color: AppColors.neutralGold.withValues(alpha: 0.5)),
+                            hintStyle: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold.withValues(alpha: 0.5)),
                             contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                             filled: true,
                             fillColor: Colors.white,
@@ -249,7 +249,7 @@ class _ReturnRequestScreenState extends ConsumerState<ReturnRequestScreen> {
                           ),
                           child: _isLoading
                               ? const SizedBox(width: 24, height: 24, child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.deepCharcoal))
-                              : Text('Submit Return Request', style: AppTypography.bodySM.copyWith(fontWeight: FontWeight.w800, fontSize: 15)),
+                              : Text('Submit Return Request', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: 15)),
                         ),
                       ),
                       const SizedBox(height: 24),
@@ -308,11 +308,11 @@ class _OrderSelectionCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(formatOrderId(order.id),
-                      style: AppTypography.bodySM.copyWith(fontWeight: FontWeight.w800, fontSize: 13)),
+                      style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: 13)),
                   const SizedBox(height: 2),
                   Text(
                     order.items.map((i) => i.product.name).where((n) => n.isNotEmpty).take(2).join(', '),
-                    style: AppTypography.bodySM.copyWith(fontSize: 11, color: AppColors.neutralGold),
+                    style: AppTypography.bodySM(context).copyWith(fontSize: 11, color: AppColors.neutralGold),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -320,7 +320,7 @@ class _OrderSelectionCard extends StatelessWidget {
               ),
             ),
             Text(formatPrice(order.total),
-                style: AppTypography.bodySM.copyWith(fontWeight: FontWeight.w700, fontSize: 13)),
+                style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: 13)),
           ],
         ),
       ),
@@ -363,7 +363,7 @@ class _ReasonTile extends StatelessWidget {
               child: isSelected ? const Icon(Icons.check_rounded, size: 10, color: AppColors.deepCharcoal) : null,
             ),
             const SizedBox(width: 10),
-            Text(reason, style: AppTypography.bodySM.copyWith(fontSize: 13)),
+            Text(reason, style: AppTypography.bodySM(context).copyWith(fontSize: 13)),
           ],
         ),
       ),

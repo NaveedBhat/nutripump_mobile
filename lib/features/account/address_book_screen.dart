@@ -19,7 +19,7 @@ class AddressBookScreen extends ConsumerWidget {
         elevation: 0,
         surfaceTintColor: Colors.transparent,
         centerTitle: true,
-        title: Text('Address Book', style: AppTypography.h3),
+        title: Text('Address Book', style: AppTypography.h3(context)),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1),
           child: Container(height: 1, color: AppColors.borderLight),
@@ -31,7 +31,7 @@ class AddressBookScreen extends ConsumerWidget {
         data: (user) {
           if (user == null) {
             return Center(
-              child: Text('Please sign in to view your addresses.', style: AppTypography.bodySM),
+              child: Text('Please sign in to view your addresses.', style: AppTypography.bodySM(context)),
             );
           }
 
@@ -65,12 +65,12 @@ class AddressBookScreen extends ConsumerWidget {
                             child: const Icon(Icons.location_on_outlined, size: 40, color: AppColors.primary),
                           ),
                           const SizedBox(height: 24),
-                          Text('No addresses found', textAlign: TextAlign.center, style: AppTypography.h2.copyWith(fontSize: 22)),
+                          Text('No addresses found', textAlign: TextAlign.center, style: AppTypography.h2(context).copyWith(fontSize: 22)),
                           const SizedBox(height: 10),
                           Text(
                             'Add a delivery address to make checkout faster and easier.',
                             textAlign: TextAlign.center,
-                            style: AppTypography.bodySM.copyWith(color: AppColors.neutralGold, height: 1.6, fontSize: 14),
+                            style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, height: 1.6, fontSize: 14),
                           ),
                         ],
                       )
@@ -113,7 +113,7 @@ class AddressBookScreen extends ConsumerWidget {
                 child: ElevatedButton.icon(
                   onPressed: () => _showAddressForm(context, ref, userAsync.value!.uid),
                   icon: const Icon(Icons.add_rounded, size: 20),
-                  label: Text('Add New Address', style: AppTypography.bodySM.copyWith(fontWeight: FontWeight.w800, fontSize: 14)),
+                  label: Text('Add New Address', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: 14)),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primary,
                     foregroundColor: AppColors.deepCharcoal,
@@ -133,16 +133,16 @@ class AddressBookScreen extends ConsumerWidget {
       context: context,
       builder: (ctx) => AlertDialog(
         backgroundColor: Colors.white,
-        title: Text('Delete Address', style: AppTypography.h3),
-        content: Text('Are you sure you want to delete this address? This action cannot be undone.', style: AppTypography.bodySM),
+        title: Text('Delete Address', style: AppTypography.h3(context)),
+        content: Text('Are you sure you want to delete this address? This action cannot be undone.', style: AppTypography.bodySM(context)),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
-            child: Text('Cancel', style: AppTypography.bodySM.copyWith(color: AppColors.neutralGold, fontWeight: FontWeight.w700)),
+            child: Text('Cancel', style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, fontWeight: FontWeight.w700)),
           ),
           TextButton(
             onPressed: () => Navigator.pop(ctx, true),
-            child: Text('Delete', style: AppTypography.bodySM.copyWith(color: Colors.red.shade700, fontWeight: FontWeight.w700)),
+            child: Text('Delete', style: AppTypography.bodySM(context).copyWith(color: Colors.red.shade700, fontWeight: FontWeight.w700)),
           ),
         ],
       ),
@@ -199,7 +199,7 @@ class _AddressCard extends StatelessWidget {
                   children: [
                     Text(
                       address.fullName,
-                      style: AppTypography.bodySM.copyWith(fontWeight: FontWeight.w800, fontSize: 15),
+                      style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: 15),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -212,7 +212,7 @@ class _AddressCard extends StatelessWidget {
                           border: Border.all(color: AppColors.primary.withValues(alpha: 0.3)),
                           borderRadius: BorderRadius.circular(4),
                         ),
-                        child: Text('DEFAULT', style: AppTypography.label.copyWith(fontSize: 9, color: AppColors.primaryDark)),
+                        child: Text('DEFAULT', style: AppTypography.label(context).copyWith(fontSize: 9, color: AppColors.primaryDark)),
                       ),
                     ],
                   ],
@@ -241,9 +241,9 @@ class _AddressCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 12),
-          Text(address.phone, style: AppTypography.bodySM.copyWith(fontSize: 13)),
+          Text(address.phone, style: AppTypography.bodySM(context).copyWith(fontSize: 13)),
           const SizedBox(height: 6),
-          Text(address.oneLineAddress, style: AppTypography.bodySM.copyWith(color: AppColors.neutralGold, fontSize: 13, height: 1.4)),
+          Text(address.oneLineAddress, style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, fontSize: 13, height: 1.4)),
           
           if (!address.isDefault) ...[
             const SizedBox(height: 16),
@@ -264,7 +264,7 @@ class _AddressCard extends StatelessWidget {
                     ),
                     child: Text(
                       'Set as Default',
-                      style: AppTypography.bodySM.copyWith(fontWeight: FontWeight.w700, fontSize: 12),
+                      style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: 12),
                     ),
                   ),
                 );
@@ -405,7 +405,7 @@ class _AddressFormSheetState extends State<AddressFormSheet> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(widget.address == null ? 'Add New Address' : 'Edit Address', style: AppTypography.h3),
+                    Text(widget.address == null ? 'Add New Address' : 'Edit Address', style: AppTypography.h3(context)),
                     GestureDetector(
                       onTap: () => Navigator.pop(context),
                       child: const Icon(Icons.close_rounded, color: AppColors.neutralGold),
@@ -456,7 +456,7 @@ class _AddressFormSheetState extends State<AddressFormSheet> {
                       ),
                     ),
                     const SizedBox(width: 8),
-                    Text('Make this my default address', style: AppTypography.bodySM),
+                    Text('Make this my default address', style: AppTypography.bodySM(context)),
                   ],
                 ),
                 
@@ -475,7 +475,7 @@ class _AddressFormSheetState extends State<AddressFormSheet> {
                     ),
                     child: _isLoading
                         ? const SizedBox(width: 24, height: 24, child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.deepCharcoal))
-                        : Text('Save Address', style: AppTypography.bodySM.copyWith(fontWeight: FontWeight.w800, fontSize: 16)),
+                        : Text('Save Address', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: 16)),
                   ),
                 ),
               ],
@@ -490,13 +490,13 @@ class _AddressFormSheetState extends State<AddressFormSheet> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: AppTypography.label.copyWith(fontSize: 10)),
+        Text(label, style: AppTypography.label(context).copyWith(fontSize: 10)),
         const SizedBox(height: 6),
         TextFormField(
           controller: controller,
           keyboardType: isPhone ? TextInputType.phone : (isNumber ? TextInputType.number : TextInputType.text),
           validator: isRequired ? (v) => v == null || v.trim().isEmpty ? 'Required' : null : null,
-          style: AppTypography.bodySM,
+          style: AppTypography.bodySM(context),
           decoration: InputDecoration(
             contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
             filled: true,

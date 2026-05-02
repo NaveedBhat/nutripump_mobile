@@ -83,7 +83,7 @@ class ProductCard extends ConsumerWidget {
                           ),
                           child: Text(
                             product.badge!.toUpperCase(),
-                            style: AppTypography.label.copyWith(
+                            style: AppTypography.label(context).copyWith(
                               fontSize: R.sp(context, 6),
                               color: colors.text,
                               fontWeight: FontWeight.w800,
@@ -107,7 +107,7 @@ class ProductCard extends ConsumerWidget {
                         ),
                         child: Text(
                           '-${product.discountPercent}%',
-                          style: AppTypography.label.copyWith(
+                          style: AppTypography.label(context).copyWith(
                             fontSize: R.sp(context, 7),
                             color: Colors.white,
                             fontWeight: FontWeight.w800,
@@ -132,7 +132,7 @@ class ProductCard extends ConsumerWidget {
                       if (product.origin.isNotEmpty) product.origin.toUpperCase(),
                       product.weight,
                     ].join(' · '),
-                    style: AppTypography.labelGold.copyWith(
+                    style: AppTypography.labelGold(context).copyWith(
                       fontSize: R.sp(context, compact ? 7.5 : 8.5), letterSpacing: 0.4),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -143,7 +143,7 @@ class ProductCard extends ConsumerWidget {
                     product.name,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: AppTypography.bodySM.copyWith(
+                    style: AppTypography.bodySM(context).copyWith(
                       fontWeight: FontWeight.w700,
                       fontSize: R.sp(context, compact ? 11 : 12.5),
                       height: 1.25,
@@ -161,13 +161,13 @@ class ProductCard extends ConsumerWidget {
                           children: [
                             Text(
                               formatPrice(product.price),
-                              style: AppTypography.priceSM.copyWith(fontSize: R.sp(context, 14)),
+                              style: AppTypography.priceSM(context).copyWith(fontSize: R.sp(context, 14)),
                             ),
                             if (product.compareAtPrice != null && product.compareAtPrice! > product.price) ...[
                               SizedBox(width: R.w(context, 4)),
                               Text(
                                 formatPrice(product.compareAtPrice!),
-                                style: AppTypography.priceStrike.copyWith(fontSize: R.sp(context, 10)),
+                                style: AppTypography.priceStrike(context).copyWith(fontSize: R.sp(context, 10)),
                               ),
                             ],
                           ],

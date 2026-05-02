@@ -53,7 +53,7 @@ class ChatProductCard extends StatelessWidget {
                     product.name,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: AppTypography.bodySM.copyWith(
+                    style: AppTypography.bodySM(context).copyWith(
                       fontWeight: FontWeight.w600,
                       fontSize: 12,
                     ),
@@ -61,7 +61,7 @@ class ChatProductCard extends StatelessWidget {
                   const SizedBox(height: 2),
                   Text(
                     formatPrice(product.price),
-                    style: AppTypography.bodySM.copyWith(
+                    style: AppTypography.bodySM(context).copyWith(
                       color: AppColors.primary,
                       fontWeight: FontWeight.bold,
                       fontSize: 11,

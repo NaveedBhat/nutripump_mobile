@@ -134,7 +134,7 @@ class TasteProfilerScreen extends ConsumerWidget {
           icon: const Icon(Icons.arrow_back, color: AppColors.deepCharcoal),
           onPressed: () => context.pop(),
         ),
-        title: Text('Taste Profiler', style: AppTypography.h3),
+        title: Text('Taste Profiler', style: AppTypography.h3(context)),
         centerTitle: true,
       ),
       body: SafeArea(
@@ -188,7 +188,7 @@ class TasteProfilerScreen extends ConsumerWidget {
           Text(
             'Analyzing your\nHimalayan Soul Profile...',
             textAlign: TextAlign.center,
-            style: AppTypography.h2.copyWith(fontStyle: FontStyle.italic),
+            style: AppTypography.h2(context).copyWith(fontStyle: FontStyle.italic),
           ).animate().fadeIn().slideY(begin: 0.2, end: 0),
           const SizedBox(height: 16),
           Padding(
@@ -196,7 +196,7 @@ class TasteProfilerScreen extends ConsumerWidget {
             child: Text(
               'Our AI is matching your sensory preferences with the generational harvests of Kashmir.',
               textAlign: TextAlign.center,
-              style: AppTypography.body.copyWith(color: AppColors.neutralGold),
+              style: AppTypography.body(context).copyWith(color: AppColors.neutralGold),
             ).animate().fadeIn(delay: const Duration(milliseconds: 300)),
           ),
         ],
@@ -217,13 +217,13 @@ class TasteProfilerScreen extends ConsumerWidget {
           Text(
             'Artisanal Pulse.',
             textAlign: TextAlign.center,
-            style: AppTypography.h2.copyWith(color: AppColors.deepCharcoal),
+            style: AppTypography.h2(context).copyWith(color: AppColors.deepCharcoal),
           ),
           const SizedBox(height: 8),
           Text(
             'A sensory journey to find the precise craft that resonates with your profile.',
             textAlign: TextAlign.center,
-            style: AppTypography.bodySM.copyWith(color: AppColors.neutralGold),
+            style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold),
           ),
           const SizedBox(height: 32),
 
@@ -252,7 +252,7 @@ class TasteProfilerScreen extends ConsumerWidget {
           Text(
             currentStep.question,
             textAlign: TextAlign.center,
-            style: AppTypography.h1,
+            style: AppTypography.h1(context),
           ),
           const SizedBox(height: 48),
           ListView.separated(
@@ -287,7 +287,7 @@ class TasteProfilerScreen extends ConsumerWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('No direct match found.', style: AppTypography.h3),
+            Text('No direct match found.', style: AppTypography.h3(context)),
             const SizedBox(height: 16),
             TextButton.icon(
               onPressed: () => ref.read(tasteProfilerProvider.notifier).reset(),
@@ -338,13 +338,13 @@ class TasteProfilerScreen extends ConsumerWidget {
           Text(
             'Crafted for your profile.',
             textAlign: TextAlign.center,
-            style: AppTypography.h1,
+            style: AppTypography.h1(context),
           ).animate().fadeIn().slideY(begin: 0.1, end: 0),
           const SizedBox(height: 16),
           Text(
             message,
             textAlign: TextAlign.center,
-            style: AppTypography.body.copyWith(
+            style: AppTypography.body(context).copyWith(
               color: AppColors.neutralGold,
               fontStyle: FontStyle.italic,
             ),
@@ -411,7 +411,7 @@ class TasteProfilerScreen extends ConsumerWidget {
             const SizedBox(height: 48),
             Text(
               'Other Perfect Pairings',
-              style: AppTypography.h3,
+              style: AppTypography.h3(context),
             ).animate().fadeIn(delay: const Duration(milliseconds: 600)),
             const SizedBox(height: 16),
             GridView.builder(
@@ -504,11 +504,11 @@ class _OptionCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(option.label,
-                      style: AppTypography.h3.copyWith(fontSize: 18)),
+                      style: AppTypography.h3(context).copyWith(fontSize: 18)),
                   const SizedBox(height: 4),
                   Text(
                     option.desc,
-                    style: AppTypography.bodySM
+                    style: AppTypography.bodySM(context)
                         .copyWith(color: AppColors.neutralGold),
                   ),
                 ],

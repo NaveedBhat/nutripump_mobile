@@ -27,10 +27,10 @@ class CartScreen extends ConsumerWidget {
         surfaceTintColor: Colors.transparent,
         title: Column(
           children: [
-            Text('Your Cart', style: AppTypography.h3),
+            Text('Your Cart', style: AppTypography.h3(context)),
             Text(
               'HAND-HARVESTED TREASURES',
-              style: AppTypography.label.copyWith(fontSize: 10, color: AppColors.neutralGold, letterSpacing: 1.5),
+              style: AppTypography.label(context).copyWith(fontSize: 10, color: AppColors.neutralGold, letterSpacing: 1.5),
             ),
           ],
         ),
@@ -39,7 +39,7 @@ class CartScreen extends ConsumerWidget {
           if (cartState.items.isNotEmpty)
             TextButton(
               onPressed: () => ref.read(cartProvider.notifier).clearCart(),
-              child: Text('CLEAR', style: AppTypography.label.copyWith(color: AppColors.error)),
+              child: Text('CLEAR', style: AppTypography.label(context).copyWith(color: AppColors.error)),
             ),
         ],
         bottom: PreferredSize(
@@ -51,7 +51,7 @@ class CartScreen extends ConsumerWidget {
           ? _buildEmptyState(context)
           : Column(
               children: [
-                _buildFreeShippingWidget(cartState.subtotal, cartState.freeThreshold),
+                _buildFreeShippingWidget(context, cartState.subtotal, cartState.freeThreshold),
                 Expanded(
                   child: ListView(
                     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -67,7 +67,7 @@ class CartScreen extends ConsumerWidget {
   }
 
   // ── Gamified Free Shipping Widget ─────────────────────────────────────────
-  Widget _buildFreeShippingWidget(double subtotal, double freeThreshold) {
+  Widget _buildFreeShippingWidget(BuildContext context, double subtotal, double freeThreshold) {
     final isUnlocked = subtotal >= freeThreshold;
     final progress = (subtotal / freeThreshold).clamp(0.0, 1.0);
     final remaining = freeThreshold - subtotal;
@@ -91,14 +91,14 @@ class CartScreen extends ConsumerWidget {
                   decoration: const BoxDecoration(color: AppColors.success, shape: BoxShape.circle),
                 ),
                 const SizedBox(width: 8),
-                Text('FREE EXPRESS SHIPPING UNLOCKED', style: AppTypography.label.copyWith(color: AppColors.success, letterSpacing: 1.2)),
+                Text('FREE EXPRESS SHIPPING UNLOCKED', style: AppTypography.label(context).copyWith(color: AppColors.success, letterSpacing: 1.2)),
               ],
             )
           else
             RichText(
               textAlign: TextAlign.center,
               text: TextSpan(
-                style: AppTypography.bodySM.copyWith(fontWeight: FontWeight.w600, color: AppColors.deepCharcoal),
+                style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w600, color: AppColors.deepCharcoal),
                 children: [
                   const TextSpan(text: 'You are just '),
                   TextSpan(text: formatPrice(remaining), style: const TextStyle(color: AppColors.primary, fontWeight: FontWeight.bold)),
@@ -170,7 +170,7 @@ class CartScreen extends ConsumerWidget {
                         item.product.name,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: AppTypography.bodySM.copyWith(fontWeight: FontWeight.w800, color: AppColors.deepCharcoal),
+                        style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, color: AppColors.deepCharcoal),
                       ),
                     ),
                     GestureDetector(
@@ -186,13 +186,13 @@ class CartScreen extends ConsumerWidget {
                 const SizedBox(height: 4),
                 Row(
                   children: [
-                    Text(item.selectedWeight ?? item.product.weight, style: AppTypography.label.copyWith(fontSize: 10, color: AppColors.neutralGold)),
+                    Text(item.selectedWeight ?? item.product.weight, style: AppTypography.label(context).copyWith(fontSize: 10, color: AppColors.neutralGold)),
                     if (item.product.stockCount > 0 && item.product.stockCount <= 5) ...[
                       const SizedBox(width: 8),
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                         decoration: BoxDecoration(color: AppColors.error.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(4)),
-                        child: Text('ONLY ${item.product.stockCount} LEFT', style: AppTypography.label.copyWith(fontSize: 8, color: AppColors.error)),
+                        child: Text('ONLY ${item.product.stockCount} LEFT', style: AppTypography.label(context).copyWith(fontSize: 8, color: AppColors.error)),
                       ),
                     ],
                   ],
@@ -213,7 +213,7 @@ class CartScreen extends ConsumerWidget {
                             onTap: () => ref.read(cartProvider.notifier).updateQuantity(item.cartItemId, item.quantity - 1),
                             child: const Padding(padding: EdgeInsets.all(6), child: Icon(Icons.remove, size: 14)),
                           ),
-                          SizedBox(width: 20, child: Text('${item.quantity}', textAlign: TextAlign.center, style: AppTypography.bodySM.copyWith(fontWeight: FontWeight.bold))),
+                          SizedBox(width: 20, child: Text('${item.quantity}', textAlign: TextAlign.center, style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.bold))),
                           InkWell(
                             onTap: item.quantity < item.product.stockCount
                                 ? () => ref.read(cartProvider.notifier).updateQuantity(item.cartItemId, item.quantity + 1)
@@ -226,7 +226,7 @@ class CartScreen extends ConsumerWidget {
                         ],
                       ),
                     ),
-                    Text(formatPrice(item.effectivePrice * item.quantity), style: AppTypography.price.copyWith(fontSize: 14, color: AppColors.deepCharcoal)),
+                    Text(formatPrice(item.effectivePrice * item.quantity), style: AppTypography.price(context).copyWith(fontSize: 14, color: AppColors.deepCharcoal)),
                   ],
                 ),
               ],
@@ -270,7 +270,7 @@ class CartScreen extends ConsumerWidget {
                         children: [
                           const Icon(Icons.auto_awesome_rounded, size: 14, color: AppColors.primary),
                           const SizedBox(width: 6),
-                          Text('FREQUENTLY PAIRED WITH YOUR SELECTION', style: AppTypography.label.copyWith(fontSize: 9, color: AppColors.primary, letterSpacing: 1.5)),
+                          Text('FREQUENTLY PAIRED WITH YOUR SELECTION', style: AppTypography.label(context).copyWith(fontSize: 9, color: AppColors.primary, letterSpacing: 1.5)),
                         ],
                       ),
                     ),
@@ -309,12 +309,12 @@ class CartScreen extends ConsumerWidget {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Text(p.name, maxLines: 2, overflow: TextOverflow.ellipsis, style: AppTypography.bodySM.copyWith(fontSize: 10, fontWeight: FontWeight.bold)),
+                                      Text(p.name, maxLines: 2, overflow: TextOverflow.ellipsis, style: AppTypography.bodySM(context).copyWith(fontSize: 10, fontWeight: FontWeight.bold)),
                                       const SizedBox(height: 4),
                                       Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Text(formatPrice(p.price), style: AppTypography.price.copyWith(fontSize: 12, color: AppColors.success)),
+                                          Text(formatPrice(p.price), style: AppTypography.price(context).copyWith(fontSize: 12, color: AppColors.success)),
                                           GestureDetector(
                                             onTap: () => ref.read(cartProvider.notifier).addItem(p, qty: 1),
                                             child: const Icon(Icons.add_circle_rounded, size: 20, color: AppColors.primary),
@@ -361,8 +361,8 @@ class CartScreen extends ConsumerWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(state.appliedPromo != null ? '\'${state.appliedPromo!.code}\' Applied' : 'Apply Promo Code', style: AppTypography.bodySM.copyWith(fontWeight: FontWeight.w800, color: state.appliedPromo != null ? AppColors.success : AppColors.deepCharcoal)),
-                              if (state.appliedPromo != null) Text('You saved ${formatPrice(state.discount)}', style: AppTypography.label.copyWith(fontSize: 10, color: AppColors.success)),
+                              Text(state.appliedPromo != null ? '\'${state.appliedPromo!.code}\' Applied' : 'Apply Promo Code', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, color: state.appliedPromo != null ? AppColors.success : AppColors.deepCharcoal)),
+                              if (state.appliedPromo != null) Text('You saved ${formatPrice(state.discount)}', style: AppTypography.label(context).copyWith(fontSize: 10, color: AppColors.success)),
                             ],
                           ),
                         ),
@@ -373,25 +373,25 @@ class CartScreen extends ConsumerWidget {
                 ),
                 const SizedBox(height: 16),
                 
-                _buildSummaryRow('Subtotal', state.subtotal),
+                _buildSummaryRow(context, 'Subtotal', state.subtotal),
                 const SizedBox(height: 8),
                 if (state.shipping == 0)
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Shipping Delivery', style: AppTypography.bodySM.copyWith(fontWeight: FontWeight.w600, color: AppColors.success)),
+                      Text('Shipping Delivery', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w600, color: AppColors.success)),
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                         decoration: BoxDecoration(color: AppColors.success.withValues(alpha: 0.1), border: Border.all(color: AppColors.success.withValues(alpha: 0.2)), borderRadius: BorderRadius.circular(12)),
-                        child: Text('FREE', style: AppTypography.label.copyWith(fontSize: 9, color: AppColors.success)),
+                        child: Text('FREE', style: AppTypography.label(context).copyWith(fontSize: 9, color: AppColors.success)),
                       ),
                     ],
                   )
                 else
-                  _buildSummaryRow('Estimated Shipping', state.shipping),
+                  _buildSummaryRow(context, 'Estimated Shipping', state.shipping),
 
                 const SizedBox(height: 8),
-                _buildSummaryRow('Estimated Taxes (${(state.gstRate * 100).toInt()}%)', state.gst),
+                _buildSummaryRow(context, 'Estimated Taxes (${(state.gstRate * 100).toInt()}%)', state.gst),
 
                 const SizedBox(height: 16),
                 const Divider(color: AppColors.borderLight, height: 1),
@@ -404,12 +404,12 @@ class CartScreen extends ConsumerWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Estimated Total', style: AppTypography.bodySM.copyWith(fontWeight: FontWeight.bold, textBaseline: TextBaseline.alphabetic)),
+                        Text('Estimated Total', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.bold, textBaseline: TextBaseline.alphabetic)),
                         const SizedBox(height: 4),
-                        Text('Taxes & shipping verified at checkout', style: AppTypography.label.copyWith(fontSize: 9, color: AppColors.neutralGold)),
+                        Text('Taxes & shipping verified at checkout', style: AppTypography.label(context).copyWith(fontSize: 9, color: AppColors.neutralGold)),
                       ],
                     ),
-                    Text(formatPrice(state.total), style: AppTypography.h2.copyWith(fontSize: 24, height: 1)),
+                    Text(formatPrice(state.total), style: AppTypography.h2(context).copyWith(fontSize: 24, height: 1)),
                   ],
                 ),
                 const SizedBox(height: 24),
@@ -443,7 +443,7 @@ class CartScreen extends ConsumerWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text('Proceed to Checkout', style: AppTypography.bodySM.copyWith(fontWeight: FontWeight.w800, fontSize: 16)),
+                        Text('Proceed to Checkout', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: 16)),
                         const SizedBox(width: 8),
                         const Icon(Icons.arrow_forward_rounded, size: 20),
                       ],
@@ -457,11 +457,11 @@ class CartScreen extends ConsumerWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    _buildTrustBadge(Icons.local_shipping_outlined, 'EXPRESS'),
+                    _buildTrustBadge(context, Icons.local_shipping_outlined, 'EXPRESS'),
                     const SizedBox(width: 24),
-                    _buildTrustBadge(Icons.shield_outlined, 'SECURE'),
+                    _buildTrustBadge(context, Icons.shield_outlined, 'SECURE'),
                     const SizedBox(width: 24),
-                    _buildTrustBadge(Icons.verified_outlined, 'AUTHENTIC'),
+                    _buildTrustBadge(context, Icons.verified_outlined, 'AUTHENTIC'),
                   ],
                 ),
                 SizedBox(height: MediaQuery.of(context).padding.bottom),
@@ -473,22 +473,22 @@ class CartScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildTrustBadge(IconData icon, String label) {
+  Widget _buildTrustBadge(BuildContext context, IconData icon, String label) {
     return Column(
       children: [
         Icon(icon, size: 16, color: AppColors.deepCharcoal.withValues(alpha: 0.6)),
         const SizedBox(height: 4),
-        Text(label, style: AppTypography.label.copyWith(fontSize: 8, color: AppColors.deepCharcoal.withValues(alpha: 0.6), letterSpacing: 1.5)),
+        Text(label, style: AppTypography.label(context).copyWith(fontSize: 8, color: AppColors.deepCharcoal.withValues(alpha: 0.6), letterSpacing: 1.5)),
       ],
     );
   }
 
-  Widget _buildSummaryRow(String label, double value) {
+  Widget _buildSummaryRow(BuildContext context, String label, double value) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(label, style: AppTypography.bodySM.copyWith(color: AppColors.neutralGold, fontWeight: FontWeight.w500)),
-        Text(formatPrice(value), style: AppTypography.bodySM.copyWith(color: AppColors.deepCharcoal, fontWeight: FontWeight.w600)),
+        Text(label, style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, fontWeight: FontWeight.w500)),
+        Text(formatPrice(value), style: AppTypography.bodySM(context).copyWith(color: AppColors.deepCharcoal, fontWeight: FontWeight.w600)),
       ],
     );
   }
@@ -507,9 +507,9 @@ class CartScreen extends ConsumerWidget {
               child: const Icon(Icons.shopping_bag_outlined, size: 32, color: AppColors.primary),
             ),
             const SizedBox(height: 20),
-            Text('Your cart is empty', style: AppTypography.h2.copyWith(fontSize: 22)),
+            Text('Your cart is empty', style: AppTypography.h2(context).copyWith(fontSize: 22)),
             const SizedBox(height: 8),
-            Text('Discover hand-harvested artisanal treasures curated from the wild valleys of Kashmir.', textAlign: TextAlign.center, style: AppTypography.bodySM.copyWith(color: AppColors.neutralGold, fontSize: 12, height: 1.5)),
+            Text('Discover hand-harvested artisanal treasures curated from the wild valleys of Kashmir.', textAlign: TextAlign.center, style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, fontSize: 12, height: 1.5)),
             const SizedBox(height: 24),
             SizedBox(
               width: 220,
@@ -523,7 +523,7 @@ class CartScreen extends ConsumerWidget {
                   shadowColor: AppColors.primary.withValues(alpha: 0.3),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 ),
-                child: Text('Explore The Pantry', style: AppTypography.bodySM.copyWith(fontWeight: FontWeight.w800, fontSize: 13)),
+                child: Text('Explore The Pantry', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: 13)),
               ),
             ),
           ],

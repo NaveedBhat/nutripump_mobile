@@ -18,7 +18,7 @@ class NotificationsScreen extends ConsumerWidget {
     return Scaffold(
       backgroundColor: AppColors.backgroundLight,
       appBar: AppBar(
-        title: Text('Notifications', style: AppTypography.h3),
+        title: Text('Notifications', style: AppTypography.h3(context)),
         centerTitle: true,
         backgroundColor: AppColors.backgroundLight,
         elevation: 0,
@@ -105,7 +105,7 @@ class NotificationsScreen extends ConsumerWidget {
                                         Expanded(
                                           child: Text(
                                             notification.title,
-                                            style: AppTypography.bodySM.copyWith(
+                                            style: AppTypography.bodySM(context).copyWith(
                                               fontWeight: notification.isRead ? FontWeight.w600 : FontWeight.w800,
                                               color: AppColors.deepCharcoal,
                                               height: 1.2,
@@ -127,7 +127,7 @@ class NotificationsScreen extends ConsumerWidget {
                                     const SizedBox(height: 4),
                                     Text(
                                       notification.body,
-                                      style: AppTypography.caption.copyWith(
+                                      style: AppTypography.caption(context).copyWith(
                                         color: AppColors.deepCharcoal.withValues(alpha: 0.7),
                                         height: 1.3,
                                       ),
@@ -145,7 +145,7 @@ class NotificationsScreen extends ConsumerWidget {
                                         const SizedBox(width: 4),
                                         Text(
                                           timeago.format(notification.timestamp),
-                                          style: AppTypography.caption.copyWith(
+                                          style: AppTypography.caption(context).copyWith(
                                             color: AppColors.neutralGold.withValues(alpha: 0.8),
                                             fontSize: 11,
                                             fontWeight: FontWeight.w600,
@@ -218,13 +218,13 @@ class NotificationsScreen extends ConsumerWidget {
           const SizedBox(height: 16),
           Text(
             'No notifications yet',
-            style: AppTypography.h3.copyWith(color: AppColors.neutralGold),
+            style: AppTypography.h3(context).copyWith(color: AppColors.neutralGold),
           ),
           const SizedBox(height: 8),
           Text(
             'When you get updates or offers,\nthey\'ll show up here.',
             textAlign: TextAlign.center,
-            style: AppTypography.bodySM.copyWith(color: Colors.grey),
+            style: AppTypography.bodySM(context).copyWith(color: Colors.grey),
           ),
         ],
       ),

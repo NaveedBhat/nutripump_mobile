@@ -33,7 +33,7 @@ class PrivacyPolicyScreen extends ConsumerWidget {
             ),
             title: Text(
               'Privacy Policy',
-              style: AppTypography.h3.copyWith(color: Colors.white),
+              style: AppTypography.h3(context).copyWith(color: Colors.white),
             ),
             bottom: PreferredSize(
               preferredSize: const Size.fromHeight(1),
@@ -59,7 +59,7 @@ class PrivacyPolicyScreen extends ConsumerWidget {
                       const SizedBox(height: 16),
                       Text(
                         'Failed to load privacy policy.',
-                        style: AppTypography.bodySM,
+                        style: AppTypography.bodySM(context),
                       ),
                       const SizedBox(height: 16),
                       ElevatedButton(
@@ -112,7 +112,7 @@ class PrivacyPolicyScreen extends ConsumerWidget {
                                 const SizedBox(width: 5),
                                 Text(
                                   'YOUR PRIVACY MATTERS',
-                                  style: AppTypography.label.copyWith(
+                                  style: AppTypography.label(context).copyWith(
                                     color: AppColors.primary,
                                     fontSize: 9,
                                     letterSpacing: 1.5,
@@ -124,7 +124,7 @@ class PrivacyPolicyScreen extends ConsumerWidget {
                           const SizedBox(height: 12),
                           Text(
                             page.intro,
-                            style: AppTypography.bodySM.copyWith(
+                            style: AppTypography.bodySM(context).copyWith(
                               color: Colors.white.withValues(alpha: 0.6),
                               fontSize: 13,
                               height: 1.6,
@@ -133,7 +133,7 @@ class PrivacyPolicyScreen extends ConsumerWidget {
                           const SizedBox(height: 10),
                           Text(
                             'Last updated: $lastUpdated',
-                            style: AppTypography.label.copyWith(
+                            style: AppTypography.label(context).copyWith(
                               color: Colors.white.withValues(alpha: 0.3),
                               fontSize: 10,
                               fontFamily: 'monospace',
@@ -164,7 +164,7 @@ class PrivacyPolicyScreen extends ConsumerWidget {
                         ),
                         child: Text(
                           'This Privacy Policy applies to all products and services offered by NutriPump Artisanal ("NutriPump", "we", "our", or "us"), including our website at nutripump.com and our mobile applications. By using our services, you agree to the collection and use of information in accordance with this policy.',
-                          style: AppTypography.bodySM.copyWith(
+                          style: AppTypography.bodySM(context).copyWith(
                             fontSize: 13,
                             height: 1.7,
                             color:
@@ -214,7 +214,7 @@ class PrivacyPolicyScreen extends ConsumerWidget {
                                     children: [
                                       Text(
                                         'Privacy Questions?',
-                                        style: AppTypography.bodySM.copyWith(
+                                        style: AppTypography.bodySM(context).copyWith(
                                           color: Colors.white,
                                           fontWeight: FontWeight.w700,
                                           fontSize: 15,
@@ -223,7 +223,7 @@ class PrivacyPolicyScreen extends ConsumerWidget {
                                       const SizedBox(height: 3),
                                       Text(
                                         'Our privacy team is here to help',
-                                        style: AppTypography.label.copyWith(
+                                        style: AppTypography.label(context).copyWith(
                                           color: Colors.white.withValues(alpha: 0.45),
                                           fontSize: 11,
                                         ),
@@ -243,7 +243,7 @@ class PrivacyPolicyScreen extends ConsumerWidget {
                             // Description
                             Text(
                               'If you have any questions, requests, or complaints about this Privacy Policy or our data practices, please reach out.',
-                              style: AppTypography.bodySM.copyWith(
+                              style: AppTypography.bodySM(context).copyWith(
                                 color: Colors.white.withValues(alpha: 0.55),
                                 fontSize: 12.5,
                                 height: 1.6,
@@ -272,7 +272,7 @@ class PrivacyPolicyScreen extends ConsumerWidget {
                                     const SizedBox(width: 8),
                                     Text(
                                       contactEmail,
-                                      style: AppTypography.bodySM.copyWith(
+                                      style: AppTypography.bodySM(context).copyWith(
                                         color: AppColors.deepCharcoal,
                                         fontWeight: FontWeight.w700,
                                         fontSize: 13,
@@ -289,7 +289,7 @@ class PrivacyPolicyScreen extends ConsumerWidget {
                             Center(
                               child: Text(
                                 'We respond within 5 business days',
-                                style: AppTypography.label.copyWith(
+                                style: AppTypography.label(context).copyWith(
                                   color: Colors.white.withValues(alpha: 0.3),
                                   fontSize: 10,
                                   letterSpacing: 0.3,

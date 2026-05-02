@@ -33,7 +33,7 @@ class TermsOfServiceScreen extends ConsumerWidget {
             ),
             title: Text(
               'Terms of Service',
-              style: AppTypography.h3.copyWith(color: Colors.white),
+              style: AppTypography.h3(context).copyWith(color: Colors.white),
             ),
             bottom: PreferredSize(
               preferredSize: const Size.fromHeight(1),
@@ -59,7 +59,7 @@ class TermsOfServiceScreen extends ConsumerWidget {
                       const SizedBox(height: 16),
                       Text(
                         'Failed to load terms of service.',
-                        style: AppTypography.bodySM,
+                        style: AppTypography.bodySM(context),
                       ),
                       const SizedBox(height: 16),
                       ElevatedButton(
@@ -112,7 +112,7 @@ class TermsOfServiceScreen extends ConsumerWidget {
                                 const SizedBox(width: 5),
                                 Text(
                                   'LEGAL AGREEMENT',
-                                  style: AppTypography.label.copyWith(
+                                  style: AppTypography.label(context).copyWith(
                                     color: AppColors.primary,
                                     fontSize: 9,
                                     letterSpacing: 1.5,
@@ -124,7 +124,7 @@ class TermsOfServiceScreen extends ConsumerWidget {
                           const SizedBox(height: 12),
                           Text(
                             page.intro,
-                            style: AppTypography.bodySM.copyWith(
+                            style: AppTypography.bodySM(context).copyWith(
                               color: Colors.white.withValues(alpha: 0.6),
                               fontSize: 13,
                               height: 1.6,
@@ -133,7 +133,7 @@ class TermsOfServiceScreen extends ConsumerWidget {
                           const SizedBox(height: 10),
                           Text(
                             'Last updated: $lastUpdated',
-                            style: AppTypography.label.copyWith(
+                            style: AppTypography.label(context).copyWith(
                               color: Colors.white.withValues(alpha: 0.3),
                               fontSize: 10,
                               fontFamily: 'monospace',
@@ -164,7 +164,7 @@ class TermsOfServiceScreen extends ConsumerWidget {
                         ),
                         child: Text(
                           'These Terms of Service ("Terms") constitute a legally binding agreement between you and NutriPump Artisanal ("NutriPump", "we", "our", or "us"), governing your access to and use of our website at nutripump.com, our mobile applications, and the purchase of our products. If you have any questions about these Terms, please contact us at contact@nutripump.in before using our services.',
-                          style: AppTypography.bodySM.copyWith(
+                          style: AppTypography.bodySM(context).copyWith(
                             fontSize: 13,
                             height: 1.7,
                             color:
@@ -203,7 +203,7 @@ class TermsOfServiceScreen extends ConsumerWidget {
                                 children: [
                                   Text(
                                     'Entire Agreement',
-                                    style: AppTypography.bodySM.copyWith(
+                                    style: AppTypography.bodySM(context).copyWith(
                                       fontWeight: FontWeight.w700,
                                       fontSize: 13,
                                       color: AppColors.deepCharcoal,
@@ -212,7 +212,7 @@ class TermsOfServiceScreen extends ConsumerWidget {
                                   const SizedBox(height: 4),
                                   Text(
                                     'These Terms of Service, together with our Privacy Policy, constitute the entire agreement between you and NutriPump Artisanal regarding your use of our services and supersede all prior agreements between the parties.',
-                                    style: AppTypography.bodySM.copyWith(
+                                    style: AppTypography.bodySM(context).copyWith(
                                       fontSize: 12,
                                       height: 1.6,
                                       color: AppColors.deepCharcoal
@@ -260,7 +260,7 @@ class TermsOfServiceScreen extends ConsumerWidget {
                                     children: [
                                       Text(
                                         'Legal Questions?',
-                                        style: AppTypography.bodySM.copyWith(
+                                        style: AppTypography.bodySM(context).copyWith(
                                           color: Colors.white,
                                           fontWeight: FontWeight.w700,
                                           fontSize: 15,
@@ -269,7 +269,7 @@ class TermsOfServiceScreen extends ConsumerWidget {
                                       const SizedBox(height: 3),
                                       Text(
                                         'Our legal team is here to help',
-                                        style: AppTypography.label.copyWith(
+                                        style: AppTypography.label(context).copyWith(
                                           color: Colors.white.withValues(alpha: 0.45),
                                           fontSize: 11,
                                         ),
@@ -289,7 +289,7 @@ class TermsOfServiceScreen extends ConsumerWidget {
                             // Description
                             Text(
                               'If you have questions about these Terms, want to report a violation, or need legal documentation, please reach out.',
-                              style: AppTypography.bodySM.copyWith(
+                              style: AppTypography.bodySM(context).copyWith(
                                 color: Colors.white.withValues(alpha: 0.55),
                                 fontSize: 12.5,
                                 height: 1.6,
@@ -318,7 +318,7 @@ class TermsOfServiceScreen extends ConsumerWidget {
                                     const SizedBox(width: 8),
                                     Text(
                                       contactEmail,
-                                      style: AppTypography.bodySM.copyWith(
+                                      style: AppTypography.bodySM(context).copyWith(
                                         color: AppColors.deepCharcoal,
                                         fontWeight: FontWeight.w700,
                                         fontSize: 13,
@@ -335,7 +335,7 @@ class TermsOfServiceScreen extends ConsumerWidget {
                             Center(
                               child: Text(
                                 'We respond within 5 business days',
-                                style: AppTypography.label.copyWith(
+                                style: AppTypography.label(context).copyWith(
                                   color: Colors.white.withValues(alpha: 0.3),
                                   fontSize: 10,
                                   letterSpacing: 0.3,

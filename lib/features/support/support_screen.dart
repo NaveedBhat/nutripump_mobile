@@ -142,13 +142,13 @@ class _SupportScreenState extends ConsumerState<SupportScreen> {
             const SizedBox(height: 24),
             Text(
               'Ticket Submitted',
-              style: AppTypography.h2.copyWith(fontSize: 28),
+              style: AppTypography.h2(context).copyWith(fontSize: 28),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 12),
             Text(
               'Our dedicated concierge team has received your request concerning order $_orderId. We will prioritize this and respond within 12 hours.',
-              style: AppTypography.bodySM.copyWith(color: AppColors.neutralGold, height: 1.6),
+              style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, height: 1.6),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 32),
@@ -184,7 +184,7 @@ class _SupportScreenState extends ConsumerState<SupportScreen> {
                     const SizedBox(width: 6),
                     Text(
                       'PREMIUM SUPPORT',
-                      style: AppTypography.label.copyWith(
+                      style: AppTypography.label(context).copyWith(
                         color: Colors.red,
                         fontWeight: FontWeight.bold,
                       ),
@@ -193,11 +193,11 @@ class _SupportScreenState extends ConsumerState<SupportScreen> {
                 ),
               ),
               const SizedBox(height: 16),
-              Text('How can we help?', style: AppTypography.h1.copyWith(fontSize: 32)),
+              Text('How can we help?', style: AppTypography.h1(context).copyWith(fontSize: 32)),
               const SizedBox(height: 12),
               Text(
                 'Experiencing an issue with your order? Submit a priority ticket below and our harvest concierge will resolve it immediately.',
-                style: AppTypography.bodySM.copyWith(color: AppColors.neutralGold, height: 1.5),
+                style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, height: 1.5),
               ),
               const SizedBox(height: 32),
 
@@ -218,7 +218,7 @@ class _SupportScreenState extends ConsumerState<SupportScreen> {
                 items: _issueOptions.map((opt) {
                   return DropdownMenuItem(
                     value: opt['value']!,
-                    child: Text(opt['label']!, style: AppTypography.bodySM),
+                    child: Text(opt['label']!, style: AppTypography.bodySM(context)),
                   );
                 }).toList(),
                 onChanged: (v) {
@@ -263,7 +263,7 @@ class _SupportScreenState extends ConsumerState<SupportScreen> {
       padding: const EdgeInsets.only(bottom: 8, left: 4),
       child: Text(
         text.toUpperCase(),
-        style: AppTypography.labelGold.copyWith(fontWeight: FontWeight.bold),
+        style: AppTypography.labelGold(context).copyWith(fontWeight: FontWeight.bold),
       ),
     );
   }
@@ -271,7 +271,7 @@ class _SupportScreenState extends ConsumerState<SupportScreen> {
   InputDecoration _inputDecoration(String hint) {
     return InputDecoration(
       hintText: hint,
-      hintStyle: AppTypography.bodySM.copyWith(color: AppColors.neutralGold.withValues(alpha: 0.5)),
+      hintStyle: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold.withValues(alpha: 0.5)),
       filled: true,
       fillColor: Colors.white,
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
@@ -298,7 +298,7 @@ class _SupportScreenState extends ConsumerState<SupportScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Our Support Promise', style: AppTypography.h2),
+          Text('Our Support Promise', style: AppTypography.h2(context)),
           const SizedBox(height: 32),
           _buildPromiseItem(
             Icons.schedule_rounded,
@@ -318,11 +318,11 @@ class _SupportScreenState extends ConsumerState<SupportScreen> {
             'Delivery delayed? We communicate with logistics partners to expedite it.',
           ),
           const SizedBox(height: 48),
-          Text('DIRECT LINE', style: AppTypography.labelGold.copyWith(fontWeight: FontWeight.bold)),
+          Text('DIRECT LINE', style: AppTypography.labelGold(context).copyWith(fontWeight: FontWeight.bold)),
           const SizedBox(height: 8),
-          Text('support@nutripump.com', style: AppTypography.h3),
+          Text('support@nutripump.com', style: AppTypography.h3(context)),
           const SizedBox(height: 4),
-          Text('Available Mon - Sat, 9am - 7pm EST', style: AppTypography.bodySM.copyWith(color: AppColors.neutralGold, fontSize: 12)),
+          Text('Available Mon - Sat, 9am - 7pm EST', style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, fontSize: 12)),
         ],
       ),
     );
@@ -354,9 +354,9 @@ class _SupportScreenState extends ConsumerState<SupportScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(title, style: AppTypography.body.copyWith(fontWeight: FontWeight.bold)),
+              Text(title, style: AppTypography.body(context).copyWith(fontWeight: FontWeight.bold)),
               const SizedBox(height: 4),
-              Text(desc, style: AppTypography.bodySM.copyWith(color: AppColors.neutralGold, fontSize: 13, height: 1.5)),
+              Text(desc, style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, fontSize: 13, height: 1.5)),
             ],
           ),
         ),

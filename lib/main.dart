@@ -8,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'core/constants/app_theme.dart';
 import 'core/router/app_router.dart';
+import 'core/utils/app_scale.dart';
 import 'firebase_options.dart';
 import 'services/notification_service.dart';
 
@@ -95,18 +96,23 @@ class NutriPumpApp extends ConsumerWidget {
     return MaterialApp.router(
       title: 'NutriPump Artisanal',
       debugShowCheckedModeBanner: false,
-      theme: AppTheme.light,
-      darkTheme: AppTheme.dark,
+      theme: AppTheme.light(context),
+      darkTheme: AppTheme.dark(context),
       themeMode: ThemeMode.system,
       routerConfig: appRouter,
       builder: (context, child) {
-        // Cap text scale factor at 1.0 — prevents OS accessibility
-        // settings from inflating text beyond design intent.
+        // 1. Lock text scale to 1.0 — prevents OS accessibility inflation.
+        // 2. Inject AppScale into the widget tree so every screen inherits
+        //    the correct proportional scale factor without individual changes.
+        final mq = MediaQuery.of(context);
+        const designWidth = 390.0;
+        final scale = (mq.size.width / designWidth).clamp(0.82, 1.1);
         return MediaQuery(
-          data: MediaQuery.of(context).copyWith(
-            textScaler: const TextScaler.linear(1.0),
+          data: mq.copyWith(textScaler: const TextScaler.linear(1.0)),
+          child: AppScale(
+            scale: scale,
+            child: child!,
           ),
-          child: child!,
         );
       },
     );

@@ -101,7 +101,7 @@ class _HomeAppBar extends ConsumerWidget {
               Expanded(
                 child: Text(
                   'Search honey, saffron, nuts...',
-                  style: AppTypography.bodySM.copyWith(
+                  style: AppTypography.bodySM(context).copyWith(
                     color: AppColors.neutralGold,
                     fontSize: R.sp(context, 12),
                   ),
@@ -182,7 +182,7 @@ class _HomeAppBar extends ConsumerWidget {
         const SizedBox(width: 4),
       ],
       bottom: PreferredSize(
-        preferredSize: Size.fromHeight(R.h(context, 1)),
+        preferredSize: const Size.fromHeight(1),
         child: Container(height: 1, color: AppColors.borderLight),
       ),
     );
@@ -327,7 +327,7 @@ class _HeroCarouselState extends ConsumerState<_HeroCarousel> {
                                 ),
                                 child: Text(
                                   slide['badge']!,
-                                  style: AppTypography.label.copyWith(
+                                  style: AppTypography.label(context).copyWith(
                                     fontSize: R.sp(context, 8),
                                     color: AppColors.primary,
                                     letterSpacing: 1.5,
@@ -338,7 +338,7 @@ class _HeroCarouselState extends ConsumerState<_HeroCarousel> {
                               SizedBox(height: R.h(context, 8)),
                               Text(
                                 slide['title']!,
-                                style: AppTypography.h1.copyWith(
+                                style: AppTypography.h1(context).copyWith(
                                   color: Colors.white,
                                   fontSize: R.sp(context, 20),
                                   height: 1.15,
@@ -350,7 +350,7 @@ class _HeroCarouselState extends ConsumerState<_HeroCarousel> {
                                 slide['subtitle']!,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                style: AppTypography.bodySM.copyWith(
+                                style: AppTypography.bodySM(context).copyWith(
                                   color: Colors.white.withValues(alpha: 0.7),
                                   fontSize: R.sp(context, 11),
                                 ),
@@ -365,7 +365,7 @@ class _HeroCarouselState extends ConsumerState<_HeroCarousel> {
                                 ),
                                 child: Text(
                                   slide['cta']!,
-                                  style: AppTypography.label.copyWith(
+                                  style: AppTypography.label(context).copyWith(
                                     color: AppColors.deepCharcoal,
                                     fontWeight: FontWeight.w900,
                                     fontSize: R.sp(context, 10),
@@ -471,7 +471,7 @@ class _TrustStripState extends State<_TrustStrip> with SingleTickerProviderState
                 SizedBox(width: R.w(context, 6)),
                 Text(
                   item.$2,
-                  style: AppTypography.label.copyWith(
+                  style: AppTypography.label(context).copyWith(
                     fontSize: R.sp(context, 10),
                     fontWeight: FontWeight.w700,
                     letterSpacing: 0.3,
@@ -504,11 +504,11 @@ class _CategoriesSection extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text('Shop by Category',
-                  style: AppTypography.h2.copyWith(fontSize: R.sp(context, 16))),
+                  style: AppTypography.h2(context).copyWith(fontSize: R.sp(context, 16))),
               GestureDetector(
                 onTap: () => context.push('/categories'),
                 child: Text('See All',
-                    style: AppTypography.label.copyWith(
+                    style: AppTypography.label(context).copyWith(
                       color: AppColors.primary,
                       fontWeight: FontWeight.w800,
                       fontSize: R.sp(context, 10),
@@ -559,7 +559,7 @@ class _CategoriesSection extends ConsumerWidget {
                             textAlign: TextAlign.center,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: AppTypography.label.copyWith(
+                            style: AppTypography.label(context).copyWith(
                               fontSize: R.sp(context, 10),
                               fontWeight: FontWeight.w700,
                             ),
@@ -617,7 +617,7 @@ class _FeaturedProductsSection extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text('CURATED SELECTION',
-                      style: AppTypography.label.copyWith(
+                      style: AppTypography.label(context).copyWith(
                         color: AppColors.primary,
                         fontSize: R.sp(context, 9),
                         letterSpacing: 1.5,
@@ -625,13 +625,13 @@ class _FeaturedProductsSection extends ConsumerWidget {
                       )),
                   SizedBox(height: R.h(context, 3)),
                   Text('Featured Products',
-                      style: AppTypography.h2.copyWith(fontSize: R.sp(context, 17))),
+                      style: AppTypography.h2(context).copyWith(fontSize: R.sp(context, 17))),
                 ],
               ),
               GestureDetector(
                 onTap: () => context.push('/shop'),
                 child: Text('View All →',
-                    style: AppTypography.label.copyWith(
+                    style: AppTypography.label(context).copyWith(
                       color: AppColors.primary,
                       fontWeight: FontWeight.w800,
                       fontSize: R.sp(context, 10),
@@ -685,9 +685,9 @@ class _WhyNutriPump extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('WHY NUTRIPUMP', style: AppTypography.label.copyWith(color: AppColors.primary, fontSize: R.sp(context, 9), letterSpacing: 2.0, fontWeight: FontWeight.w900)),
+          Text('WHY NUTRIPUMP', style: AppTypography.label(context).copyWith(color: AppColors.primary, fontSize: R.sp(context, 9), letterSpacing: 2.0, fontWeight: FontWeight.w900)),
           SizedBox(height: R.h(context, 4)),
-          Text('Crafted Different', style: AppTypography.h2.copyWith(fontSize: R.sp(context, 18))),
+          Text('Crafted Different', style: AppTypography.h2(context).copyWith(fontSize: R.sp(context, 18))),
           SizedBox(height: R.h(context, 14)),
           Row(
             children: values.map((v) {
@@ -713,9 +713,9 @@ class _WhyNutriPump extends StatelessWidget {
                         child: Icon(v.$1, color: AppColors.primary, size: R.sp(context, 15)),
                       ),
                       SizedBox(height: R.h(context, 8)),
-                      Text(v.$2, textAlign: TextAlign.center, style: AppTypography.label.copyWith(fontWeight: FontWeight.w800, fontSize: R.sp(context, 10), height: 1.2)),
+                      Text(v.$2, textAlign: TextAlign.center, style: AppTypography.label(context).copyWith(fontWeight: FontWeight.w800, fontSize: R.sp(context, 10), height: 1.2)),
                       SizedBox(height: R.h(context, 3)),
-                      Text(v.$3, textAlign: TextAlign.center, style: AppTypography.label.copyWith(color: AppColors.neutralGold, fontSize: R.sp(context, 8), height: 1.3)),
+                      Text(v.$3, textAlign: TextAlign.center, style: AppTypography.label(context).copyWith(color: AppColors.neutralGold, fontSize: R.sp(context, 8), height: 1.3)),
                     ],
                   ),
                 ),
@@ -749,14 +749,14 @@ class _AllProductsSection extends ConsumerWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('THE FULL RANGE', style: AppTypography.label.copyWith(color: AppColors.primary, fontSize: R.sp(context, 9), letterSpacing: 2.0, fontWeight: FontWeight.w900)),
+                      Text('THE FULL RANGE', style: AppTypography.label(context).copyWith(color: AppColors.primary, fontSize: R.sp(context, 9), letterSpacing: 2.0, fontWeight: FontWeight.w900)),
                       SizedBox(height: R.h(context, 3)),
-                      Text('All Products', style: AppTypography.h2.copyWith(fontSize: R.sp(context, 18))),
+                      Text('All Products', style: AppTypography.h2(context).copyWith(fontSize: R.sp(context, 18))),
                     ],
                   ),
                   GestureDetector(
                     onTap: () => context.push('/shop'),
-                    child: Text('Browse All →', style: AppTypography.label.copyWith(color: AppColors.primary, fontWeight: FontWeight.w800, fontSize: R.sp(context, 10))),
+                    child: Text('Browse All →', style: AppTypography.label(context).copyWith(color: AppColors.primary, fontWeight: FontWeight.w800, fontSize: R.sp(context, 10))),
                   ),
                 ],
               ),
@@ -814,17 +814,17 @@ class _TasteProfilerCta extends StatelessWidget {
                 color: AppColors.primary.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(4),
               ),
-              child: Text('AI-POWERED', style: AppTypography.label.copyWith(color: AppColors.primary, fontSize: R.sp(context, 8), letterSpacing: 2.0, fontWeight: FontWeight.w900)),
+              child: Text('AI-POWERED', style: AppTypography.label(context).copyWith(color: AppColors.primary, fontSize: R.sp(context, 8), letterSpacing: 2.0, fontWeight: FontWeight.w900)),
             ),
             SizedBox(height: R.h(context, 10)),
             Text(
               'Not sure where\nto start?',
-              style: AppTypography.h1.copyWith(color: Colors.white, fontSize: R.sp(context, 22), height: 1.1),
+              style: AppTypography.h1(context).copyWith(color: Colors.white, fontSize: R.sp(context, 22), height: 1.1),
             ),
             SizedBox(height: R.h(context, 8)),
             Text(
               'Take our 1-minute Artisanal Pulse quiz and get a curated recommendation just for you.',
-              style: AppTypography.bodySM.copyWith(color: Colors.white.withValues(alpha: 0.7), fontSize: R.sp(context, 12), height: 1.5),
+              style: AppTypography.bodySM(context).copyWith(color: Colors.white.withValues(alpha: 0.7), fontSize: R.sp(context, 12), height: 1.5),
             ),
             SizedBox(height: R.h(context, 20)),
             GestureDetector(
@@ -842,7 +842,7 @@ class _TasteProfilerCta extends StatelessWidget {
                     SizedBox(width: R.w(context, 7)),
                     Text(
                       'TAKE THE QUIZ',
-                      style: AppTypography.label.copyWith(
+                      style: AppTypography.label(context).copyWith(
                         color: AppColors.deepCharcoal,
                         fontWeight: FontWeight.w900,
                         fontSize: R.sp(context, 10),
@@ -899,16 +899,16 @@ class _B2BSection extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('B2B & GASTRONOMY', style: AppTypography.label.copyWith(color: AppColors.primary, fontSize: R.sp(context, 9), letterSpacing: 2.5, fontWeight: FontWeight.w900)),
+                Text('B2B & GASTRONOMY', style: AppTypography.label(context).copyWith(color: AppColors.primary, fontSize: R.sp(context, 9), letterSpacing: 2.5, fontWeight: FontWeight.w900)),
                 SizedBox(height: R.h(context, 6)),
                 RichText(
                   text: TextSpan(
-                    style: AppTypography.h2.copyWith(color: Colors.white, fontSize: R.sp(context, 19), height: 1.15),
+                    style: AppTypography.h2(context).copyWith(color: Colors.white, fontSize: R.sp(context, 19), height: 1.15),
                     children: [
                       const TextSpan(text: 'Elevate Your\nCulinary '),
                       TextSpan(
                         text: 'Signature',
-                        style: AppTypography.h2.copyWith(color: AppColors.primary, fontSize: R.sp(context, 19), fontStyle: FontStyle.italic),
+                        style: AppTypography.h2(context).copyWith(color: AppColors.primary, fontSize: R.sp(context, 19), fontStyle: FontStyle.italic),
                       ),
                     ],
                   ),
@@ -916,7 +916,7 @@ class _B2BSection extends StatelessWidget {
                 SizedBox(height: R.h(context, 10)),
                 Text(
                   'We partner with restaurants, luxury hotels, and high-end retailers to provide premium, single-origin artisan products.',
-                  style: AppTypography.bodySM.copyWith(color: Colors.white.withValues(alpha: 0.6), fontSize: R.sp(context, 11), height: 1.5),
+                  style: AppTypography.bodySM(context).copyWith(color: Colors.white.withValues(alpha: 0.6), fontSize: R.sp(context, 11), height: 1.5),
                 ),
                 SizedBox(height: R.h(context, 16)),
                 GridView.count(
@@ -945,9 +945,9 @@ class _B2BSection extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text(f.$2, style: AppTypography.label.copyWith(color: Colors.white, fontSize: R.sp(context, 9), fontWeight: FontWeight.w800)),
+                              Text(f.$2, style: AppTypography.label(context).copyWith(color: Colors.white, fontSize: R.sp(context, 9), fontWeight: FontWeight.w800)),
                               SizedBox(height: R.h(context, 2)),
-                              Text(f.$3, style: AppTypography.label.copyWith(color: Colors.white.withValues(alpha: 0.5), fontSize: R.sp(context, 8), height: 1.3), maxLines: 2, overflow: TextOverflow.ellipsis),
+                              Text(f.$3, style: AppTypography.label(context).copyWith(color: Colors.white.withValues(alpha: 0.5), fontSize: R.sp(context, 8), height: 1.3), maxLines: 2, overflow: TextOverflow.ellipsis),
                             ],
                           ),
                         ),
@@ -989,7 +989,7 @@ class _B2BSection extends StatelessWidget {
                       children: [
                         Text(
                           'Request Partnership Kit',
-                          style: AppTypography.label.copyWith(
+                          style: AppTypography.label(context).copyWith(
                             color: AppColors.deepCharcoal,
                             fontWeight: FontWeight.w900,
                             fontSize: R.sp(context, 11),
@@ -1012,8 +1012,8 @@ class _B2BSection extends StatelessWidget {
   Widget _b2bStat(BuildContext context, String value, String label) {
     return Column(
       children: [
-        Text(value, style: AppTypography.h3.copyWith(color: AppColors.primary, fontSize: R.sp(context, 16))),
-        Text(label, style: AppTypography.label.copyWith(color: Colors.white.withValues(alpha: 0.5), fontSize: R.sp(context, 9))),
+        Text(value, style: AppTypography.h3(context).copyWith(color: AppColors.primary, fontSize: R.sp(context, 16))),
+        Text(label, style: AppTypography.label(context).copyWith(color: Colors.white.withValues(alpha: 0.5), fontSize: R.sp(context, 9))),
       ],
     );
   }
@@ -1094,13 +1094,13 @@ class _HoneyWheelSectionState extends State<_HoneyWheelSection>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('EDUCATION', style: AppTypography.label.copyWith(color: AppColors.primary, fontSize: R.sp(context, 9), letterSpacing: 2.5, fontWeight: FontWeight.w900)),
+          Text('EDUCATION', style: AppTypography.label(context).copyWith(color: AppColors.primary, fontSize: R.sp(context, 9), letterSpacing: 2.5, fontWeight: FontWeight.w900)),
           SizedBox(height: R.h(context, 5)),
-          Text("The Honey Taster's Wheel", style: AppTypography.h2.copyWith(color: Colors.white, fontSize: R.sp(context, 19), height: 1.1)),
+          Text("The Honey Taster's Wheel", style: AppTypography.h2(context).copyWith(color: Colors.white, fontSize: R.sp(context, 19), height: 1.1)),
           SizedBox(height: R.h(context, 6)),
           Text(
             'Like fine wine, honey has complex aromatic compounds. Use our guide to identify the nuances in our artisanal selection.',
-            style: AppTypography.bodySM.copyWith(color: Colors.white.withValues(alpha: 0.55), fontSize: R.sp(context, 11), height: 1.5),
+            style: AppTypography.bodySM(context).copyWith(color: Colors.white.withValues(alpha: 0.55), fontSize: R.sp(context, 11), height: 1.5),
           ),
           SizedBox(height: R.h(context, 20)),
           // Interactive wheel
@@ -1204,10 +1204,10 @@ class _HoneyWheelSectionState extends State<_HoneyWheelSection>
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(p.name, style: AppTypography.label.copyWith(color: Colors.white, fontWeight: FontWeight.w800, fontSize: R.sp(context, 11))),
+                          Text(p.name, style: AppTypography.label(context).copyWith(color: Colors.white, fontWeight: FontWeight.w800, fontSize: R.sp(context, 11))),
                           if (isActive) ...[
                             SizedBox(height: R.h(context, 3)),
-                            Text(p.desc, style: AppTypography.bodySM.copyWith(color: Colors.white.withValues(alpha: 0.55), fontSize: R.sp(context, 11), height: 1.4)),
+                            Text(p.desc, style: AppTypography.bodySM(context).copyWith(color: Colors.white.withValues(alpha: 0.55), fontSize: R.sp(context, 11), height: 1.4)),
                           ],
                         ],
                       ),
@@ -1222,7 +1222,7 @@ class _HoneyWheelSectionState extends State<_HoneyWheelSection>
             onTap: () => context.push('/journal/honey-tasters-guide'),
             child: Row(
               children: [
-                Text('Explore Full Tasting Guide', style: AppTypography.label.copyWith(color: AppColors.primary, fontWeight: FontWeight.w800, fontSize: R.sp(context, 11))),
+                Text('Explore Full Tasting Guide', style: AppTypography.label(context).copyWith(color: AppColors.primary, fontWeight: FontWeight.w800, fontSize: R.sp(context, 11))),
                 SizedBox(width: R.w(context, 6)),
                 Icon(Icons.arrow_forward, color: AppColors.primary, size: R.sp(context, 13)),
               ],

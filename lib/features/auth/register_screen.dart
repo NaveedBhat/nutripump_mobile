@@ -145,9 +145,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Create account', style: AppTypography.h2.copyWith(fontSize: 28)),
+                        Text('Create account', style: AppTypography.h2(context).copyWith(fontSize: 28)),
                         const SizedBox(height: 6),
-                        Text('Join to experience premium artisanal sourcing.', style: AppTypography.bodySM.copyWith(color: AppColors.neutralGold, fontSize: 14)),
+                        Text('Join to experience premium artisanal sourcing.', style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, fontSize: 14)),
                         const SizedBox(height: 36),
 
                         // Google Button
@@ -172,7 +172,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                                       height: 22,
                                     ),
                                     const SizedBox(width: 12),
-                                    Text('Sign up with Google', style: AppTypography.bodySM.copyWith(fontWeight: FontWeight.w700, fontSize: 14)),
+                                    Text('Sign up with Google', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: 14)),
                                   ],
                                 ),
                         ),
@@ -184,7 +184,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                             Expanded(child: Divider(color: AppColors.primary.withValues(alpha: 0.2))),
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 16),
-                              child: Text('OR SIGN UP WITH EMAIL', style: AppTypography.labelGold.copyWith(fontSize: 10, letterSpacing: 1.5)),
+                              child: Text('OR SIGN UP WITH EMAIL', style: AppTypography.labelGold(context).copyWith(fontSize: 10, letterSpacing: 1.5)),
                             ),
                             Expanded(child: Divider(color: AppColors.primary.withValues(alpha: 0.2))),
                           ],
@@ -192,7 +192,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                         const SizedBox(height: 28),
 
                         // Full Name
-                        Text('FULL NAME', style: AppTypography.label.copyWith(color: AppColors.neutralGold, fontSize: 10)),
+                        Text('FULL NAME', style: AppTypography.label(context).copyWith(color: AppColors.neutralGold, fontSize: 10)),
                         const SizedBox(height: 8),
                         ReactiveTextField<String>(
                           formControlName: 'name',
@@ -200,7 +200,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                           textInputAction: TextInputAction.next,
                           decoration: InputDecoration(
                             hintText: 'John Doe',
-                            hintStyle: AppTypography.bodySM.copyWith(color: AppColors.neutralGold.withValues(alpha: 0.5)),
+                            hintStyle: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold.withValues(alpha: 0.5)),
                             prefixIcon: const Icon(Icons.person_outline_rounded, size: 18, color: AppColors.neutralGold),
                             filled: true, fillColor: Colors.white,
                             contentPadding: const EdgeInsets.symmetric(vertical: 16),
@@ -211,7 +211,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                         const SizedBox(height: 20),
 
                         // Email
-                        Text('EMAIL ADDRESS', style: AppTypography.label.copyWith(color: AppColors.neutralGold, fontSize: 10)),
+                        Text('EMAIL ADDRESS', style: AppTypography.label(context).copyWith(color: AppColors.neutralGold, fontSize: 10)),
                         const SizedBox(height: 8),
                         ReactiveTextField<String>(
                           formControlName: 'email',
@@ -219,7 +219,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                           textInputAction: TextInputAction.next,
                           decoration: InputDecoration(
                             hintText: 'you@example.com',
-                            hintStyle: AppTypography.bodySM.copyWith(color: AppColors.neutralGold.withValues(alpha: 0.5)),
+                            hintStyle: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold.withValues(alpha: 0.5)),
                             prefixIcon: const Icon(Icons.mail_outline_rounded, size: 18, color: AppColors.neutralGold),
                             filled: true, fillColor: Colors.white,
                             contentPadding: const EdgeInsets.symmetric(vertical: 16),
@@ -230,7 +230,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                         const SizedBox(height: 20),
 
                         // Password
-                        Text('PASSWORD', style: AppTypography.label.copyWith(color: AppColors.neutralGold, fontSize: 10)),
+                        Text('PASSWORD', style: AppTypography.label(context).copyWith(color: AppColors.neutralGold, fontSize: 10)),
                         const SizedBox(height: 8),
                         ReactiveTextField<String>(
                           formControlName: 'password',
@@ -239,7 +239,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                           onSubmitted: (_) => _handleEmailRegister(),
                           decoration: InputDecoration(
                             hintText: '••••••••',
-                            hintStyle: AppTypography.bodySM.copyWith(color: AppColors.neutralGold.withValues(alpha: 0.5)),
+                            hintStyle: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold.withValues(alpha: 0.5)),
                             prefixIcon: const Icon(Icons.lock_outline_rounded, size: 18, color: AppColors.neutralGold),
                             suffixIcon: IconButton(
                               icon: Icon(_obscurePassword ? Icons.visibility_off_outlined : Icons.visibility_outlined, size: 18, color: AppColors.neutralGold),
@@ -254,7 +254,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                         const SizedBox(height: 20),
 
                         // Confirm Password
-                        Text('CONFIRM PASSWORD', style: AppTypography.label.copyWith(color: AppColors.neutralGold, fontSize: 10)),
+                        Text('CONFIRM PASSWORD', style: AppTypography.label(context).copyWith(color: AppColors.neutralGold, fontSize: 10)),
                         const SizedBox(height: 8),
                         ReactiveTextField<String>(
                           formControlName: 'confirmPassword',
@@ -263,7 +263,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                           onSubmitted: (_) => _handleEmailRegister(),
                           decoration: InputDecoration(
                             hintText: '••••••••',
-                            hintStyle: AppTypography.bodySM.copyWith(color: AppColors.neutralGold.withValues(alpha: 0.5)),
+                            hintStyle: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold.withValues(alpha: 0.5)),
                             prefixIcon: const Icon(Icons.lock_outline_rounded, size: 18, color: AppColors.neutralGold),
                             suffixIcon: IconButton(
                               icon: Icon(_obscureConfirmPassword ? Icons.visibility_off_outlined : Icons.visibility_outlined, size: 18, color: AppColors.neutralGold),
@@ -292,7 +292,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                               : Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text('Create Account', style: AppTypography.bodySM.copyWith(fontWeight: FontWeight.w800, fontSize: 16)),
+                                    Text('Create Account', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: 16)),
                                     const SizedBox(width: 8),
                                     const Icon(Icons.arrow_forward_rounded, size: 18),
                                   ],
@@ -304,10 +304,10 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text("Already have an account? ", style: AppTypography.bodySM.copyWith(color: AppColors.neutralGold, fontSize: 14)),
+                            Text("Already have an account? ", style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, fontSize: 14)),
                             GestureDetector(
                               onTap: () => context.pop(),
-                              child: Text('Sign In', style: AppTypography.bodySM.copyWith(color: AppColors.primaryDark, fontSize: 14, fontWeight: FontWeight.w700)),
+                              child: Text('Sign In', style: AppTypography.bodySM(context).copyWith(color: AppColors.primaryDark, fontSize: 14, fontWeight: FontWeight.w700)),
                             ),
                           ],
                         ),

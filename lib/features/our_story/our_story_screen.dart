@@ -51,9 +51,9 @@ class OurStoryScreen extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('OUR HERITAGE', style: AppTypography.labelGold.copyWith(letterSpacing: 2)),
+                          Text('OUR HERITAGE', style: AppTypography.labelGold(context).copyWith(letterSpacing: 2)),
                           const SizedBox(height: 8),
-                          Text('Rooted in\nthe Valley', style: AppTypography.h1.copyWith(color: Colors.white, fontSize: 36, height: 1.1)),
+                          Text('Rooted in\nthe Valley', style: AppTypography.h1(context).copyWith(color: Colors.white, fontSize: 36, height: 1.1)),
                         ],
                       ),
                     ),
@@ -72,13 +72,14 @@ class OurStoryScreen extends StatelessWidget {
                     delay: const Duration(milliseconds: 100),
                     child: Text(
                       'NutriPump Artisanal was born from a simple realization: the purest treasures of the Earth are being lost to mass production. We journey to the heart of Kashmir and the high altitudes of the Himalayas to source ingredients exactly as nature intended — unadulterated, raw, and vibrant.',
-                      style: AppTypography.bodySM.copyWith(fontSize: 15, height: 1.8, color: AppColors.deepCharcoal.withValues(alpha: 0.8)),
+                      style: AppTypography.bodySM(context).copyWith(fontSize: 15, height: 1.8, color: AppColors.deepCharcoal.withValues(alpha: 0.8)),
                     ),
                   ),
                   const SizedBox(height: 40),
                   AnimatedEnter(
                     delay: const Duration(milliseconds: 200),
                     child: _buildValueProp(
+                      context,
                       Icons.thermostat_outlined,
                       'Cold-Pressed Perfection',
                       'Our oils are extracted using ancient wooden presses (kachhi ghani), ensuring no heat destroys the vital nutrients.',
@@ -88,6 +89,7 @@ class OurStoryScreen extends StatelessWidget {
                   AnimatedEnter(
                     delay: const Duration(milliseconds: 300),
                     child: _buildValueProp(
+                      context,
                       Icons.nature_people_outlined,
                       'Heritage Farming',
                       'We partner directly with multi-generational farmers in the Kashmir Valley, ensuring fair trade and sustainable harvesting practices.',
@@ -97,6 +99,7 @@ class OurStoryScreen extends StatelessWidget {
                   AnimatedEnter(
                     delay: const Duration(milliseconds: 400),
                     child: _buildValueProp(
+                      context,
                       Icons.science_outlined,
                       'Uncompromising Purity',
                       'Every single batch is lab-verified. No additives, no synthetic colors, no preservatives. Just 100% natural goodness.',
@@ -120,7 +123,7 @@ class OurStoryScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildValueProp(IconData icon, String title, String description) {
+  Widget _buildValueProp(BuildContext context, IconData icon, String title, String description) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -137,11 +140,11 @@ class OurStoryScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(title, style: AppTypography.h3.copyWith(fontSize: 18)),
+              Text(title, style: AppTypography.h3(context).copyWith(fontSize: 18)),
               const SizedBox(height: 6),
               Text(
                 description,
-                style: AppTypography.bodySM.copyWith(color: AppColors.neutralGold, height: 1.5),
+                style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, height: 1.5),
               ),
             ],
           ),

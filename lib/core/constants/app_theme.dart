@@ -9,7 +9,7 @@ class AppTheme {
   AppTheme._();
 
   // ── Light Theme ───────────────────────────────────────────
-  static ThemeData get light => ThemeData(
+  static ThemeData light(BuildContext context) => ThemeData(
     useMaterial3: true,
     brightness: Brightness.light,
     colorScheme: const ColorScheme.light(
@@ -23,7 +23,7 @@ class AppTheme {
       outline: AppColors.borderLight,
     ),
     scaffoldBackgroundColor: AppColors.backgroundLight,
-    textTheme: _buildTextTheme(AppColors.deepCharcoal),
+    textTheme: _buildTextTheme(context, AppColors.deepCharcoal),
     appBarTheme: AppBarTheme(
       backgroundColor: AppColors.backgroundLight,
       foregroundColor: AppColors.deepCharcoal,
@@ -31,7 +31,7 @@ class AppTheme {
       scrolledUnderElevation: 0,
       centerTitle: true,
       systemOverlayStyle: SystemUiOverlayStyle.dark,
-      titleTextStyle: AppTypography.h3,
+      titleTextStyle: AppTypography.h3(context),
     ),
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
       backgroundColor: AppColors.backgroundLight,
@@ -52,7 +52,7 @@ class AppTheme {
           borderRadius: BorderRadius.circular(50),
         ),
         padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-        textStyle: AppTypography.label.copyWith(fontSize: 14),
+        textStyle: AppTypography.label(context).copyWith(fontSize: 14),
       ),
     ),
     outlinedButtonTheme: OutlinedButtonThemeData(
@@ -63,7 +63,7 @@ class AppTheme {
           borderRadius: BorderRadius.circular(50),
         ),
         padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-        textStyle: AppTypography.label.copyWith(fontSize: 14),
+        textStyle: AppTypography.label(context).copyWith(fontSize: 14),
       ),
     ),
     inputDecorationTheme: InputDecorationTheme(
@@ -86,8 +86,8 @@ class AppTheme {
         borderRadius: BorderRadius.circular(12),
         borderSide: const BorderSide(color: AppColors.error),
       ),
-      labelStyle: AppTypography.bodySM.copyWith(color: AppColors.neutralGold),
-      hintStyle: AppTypography.bodySM.copyWith(
+      labelStyle: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold),
+      hintStyle: AppTypography.bodySM(context).copyWith(
         color: AppColors.neutralGold.withValues(alpha: 0.5),
       ),
     ),
@@ -106,7 +106,7 @@ class AppTheme {
     chipTheme: ChipThemeData(
       backgroundColor: AppColors.primary.withValues(alpha: 0.08),
       selectedColor: AppColors.primary,
-      labelStyle: AppTypography.label.copyWith(fontSize: 11),
+      labelStyle: AppTypography.label(context).copyWith(fontSize: 11),
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(50),
@@ -115,14 +115,14 @@ class AppTheme {
     ),
     snackBarTheme: SnackBarThemeData(
       backgroundColor: AppColors.deepCharcoal,
-      contentTextStyle: AppTypography.bodySM.copyWith(color: Colors.white),
+      contentTextStyle: AppTypography.bodySM(context).copyWith(color: Colors.white),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       behavior: SnackBarBehavior.floating,
     ),
   );
 
   // ── Dark Theme ────────────────────────────────────────────
-  static ThemeData get dark => ThemeData(
+  static ThemeData dark(BuildContext context) => ThemeData(
     useMaterial3: true,
     brightness: Brightness.dark,
     colorScheme: const ColorScheme.dark(
@@ -135,7 +135,7 @@ class AppTheme {
       outline: AppColors.borderDark,
     ),
     scaffoldBackgroundColor: AppColors.backgroundDark,
-    textTheme: _buildTextTheme(const Color(0xFFF5F0E8)),
+    textTheme: _buildTextTheme(context, const Color(0xFFF5F0E8)),
     appBarTheme: AppBarTheme(
       backgroundColor: AppColors.backgroundDark,
       foregroundColor: const Color(0xFFF5F0E8),
@@ -143,20 +143,20 @@ class AppTheme {
       scrolledUnderElevation: 0,
       centerTitle: true,
       systemOverlayStyle: SystemUiOverlayStyle.light,
-      titleTextStyle: AppTypography.h3.copyWith(color: const Color(0xFFF5F0E8)),
+      titleTextStyle: AppTypography.h3(context).copyWith(color: const Color(0xFFF5F0E8)),
     ),
   );
 
-  static TextTheme _buildTextTheme(Color color) => TextTheme(
-    displayLarge: AppTypography.displayXL.copyWith(color: color),
-    displayMedium: AppTypography.displayLG.copyWith(color: color),
-    displaySmall: AppTypography.displayMD.copyWith(color: color),
-    headlineLarge: AppTypography.h1.copyWith(color: color),
-    headlineMedium: AppTypography.h2.copyWith(color: color),
-    headlineSmall: AppTypography.h3.copyWith(color: color),
-    bodyLarge: AppTypography.bodyLG.copyWith(color: color),
-    bodyMedium: AppTypography.body.copyWith(color: color),
-    bodySmall: AppTypography.bodySM.copyWith(color: color),
-    labelSmall: AppTypography.label.copyWith(color: color),
+  static TextTheme _buildTextTheme(BuildContext context, Color color) => TextTheme(
+    displayLarge: AppTypography.displayXL(context).copyWith(color: color),
+    displayMedium: AppTypography.displayLG(context).copyWith(color: color),
+    displaySmall: AppTypography.displayMD(context).copyWith(color: color),
+    headlineLarge: AppTypography.h1(context).copyWith(color: color),
+    headlineMedium: AppTypography.h2(context).copyWith(color: color),
+    headlineSmall: AppTypography.h3(context).copyWith(color: color),
+    bodyLarge: AppTypography.bodyLG(context).copyWith(color: color),
+    bodyMedium: AppTypography.body(context).copyWith(color: color),
+    bodySmall: AppTypography.bodySM(context).copyWith(color: color),
+    labelSmall: AppTypography.label(context).copyWith(color: color),
   );
 }

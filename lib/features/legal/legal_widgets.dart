@@ -56,7 +56,7 @@ class LegalSectionWidget extends StatelessWidget {
               const SizedBox(width: 12),
               Text(
                 index.toString().padLeft(2, '0'),
-                style: AppTypography.label.copyWith(
+                style: AppTypography.label(context).copyWith(
                   color: AppColors.neutralGold,
                   fontSize: 10,
                   fontFamily: 'monospace',
@@ -66,7 +66,7 @@ class LegalSectionWidget extends StatelessWidget {
               Expanded(
                 child: Text(
                   section.title,
-                  style: AppTypography.h3.copyWith(fontSize: 16),
+                  style: AppTypography.h3(context).copyWith(fontSize: 16),
                 ),
               ),
             ],
@@ -95,7 +95,7 @@ class LegalSectionWidget extends StatelessWidget {
                     children: [
                       Text(
                         item.subtitle,
-                        style: AppTypography.bodySM.copyWith(
+                        style: AppTypography.bodySM(context).copyWith(
                           fontWeight: FontWeight.w700,
                           fontSize: 13,
                           color: AppColors.deepCharcoal,
@@ -104,7 +104,7 @@ class LegalSectionWidget extends StatelessWidget {
                       const SizedBox(height: 5),
                       Text(
                         item.text,
-                        style: AppTypography.bodySM.copyWith(
+                        style: AppTypography.bodySM(context).copyWith(
                           fontSize: 12.5,
                           height: 1.65,
                           color: AppColors.deepCharcoal

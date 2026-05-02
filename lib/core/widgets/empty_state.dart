@@ -33,12 +33,12 @@ class EmptyState extends StatelessWidget {
               child: Icon(icon, size: 48, color: AppColors.primary),
             ),
             const SizedBox(height: 24),
-            Text(title, style: AppTypography.h2),
+            Text(title, style: AppTypography.h2(context)),
             const SizedBox(height: 8),
             Text(
               message,
               textAlign: TextAlign.center,
-              style: AppTypography.bodySM.copyWith(color: AppColors.neutralGold),
+              style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold),
             ),
             if (action != null) ...[
               const SizedBox(height: 24),

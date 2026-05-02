@@ -127,7 +127,7 @@ class _ShopScreenState extends ConsumerState<ShopScreen> {
                               onChanged: (v) => ref.read(shopFiltersProvider.notifier).setSearchQuery(v),
                               decoration: InputDecoration(
                                 hintText: 'Search products, origins…',
-                                hintStyle: AppTypography.bodySM.copyWith(
+                                hintStyle: AppTypography.bodySM(context).copyWith(
                                   color: AppColors.neutralGold.withValues(alpha: 0.6),
                                   fontSize: 12,
                                 ),
@@ -158,7 +158,7 @@ class _ShopScreenState extends ConsumerState<ShopScreen> {
                         Expanded(
                           child: filteredAsync.whenData((products) => Text(
                             '${products.length} product${products.length != 1 ? 's' : ''}',
-                            style: AppTypography.bodySM.copyWith(color: AppColors.neutralGold, fontSize: 12),
+                            style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, fontSize: 12),
                           )).valueOrNull ?? const SizedBox(),
                         ),
                         // Filters button
@@ -175,7 +175,7 @@ class _ShopScreenState extends ConsumerState<ShopScreen> {
                               children: [
                                 const Icon(Icons.tune_rounded, size: 15, color: AppColors.deepCharcoal),
                                 const SizedBox(width: 6),
-                                Text('Filters', style: AppTypography.bodySM.copyWith(fontWeight: FontWeight.w700, fontSize: 13)),
+                                Text('Filters', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: 13)),
                               ],
                             ),
                           ),
@@ -198,7 +198,7 @@ class _ShopScreenState extends ConsumerState<ShopScreen> {
                                 children: [
                                   Text(
                                     _sortOptions.firstWhere((o) => o.$1 == filters.sortBy, orElse: () => _sortOptions.first).$2,
-                                    style: AppTypography.bodySM.copyWith(fontWeight: FontWeight.w700, fontSize: 13),
+                                    style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: 13),
                                   ),
                                   const SizedBox(width: 6),
                                   const Icon(Icons.keyboard_arrow_down_rounded, size: 16, color: AppColors.deepCharcoal),
@@ -207,7 +207,7 @@ class _ShopScreenState extends ConsumerState<ShopScreen> {
                             ),
                             itemBuilder: (_) => _sortOptions.map((o) => PopupMenuItem(
                               value: o.$1,
-                              child: Text(o.$2, style: AppTypography.bodySM.copyWith(fontSize: 13)),
+                              child: Text(o.$2, style: AppTypography.bodySM(context).copyWith(fontSize: 13)),
                             )).toList(),
                           ),
                         ),
@@ -229,16 +229,16 @@ class _ShopScreenState extends ConsumerState<ShopScreen> {
                         children: [
                           const Icon(Icons.inventory_2_outlined, size: 48, color: AppColors.borderLight),
                           const SizedBox(height: 16),
-                          Text('No products found', style: AppTypography.h3),
+                          Text('No products found', style: AppTypography.h3(context)),
                           const SizedBox(height: 8),
-                          Text('Try adjusting your filters', style: AppTypography.bodySM.copyWith(color: AppColors.neutralGold)),
+                          Text('Try adjusting your filters', style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold)),
                           const SizedBox(height: 16),
                           TextButton(
                             onPressed: () {
                               _searchController.clear();
                               ref.read(shopFiltersProvider.notifier).reset();
                             },
-                            child: Text('Clear all filters', style: AppTypography.bodySM.copyWith(color: AppColors.primary, fontWeight: FontWeight.w700)),
+                            child: Text('Clear all filters', style: AppTypography.bodySM(context).copyWith(color: AppColors.primary, fontWeight: FontWeight.w700)),
                           ),
                         ],
                       ),
@@ -301,13 +301,13 @@ class _ShopScreenState extends ConsumerState<ShopScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('HOME / SHOP', style: AppTypography.labelGold.copyWith(letterSpacing: 1.5, fontSize: 10)),
+                Text('HOME / SHOP', style: AppTypography.labelGold(context).copyWith(letterSpacing: 1.5, fontSize: 10)),
                 const SizedBox(height: 8),
-                Text('The Curated\nCollection', style: AppTypography.h1.copyWith(color: Colors.white, fontSize: 28, height: 1.15)),
+                Text('The Curated\nCollection', style: AppTypography.h1(context).copyWith(color: Colors.white, fontSize: 28, height: 1.15)),
                 const SizedBox(height: 8),
                 Text(
                   'Discover the essence of purity with our hand-harvested, artisanal selection from the heart of the valley.',
-                  style: AppTypography.bodySM.copyWith(color: Colors.white.withValues(alpha: 0.85), fontStyle: FontStyle.italic, fontSize: 12),
+                  style: AppTypography.bodySM(context).copyWith(color: Colors.white.withValues(alpha: 0.85), fontStyle: FontStyle.italic, fontSize: 12),
                 ),
               ],
             ),
@@ -346,7 +346,7 @@ class _ShopScreenState extends ConsumerState<ShopScreen> {
                   children: [
                     Icon(Icons.grid_view_rounded, size: 17, color: isCatalog ? AppColors.deepCharcoal : AppColors.neutralGold),
                     const SizedBox(width: 8),
-                    Text('Catalog', style: AppTypography.bodySM.copyWith(
+                    Text('Catalog', style: AppTypography.bodySM(context).copyWith(
                       fontWeight: FontWeight.w800, fontSize: 13,
                       color: isCatalog ? AppColors.deepCharcoal : AppColors.neutralGold,
                     )),
@@ -371,7 +371,7 @@ class _ShopScreenState extends ConsumerState<ShopScreen> {
                   children: [
                     Icon(Icons.auto_awesome_rounded, size: 17, color: !isCatalog ? AppColors.deepCharcoal : AppColors.neutralGold),
                     const SizedBox(width: 8),
-                    Text('AI Gift Builder', style: AppTypography.bodySM.copyWith(
+                    Text('AI Gift Builder', style: AppTypography.bodySM(context).copyWith(
                       fontWeight: FontWeight.w800, fontSize: 13,
                       color: !isCatalog ? AppColors.deepCharcoal : AppColors.neutralGold,
                     )),
@@ -413,7 +413,7 @@ class _ShopScreenState extends ConsumerState<ShopScreen> {
               ),
               child: Text(
                 label,
-                style: AppTypography.bodySM.copyWith(
+                style: AppTypography.bodySM(context).copyWith(
                   fontWeight: isSelected ? FontWeight.w800 : FontWeight.w600,
                   color: isSelected ? AppColors.deepCharcoal : AppColors.neutralGold,
                   fontSize: 12,
@@ -464,11 +464,11 @@ class _FilterSheet extends ConsumerWidget {
             padding: const EdgeInsets.fromLTRB(20, 8, 8, 12),
             child: Row(
               children: [
-                Text('Filters', style: AppTypography.h3),
+                Text('Filters', style: AppTypography.h3(context)),
                 const Spacer(),
                 TextButton(
                   onPressed: () => notifier.reset(),
-                  child: Text('Clear All', style: AppTypography.bodySM.copyWith(color: AppColors.neutralGold, fontSize: 13)),
+                  child: Text('Clear All', style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, fontSize: 13)),
                 ),
                 IconButton(
                   icon: const Icon(Icons.close_rounded),
@@ -483,7 +483,7 @@ class _FilterSheet extends ConsumerWidget {
               padding: const EdgeInsets.all(20),
               children: [
                 // Category
-                Text('CATEGORY', style: AppTypography.label.copyWith(fontSize: 10, color: AppColors.neutralGold, letterSpacing: 1.5)),
+                Text('CATEGORY', style: AppTypography.label(context).copyWith(fontSize: 10, color: AppColors.neutralGold, letterSpacing: 1.5)),
                 const SizedBox(height: 12),
                 categoriesAsync.when(
                   data: (cats) {
@@ -507,10 +507,10 @@ class _FilterSheet extends ConsumerWidget {
                             ),
                             child: Row(
                               children: [
-                                Expanded(child: Text(label, style: AppTypography.bodySM.copyWith(
+                                Expanded(child: Text(label, style: AppTypography.bodySM(context).copyWith(
                                   fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500, fontSize: 14,
                                 ))),
-                                Text('$count', style: AppTypography.bodySM.copyWith(color: AppColors.neutralGold, fontSize: 12)),
+                                Text('$count', style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, fontSize: 12)),
                               ],
                             ),
                           ),
@@ -528,8 +528,8 @@ class _FilterSheet extends ConsumerWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('PRICE RANGE', style: AppTypography.label.copyWith(fontSize: 10, color: AppColors.neutralGold, letterSpacing: 1.5)),
-                    Text('Up to ₹${filters.priceMax.toInt()}', style: AppTypography.bodySM.copyWith(fontWeight: FontWeight.w700, fontSize: 13)),
+                    Text('PRICE RANGE', style: AppTypography.label(context).copyWith(fontSize: 10, color: AppColors.neutralGold, letterSpacing: 1.5)),
+                    Text('Up to ₹${filters.priceMax.toInt()}', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: 13)),
                   ],
                 ),
                 const SizedBox(height: 10),
@@ -550,15 +550,15 @@ class _FilterSheet extends ConsumerWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('₹100', style: AppTypography.bodySM.copyWith(color: AppColors.neutralGold, fontSize: 11)),
-                    Text('₹10,000+', style: AppTypography.bodySM.copyWith(color: AppColors.neutralGold, fontSize: 11)),
+                    Text('₹100', style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, fontSize: 11)),
+                    Text('₹10,000+', style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, fontSize: 11)),
                   ],
                 ),
                 const SizedBox(height: 24),
                 const Divider(),
                 const SizedBox(height: 20),
                 // Origin
-                Text('ORIGIN', style: AppTypography.label.copyWith(fontSize: 10, color: AppColors.neutralGold, letterSpacing: 1.5)),
+                Text('ORIGIN', style: AppTypography.label(context).copyWith(fontSize: 10, color: AppColors.neutralGold, letterSpacing: 1.5)),
                 const SizedBox(height: 12),
                 ...availableOrigins.map((origin) => InkWell(
                   onTap: () => notifier.toggleOrigin(origin),
@@ -582,7 +582,7 @@ class _FilterSheet extends ConsumerWidget {
                               : null,
                         ),
                         const SizedBox(width: 12),
-                        Expanded(child: Text(origin, style: AppTypography.bodySM.copyWith(fontSize: 14))),
+                        Expanded(child: Text(origin, style: AppTypography.bodySM(context).copyWith(fontSize: 14))),
                       ],
                     ),
                   ),
@@ -597,7 +597,7 @@ class _FilterSheet extends ConsumerWidget {
                   ),
                   child: Text(
                     '"Purity is not an opinion; it\'s our promise. Every product is sourced directly from heritage farmers."',
-                    style: AppTypography.bodySM.copyWith(fontStyle: FontStyle.italic, fontSize: 12, color: AppColors.neutralGold, height: 1.6),
+                    style: AppTypography.bodySM(context).copyWith(fontStyle: FontStyle.italic, fontSize: 12, color: AppColors.neutralGold, height: 1.6),
                   ),
                 ),
               ],
@@ -614,10 +614,10 @@ class _FilterSheet extends ConsumerWidget {
                   child: filteredAsync.when(
                     data: (products) => Text(
                       'Show ${products.length} Product${products.length != 1 ? 's' : ''}',
-                      style: AppTypography.bodySM.copyWith(fontWeight: FontWeight.w800, fontSize: 15),
+                      style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: 15),
                     ),
-                    loading: () => Text('Show Products', style: AppTypography.bodySM.copyWith(fontWeight: FontWeight.w800, fontSize: 15)),
-                    error: (_, __) => Text('Show Products', style: AppTypography.bodySM.copyWith(fontWeight: FontWeight.w800, fontSize: 15)),
+                    loading: () => Text('Show Products', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: 15)),
+                    error: (_, __) => Text('Show Products', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: 15)),
                   ),
                 ),
               ),

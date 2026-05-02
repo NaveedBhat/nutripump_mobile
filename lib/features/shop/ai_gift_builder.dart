@@ -121,14 +121,14 @@ class _AIGiftBuilderState extends ConsumerState<AIGiftBuilder> {
                   const Icon(Icons.card_giftcard_rounded, color: AppColors.primary, size: 22),
                   const SizedBox(width: 10),
                   Expanded(
-                    child: Text('Build an Artisanal Gift Box', style: AppTypography.h3.copyWith(fontSize: 18)),
+                    child: Text('Build an Artisanal Gift Box', style: AppTypography.h3(context).copyWith(fontSize: 18)),
                   ),
                 ],
               ),
               const SizedBox(height: 8),
               Text(
                 'Tell us about the recipient and our intelligence will curate an exquisite Himalayan bundle at a 15% combo concession.',
-                style: AppTypography.bodySM.copyWith(color: AppColors.neutralGold, fontSize: 12),
+                style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, fontSize: 12),
               ),
               const SizedBox(height: 28),
 
@@ -162,7 +162,7 @@ class _AIGiftBuilderState extends ConsumerState<AIGiftBuilder> {
                           Expanded(
                             child: Text(
                               p,
-                              style: AppTypography.bodySM.copyWith(
+                              style: AppTypography.bodySM(context).copyWith(
                                 fontWeight: selected ? FontWeight.w800 : FontWeight.w600,
                                 color: selected ? AppColors.deepCharcoal : AppColors.neutralGold,
                                 fontSize: 13,
@@ -206,7 +206,7 @@ class _AIGiftBuilderState extends ConsumerState<AIGiftBuilder> {
                           child: Center(
                             child: Text(
                               b,
-                              style: AppTypography.bodySM.copyWith(
+                              style: AppTypography.bodySM(context).copyWith(
                                 fontWeight: selected ? FontWeight.w800 : FontWeight.w600,
                                 color: selected ? AppColors.deepCharcoal : AppColors.neutralGold,
                                 fontSize: 12,
@@ -229,7 +229,7 @@ class _AIGiftBuilderState extends ConsumerState<AIGiftBuilder> {
                 maxLines: 3,
                 decoration: InputDecoration(
                   hintText: 'e.g., Wishing you a joyous harvest season...',
-                  hintStyle: AppTypography.bodySM.copyWith(color: AppColors.neutralGold.withValues(alpha: 0.6), fontSize: 12),
+                  hintStyle: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold.withValues(alpha: 0.6), fontSize: 12),
                   filled: true,
                   fillColor: const Color(0xFFF8F8F5),
                   border: OutlineInputBorder(
@@ -264,7 +264,7 @@ class _AIGiftBuilderState extends ConsumerState<AIGiftBuilder> {
                         Expanded(
                           child: Text(
                             'The $_budget Box',
-                            style: AppTypography.h3.copyWith(color: Colors.white, fontSize: 18),
+                            style: AppTypography.h3(context).copyWith(color: Colors.white, fontSize: 18),
                           ),
                         ),
                         Container(
@@ -276,7 +276,7 @@ class _AIGiftBuilderState extends ConsumerState<AIGiftBuilder> {
                           ),
                           child: Text(
                             _persona,
-                            style: AppTypography.label.copyWith(fontSize: 9, color: AppColors.primary, letterSpacing: 0.5),
+                            style: AppTypography.label(context).copyWith(fontSize: 9, color: AppColors.primary, letterSpacing: 0.5),
                           ),
                         ),
                       ],
@@ -294,7 +294,7 @@ class _AIGiftBuilderState extends ConsumerState<AIGiftBuilder> {
                               const SizedBox(height: 12),
                               Text(
                                 'Curating your Himalayan assortment...',
-                                style: AppTypography.bodySM.copyWith(color: Colors.white70, fontSize: 12),
+                                style: AppTypography.bodySM(context).copyWith(color: Colors.white70, fontSize: 12),
                               ),
                             ],
                           ),
@@ -323,15 +323,15 @@ class _AIGiftBuilderState extends ConsumerState<AIGiftBuilder> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(item.name, style: AppTypography.bodySM.copyWith(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 12), maxLines: 1, overflow: TextOverflow.ellipsis),
+                                  Text(item.name, style: AppTypography.bodySM(context).copyWith(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 12), maxLines: 1, overflow: TextOverflow.ellipsis),
                                   const SizedBox(height: 2),
-                                  Text(item.category.toUpperCase(), style: AppTypography.label.copyWith(color: Colors.white38, fontSize: 8, letterSpacing: 0.8)),
+                                  Text(item.category.toUpperCase(), style: AppTypography.label(context).copyWith(color: Colors.white38, fontSize: 8, letterSpacing: 0.8)),
                                 ],
                               ),
                             ),
                             Text(
                               formatPrice(item.bundlePrice ?? item.price),
-                              style: AppTypography.priceSM.copyWith(color: AppColors.primary, fontSize: 13),
+                              style: AppTypography.priceSM(context).copyWith(color: AppColors.primary, fontSize: 13),
                             ),
                           ],
                         ),
@@ -344,10 +344,10 @@ class _AIGiftBuilderState extends ConsumerState<AIGiftBuilder> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Standard Value', style: AppTypography.bodySM.copyWith(color: Colors.white54, fontSize: 12)),
+                          Text('Standard Value', style: AppTypography.bodySM(context).copyWith(color: Colors.white54, fontSize: 12)),
                           Text(
                             formatPrice(originalTotal),
-                            style: AppTypography.bodySM.copyWith(
+                            style: AppTypography.bodySM(context).copyWith(
                               color: Colors.white38,
                               fontSize: 12,
                               decoration: TextDecoration.lineThrough,
@@ -359,11 +359,11 @@ class _AIGiftBuilderState extends ConsumerState<AIGiftBuilder> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Curated Combo Total', style: AppTypography.bodySM.copyWith(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 13)),
+                          Text('Curated Combo Total', style: AppTypography.bodySM(context).copyWith(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 13)),
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Text(formatPrice(bundleTotal), style: AppTypography.priceSM.copyWith(color: AppColors.primary, fontSize: 20)),
+                              Text(formatPrice(bundleTotal), style: AppTypography.priceSM(context).copyWith(color: AppColors.primary, fontSize: 20)),
                               const SizedBox(width: 6),
                               Container(
                                 padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
@@ -372,7 +372,7 @@ class _AIGiftBuilderState extends ConsumerState<AIGiftBuilder> {
                                   borderRadius: BorderRadius.circular(5),
                                   border: Border.all(color: AppColors.primary.withValues(alpha: 0.3)),
                                 ),
-                                child: Text('-15%', style: AppTypography.label.copyWith(color: AppColors.primary, fontSize: 9, fontWeight: FontWeight.w800)),
+                                child: Text('-15%', style: AppTypography.label(context).copyWith(color: AppColors.primary, fontSize: 9, fontWeight: FontWeight.w800)),
                               ),
                             ],
                           ),
@@ -383,7 +383,7 @@ class _AIGiftBuilderState extends ConsumerState<AIGiftBuilder> {
                         onTap: bundle.isNotEmpty ? () {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: Text('Gift Box added to cart!', style: AppTypography.bodySM.copyWith(color: Colors.white)),
+                              content: Text('Gift Box added to cart!', style: AppTypography.bodySM(context).copyWith(color: Colors.white)),
                               backgroundColor: AppColors.deepCharcoal,
                               behavior: SnackBarBehavior.floating,
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -402,7 +402,7 @@ class _AIGiftBuilderState extends ConsumerState<AIGiftBuilder> {
                             children: [
                               const Icon(Icons.check_rounded, size: 18, color: AppColors.deepCharcoal),
                               const SizedBox(width: 8),
-                              Text('Add Curated Box to Cart', style: AppTypography.bodySM.copyWith(fontWeight: FontWeight.w800, fontSize: 14)),
+                              Text('Add Curated Box to Cart', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: 14)),
                             ],
                           ),
                         ),
@@ -426,7 +426,7 @@ class _AIGiftBuilderState extends ConsumerState<AIGiftBuilder> {
       children: [
         Text(emoji, style: const TextStyle(fontSize: 14)),
         const SizedBox(width: 8),
-        Text(label, style: AppTypography.label.copyWith(fontSize: 10, color: AppColors.neutralGold, letterSpacing: 1.4, fontWeight: FontWeight.w700)),
+        Text(label, style: AppTypography.label(context).copyWith(fontSize: 10, color: AppColors.neutralGold, letterSpacing: 1.4, fontWeight: FontWeight.w700)),
       ],
     );
   }

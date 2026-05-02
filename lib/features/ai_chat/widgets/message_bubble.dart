@@ -39,7 +39,7 @@ class MessageBubble extends StatelessWidget {
             ),
             child: Text(
               message.text,
-              style: AppTypography.bodySM.copyWith(
+              style: AppTypography.bodySM(context).copyWith(
                 color: AppColors.deepCharcoal,
                 fontWeight: isUser ? FontWeight.w500 : FontWeight.normal,
               ),
@@ -71,7 +71,7 @@ class MessageBubble extends StatelessWidget {
                           ),
                           child: Text(
                             'View ${message.products!.length - 4} more →',
-                            style: AppTypography.label.copyWith(
+                            style: AppTypography.label(context).copyWith(
                               color: AppColors.primary,
                               fontWeight: FontWeight.bold,
                               fontSize: 11,

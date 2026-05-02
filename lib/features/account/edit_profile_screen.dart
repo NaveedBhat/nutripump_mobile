@@ -64,7 +64,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Profile updated successfully', style: AppTypography.bodySM.copyWith(color: Colors.white)),
+            content: Text('Profile updated successfully', style: AppTypography.bodySM(context).copyWith(color: Colors.white)),
             backgroundColor: AppColors.success,
             behavior: SnackBarBehavior.floating,
           ),
@@ -75,7 +75,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Failed to update profile: $e', style: AppTypography.bodySM.copyWith(color: Colors.white)),
+            content: Text('Failed to update profile: $e', style: AppTypography.bodySM(context).copyWith(color: Colors.white)),
             backgroundColor: AppColors.error,
             behavior: SnackBarBehavior.floating,
           ),
@@ -121,7 +121,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
         elevation: 0,
         surfaceTintColor: Colors.transparent,
         centerTitle: true,
-        title: Text('Edit Profile', style: AppTypography.h3),
+        title: Text('Edit Profile', style: AppTypography.h3(context)),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1),
           child: Container(height: 1, color: AppColors.borderLight),
@@ -134,11 +134,11 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Personal Information', style: AppTypography.h3),
+              Text('Personal Information', style: AppTypography.h3(context)),
               const SizedBox(height: 8),
               Text(
                 'Update your details to ensure smooth deliveries and personalized recommendations.',
-                style: AppTypography.bodySM.copyWith(color: AppColors.neutralGold),
+                style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold),
               ),
               const SizedBox(height: 32),
 
@@ -147,7 +147,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
               TextFormField(
                 controller: _nameCtrl,
                 validator: (val) => val == null || val.trim().isEmpty ? 'Name cannot be empty' : null,
-                style: AppTypography.bodySM,
+                style: AppTypography.bodySM(context),
                 decoration: _inputDecoration('e.g. Naveed Bhat'),
               ),
               const SizedBox(height: 20),
@@ -157,7 +157,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
               TextFormField(
                 controller: _phoneCtrl,
                 keyboardType: TextInputType.phone,
-                style: AppTypography.bodySM,
+                style: AppTypography.bodySM(context),
                 decoration: _inputDecoration('e.g. +91 9876543210'),
               ),
               const SizedBox(height: 20),
@@ -169,7 +169,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                 child: AbsorbPointer(
                   child: TextFormField(
                     controller: _dobCtrl,
-                    style: AppTypography.bodySM,
+                    style: AppTypography.bodySM(context),
                     decoration: _inputDecoration('YYYY-MM-DD').copyWith(
                       suffixIcon: const Icon(Icons.calendar_today_rounded, size: 20, color: AppColors.neutralGold),
                     ),
@@ -188,7 +188,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                   DropdownMenuItem(value: 'Other', child: Text('Other')),
                 ],
                 onChanged: (val) => setState(() => _selectedGender = val),
-                style: AppTypography.bodySM.copyWith(color: AppColors.deepCharcoal),
+                style: AppTypography.bodySM(context).copyWith(color: AppColors.deepCharcoal),
                 decoration: _inputDecoration('Select gender'),
                 icon: const Icon(Icons.keyboard_arrow_down_rounded, color: AppColors.neutralGold),
               ),
@@ -212,7 +212,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                           width: 24, height: 24,
                           child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.deepCharcoal),
                         )
-                      : Text('Save Changes', style: AppTypography.bodySM.copyWith(fontWeight: FontWeight.w800, fontSize: 16)),
+                      : Text('Save Changes', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: 16)),
                 ),
               ),
             ],
@@ -225,14 +225,14 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
   Widget _buildLabel(String text) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
-      child: Text(text, style: AppTypography.label.copyWith(fontSize: 11)),
+      child: Text(text, style: AppTypography.label(context).copyWith(fontSize: 11)),
     );
   }
 
   InputDecoration _inputDecoration(String hint) {
     return InputDecoration(
       hintText: hint,
-      hintStyle: AppTypography.bodySM.copyWith(color: AppColors.neutralGold.withValues(alpha: 0.5)),
+      hintStyle: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold.withValues(alpha: 0.5)),
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       filled: true,
       fillColor: Colors.white,

@@ -57,7 +57,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
           SnackBar(
             content: Text(
               'Promo code "$code" is not valid.',
-              style: AppTypography.bodySM.copyWith(color: Colors.white),
+              style: AppTypography.bodySM(context).copyWith(color: Colors.white),
             ),
             backgroundColor: AppColors.error,
             behavior: SnackBarBehavior.floating,
@@ -74,7 +74,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
           SnackBar(
             content: Text(
               'Promo code "$code" has expired.',
-              style: AppTypography.bodySM.copyWith(color: Colors.white),
+              style: AppTypography.bodySM(context).copyWith(color: Colors.white),
             ),
             backgroundColor: AppColors.error,
             behavior: SnackBarBehavior.floating,
@@ -98,7 +98,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
               Expanded(
                 child: Text(
                   'Promo "$code" applied — $discountLabel!',
-                  style: AppTypography.bodySM.copyWith(color: Colors.white),
+                  style: AppTypography.bodySM(context).copyWith(color: Colors.white),
                 ),
               ),
             ],
@@ -287,7 +287,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
             margin: const EdgeInsets.only(bottom: 8),
             child: Text(
               product.shortDescription.toUpperCase(),
-              style: AppTypography.label.copyWith(
+              style: AppTypography.label(context).copyWith(
                 color: AppColors.primary,
                 letterSpacing: 2.0,
                 fontSize: 9,
@@ -295,18 +295,18 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
               ),
             ),
           ),
-        Text(product.name, style: AppTypography.h1.copyWith(fontSize: 26, height: 1.1)),
+        Text(product.name, style: AppTypography.h1(context).copyWith(fontSize: 26, height: 1.1)),
         const SizedBox(height: 12),
         Wrap(
           crossAxisAlignment: WrapCrossAlignment.center,
           spacing: 8,
           runSpacing: 6,
           children: [
-            Text(formatPrice(price), style: AppTypography.h2.copyWith(fontSize: 24)),
+            Text(formatPrice(price), style: AppTypography.h2(context).copyWith(fontSize: 24)),
             if (compareAt != null && compareAt > price) ...[
               Text(
                 formatPrice(compareAt),
-                style: AppTypography.priceStrike.copyWith(fontSize: 16, decorationThickness: 2),
+                style: AppTypography.priceStrike(context).copyWith(fontSize: 16, decorationThickness: 2),
               ),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
@@ -316,7 +316,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                 ),
                 child: Text(
                   '${calculateDiscount(compareAt, price)}% OFF',
-                  style: AppTypography.label.copyWith(
+                  style: AppTypography.label(context).copyWith(
                     color: AppColors.error,
                     fontSize: 9,
                     fontWeight: FontWeight.w800,
@@ -339,7 +339,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
             const SizedBox(width: 6),
             Text(
               '${product.reviewCount} REVIEWS',
-              style: AppTypography.label.copyWith(color: AppColors.neutralGold, fontSize: 9, letterSpacing: 1.0, fontWeight: FontWeight.w800),
+              style: AppTypography.label(context).copyWith(color: AppColors.neutralGold, fontSize: 9, letterSpacing: 1.0, fontWeight: FontWeight.w800),
             ),
           ],
         ),
@@ -354,11 +354,11 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('SELECT JAR SIZE', style: AppTypography.label.copyWith(color: AppColors.neutralGold, letterSpacing: 1.5, fontSize: 10)),
+            Text('SELECT JAR SIZE', style: AppTypography.label(context).copyWith(color: AppColors.neutralGold, letterSpacing: 1.5, fontSize: 10)),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
               decoration: BoxDecoration(color: AppColors.primary.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(4)),
-              child: Text('SMALL BATCH FRESH', style: AppTypography.label.copyWith(color: AppColors.primary, fontSize: 8)),
+              child: Text('SMALL BATCH FRESH', style: AppTypography.label(context).copyWith(color: AppColors.primary, fontSize: 8)),
             ),
           ],
         ),
@@ -394,11 +394,11 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                   children: [
                     Text(
                       size.label,
-                      style: AppTypography.bodySM.copyWith(fontWeight: isSelected ? FontWeight.w800 : FontWeight.w600, color: isSelected ? AppColors.deepCharcoal : AppColors.neutralGold, fontSize: 12),
+                      style: AppTypography.bodySM(context).copyWith(fontWeight: isSelected ? FontWeight.w800 : FontWeight.w600, color: isSelected ? AppColors.deepCharcoal : AppColors.neutralGold, fontSize: 12),
                     ),
                     Text(
                       formatPrice(size.price),
-                      style: AppTypography.label.copyWith(fontWeight: FontWeight.w800, color: isSelected ? AppColors.primary : AppColors.neutralGold, fontSize: 10),
+                      style: AppTypography.label(context).copyWith(fontWeight: FontWeight.w800, color: isSelected ? AppColors.primary : AppColors.neutralGold, fontSize: 10),
                     ),
                   ],
                 ),
@@ -435,9 +435,9 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('PURITY GUARANTEED', style: AppTypography.label.copyWith(fontSize: 7, letterSpacing: 1.0)),
+                        Text('PURITY GUARANTEED', style: AppTypography.label(context).copyWith(fontSize: 7, letterSpacing: 1.0)),
                         const SizedBox(height: 2),
-                        Text('100% Cold-Pressed', style: AppTypography.bodySM.copyWith(fontSize: 9, fontWeight: FontWeight.w700)),
+                        Text('100% Cold-Pressed', style: AppTypography.bodySM(context).copyWith(fontSize: 9, fontWeight: FontWeight.w700)),
                       ],
                     ),
                   ),
@@ -466,9 +466,9 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('FROM SRINAGAR', style: AppTypography.label.copyWith(fontSize: 7, letterSpacing: 1.0)),
+                        Text('FROM SRINAGAR', style: AppTypography.label(context).copyWith(fontSize: 7, letterSpacing: 1.0)),
                         const SizedBox(height: 2),
-                        Text('Arrives in 3-5 Days', style: AppTypography.bodySM.copyWith(fontSize: 9, fontWeight: FontWeight.w700)),
+                        Text('Arrives in 3-5 Days', style: AppTypography.bodySM(context).copyWith(fontSize: 9, fontWeight: FontWeight.w700)),
                       ],
                     ),
                   ),
@@ -506,7 +506,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                     ),
                     child: Text(
                       tab.toUpperCase(),
-                      style: AppTypography.label.copyWith(
+                      style: AppTypography.label(context).copyWith(
                         color: isActive ? AppColors.primary : AppColors.neutralGold,
                         fontWeight: FontWeight.w800,
                         letterSpacing: 1.5,
@@ -534,9 +534,9 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
         key: key,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Deeply Sourced & Crafted', style: AppTypography.h3.copyWith(fontSize: 16)),
+          Text('Deeply Sourced & Crafted', style: AppTypography.h3(context).copyWith(fontSize: 16)),
           const SizedBox(height: 12),
-          Text(product.description, style: AppTypography.bodySM.copyWith(height: 1.6, color: AppColors.neutralGold, fontSize: 13)),
+          Text(product.description, style: AppTypography.bodySM(context).copyWith(height: 1.6, color: AppColors.neutralGold, fontSize: 13)),
         ],
       );
     } else if (_activeTab == 'Ingredients') {
@@ -544,9 +544,9 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
         key: key,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('What\'s Inside', style: AppTypography.h3.copyWith(fontSize: 16)),
+          Text('What\'s Inside', style: AppTypography.h3(context).copyWith(fontSize: 16)),
           const SizedBox(height: 6),
-          Text('100% Transparent. No hidden preservatives.', style: AppTypography.bodySM.copyWith(fontStyle: FontStyle.italic, color: AppColors.neutralGold, fontSize: 12)),
+          Text('100% Transparent. No hidden preservatives.', style: AppTypography.bodySM(context).copyWith(fontStyle: FontStyle.italic, color: AppColors.neutralGold, fontSize: 12)),
           const SizedBox(height: 16),
           Container(
             padding: const EdgeInsets.all(16),
@@ -563,7 +563,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                 Expanded(
                   child: Text(
                     product.ingredients ?? 'Crafted with 100% natural ingredients. Check packaging for specific list.',
-                    style: AppTypography.bodySM.copyWith(fontWeight: FontWeight.w600, height: 1.5, fontSize: 12),
+                    style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w600, height: 1.5, fontSize: 12),
                   ),
                 ),
               ],
@@ -579,11 +579,11 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Nutrition per 100g', style: AppTypography.h3.copyWith(fontSize: 16)),
+              Text('Nutrition per 100g', style: AppTypography.h3(context).copyWith(fontSize: 16)),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
                 decoration: BoxDecoration(border: Border.all(color: AppColors.primary.withValues(alpha: 0.2)), borderRadius: BorderRadius.circular(100)),
-                child: Text('VERIFIED', style: AppTypography.label.copyWith(color: AppColors.primary, fontSize: 7, letterSpacing: 1.5)),
+                child: Text('VERIFIED', style: AppTypography.label(context).copyWith(color: AppColors.primary, fontSize: 7, letterSpacing: 1.5)),
               ),
             ],
           ),
@@ -619,11 +619,11 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(value, style: AppTypography.h2.copyWith(fontSize: 20, color: const Color(0xFF1B3B36))),
+          Text(value, style: AppTypography.h2(context).copyWith(fontSize: 20, color: const Color(0xFF1B3B36))),
           const SizedBox(height: 2),
-          Text(label.toUpperCase(), style: AppTypography.label.copyWith(fontSize: 8, letterSpacing: 1.0, color: const Color(0xFF1B3B36).withValues(alpha: 0.7))),
+          Text(label.toUpperCase(), style: AppTypography.label(context).copyWith(fontSize: 8, letterSpacing: 1.0, color: const Color(0xFF1B3B36).withValues(alpha: 0.7))),
           const SizedBox(height: 2),
-          Text(sub, style: AppTypography.label.copyWith(fontSize: 7, color: const Color(0xFF1B3B36).withValues(alpha: 0.5))),
+          Text(sub, style: AppTypography.label(context).copyWith(fontSize: 7, color: const Color(0xFF1B3B36).withValues(alpha: 0.5))),
         ],
       ),
     );
@@ -670,7 +670,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Frequently Bought Together', style: AppTypography.h2.copyWith(fontSize: 20)),
+              Text('Frequently Bought Together', style: AppTypography.h2(context).copyWith(fontSize: 20)),
               const SizedBox(height: 16),
               Container(
                 padding: const EdgeInsets.all(16),
@@ -724,9 +724,9 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Flexible(child: Text(product.name, style: AppTypography.bodySM.copyWith(fontWeight: FontWeight.w700, fontSize: 12), overflow: TextOverflow.ellipsis)),
+                                Flexible(child: Text(product.name, style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: 12), overflow: TextOverflow.ellipsis)),
                                 const SizedBox(width: 8),
-                                Text(formatPrice(product.price), style: AppTypography.label.copyWith(color: const Color(0xFF1A7A42), fontWeight: FontWeight.w800, fontSize: 11)),
+                                Text(formatPrice(product.price), style: AppTypography.label(context).copyWith(color: const Color(0xFF1A7A42), fontWeight: FontWeight.w800, fontSize: 11)),
                               ],
                             ),
                           ),
@@ -745,13 +745,13 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Flexible(child: Text(fbtProduct.name, style: AppTypography.bodySM.copyWith(fontWeight: FontWeight.w600, fontSize: 12), overflow: TextOverflow.ellipsis)),
+                                Flexible(child: Text(fbtProduct.name, style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w600, fontSize: 12), overflow: TextOverflow.ellipsis)),
                                 const SizedBox(width: 8),
                                 Row(
                                   children: [
-                                    Text(formatPrice(discountedFbtPrice), style: AppTypography.label.copyWith(color: const Color(0xFF1A7A42), fontWeight: FontWeight.w800, fontSize: 11)),
+                                    Text(formatPrice(discountedFbtPrice), style: AppTypography.label(context).copyWith(color: const Color(0xFF1A7A42), fontWeight: FontWeight.w800, fontSize: 11)),
                                     const SizedBox(width: 4),
-                                    Text(formatPrice(fbtProduct.price), style: AppTypography.priceStrike.copyWith(fontSize: 10)),
+                                    Text(formatPrice(fbtProduct.price), style: AppTypography.priceStrike(context).copyWith(fontSize: 10)),
                                   ],
                                 ),
                               ],
@@ -766,8 +766,8 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('TOTAL', style: AppTypography.label.copyWith(color: AppColors.neutralGold, fontSize: 9, letterSpacing: 2.0)),
-                        Text(itemCount == 0 ? '—' : formatPrice(totalPrice), style: AppTypography.h3.copyWith(fontSize: 20)),
+                        Text('TOTAL', style: AppTypography.label(context).copyWith(color: AppColors.neutralGold, fontSize: 9, letterSpacing: 2.0)),
+                        Text(itemCount == 0 ? '—' : formatPrice(totalPrice), style: AppTypography.h3(context).copyWith(fontSize: 20)),
                       ],
                     ),
                     const SizedBox(height: 12),
@@ -788,7 +788,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                         },
                         child: Text(
                           itemCount == 0 ? 'Select at least one item' : 'Add $itemCount Item${itemCount == 1 ? '' : 's'} to Cart',
-                          style: AppTypography.bodySM.copyWith(fontWeight: FontWeight.w800, fontSize: 12),
+                          style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: 12),
                         ),
                       ),
                     ),
@@ -817,7 +817,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('What people are saying', style: AppTypography.h2.copyWith(fontSize: 20)),
+          Text('What people are saying', style: AppTypography.h2(context).copyWith(fontSize: 20)),
           const SizedBox(height: 16),
           Row(
             children: [
@@ -832,11 +832,11 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                 children: [
                   Text(
                     product.rating > 0 ? product.rating.toStringAsFixed(1) : '—',
-                    style: AppTypography.h2.copyWith(fontSize: 24),
+                    style: AppTypography.h2(context).copyWith(fontSize: 24),
                   ),
                   Text(
                     '${product.reviewCount} Global Ratings',
-                    style: AppTypography.label.copyWith(color: AppColors.neutralGold, fontSize: 10),
+                    style: AppTypography.label(context).copyWith(color: AppColors.neutralGold, fontSize: 10),
                   ),
                 ],
               ),
@@ -846,7 +846,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Customer Reviews', style: AppTypography.h2.copyWith(fontSize: 18)),
+              Text('Customer Reviews', style: AppTypography.h2(context).copyWith(fontSize: 18)),
               GestureDetector(
                 onTap: () => _showReviewBottomSheet(context, product),
                 child: Container(
@@ -855,7 +855,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                     color: AppColors.deepCharcoal,
                     borderRadius: BorderRadius.circular(100),
                   ),
-                  child: Text('Write a Review', style: AppTypography.label.copyWith(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w800)),
+                  child: Text('Write a Review', style: AppTypography.label(context).copyWith(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w800)),
                 ),
               ),
             ],
@@ -878,9 +878,9 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                     children: [
                       const Icon(Icons.rate_review_outlined, size: 32, color: AppColors.neutralGold),
                       const SizedBox(height: 12),
-                      Text('No reviews yet', style: AppTypography.bodySM.copyWith(fontWeight: FontWeight.w700, fontSize: 14)),
+                      Text('No reviews yet', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: 14)),
                       const SizedBox(height: 4),
-                      Text('Be the first to review this product!', style: AppTypography.bodySM.copyWith(color: AppColors.neutralGold, fontSize: 12)),
+                      Text('Be the first to review this product!', style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, fontSize: 12)),
                     ],
                   ),
                 );
@@ -926,20 +926,20 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                   decoration: BoxDecoration(color: const Color(0xFFE6F4EA), borderRadius: BorderRadius.circular(100)),
-                  child: Text('Verified', style: AppTypography.label.copyWith(color: const Color(0xFF137333), fontSize: 8)),
+                  child: Text('Verified', style: AppTypography.label(context).copyWith(color: const Color(0xFF137333), fontSize: 8)),
                 ),
               ],
               const Spacer(),
-              Text(ago, style: AppTypography.label.copyWith(color: AppColors.neutralGold, fontSize: 9)),
+              Text(ago, style: AppTypography.label(context).copyWith(color: AppColors.neutralGold, fontSize: 9)),
             ],
           ),
           const SizedBox(height: 8),
           if (review.title.isNotEmpty)
-            Text(review.title, style: AppTypography.bodySM.copyWith(fontWeight: FontWeight.w700, fontSize: 12)),
+            Text(review.title, style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: 12)),
           if (review.title.isNotEmpty) const SizedBox(height: 4),
-          Text(review.body, style: AppTypography.bodySM.copyWith(color: AppColors.neutralGold, fontSize: 12, height: 1.4)),
+          Text(review.body, style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, fontSize: 12, height: 1.4)),
           const SizedBox(height: 8),
-          Text('— $displayName', style: AppTypography.label.copyWith(color: AppColors.deepCharcoal, fontSize: 10)),
+          Text('— $displayName', style: AppTypography.label(context).copyWith(color: AppColors.deepCharcoal, fontSize: 10)),
           if (review.adminReply != null) ...[
             const SizedBox(height: 12),
             Container(
@@ -952,9 +952,9 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('NutriPump Team', style: AppTypography.label.copyWith(color: AppColors.primary, fontSize: 9, fontWeight: FontWeight.w800)),
+                  Text('NutriPump Team', style: AppTypography.label(context).copyWith(color: AppColors.primary, fontSize: 9, fontWeight: FontWeight.w800)),
                   const SizedBox(height: 4),
-                  Text(review.adminReply!, style: AppTypography.bodySM.copyWith(fontSize: 11, height: 1.4)),
+                  Text(review.adminReply!, style: AppTypography.bodySM(context).copyWith(fontSize: 11, height: 1.4)),
                 ],
               ),
             ),
@@ -1011,9 +1011,9 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                Text('Write a Review', style: AppTypography.h2.copyWith(fontSize: 22)),
+                Text('Write a Review', style: AppTypography.h2(context).copyWith(fontSize: 22)),
                 const SizedBox(height: 24),
-                Text('Your Rating', style: AppTypography.label.copyWith(color: AppColors.neutralGold, fontSize: 10, letterSpacing: 1.5)),
+                Text('Your Rating', style: AppTypography.label(context).copyWith(color: AppColors.neutralGold, fontSize: 10, letterSpacing: 1.5)),
                 const SizedBox(height: 10),
                 Row(
                   children: List.generate(5, (i) {
@@ -1031,13 +1031,13 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                   }),
                 ),
                 const SizedBox(height: 20),
-                Text('Review Title', style: AppTypography.label.copyWith(color: AppColors.neutralGold, fontSize: 10, letterSpacing: 1.5)),
+                Text('Review Title', style: AppTypography.label(context).copyWith(color: AppColors.neutralGold, fontSize: 10, letterSpacing: 1.5)),
                 const SizedBox(height: 8),
                 TextField(
                   controller: titleCtrl,
                   decoration: InputDecoration(
                     hintText: 'Sum up your experience',
-                    hintStyle: AppTypography.bodySM.copyWith(color: AppColors.neutralGold.withValues(alpha: 0.5)),
+                    hintStyle: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold.withValues(alpha: 0.5)),
                     filled: true,
                     fillColor: const Color(0xFFF9F9F9),
                     contentPadding: const EdgeInsets.all(16),
@@ -1047,14 +1047,14 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                Text('Review Details', style: AppTypography.label.copyWith(color: AppColors.neutralGold, fontSize: 10, letterSpacing: 1.5)),
+                Text('Review Details', style: AppTypography.label(context).copyWith(color: AppColors.neutralGold, fontSize: 10, letterSpacing: 1.5)),
                 const SizedBox(height: 8),
                 TextField(
                   controller: bodyCtrl,
                   maxLines: 4,
                   decoration: InputDecoration(
                     hintText: 'What did you love about it?',
-                    hintStyle: AppTypography.bodySM.copyWith(color: AppColors.neutralGold.withValues(alpha: 0.5)),
+                    hintStyle: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold.withValues(alpha: 0.5)),
                     filled: true,
                     fillColor: const Color(0xFFF9F9F9),
                     contentPadding: const EdgeInsets.all(16),
@@ -1088,7 +1088,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                         ),
                       ),
                       const SizedBox(width: 12),
-                      Text('Post Anonymously', style: AppTypography.bodySM.copyWith(fontWeight: FontWeight.w700, fontSize: 13)),
+                      Text('Post Anonymously', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: 13)),
                     ],
                   ),
                 ),
@@ -1133,7 +1133,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                     },
                     child: isSubmitting
                         ? const SizedBox(height: 20, width: 20, child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.deepCharcoal))
-                        : Text('Submit Review', style: AppTypography.bodySM.copyWith(fontWeight: FontWeight.w800, fontSize: 14)),
+                        : Text('Submit Review', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: 14)),
                   ),
                 ),
               ],
@@ -1161,7 +1161,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('You May Also Like', style: AppTypography.h2.copyWith(fontSize: 20)),
+              Text('You May Also Like', style: AppTypography.h2(context).copyWith(fontSize: 20)),
               const SizedBox(height: 16),
               SizedBox(
                 height: 280,
@@ -1212,7 +1212,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                     padding: const EdgeInsets.all(8),
                     constraints: const BoxConstraints(),
                   ),
-                  Text('$_quantity', style: AppTypography.h3.copyWith(fontSize: 14)),
+                  Text('$_quantity', style: AppTypography.h3(context).copyWith(fontSize: 14)),
                   IconButton(
                     icon: const Icon(Icons.add, size: 16),
                     onPressed: _quantity < product.stockCount
@@ -1256,7 +1256,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                   children: [
                     const Icon(Icons.shopping_bag_outlined, size: 16),
                     const SizedBox(width: 6),
-                    Text('Add to Bag — ${formatPrice(price * _quantity)}', style: AppTypography.bodySM.copyWith(fontWeight: FontWeight.w800, fontSize: 12)),
+                    Text('Add to Bag — ${formatPrice(price * _quantity)}', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: 12)),
                   ],
                 ),
               ),

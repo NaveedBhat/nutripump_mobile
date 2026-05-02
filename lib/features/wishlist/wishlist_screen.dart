@@ -28,7 +28,7 @@ class WishlistScreen extends ConsumerWidget {
             elevation: 0,
             surfaceTintColor: Colors.transparent,
             centerTitle: true,
-            title: Text('Saved for Later', style: AppTypography.h3),
+            title: Text('Saved for Later', style: AppTypography.h3(context)),
             bottom: PreferredSize(
               preferredSize: const Size.fromHeight(1),
               child: Container(height: 1, color: AppColors.borderLight),
@@ -50,7 +50,7 @@ class WishlistScreen extends ConsumerWidget {
                   children: [
                     Text(
                       '${items.length} item${items.length == 1 ? '' : 's'}',
-                      style: AppTypography.bodySM.copyWith(
+                      style: AppTypography.bodySM(context).copyWith(
                         color: AppColors.neutralGold,
                         fontWeight: FontWeight.w600,
                         fontSize: 13,
@@ -61,7 +61,7 @@ class WishlistScreen extends ConsumerWidget {
                       onTap: () => _confirmClearAll(context, ref),
                       child: Text(
                         'Clear All',
-                        style: AppTypography.bodySM.copyWith(
+                        style: AppTypography.bodySM(context).copyWith(
                           color: AppColors.error,
                           fontWeight: FontWeight.w700,
                           fontSize: 13,
@@ -90,7 +90,7 @@ class WishlistScreen extends ConsumerWidget {
                     const SizedBox(width: 8),
                     Text(
                       'Swipe left on a card to remove it',
-                      style: AppTypography.bodySM.copyWith(
+                      style: AppTypography.bodySM(context).copyWith(
                         color: AppColors.neutralGold,
                         fontSize: 12,
                       ),
@@ -169,16 +169,16 @@ class WishlistScreen extends ConsumerWidget {
       context: context,
       builder: (dialogContext) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        title: Text('Clear Wishlist', style: AppTypography.h3),
+        title: Text('Clear Wishlist', style: AppTypography.h3(context)),
         content: Text(
           'Remove all items from your wishlist?',
-          style: AppTypography.bodySM.copyWith(color: AppColors.neutralGold),
+          style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(dialogContext, false),
             child: Text('Cancel',
-                style: AppTypography.bodySM
+                style: AppTypography.bodySM(context)
                     .copyWith(color: AppColors.neutralGold)),
           ),
           ElevatedButton(
@@ -263,12 +263,12 @@ class _EmptyWishlistState extends State<_EmptyWishlist>
               ),
               const SizedBox(height: 22),
               Text('Your wishlist is empty',
-                  style: AppTypography.h2.copyWith(fontSize: 20)),
+                  style: AppTypography.h2(context).copyWith(fontSize: 20)),
               const SizedBox(height: 12),
               Text(
                 'Explore our artisanal collection and save your favorites to review them later.',
                 textAlign: TextAlign.center,
-                style: AppTypography.bodySM.copyWith(
+                style: AppTypography.bodySM(context).copyWith(
                   color: AppColors.neutralGold,
                   height: 1.4,
                   fontSize: 12,
@@ -289,7 +289,7 @@ class _EmptyWishlistState extends State<_EmptyWishlist>
                   ),
                   child: Text(
                     'Explore the Shop',
-                    style: AppTypography.bodySM.copyWith(
+                    style: AppTypography.bodySM(context).copyWith(
                         fontWeight: FontWeight.w800, fontSize: 12),
                   ),
                 ),
@@ -307,7 +307,7 @@ class _EmptyWishlistState extends State<_EmptyWishlist>
                   ),
                   child: Text(
                     'Browse Collections',
-                    style: AppTypography.bodySM.copyWith(
+                    style: AppTypography.bodySM(context).copyWith(
                       fontWeight: FontWeight.w700,
                       color: AppColors.deepCharcoal,
                       fontSize: 12,
@@ -424,7 +424,7 @@ class _WishlistCardState extends ConsumerState<_WishlistCard>
                     color: AppColors.error, size: 22),
                 const SizedBox(height: 4),
                 Text('Remove',
-                    style: AppTypography.label
+                    style: AppTypography.label(context)
                         .copyWith(color: AppColors.error, fontSize: 9)),
               ],
             ),
@@ -473,7 +473,7 @@ class _WishlistCardState extends ConsumerState<_WishlistCard>
                               ),
                               child: Text(
                                 product.badge!.toUpperCase(),
-                                style: AppTypography.label.copyWith(
+                                style: AppTypography.label(context).copyWith(
                                   fontSize: 7,
                                   fontWeight: FontWeight.w800,
                                   letterSpacing: 0.8,
@@ -495,7 +495,7 @@ class _WishlistCardState extends ConsumerState<_WishlistCard>
                               ),
                               child: Text(
                                 '-${product.discountPercent}%',
-                                style: AppTypography.label.copyWith(
+                                style: AppTypography.label(context).copyWith(
                                   fontSize: 7.5,
                                   color: Colors.white,
                                   fontWeight: FontWeight.w800,
@@ -542,7 +542,7 @@ class _WishlistCardState extends ConsumerState<_WishlistCard>
                               product.origin.toUpperCase(),
                             product.weight,
                           ].join(' · '),
-                          style: AppTypography.labelGold
+                          style: AppTypography.labelGold(context)
                               .copyWith(fontSize: 7.5, letterSpacing: 0.3),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -553,7 +553,7 @@ class _WishlistCardState extends ConsumerState<_WishlistCard>
                           product.name,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
-                          style: AppTypography.bodySM.copyWith(
+                          style: AppTypography.bodySM(context).copyWith(
                             fontWeight: FontWeight.w700,
                             fontSize: 12,
                             height: 1.25,
@@ -574,7 +574,7 @@ class _WishlistCardState extends ConsumerState<_WishlistCard>
                                 children: [
                                   Text(
                                     formatPrice(product.price),
-                                    style: AppTypography.priceSM
+                                    style: AppTypography.priceSM(context)
                                         .copyWith(fontSize: 14),
                                   ),
                                   if (product.compareAtPrice != null &&
@@ -583,7 +583,7 @@ class _WishlistCardState extends ConsumerState<_WishlistCard>
                                     const SizedBox(width: 4),
                                     Text(
                                       formatPrice(product.compareAtPrice!),
-                                      style: AppTypography.priceStrike
+                                      style: AppTypography.priceStrike(context)
                                           .copyWith(fontSize: 9.5),
                                     ),
                                   ],

@@ -123,12 +123,12 @@ class _FindUsScreenState extends State<FindUsScreen> {
                 children: [
                   Text(
                     'Our Presence',
-                    style: AppTypography.h1.copyWith(color: Colors.white, fontSize: 40),
+                    style: AppTypography.h1(context).copyWith(color: Colors.white, fontSize: 40),
                   ),
                   const SizedBox(height: 8),
                   Text(
                     'Where heritage meets the world.',
-                    style: AppTypography.body.copyWith(
+                    style: AppTypography.body(context).copyWith(
                       color: Colors.white70,
                       fontStyle: FontStyle.italic,
                     ),
@@ -152,13 +152,13 @@ class _FindUsScreenState extends State<FindUsScreen> {
           const SizedBox(height: 24),
           Text(
             'Digital Soul, Global Reach',
-            style: AppTypography.h2,
+            style: AppTypography.h2(context),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 16),
           Text(
             'NutriPump is an online-first destination, meticulously designed to bring the heritage of Kashmir directly to your doorstep. We\'ve eliminated the traditional storefront to focus entirely on the quality of our craftsmanship and the efficiency of our global delivery.',
-            style: AppTypography.bodySM.copyWith(color: AppColors.neutralGold, height: 1.6),
+            style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, height: 1.6),
             textAlign: TextAlign.center,
           ),
         ],
@@ -221,11 +221,11 @@ class _FindUsScreenState extends State<FindUsScreen> {
             child: Icon(icon, color: AppColors.primary, size: 28),
           ),
           const SizedBox(height: 16),
-          Text(title, style: AppTypography.h3),
+          Text(title, style: AppTypography.h3(context)),
           const SizedBox(height: 8),
           Text(
             desc,
-            style: AppTypography.bodySM.copyWith(color: AppColors.neutralGold, height: 1.5),
+            style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, height: 1.5),
             textAlign: TextAlign.center,
           ),
         ],
@@ -252,19 +252,19 @@ class _FindUsScreenState extends State<FindUsScreen> {
             ),
           ),
           const SizedBox(height: 32),
-          Text('ROOTED IN', style: AppTypography.labelGold),
+          Text('ROOTED IN', style: AppTypography.labelGold(context)),
           const SizedBox(height: 8),
-          Text('Heritage of Habbakadal', style: AppTypography.h2),
+          Text('Heritage of Habbakadal', style: AppTypography.h2(context)),
           const SizedBox(height: 16),
           Text(
             'Habbakadal is the heart of Srinagar\'s craftsmanship. In these narrow, storied lanes, tradition meets modern logistics. It is where our master artisans gather, where the threads of tradition are woven into every piece, and where the soul of NutriPump resides.',
-            style: AppTypography.bodySM.copyWith(color: AppColors.neutralGold, height: 1.6),
+            style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, height: 1.6),
           ),
           const SizedBox(height: 24),
           TextButton.icon(
             onPressed: () => _launchUrl('https://maps.google.com'),
             icon: const Icon(Icons.location_on_outlined, color: AppColors.primary),
-            label: Text('Explore Habbakadal, Kashmir', style: AppTypography.labelGold),
+            label: Text('Explore Habbakadal, Kashmir', style: AppTypography.labelGold(context)),
           ),
           const SizedBox(height: 24),
         ],
@@ -280,13 +280,13 @@ class _FindUsScreenState extends State<FindUsScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 24),
-          Text('GET IN TOUCH', style: AppTypography.labelGold),
+          Text('GET IN TOUCH', style: AppTypography.labelGold(context)),
           const SizedBox(height: 8),
-          Text('Contact Us', style: AppTypography.h2.copyWith(color: Colors.white)),
+          Text('Contact Us', style: AppTypography.h2(context).copyWith(color: Colors.white)),
           const SizedBox(height: 16),
           Text(
             'Questions, bulk orders, or a simple hello — our team responds personally within 24 hours.',
-            style: AppTypography.bodySM.copyWith(color: Colors.white70, height: 1.5),
+            style: AppTypography.bodySM(context).copyWith(color: Colors.white70, height: 1.5),
           ),
           const SizedBox(height: 32),
 
@@ -345,8 +345,8 @@ class _FindUsScreenState extends State<FindUsScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(title, style: AppTypography.body.copyWith(color: Colors.white, fontWeight: FontWeight.bold)),
-                  Text(subtitle, style: AppTypography.bodySM.copyWith(color: Colors.white54, fontSize: 12)),
+                  Text(title, style: AppTypography.body(context).copyWith(color: Colors.white, fontWeight: FontWeight.bold)),
+                  Text(subtitle, style: AppTypography.bodySM(context).copyWith(color: Colors.white54, fontSize: 12)),
                 ],
               ),
             ),
@@ -363,7 +363,7 @@ class _FindUsScreenState extends State<FindUsScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Send a Message', style: AppTypography.h3.copyWith(color: Colors.white)),
+          Text('Send a Message', style: AppTypography.h3(context).copyWith(color: Colors.white)),
           const SizedBox(height: 24),
           
           _inputLabel('Name *'),
@@ -407,19 +407,19 @@ class _FindUsScreenState extends State<FindUsScreen> {
           child: const Icon(Icons.check_rounded, color: AppColors.primary, size: 32),
         ),
         const SizedBox(height: 24),
-        Text('Message Delivered', style: AppTypography.labelGold),
+        Text('Message Delivered', style: AppTypography.labelGold(context)),
         const SizedBox(height: 8),
-        Text('We\'ve got your note!', style: AppTypography.h3.copyWith(color: Colors.white)),
+        Text('We\'ve got your note!', style: AppTypography.h3(context).copyWith(color: Colors.white)),
         const SizedBox(height: 12),
         Text(
           'Our team will personally reply within 24 hours. Thank you for reaching out.',
-          style: AppTypography.bodySM.copyWith(color: Colors.white70, height: 1.5),
+          style: AppTypography.bodySM(context).copyWith(color: Colors.white70, height: 1.5),
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: 32),
         TextButton(
           onPressed: () => setState(() => _sent = false),
-          child: Text('Send another message', style: AppTypography.bodySM.copyWith(color: AppColors.primary)),
+          child: Text('Send another message', style: AppTypography.bodySM(context).copyWith(color: AppColors.primary)),
         ),
       ],
     );
@@ -430,7 +430,7 @@ class _FindUsScreenState extends State<FindUsScreen> {
       padding: const EdgeInsets.only(bottom: 8),
       child: Text(
         text.toUpperCase(),
-        style: AppTypography.label.copyWith(color: Colors.white54, fontWeight: FontWeight.bold),
+        style: AppTypography.label(context).copyWith(color: Colors.white54, fontWeight: FontWeight.bold),
       ),
     );
   }

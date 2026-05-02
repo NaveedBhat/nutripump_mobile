@@ -67,7 +67,7 @@ class _AiChatSheetState extends State<AiChatSheet> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Microphone permission required', style: AppTypography.bodySM.copyWith(color: Colors.white)),
+            content: Text('Microphone permission required', style: AppTypography.bodySM(context).copyWith(color: Colors.white)),
             backgroundColor: AppColors.error,
             behavior: SnackBarBehavior.floating,
           ),
@@ -251,9 +251,9 @@ class _AiChatSheetState extends State<AiChatSheet> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('NutriPump AI', style: AppTypography.bodySM.copyWith(color: Colors.white, fontWeight: FontWeight.bold, height: 1)),
+                        Text('NutriPump AI', style: AppTypography.bodySM(context).copyWith(color: Colors.white, fontWeight: FontWeight.bold, height: 1)),
                         const SizedBox(height: 2),
-                        Text('Your Kashmir product guide', style: AppTypography.label.copyWith(color: Colors.white.withValues(alpha: 0.5), fontSize: 10)),
+                        Text('Your Kashmir product guide', style: AppTypography.label(context).copyWith(color: Colors.white.withValues(alpha: 0.5), fontSize: 10)),
                       ],
                     ),
                   ],
@@ -300,7 +300,7 @@ class _AiChatSheetState extends State<AiChatSheet> {
                     return ActionChip(
                       label: Text(
                         query,
-                        style: AppTypography.label.copyWith(
+                        style: AppTypography.label(context).copyWith(
                           color: AppColors.deepCharcoal,
                           fontWeight: FontWeight.w600,
                           fontSize: 10, // Reduced from 11
@@ -342,12 +342,12 @@ class _AiChatSheetState extends State<AiChatSheet> {
                       child: TextField(
                         controller: _textController,
                         focusNode: _focusNode,
-                        style: AppTypography.bodySM,
+                        style: AppTypography.bodySM(context),
                         maxLength: 200,
                         maxLines: 1,
                         decoration: InputDecoration(
                           hintText: 'Ask me anything...',
-                          hintStyle: AppTypography.bodySM.copyWith(color: AppColors.neutralGold.withValues(alpha: 0.5)),
+                          hintStyle: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold.withValues(alpha: 0.5)),
                           border: InputBorder.none,
                           isDense: true,
                           counterText: '', // Hide the character counter UI

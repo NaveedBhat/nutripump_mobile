@@ -92,13 +92,13 @@ class _CategoriesScreenState extends ConsumerState<CategoriesScreen>
                   children: [
                     Text(
                       'CURATED SELECTION',
-                      style: AppTypography.labelGold.copyWith(letterSpacing: 3, fontSize: 11),
+                      style: AppTypography.labelGold(context).copyWith(letterSpacing: 3, fontSize: 11),
                     ),
                     const SizedBox(height: 12),
                     Text(
                       'MASTERFUL\nCRAFTSMANSHIP',
                       textAlign: TextAlign.center,
-                      style: AppTypography.h1.copyWith(
+                      style: AppTypography.h1(context).copyWith(
                         fontSize: 28,
                         letterSpacing: 0.5,
                         height: 1.15,
@@ -235,7 +235,7 @@ class _HeroBannerState extends State<_HeroBanner> {
                 children: [
                   Text(
                     'CURATED COLLECTIONS',
-                    style: AppTypography.labelGold.copyWith(
+                    style: AppTypography.labelGold(context).copyWith(
                       letterSpacing: 3,
                       fontSize: 10,
                     ),
@@ -244,7 +244,7 @@ class _HeroBannerState extends State<_HeroBanner> {
                   Text(
                     'Explore Our\nCollections',
                     textAlign: TextAlign.center,
-                    style: AppTypography.h1.copyWith(
+                    style: AppTypography.h1(context).copyWith(
                       color: Colors.white,
                       fontSize: 34,
                       height: 1.15,
@@ -255,7 +255,7 @@ class _HeroBannerState extends State<_HeroBanner> {
                   Text(
                     'A refined heritage of artisanal excellence and handcrafted perfection, curated for the modern connoisseur.',
                     textAlign: TextAlign.center,
-                    style: AppTypography.bodySM.copyWith(
+                    style: AppTypography.bodySM(context).copyWith(
                       color: Colors.white.withValues(alpha: 0.80),
                       fontStyle: FontStyle.italic,
                       fontSize: 13,
@@ -387,7 +387,7 @@ class _CategoryCardState extends State<_CategoryCard>
                             // Sublabel
                             Text(
                               sublabel,
-                              style: AppTypography.label.copyWith(
+                              style: AppTypography.label(context).copyWith(
                                 color: AppColors.primary.withValues(alpha: 0.92),
                                 fontSize: 8,
                                 letterSpacing: 1.8,
@@ -399,7 +399,7 @@ class _CategoryCardState extends State<_CategoryCard>
                               cat.name,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
-                              style: AppTypography.h3.copyWith(
+                              style: AppTypography.h3(context).copyWith(
                                 color: Colors.white,
                                 fontSize: 15,
                                 height: 1.2,
@@ -420,7 +420,7 @@ class _CategoryCardState extends State<_CategoryCard>
                                 children: [
                                   Text(
                                     'SHOP NOW',
-                                    style: AppTypography.label.copyWith(
+                                    style: AppTypography.label(context).copyWith(
                                       color: AppColors.deepCharcoal,
                                       fontSize: 8,
                                       letterSpacing: 1.4,
@@ -575,12 +575,12 @@ class _MakersStorySection extends StatelessWidget {
             children: [
               Text(
                 'THE MAKER\'S STORY',
-                style: AppTypography.labelGold.copyWith(letterSpacing: 3, fontSize: 10),
+                style: AppTypography.labelGold(context).copyWith(letterSpacing: 3, fontSize: 10),
               ),
               const SizedBox(height: 16),
               Text(
                 'Preserving Heritage Through the Hands of Masters',
-                style: AppTypography.h2.copyWith(
+                style: AppTypography.h2(context).copyWith(
                   color: Colors.white,
                   fontSize: 26,
                   height: 1.25,
@@ -589,7 +589,7 @@ class _MakersStorySection extends StatelessWidget {
               const SizedBox(height: 20),
               Text(
                 'Every piece in our collection tells a story of dedication, passing through the hands of master craftsmen in the valleys of Kashmir who preserve centuries-old traditions. We bridge the gap between ancient techniques and modern living.',
-                style: AppTypography.bodySM.copyWith(
+                style: AppTypography.bodySM(context).copyWith(
                   color: Colors.white.withValues(alpha: 0.70),
                   height: 1.7,
                   fontSize: 14,
@@ -605,7 +605,7 @@ class _MakersStorySection extends StatelessWidget {
                 ),
                 child: Text(
                   '"Our mission is to celebrate the soul of the maker in a world of mass production."',
-                  style: AppTypography.bodySM.copyWith(
+                  style: AppTypography.bodySM(context).copyWith(
                     color: Colors.white.withValues(alpha: 0.70),
                     fontStyle: FontStyle.italic,
                     height: 1.7,
@@ -620,7 +620,7 @@ class _MakersStorySection extends StatelessWidget {
                   children: [
                     Text(
                       'Read Our Heritage',
-                      style: AppTypography.bodySM.copyWith(
+                      style: AppTypography.bodySM(context).copyWith(
                         color: AppColors.primary,
                         fontWeight: FontWeight.w700,
                         fontSize: 14,
@@ -657,13 +657,13 @@ class _NewsletterSection extends StatelessWidget {
           Text(
             'Join the Collective',
             textAlign: TextAlign.center,
-            style: AppTypography.h2.copyWith(fontSize: 24),
+            style: AppTypography.h2(context).copyWith(fontSize: 24),
           ),
           const SizedBox(height: 12),
           Text(
             'Subscribe to receive exclusive access to limited artisanal drops, maker stories, and heritage events.',
             textAlign: TextAlign.center,
-            style: AppTypography.bodySM.copyWith(
+            style: AppTypography.bodySM(context).copyWith(
               color: AppColors.neutralGold,
               height: 1.6,
               fontSize: 14,
@@ -675,7 +675,7 @@ class _NewsletterSection extends StatelessWidget {
             keyboardType: TextInputType.emailAddress,
             decoration: InputDecoration(
               hintText: 'Enter your email address',
-              hintStyle: AppTypography.bodySM.copyWith(
+              hintStyle: AppTypography.bodySM(context).copyWith(
                 color: AppColors.neutralGold.withValues(alpha: 0.6),
                 fontSize: 13,
               ),
@@ -715,7 +715,7 @@ class _NewsletterSection extends StatelessWidget {
               ),
               child: Text(
                 'Subscribe',
-                style: AppTypography.bodySM.copyWith(
+                style: AppTypography.bodySM(context).copyWith(
                   fontWeight: FontWeight.w800,
                   fontSize: 15,
                   color: AppColors.deepCharcoal,
@@ -727,7 +727,7 @@ class _NewsletterSection extends StatelessWidget {
           Text(
             'By subscribing, you agree to our Terms of Service and Privacy Policy.',
             textAlign: TextAlign.center,
-            style: AppTypography.bodySM.copyWith(
+            style: AppTypography.bodySM(context).copyWith(
               color: AppColors.neutralGold.withValues(alpha: 0.7),
               fontSize: 11,
             ),

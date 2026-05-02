@@ -98,7 +98,7 @@ class _PromoCodesScreenState extends ConsumerState<PromoCodesScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text("'${promo.code}' applied successfully!", style: AppTypography.bodySM.copyWith(color: Colors.white)),
+            content: Text("'${promo.code}' applied successfully!", style: AppTypography.bodySM(context).copyWith(color: Colors.white)),
             backgroundColor: AppColors.success,
             behavior: SnackBarBehavior.floating,
           ),
@@ -113,7 +113,7 @@ class _PromoCodesScreenState extends ConsumerState<PromoCodesScreen> {
   void _showError(String msg) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(msg, style: AppTypography.bodySM.copyWith(color: Colors.white)),
+        content: Text(msg, style: AppTypography.bodySM(context).copyWith(color: Colors.white)),
         backgroundColor: AppColors.error,
         behavior: SnackBarBehavior.floating,
       ),
@@ -133,7 +133,7 @@ class _PromoCodesScreenState extends ConsumerState<PromoCodesScreen> {
         elevation: 0,
         surfaceTintColor: Colors.transparent,
         centerTitle: true,
-        title: Text('Apply Promo Code', style: AppTypography.h3),
+        title: Text('Apply Promo Code', style: AppTypography.h3(context)),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1),
           child: Container(height: 1, color: AppColors.borderLight),
@@ -156,7 +156,7 @@ class _PromoCodesScreenState extends ConsumerState<PromoCodesScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Have a promo code?', style: AppTypography.bodySM.copyWith(fontWeight: FontWeight.w800, fontSize: 14)),
+                  Text('Have a promo code?', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: 14)),
                   const SizedBox(height: 12),
                   Row(
                     children: [
@@ -164,10 +164,10 @@ class _PromoCodesScreenState extends ConsumerState<PromoCodesScreen> {
                         child: TextFormField(
                           controller: _codeCtrl,
                           textCapitalization: TextCapitalization.characters,
-                          style: AppTypography.bodySM.copyWith(fontWeight: FontWeight.w700),
+                          style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700),
                           decoration: InputDecoration(
                             hintText: 'Enter code here',
-                            hintStyle: AppTypography.bodySM.copyWith(color: AppColors.neutralGold.withValues(alpha: 0.5)),
+                            hintStyle: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold.withValues(alpha: 0.5)),
                             contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                             filled: true,
                             fillColor: AppColors.backgroundLight,
@@ -189,7 +189,7 @@ class _PromoCodesScreenState extends ConsumerState<PromoCodesScreen> {
                           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                         ),
-                        child: Text('Apply', style: AppTypography.bodySM.copyWith(fontWeight: FontWeight.w700, color: Colors.white)),
+                        child: Text('Apply', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, color: Colors.white)),
                       ),
                     ],
                   ),
@@ -199,7 +199,7 @@ class _PromoCodesScreenState extends ConsumerState<PromoCodesScreen> {
             const SizedBox(height: 24),
 
             // ── Available Offers ─────────────────────────────────
-            Text('Available Offers', style: AppTypography.h3),
+            Text('Available Offers', style: AppTypography.h3(context)),
             const SizedBox(height: 16),
 
             availablePromosAsync.when(
@@ -208,7 +208,7 @@ class _PromoCodesScreenState extends ConsumerState<PromoCodesScreen> {
                   return Center(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 32),
-                      child: Text('No promo codes available right now.', style: AppTypography.bodySM.copyWith(color: AppColors.neutralGold)),
+                      child: Text('No promo codes available right now.', style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold)),
                     ),
                   );
                 }
@@ -227,7 +227,7 @@ class _PromoCodesScreenState extends ConsumerState<PromoCodesScreen> {
                         ref.read(cartProvider.notifier).removePromo();
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text('Promo code removed', style: AppTypography.bodySM.copyWith(color: Colors.white)),
+                            content: Text('Promo code removed', style: AppTypography.bodySM(context).copyWith(color: Colors.white)),
                             behavior: SnackBarBehavior.floating,
                           ),
                         );
@@ -237,7 +237,7 @@ class _PromoCodesScreenState extends ConsumerState<PromoCodesScreen> {
                 );
               },
               loading: () => const Center(child: CircularProgressIndicator(color: AppColors.primary)),
-              error: (err, stack) => Center(child: Text('Error loading promos', style: AppTypography.bodySM.copyWith(color: AppColors.error))),
+              error: (err, stack) => Center(child: Text('Error loading promos', style: AppTypography.bodySM(context).copyWith(color: AppColors.error))),
             ),
           ],
         ),
@@ -305,7 +305,7 @@ class _PromoCard extends StatelessWidget {
                             color: isAlreadyUsed ? AppColors.neutralGold : AppColors.primary),
                         const SizedBox(width: 6),
                         Text(promo.code,
-                            style: AppTypography.bodySM.copyWith(
+                            style: AppTypography.bodySM(context).copyWith(
                                 fontWeight: FontWeight.w800,
                                 color: isAlreadyUsed ? AppColors.neutralGold : AppColors.primary)),
                       ],
@@ -325,7 +325,7 @@ class _PromoCard extends StatelessWidget {
                           const Icon(Icons.check_circle_outline_rounded, size: 12, color: AppColors.neutralGold),
                           const SizedBox(width: 4),
                           Text('Already Availed',
-                              style: AppTypography.label.copyWith(
+                              style: AppTypography.label(context).copyWith(
                                   fontSize: 10, fontWeight: FontWeight.w700, color: AppColors.neutralGold)),
                         ],
                       ),
@@ -339,7 +339,7 @@ class _PromoCard extends StatelessWidget {
                         minimumSize: Size.zero,
                         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       ),
-                      child: Text('Remove', style: AppTypography.bodySM.copyWith(fontWeight: FontWeight.w700, color: AppColors.error)),
+                      child: Text('Remove', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, color: AppColors.error)),
                     )
                   else
                     TextButton(
@@ -350,7 +350,7 @@ class _PromoCard extends StatelessWidget {
                         minimumSize: Size.zero,
                         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       ),
-                      child: Text('Apply', style: AppTypography.bodySM.copyWith(fontWeight: FontWeight.w800, color: AppColors.primary)),
+                      child: Text('Apply', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, color: AppColors.primary)),
                     ),
                 ],
               ),
@@ -364,10 +364,10 @@ class _PromoCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(promo.title, style: AppTypography.bodySM.copyWith(fontWeight: FontWeight.w800, fontSize: 15)),
+                  Text(promo.title, style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: 15)),
                   if (promo.description.isNotEmpty) ...[
                     const SizedBox(height: 6),
-                    Text(promo.description, style: AppTypography.bodySM.copyWith(color: AppColors.neutralGold, height: 1.4)),
+                    Text(promo.description, style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, height: 1.4)),
                   ],
                   if (promo.productId != null && promo.productName != null) ...[
                     const SizedBox(height: 8),
@@ -377,7 +377,7 @@ class _PromoCard extends StatelessWidget {
                         color: AppColors.deepCharcoal.withValues(alpha: 0.05),
                         borderRadius: BorderRadius.circular(4),
                       ),
-                      child: Text('Valid only on ${promo.productName}', style: AppTypography.label.copyWith(color: AppColors.deepCharcoal, fontWeight: FontWeight.w600)),
+                      child: Text('Valid only on ${promo.productName}', style: AppTypography.label(context).copyWith(color: AppColors.deepCharcoal, fontWeight: FontWeight.w600)),
                     ),
                   ]
                 ],
@@ -398,7 +398,7 @@ class _PromoCard extends StatelessWidget {
                   const SizedBox(width: 6),
                   Expanded(
                     child: Text('Min. order: ₹${promo.minOrderValue.toInt()}${promo.expiresAt != null ? ' | Valid till ${_formatDate(promo.expiresAt!)}' : ''}',
-                      style: AppTypography.label.copyWith(fontSize: 10, color: AppColors.neutralGold)),
+                      style: AppTypography.label(context).copyWith(fontSize: 10, color: AppColors.neutralGold)),
                   ),
                 ],
               ),

@@ -26,7 +26,7 @@ class OrdersScreen extends ConsumerWidget {
           icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 18),
           onPressed: () => context.canPop() ? context.pop() : context.go('/'),
         ),
-        title: Text('My Orders', style: AppTypography.h3),
+        title: Text('My Orders', style: AppTypography.h3(context)),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1),
           child: Container(height: 1, color: AppColors.borderLight),
@@ -39,7 +39,7 @@ class OrdersScreen extends ConsumerWidget {
           if (user == null) {
             return Center(
               child: Text('Please sign in to view your orders.',
-                  style: AppTypography.bodySM),
+                  style: AppTypography.bodySM(context)),
             );
           }
 
@@ -75,12 +75,12 @@ class OrdersScreen extends ConsumerWidget {
                         ),
                         const SizedBox(height: 24),
                         Text('No orders yet',
-                            style: AppTypography.h2.copyWith(fontSize: 22)),
+                            style: AppTypography.h2(context).copyWith(fontSize: 22)),
                         const SizedBox(height: 10),
                         Text(
                           'Your artisanal pantry awaits.',
                           textAlign: TextAlign.center,
-                          style: AppTypography.bodySM.copyWith(
+                          style: AppTypography.bodySM(context).copyWith(
                             color: AppColors.neutralGold,
                             height: 1.6,
                             fontSize: 14,
@@ -99,7 +99,7 @@ class OrdersScreen extends ConsumerWidget {
                             elevation: 0,
                           ),
                           child: Text('Start Shopping',
-                              style: AppTypography.bodySM.copyWith(
+                              style: AppTypography.bodySM(context).copyWith(
                                   fontWeight: FontWeight.w800, fontSize: 15)),
                         ),
                       ],
@@ -214,7 +214,7 @@ class _OrderCard extends ConsumerWidget {
                             order.status == OrderStatus.delivered
                                 ? 'Delivered near door'
                                 : 'Status: ${order.status.label}',
-                            style: AppTypography.bodySM.copyWith(
+                            style: AppTypography.bodySM(context).copyWith(
                               fontWeight: FontWeight.w700,
                               fontSize: 14,
                             ),
@@ -226,7 +226,7 @@ class _OrderCard extends ConsumerWidget {
                                 : order.trackingNumber != null
                                     ? 'Tracking: ${order.trackingNumber}'
                                     : 'Your order is moving through our artisan network.',
-                            style: AppTypography.bodySM.copyWith(
+                            style: AppTypography.bodySM(context).copyWith(
                               color: AppColors.neutralGold,
                               fontSize: 11,
                             ),
@@ -273,7 +273,7 @@ class _OrderCard extends ConsumerWidget {
                             children: [
                               Text(
                                 p.name,
-                                style: AppTypography.bodySM.copyWith(
+                                style: AppTypography.bodySM(context).copyWith(
                                   fontWeight: FontWeight.w700,
                                   fontSize: 13,
                                 ),
@@ -291,7 +291,7 @@ class _OrderCard extends ConsumerWidget {
                                     if (displayWeight != null) displayWeight,
                                     if (p.category.isNotEmpty) p.category,
                                   ].join(' • '),
-                                  style: AppTypography.bodySM.copyWith(
+                                  style: AppTypography.bodySM(context).copyWith(
                                     color: AppColors.neutralGold,
                                     fontSize: 11,
                                   ),
@@ -300,7 +300,7 @@ class _OrderCard extends ConsumerWidget {
                               const SizedBox(height: 4),
                               Text(
                                 formatPrice(item.effectivePrice * item.quantity),
-                                style: AppTypography.bodySM.copyWith(
+                                style: AppTypography.bodySM(context).copyWith(
                                   color: AppColors.primaryDark,
                                   fontWeight: FontWeight.w700,
                                   fontSize: 12,
@@ -330,7 +330,7 @@ class _OrderCard extends ConsumerWidget {
                         child: Center(
                           child: Text(
                             '+${order.items.length - 2}',
-                            style: AppTypography.h3.copyWith(
+                            style: AppTypography.h3(context).copyWith(
                               color: AppColors.primaryDark,
                               fontSize: 16,
                             ),
@@ -344,7 +344,7 @@ class _OrderCard extends ConsumerWidget {
                           children: [
                             Text(
                               'More Items',
-                              style: AppTypography.bodySM.copyWith(
+                              style: AppTypography.bodySM(context).copyWith(
                                 fontWeight: FontWeight.w700,
                                 fontSize: 13,
                               ),
@@ -352,7 +352,7 @@ class _OrderCard extends ConsumerWidget {
                             const SizedBox(height: 2),
                             Text(
                               'Included in this shipment securely packed.',
-                              style: AppTypography.bodySM.copyWith(
+                              style: AppTypography.bodySM(context).copyWith(
                                 color: AppColors.neutralGold,
                                 fontSize: 11,
                               ),
@@ -402,7 +402,7 @@ class _OrderCard extends ConsumerWidget {
                             minimumSize: const Size(0, 32),
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
                           ),
-                          child: Text('View Details', style: AppTypography.bodySM.copyWith(fontWeight: FontWeight.w700, fontSize: 10)),
+                          child: Text('View Details', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: 10)),
                         ),
                       ),
                       if (canReturn) ...[
@@ -418,7 +418,7 @@ class _OrderCard extends ConsumerWidget {
                               elevation: 0,
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
                             ),
-                            child: Text('Return Item', style: AppTypography.bodySM.copyWith(fontWeight: FontWeight.w700, fontSize: 10)),
+                            child: Text('Return Item', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: 10)),
                           ),
                         ),
                       ],
@@ -439,7 +439,7 @@ class _OrderCard extends ConsumerWidget {
                               minimumSize: const Size(0, 32),
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
                             ),
-                            child: Text('Track Live', style: AppTypography.bodySM.copyWith(fontWeight: FontWeight.w700, fontSize: 10), maxLines: 1, overflow: TextOverflow.ellipsis),
+                            child: Text('Track Live', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: 10), maxLines: 1, overflow: TextOverflow.ellipsis),
                           ),
                         ),
                         const SizedBox(width: 6),
@@ -457,7 +457,7 @@ class _OrderCard extends ConsumerWidget {
                             minimumSize: const Size(0, 32),
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
                           ),
-                          child: Text('Contact', style: AppTypography.bodySM.copyWith(fontWeight: FontWeight.w700, fontSize: 10), maxLines: 1, overflow: TextOverflow.ellipsis),
+                          child: Text('Contact', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: 10), maxLines: 1, overflow: TextOverflow.ellipsis),
                         ),
                       ),
                       if (canCancel) ...[
@@ -473,7 +473,7 @@ class _OrderCard extends ConsumerWidget {
                               minimumSize: const Size(0, 32),
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
                             ),
-                            child: Text('Cancel', style: AppTypography.bodySM.copyWith(fontWeight: FontWeight.w700, color: Colors.red, fontSize: 10), maxLines: 1, overflow: TextOverflow.ellipsis),
+                            child: Text('Cancel', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, color: Colors.red, fontSize: 10), maxLines: 1, overflow: TextOverflow.ellipsis),
                           ),
                         ),
                       ],
@@ -591,7 +591,7 @@ class _HeaderInfoBlock extends StatelessWidget {
         children: [
           Text(
             value,
-            style: AppTypography.bodySM.copyWith(
+            style: AppTypography.bodySM(context).copyWith(
               fontWeight: FontWeight.w800,
               fontSize: 12,
             ),
@@ -622,7 +622,7 @@ class _TimeRemainingLabel extends StatelessWidget {
         const SizedBox(width: 4),
         Text(
           text,
-          style: AppTypography.bodySM.copyWith(
+          style: AppTypography.bodySM(context).copyWith(
             color: color,
             fontSize: 9,
             fontWeight: FontWeight.w700,
@@ -669,10 +669,10 @@ class _CancelOrderDialogState extends ConsumerState<_CancelOrderDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Cancel Order?', style: AppTypography.h3),
+      title: Text('Cancel Order?', style: AppTypography.h3(context)),
       content: Text(
         'Are you sure you want to cancel order ${formatOrderId(widget.order.id)}? This action cannot be undone.',
-        style: AppTypography.bodySM,
+        style: AppTypography.bodySM(context),
       ),
       actions: [
         OutlinedButton(
@@ -684,7 +684,7 @@ class _CancelOrderDialogState extends ConsumerState<_CancelOrderDialog> {
             minimumSize: const Size(0, 36),
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           ),
-          child: Text('Keep Order', style: AppTypography.bodySM.copyWith(fontWeight: FontWeight.w700)),
+          child: Text('Keep Order', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700)),
         ),
         ElevatedButton(
           onPressed: _isLoading ? null : _handleCancel,
@@ -698,7 +698,7 @@ class _CancelOrderDialogState extends ConsumerState<_CancelOrderDialog> {
           ),
           child: _isLoading
               ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
-              : Text('Confirm Cancel', style: AppTypography.bodySM.copyWith(fontWeight: FontWeight.w700, color: Colors.white)),
+              : Text('Confirm Cancel', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, color: Colors.white)),
         ),
       ],
     );

@@ -112,12 +112,12 @@ class _InAppPopupState extends State<InAppPopup>
 
           Text(
             widget.title,
-            style: AppTypography.h1.copyWith(color: textCol, height: 1.2),
+            style: AppTypography.h1(context).copyWith(color: textCol, height: 1.2),
           ),
           const SizedBox(height: 8),
           Text(
             widget.body,
-            style: AppTypography.bodySM.copyWith(color: subTextCol),
+            style: AppTypography.bodySM(context).copyWith(color: subTextCol),
           ),
 
           // ── CTA Button ──────────────────────────────────
@@ -147,7 +147,7 @@ class _InAppPopupState extends State<InAppPopup>
                   alignment: Alignment.center,
                   child: Text(
                     widget.ctaLabel!,
-                    style: AppTypography.label.copyWith(
+                    style: AppTypography.label(context).copyWith(
                       color: AppColors.deepCharcoal,
                     ),
                   ),

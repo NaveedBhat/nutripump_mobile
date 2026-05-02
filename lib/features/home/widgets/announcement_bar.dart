@@ -55,7 +55,7 @@ class _AnnouncementBarState extends ConsumerState<AnnouncementBar> {
                 child: Text(
                   settings.text,
                   textAlign: TextAlign.center,
-                  style: AppTypography.label.copyWith(
+                  style: AppTypography.label(context).copyWith(
                     color: textColor,
                     fontSize: R.sp(context, 10),
                     letterSpacing: 1.2,

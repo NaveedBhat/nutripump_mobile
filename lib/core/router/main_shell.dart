@@ -119,7 +119,7 @@ class MainShell extends ConsumerWidget {
                           const SizedBox(height: 3),
                           Text(
                             tab.label,
-                            style: AppTypography.label.copyWith(
+                            style: AppTypography.label(context).copyWith(
                               fontSize: 9,
                               color: active
                                   ? const Color(0xFFEEBD2B)
