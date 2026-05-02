@@ -334,28 +334,33 @@ class _AiChatSheetState extends State<AiChatSheet> {
                 children: [
                   Expanded(
                     child: Container(
+                      height: R.w(context, 44),
                       decoration: BoxDecoration(
                         color: AppColors.primary.withValues(alpha: 0.05),
                         borderRadius: BorderRadius.circular(R.w(context, 16)),
                         border: Border.all(color: AppColors.primary.withValues(alpha: 0.15)),
                       ),
                       padding: EdgeInsets.symmetric(horizontal: R.w(context, 16)),
-                      child: TextField(
-                        controller: _textController,
-                        focusNode: _focusNode,
-                        style: AppTypography.bodySM(context),
-                        maxLength: 200,
-                        maxLines: 1,
-                        decoration: InputDecoration(
-                          hintText: 'Ask me anything...',
-                          hintStyle: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold.withValues(alpha: 0.5)),
-                          border: InputBorder.none,
-                          isDense: true,
-                          counterText: '', // Hide the character counter UI
-                          contentPadding: EdgeInsets.symmetric(vertical: R.h(context, 10)),
+                      child: Center(
+                        child: TextField(
+                          controller: _textController,
+                          focusNode: _focusNode,
+                          style: AppTypography.bodySM(context),
+                          maxLength: 200,
+                          maxLines: 1,
+                          decoration: InputDecoration(
+                            hintText: 'Ask me anything...',
+                            hintStyle: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold.withValues(alpha: 0.5)),
+                            border: InputBorder.none,
+                            enabledBorder: InputBorder.none,
+                            focusedBorder: InputBorder.none,
+                            isDense: true,
+                            counterText: '', // Hide the character counter UI
+                            contentPadding: EdgeInsets.zero,
+                          ),
+                          textInputAction: TextInputAction.send,
+                          onSubmitted: (_) => _sendMessage(),
                         ),
-                        textInputAction: TextInputAction.send,
-                        onSubmitted: (_) => _sendMessage(),
                       ),
                     ),
                   ),

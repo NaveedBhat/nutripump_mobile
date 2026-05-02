@@ -531,7 +531,7 @@ class _CategoriesSection extends ConsumerWidget {
                 itemBuilder: (context, index) {
                   final cat = categories[index];
                   return GestureDetector(
-                    onTap: () => context.push('/shop?category=${cat.name}'),
+                    onTap: () => context.push('/shop?category=${cat.slug}'),
                     child: Column(
                       children: [
                         Container(
@@ -542,9 +542,9 @@ class _CategoriesSection extends ConsumerWidget {
                             color: const Color(0xFFF0EBE0),
                             border: Border.all(color: AppColors.primary.withValues(alpha: 0.2), width: 1.5),
                           ),
-                          child: ClipOval(
-                            child: Padding(
-                              padding: EdgeInsets.all(R.w(context, 3)),
+                          child: Padding(
+                            padding: EdgeInsets.all(R.w(context, 3)),
+                            child: ClipOval(
                               child: cat.image != null && cat.image!.isNotEmpty
                                   ? CustomNetworkImage(imageUrl: cat.image!)
                                   : CustomNetworkImage(imageUrl: _getCategoryFallbackImage(cat.name)),
