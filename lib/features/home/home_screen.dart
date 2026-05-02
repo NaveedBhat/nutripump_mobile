@@ -227,7 +227,7 @@ class _HeroCarouselState extends ConsumerState<_HeroCarousel> {
     final productsAsync = ref.watch(allProductsProvider);
 
     return SizedBox(
-      height: 300,
+      height: 240,
       child: productsAsync.when(
         data: (products) {
           if (products.isEmpty) {
@@ -305,7 +305,7 @@ class _HeroCarouselState extends ConsumerState<_HeroCarousel> {
                         ),
                         // Content
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(24, 0, 24, 48),
+                          padding: const EdgeInsets.fromLTRB(24, 0, 24, 36),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.end,
                             crossAxisAlignment: CrossAxisAlignment.start,
