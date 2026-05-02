@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_typography.dart';
+import '../../core/utils/responsive.dart';
 import '../../providers/providers.dart';
 
 class ForgotPasswordScreen extends ConsumerStatefulWidget {
@@ -63,7 +64,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
             children: [
               // Top Header
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                padding: EdgeInsets.symmetric(horizontal: R.w(context, 16), vertical: R.h(context, 8)),
                 child: Row(
                   children: [
                     IconButton(
@@ -79,7 +80,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                   ],
                 ),
               ),
-              const SizedBox(height: 5),
+              SizedBox(height: R.h(context, 5)),
               
               // Logo
               Center(
@@ -87,35 +88,35 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                   children: [
                     Image.asset(
                       'assets/images/nutripumplogo.webp',
-                      height: 50,
-                      errorBuilder: (_, __, ___) => const Icon(Icons.eco_rounded, size: 40, color: AppColors.primary),
+                      height: R.h(context, 50),
+                      errorBuilder: (_, __, ___) => Icon(Icons.eco_rounded, size: R.sp(context, 40), color: AppColors.primary),
                     ),
                   ],
                 ),
               ),
-              const SizedBox(height: 30),
+              SizedBox(height: R.h(context, 30)),
 
               // Bottom Sheet Form
               Expanded(
                 child: Container(
                   width: double.infinity,
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     color: AppColors.backgroundLight,
-                    borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
+                    borderRadius: BorderRadius.vertical(top: Radius.circular(R.w(context, 32))),
                   ),
                   child: SingleChildScrollView(
-                    padding: const EdgeInsets.fromLTRB(28, 36, 28, 40),
+                    padding: EdgeInsets.fromLTRB(R.w(context, 28), R.h(context, 36), R.w(context, 28), R.h(context, 40)),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Reset Password', style: AppTypography.h2(context).copyWith(fontSize: 28)),
-                        const SizedBox(height: 6),
-                        Text('Enter your email to receive a password reset link.', style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, fontSize: 14, height: 1.5)),
-                        const SizedBox(height: 36),
+                        Text('Reset Password', style: AppTypography.h2(context).copyWith(fontSize: R.sp(context, 28))),
+                        SizedBox(height: R.h(context, 6)),
+                        Text('Enter your email to receive a password reset link.', style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, fontSize: R.sp(context, 14), height: 1.5)),
+                        SizedBox(height: R.h(context, 36)),
 
                         // Email
-                        Text('EMAIL ADDRESS', style: AppTypography.label(context).copyWith(color: AppColors.neutralGold, fontSize: 10)),
-                        const SizedBox(height: 8),
+                        Text('EMAIL ADDRESS', style: AppTypography.label(context).copyWith(color: AppColors.neutralGold, fontSize: R.sp(context, 10))),
+                        SizedBox(height: R.h(context, 8)),
                         ReactiveTextField<String>(
                           formControlName: 'email',
                           keyboardType: TextInputType.emailAddress,
@@ -124,14 +125,14 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                           decoration: InputDecoration(
                             hintText: 'you@example.com',
                             hintStyle: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold.withValues(alpha: 0.5)),
-                            prefixIcon: const Icon(Icons.mail_outline_rounded, size: 18, color: AppColors.neutralGold),
+                            prefixIcon: Icon(Icons.mail_outline_rounded, size: R.sp(context, 18), color: AppColors.neutralGold),
                             filled: true, fillColor: Colors.white,
-                            contentPadding: const EdgeInsets.symmetric(vertical: 16),
-                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide.none),
-                            focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: const BorderSide(color: AppColors.primary, width: 1.5)),
+                            contentPadding: EdgeInsets.symmetric(vertical: R.h(context, 16)),
+                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(R.w(context, 14)), borderSide: BorderSide.none),
+                            focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(R.w(context, 14)), borderSide: const BorderSide(color: AppColors.primary, width: 1.5)),
                           ),
                         ),
-                        const SizedBox(height: 36),
+                        SizedBox(height: R.h(context, 36)),
 
                         // Submit
                         ElevatedButton(
@@ -140,30 +141,30 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                             backgroundColor: AppColors.primary,
                             foregroundColor: AppColors.deepCharcoal,
                             elevation: 0,
-                            minimumSize: const Size(double.infinity, 54),
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                            minimumSize: Size(double.infinity, R.h(context, 54)),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(R.w(context, 14))),
                           ),
                           child: _isLoading
-                              ? const SizedBox(height: 20, width: 20, child: CircularProgressIndicator(strokeWidth: 2, valueColor: AlwaysStoppedAnimation(AppColors.deepCharcoal)))
+                              ? SizedBox(height: R.h(context, 20), width: R.w(context, 20), child: const CircularProgressIndicator(strokeWidth: 2, valueColor: AlwaysStoppedAnimation(AppColors.deepCharcoal)))
                               : Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text('Send Reset Link', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: 16)),
-                                    const SizedBox(width: 8),
-                                    const Icon(Icons.arrow_forward_rounded, size: 18),
+                                    Text('Send Reset Link', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: R.sp(context, 16))),
+                                    SizedBox(width: R.w(context, 8)),
+                                    Icon(Icons.arrow_forward_rounded, size: R.sp(context, 18)),
                                   ],
                                 ),
                         ),
-                        const SizedBox(height: 32),
+                        SizedBox(height: R.h(context, 32)),
                         
                         // Back to login Link
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text("Remembered your password? ", style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, fontSize: 14)),
+                            Text("Remembered your password? ", style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, fontSize: R.sp(context, 14))),
                             GestureDetector(
                               onTap: () => context.pop(),
-                              child: Text('Sign In', style: AppTypography.bodySM(context).copyWith(color: AppColors.primaryDark, fontSize: 14, fontWeight: FontWeight.w700)),
+                              child: Text('Sign In', style: AppTypography.bodySM(context).copyWith(color: AppColors.primaryDark, fontSize: R.sp(context, 14), fontWeight: FontWeight.w700)),
                             ),
                           ],
                         ),

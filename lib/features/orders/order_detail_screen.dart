@@ -7,6 +7,7 @@ import '../../core/utils/formatters.dart';
 import '../../models/cart_item.dart';
 import '../../models/order.dart';
 import '../../providers/providers.dart';
+import '../../core/utils/responsive.dart';
 
 class OrderDetailScreen extends ConsumerWidget {
   final String id;
@@ -72,7 +73,7 @@ class _OrderDetailBody extends ConsumerWidget {
     final currentIndex = isCancelled ? -1 : _steps.indexOf(order.status);
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(R.w(context, 16)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -85,11 +86,11 @@ class _OrderDetailBody extends ConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(formatOrderId(order.id),
-                          style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: 15)),
-                      const SizedBox(height: 4),
+                          style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: R.sp(context, 15))),
+                      SizedBox(height: R.h(context, 4)),
                       Text(
                         'Placed on ${_formatDate(order.createdAt)}',
-                        style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, fontSize: 12),
+                        style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, fontSize: R.sp(context, 12)),
                       ),
                     ],
                   ),
@@ -102,7 +103,7 @@ class _OrderDetailBody extends ConsumerWidget {
           // Cancellation countdown label
           if (order.canCancel && _isWithinWindow(order.createdAt, ref.watch(storeSettingsProvider).valueOrNull?.cancellationWindowHours ?? 24))
             Padding(
-              padding: const EdgeInsets.only(top: 12, left: 4),
+              padding: EdgeInsets.only(top: R.h(context, 12), left: R.w(context, 4)),
               child: _TimeRemainingLabel(
                 icon: Icons.access_time_rounded,
                 text: _getCancelWithinText(order.createdAt, ref.watch(storeSettingsProvider).valueOrNull?.cancellationWindowHours ?? 24),
@@ -113,7 +114,7 @@ class _OrderDetailBody extends ConsumerWidget {
           // Return countdown label
           if (order.status == OrderStatus.delivered && order.canReturn && _isWithinReturnWindow(order.updatedAt, ref.watch(storeSettingsProvider).valueOrNull?.returnWindowDays ?? 5))
             Padding(
-              padding: const EdgeInsets.only(top: 12, left: 4),
+              padding: EdgeInsets.only(top: R.h(context, 12), left: R.w(context, 4)),
               child: _TimeRemainingLabel(
                 icon: Icons.access_time_rounded,
                 text: _getReturnWithinText(order.updatedAt, ref.watch(storeSettingsProvider).valueOrNull?.returnWindowDays ?? 5),
@@ -121,15 +122,15 @@ class _OrderDetailBody extends ConsumerWidget {
               ),
             ),
 
-          const SizedBox(height: 16),
+          SizedBox(height: R.h(context, 16)),
 
           // ── Tracking Timeline ─────────────────────────────────
           _SectionCard(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Order Progress', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: 14)),
-                const SizedBox(height: 20),
+                Text('Order Progress', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: R.sp(context, 14))),
+                SizedBox(height: R.h(context, 20)),
                 if (isCancelled)
                   _CancelledBanner(order: order)
                 else
@@ -137,21 +138,21 @@ class _OrderDetailBody extends ConsumerWidget {
               ],
             ),
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: R.h(context, 16)),
 
           // ── Tracking Number ───────────────────────────────────
           if (order.trackingNumber != null) ...[
             _SectionCard(
               child: Row(
                 children: [
-                  const Icon(Icons.local_shipping_outlined, size: 20, color: AppColors.primary),
-                  const SizedBox(width: 12),
+                  Icon(Icons.local_shipping_outlined, size: R.sp(context, 20), color: AppColors.primary),
+                  SizedBox(width: R.w(context, 12)),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Tracking Number', style: AppTypography.label(context).copyWith(fontSize: 10)),
-                        const SizedBox(height: 2),
+                        Text('Tracking Number', style: AppTypography.label(context).copyWith(fontSize: R.sp(context, 10))),
+                        SizedBox(height: R.h(context, 2)),
                         Text(order.trackingNumber!, style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700)),
                       ],
                     ),
@@ -159,7 +160,7 @@ class _OrderDetailBody extends ConsumerWidget {
                 ],
               ),
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: R.h(context, 16)),
           ],
 
           // ── Items ─────────────────────────────────────────────
@@ -167,63 +168,63 @@ class _OrderDetailBody extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Items Ordered', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: 14)),
-                const SizedBox(height: 12),
+                Text('Items Ordered', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: R.sp(context, 14))),
+                SizedBox(height: R.h(context, 12)),
                 ...order.items.map((item) => _ItemRow(item: item)),
               ],
             ),
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: R.h(context, 16)),
 
           // ── Price Summary ─────────────────────────────────────
           _SectionCard(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Price Breakdown', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: 14)),
-                const SizedBox(height: 12),
+                Text('Price Breakdown', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: R.sp(context, 14))),
+                SizedBox(height: R.h(context, 12)),
                 _PriceRow(label: 'Subtotal', value: formatPrice(order.subtotal)),
                 _PriceRow(label: 'GST (${order.subtotal > 0 ? (order.gst / order.subtotal * 100).round() : 0}%)', value: formatPrice(order.gst)),
                 _PriceRow(label: 'Shipping', value: order.shipping == 0 ? 'Free' : formatPrice(order.shipping)),
                 if (order.discount != null && order.discount! > 0)
                   _PriceRow(label: 'Discount (${order.appliedPromoCode ?? ""})', value: '− ${formatPrice(order.discount!)}', isDiscount: true),
-                const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 8),
-                  child: Divider(color: AppColors.borderLight),
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: R.h(context, 8)),
+                  child: const Divider(color: AppColors.borderLight),
                 ),
                 _PriceRow(label: 'Total', value: formatPrice(order.total), isBold: true),
               ],
             ),
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: R.h(context, 16)),
 
           // ── Delivery Address ──────────────────────────────────
           _SectionCard(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Delivery Address', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: 14)),
-                const SizedBox(height: 10),
+                Text('Delivery Address', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: R.sp(context, 14))),
+                SizedBox(height: R.h(context, 10)),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Padding(
-                      padding: EdgeInsets.only(top: 2),
-                      child: Icon(Icons.location_on_outlined, size: 18, color: AppColors.neutralGold),
+                    Padding(
+                      padding: EdgeInsets.only(top: R.h(context, 2)),
+                      child: Icon(Icons.location_on_outlined, size: R.sp(context, 18), color: AppColors.neutralGold),
                     ),
-                    const SizedBox(width: 8),
+                    SizedBox(width: R.w(context, 8)),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(order.address.fullName,
-                              style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: 13)),
-                          const SizedBox(height: 2),
+                              style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: R.sp(context, 13))),
+                          SizedBox(height: R.h(context, 2)),
                           Text(order.address.phone,
-                              style: AppTypography.bodySM(context).copyWith(fontSize: 12, color: AppColors.neutralGold)),
-                          const SizedBox(height: 4),
+                              style: AppTypography.bodySM(context).copyWith(fontSize: R.sp(context, 12), color: AppColors.neutralGold)),
+                          SizedBox(height: R.h(context, 4)),
                           Text(order.address.oneLineAddress,
-                              style: AppTypography.bodySM(context).copyWith(fontSize: 12, color: AppColors.neutralGold, height: 1.5)),
+                              style: AppTypography.bodySM(context).copyWith(fontSize: R.sp(context, 12), color: AppColors.neutralGold, height: 1.5)),
                         ],
                       ),
                     ),
@@ -232,7 +233,7 @@ class _OrderDetailBody extends ConsumerWidget {
               ],
             ),
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: R.h(context, 16)),
 
           // ── Return Status ─────────────────────────────────────
           if (order.returnStatus != ReturnStatus.none)
@@ -242,7 +243,7 @@ class _OrderDetailBody extends ConsumerWidget {
 
           // ── Actions ───────────────────────────────────────────
           if (order.status == OrderStatus.delivered) ...[
-            const SizedBox(height: 8),
+            SizedBox(height: R.h(context, 8)),
             Row(
               children: [
                 Expanded(
@@ -253,14 +254,14 @@ class _OrderDetailBody extends ConsumerWidget {
                       side: BorderSide(color: AppColors.neutralGold.withValues(alpha: 0.3)),
                       backgroundColor: AppColors.neutralGold.withValues(alpha: 0.05),
                       padding: EdgeInsets.zero,
-                      minimumSize: const Size(0, 32),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+                      minimumSize: Size(0, R.h(context, 32)),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(R.w(context, 6))),
                     ),
-                    child: Text('Buy Again', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: 10)),
+                    child: Text('Buy Again', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: R.sp(context, 10))),
                   ),
                 ),
                 if (order.canReturn) ...[
-                  const SizedBox(width: 12),
+                  SizedBox(width: R.w(context, 12)),
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () => context.push('/account/returns?orderId=${order.id}'),
@@ -268,18 +269,18 @@ class _OrderDetailBody extends ConsumerWidget {
                         backgroundColor: AppColors.primary,
                         foregroundColor: AppColors.deepCharcoal,
                         padding: EdgeInsets.zero,
-                        minimumSize: const Size(0, 32),
+                        minimumSize: Size(0, R.h(context, 32)),
                         elevation: 0,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(R.w(context, 6))),
                       ),
-                      child: Text('Return Item', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: 10)),
+                      child: Text('Return Item', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: R.sp(context, 10))),
                     ),
                   ),
                 ],
               ],
             ),
           ] else ...[
-            const SizedBox(height: 8),
+            SizedBox(height: R.h(context, 8)),
             Row(
               children: [
                 Expanded(
@@ -290,14 +291,14 @@ class _OrderDetailBody extends ConsumerWidget {
                       side: BorderSide(color: AppColors.neutralGold.withValues(alpha: 0.3)),
                       backgroundColor: AppColors.neutralGold.withValues(alpha: 0.05),
                       padding: EdgeInsets.zero,
-                      minimumSize: const Size(0, 32),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+                      minimumSize: Size(0, R.h(context, 32)),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(R.w(context, 6))),
                     ),
-                    child: Text('Contact', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: 10)),
+                    child: Text('Contact', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: R.sp(context, 10))),
                   ),
                 ),
                 if (order.canCancel) ...[
-                  const SizedBox(width: 12),
+                  SizedBox(width: R.w(context, 12)),
                   Expanded(
                     child: OutlinedButton(
                       onPressed: () => _showCancelDialog(context, ref, order),
@@ -306,17 +307,17 @@ class _OrderDetailBody extends ConsumerWidget {
                         side: const BorderSide(color: Colors.red),
                         backgroundColor: Colors.red.withValues(alpha: 0.05),
                         padding: EdgeInsets.zero,
-                        minimumSize: const Size(0, 32),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+                        minimumSize: Size(0, R.h(context, 32)),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(R.w(context, 6))),
                       ),
-                      child: Text('Cancel', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, color: Colors.red, fontSize: 10)),
+                      child: Text('Cancel', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, color: Colors.red, fontSize: R.sp(context, 10))),
                     ),
                   ),
                 ],
               ],
             ),
           ],
-          const SizedBox(height: 24),
+          SizedBox(height: R.h(context, 24)),
         ],
       ),
     );
@@ -380,13 +381,13 @@ class _TimeRemainingLabel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Icon(icon, size: 10, color: color),
-        const SizedBox(width: 4),
+        Icon(icon, size: R.sp(context, 10), color: color),
+        SizedBox(width: R.w(context, 4)),
         Text(
           text,
           style: AppTypography.bodySM(context).copyWith(
             color: color,
-            fontSize: 9,
+            fontSize: R.sp(context, 9),
             fontWeight: FontWeight.w700,
           ),
         ),
@@ -425,12 +426,12 @@ class _TrackingTimeline extends StatelessWidget {
             children: [
               // Timeline column
               SizedBox(
-                width: 32,
+                width: R.w(context, 32),
                 child: Column(
                   children: [
                     Container(
-                      width: 32,
-                      height: 32,
+                      width: R.w(context, 32),
+                      height: R.w(context, 32),
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: isDone
@@ -443,42 +444,42 @@ class _TrackingTimeline extends StatelessWidget {
                       ),
                       child: Icon(
                         _icons[i],
-                        size: 16,
+                        size: R.sp(context, 16),
                         color: isDone ? AppColors.deepCharcoal : AppColors.neutralGold,
                       ),
                     ),
                     if (!isLast)
                       Expanded(
                         child: Container(
-                          width: 2,
-                          margin: const EdgeInsets.symmetric(vertical: 4),
+                          width: R.w(context, 2),
+                          margin: EdgeInsets.symmetric(vertical: R.h(context, 4)),
                           color: isDone ? AppColors.primary.withValues(alpha: 0.4) : AppColors.borderLight,
                         ),
                       ),
                   ],
                 ),
               ),
-              const SizedBox(width: 12),
+              SizedBox(width: R.w(context, 12)),
               // Label
               Expanded(
                 child: Padding(
-                  padding: EdgeInsets.only(bottom: isLast ? 0 : 20),
+                  padding: EdgeInsets.only(bottom: isLast ? 0 : R.h(context, 20)),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(height: 6),
+                      SizedBox(height: R.h(context, 6)),
                       Text(
                         _labels[i],
                         style: AppTypography.bodySM(context).copyWith(
                           fontWeight: isActive ? FontWeight.w800 : FontWeight.w600,
-                          fontSize: 13,
+                          fontSize: R.sp(context, 13),
                           color: isDone ? AppColors.deepCharcoal : AppColors.neutralGold,
                         ),
                       ),
                       if (isActive && order.status == OrderStatus.shipped && order.trackingNumber != null) ...[
-                        const SizedBox(height: 2),
+                        SizedBox(height: R.h(context, 2)),
                         Text('AWB: ${order.trackingNumber}',
-                            style: AppTypography.bodySM(context).copyWith(fontSize: 11, color: AppColors.neutralGold)),
+                            style: AppTypography.bodySM(context).copyWith(fontSize: R.sp(context, 11), color: AppColors.neutralGold)),
                       ],
                     ],
                   ),
@@ -501,31 +502,31 @@ class _CancelledBanner extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(R.w(context, 16)),
       decoration: BoxDecoration(
         color: AppColors.error.withValues(alpha: 0.06),
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(R.w(context, 10)),
         border: Border.all(color: AppColors.error.withValues(alpha: 0.2)),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Icon(Icons.cancel_outlined, size: 20, color: AppColors.error),
-          const SizedBox(width: 10),
+          Icon(Icons.cancel_outlined, size: R.sp(context, 20), color: AppColors.error),
+          SizedBox(width: R.w(context, 10)),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text('Order Cancelled', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, color: AppColors.error)),
                 if (order.cancellationReason != null) ...[
-                  const SizedBox(height: 4),
+                  SizedBox(height: R.h(context, 4)),
                   Text('Reason: ${order.cancellationReason}',
-                      style: AppTypography.bodySM(context).copyWith(fontSize: 12, color: AppColors.neutralGold)),
+                      style: AppTypography.bodySM(context).copyWith(fontSize: R.sp(context, 12), color: AppColors.neutralGold)),
                 ],
                 if (order.cancelledBy != null) ...[
-                  const SizedBox(height: 2),
+                  SizedBox(height: R.h(context, 2)),
                   Text('Cancelled by: ${order.cancelledBy}',
-                      style: AppTypography.bodySM(context).copyWith(fontSize: 11, color: AppColors.neutralGold)),
+                      style: AppTypography.bodySM(context).copyWith(fontSize: R.sp(context, 11), color: AppColors.neutralGold)),
                 ],
               ],
             ),
@@ -553,17 +554,17 @@ class _ReturnStatusCard extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Icon(icon, size: 20, color: color),
-        const SizedBox(width: 10),
+        Icon(icon, size: R.sp(context, 20), color: color),
+        SizedBox(width: R.w(context, 10)),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(label, style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, color: color, fontSize: 14)),
+              Text(label, style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, color: color, fontSize: R.sp(context, 14))),
               if (order.returnReason != null) ...[
-                const SizedBox(height: 4),
+                SizedBox(height: R.h(context, 4)),
                 Text('Reason: ${order.returnReason}',
-                    style: AppTypography.bodySM(context).copyWith(fontSize: 12, color: AppColors.neutralGold)),
+                    style: AppTypography.bodySM(context).copyWith(fontSize: R.sp(context, 12), color: AppColors.neutralGold)),
               ],
             ],
           ),
@@ -589,9 +590,9 @@ class _StatusBadge extends StatelessWidget {
       OrderStatus.refunded   => (Colors.teal.shade50, Colors.teal.shade700),
     };
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-      decoration: BoxDecoration(color: bg, borderRadius: BorderRadius.circular(20)),
-      child: Text(status.label, style: AppTypography.label(context).copyWith(fontSize: 10, color: text)),
+      padding: EdgeInsets.symmetric(horizontal: R.w(context, 10), vertical: R.h(context, 4)),
+      decoration: BoxDecoration(color: bg, borderRadius: BorderRadius.circular(R.w(context, 20))),
+      child: Text(status.label, style: AppTypography.label(context).copyWith(fontSize: R.sp(context, 10), color: text)),
     );
   }
 }
@@ -604,10 +605,10 @@ class _SectionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(R.w(context, 16)),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(R.w(context, 12)),
         border: Border.all(color: AppColors.borderLight),
         boxShadow: [BoxShadow(color: AppColors.deepCharcoal.withValues(alpha: 0.02), blurRadius: 6, offset: const Offset(0, 2))],
       ),
@@ -623,26 +624,26 @@ class _ItemRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
+      padding: EdgeInsets.only(bottom: R.h(context, 12)),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ClipRRect(
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(R.w(context, 8)),
             child: item.product.primaryImage.isNotEmpty
-                ? Image.network(item.product.primaryImage, width: 52, height: 52, fit: BoxFit.cover,
-                    errorBuilder: (_, __, ___) => _placeholder())
-                : _placeholder(),
+                ? Image.network(item.product.primaryImage, width: R.w(context, 52), height: R.w(context, 52), fit: BoxFit.cover,
+                    errorBuilder: (_, __, ___) => _placeholder(context))
+                : _placeholder(context),
           ),
-          const SizedBox(width: 12),
+          SizedBox(width: R.w(context, 12)),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(item.product.name,
-                    style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: 13),
+                    style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: R.sp(context, 13)),
                     maxLines: 2, overflow: TextOverflow.ellipsis),
-                const SizedBox(height: 2),
+                SizedBox(height: R.h(context, 2)),
                 Text(
                     () {
                       final w = (item.selectedWeight?.isNotEmpty == true
@@ -652,21 +653,21 @@ class _ItemRow extends StatelessWidget {
                               : null);
                       return w != null ? '$w · Qty: ${item.quantity}' : 'Qty: ${item.quantity}';
                     }(),
-                    style: AppTypography.bodySM(context).copyWith(fontSize: 12, color: AppColors.neutralGold)),
+                    style: AppTypography.bodySM(context).copyWith(fontSize: R.sp(context, 12), color: AppColors.neutralGold)),
               ],
             ),
           ),
           Text(formatPrice(item.effectivePrice * item.quantity),
-              style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: 13)),
+              style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: R.sp(context, 13))),
         ],
       ),
     );
   }
 
-  Widget _placeholder() => Container(
-    width: 52, height: 52,
+  Widget _placeholder(BuildContext context) => Container(
+    width: R.w(context, 52), height: R.w(context, 52),
     color: AppColors.backgroundLight,
-    child: const Icon(Icons.image_outlined, size: 24, color: AppColors.neutralGold),
+    child: Icon(Icons.image_outlined, size: R.sp(context, 24), color: AppColors.neutralGold),
   );
 }
 
@@ -680,17 +681,17 @@ class _PriceRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 3),
+      padding: EdgeInsets.symmetric(vertical: R.h(context, 3)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(label, style: AppTypography.bodySM(context).copyWith(
-            fontSize: 13,
+            fontSize: R.sp(context, 13),
             fontWeight: isBold ? FontWeight.w800 : FontWeight.normal,
             color: isBold ? AppColors.deepCharcoal : AppColors.neutralGold,
           )),
           Text(value, style: AppTypography.bodySM(context).copyWith(
-            fontSize: 13,
+            fontSize: R.sp(context, 13),
             fontWeight: isBold ? FontWeight.w800 : FontWeight.w600,
             color: isDiscount ? AppColors.success : AppColors.deepCharcoal,
           )),
@@ -747,9 +748,9 @@ class _CancelOrderDialogState extends ConsumerState<_CancelOrderDialog> {
           style: OutlinedButton.styleFrom(
             foregroundColor: AppColors.deepCharcoal,
             side: const BorderSide(color: AppColors.borderLight),
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            minimumSize: const Size(0, 36),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            padding: EdgeInsets.symmetric(horizontal: R.w(context, 16), vertical: R.h(context, 8)),
+            minimumSize: Size(0, R.h(context, 36)),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(R.w(context, 8))),
           ),
           child: Text('Keep Order', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700)),
         ),
@@ -758,13 +759,13 @@ class _CancelOrderDialogState extends ConsumerState<_CancelOrderDialog> {
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.red,
             foregroundColor: Colors.white,
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            minimumSize: const Size(0, 36),
+            padding: EdgeInsets.symmetric(horizontal: R.w(context, 16), vertical: R.h(context, 8)),
+            minimumSize: Size(0, R.h(context, 36)),
             elevation: 0,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(R.w(context, 8))),
           ),
           child: _isLoading
-              ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
+              ? SizedBox(width: R.w(context, 16), height: R.w(context, 16), child: const CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
               : Text('Confirm Cancel', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, color: Colors.white)),
         ),
       ],

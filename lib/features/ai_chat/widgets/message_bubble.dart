@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import '../../../services/api/ai_api.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_typography.dart';
+import '../../../core/utils/responsive.dart';
 import 'chat_product_card.dart';
 
 class MessageBubble extends StatelessWidget {
@@ -16,7 +17,7 @@ class MessageBubble extends StatelessWidget {
     final isUser = message.role == 'user';
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
+      padding: EdgeInsets.only(bottom: R.h(context, 12)),
       child: Column(
         crossAxisAlignment:
             isUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
@@ -25,16 +26,16 @@ class MessageBubble extends StatelessWidget {
             constraints: BoxConstraints(
               maxWidth: MediaQuery.of(context).size.width * 0.85,
             ),
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+            padding: EdgeInsets.symmetric(horizontal: R.w(context, 14), vertical: R.h(context, 10)),
             decoration: BoxDecoration(
               color: isUser ? AppColors.primary : Colors.white,
               border:
                   isUser ? null : Border.all(color: AppColors.primary.withValues(alpha: 0.1)),
               borderRadius: BorderRadius.only(
-                topLeft: const Radius.circular(16),
-                topRight: const Radius.circular(16),
-                bottomLeft: Radius.circular(isUser ? 16 : 4),
-                bottomRight: Radius.circular(isUser ? 4 : 16),
+                topLeft: Radius.circular(R.w(context, 16)),
+                topRight: Radius.circular(R.w(context, 16)),
+                bottomLeft: Radius.circular(isUser ? R.w(context, 16) : R.w(context, 4)),
+                bottomRight: Radius.circular(isUser ? R.w(context, 4) : R.w(context, 16)),
               ),
             ),
             child: Text(
@@ -47,7 +48,7 @@ class MessageBubble extends StatelessWidget {
           ),
           if (!isUser && message.products != null && message.products!.isNotEmpty)
             Padding(
-              padding: const EdgeInsets.only(top: 8),
+              padding: EdgeInsets.only(top: R.h(context, 8)),
               child: Container(
                 constraints: BoxConstraints(
                   maxWidth: MediaQuery.of(context).size.width * 0.85,
@@ -65,7 +66,7 @@ class MessageBubble extends StatelessWidget {
                             context.push('/shop');
                           },
                           style: TextButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(vertical: 4),
+                            padding: EdgeInsets.symmetric(vertical: R.h(context, 4)),
                             minimumSize: Size.zero,
                             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                           ),
@@ -74,7 +75,7 @@ class MessageBubble extends StatelessWidget {
                             style: AppTypography.label(context).copyWith(
                               color: AppColors.primary,
                               fontWeight: FontWeight.bold,
-                              fontSize: 11,
+                              fontSize: R.sp(context, 11),
                             ),
                           ),
                         ),
@@ -118,20 +119,20 @@ class _TypingIndicatorState extends State<TypingIndicator>
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
+      padding: EdgeInsets.only(bottom: R.h(context, 12)),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            padding: EdgeInsets.symmetric(horizontal: R.w(context, 16), vertical: R.h(context, 12)),
             decoration: BoxDecoration(
               color: Colors.white,
               border: Border.all(color: AppColors.primary.withValues(alpha: 0.1)),
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(16),
-                topRight: Radius.circular(16),
-                bottomLeft: Radius.circular(4),
-                bottomRight: Radius.circular(16),
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(R.w(context, 16)),
+                topRight: Radius.circular(R.w(context, 16)),
+                bottomLeft: Radius.circular(R.w(context, 4)),
+                bottomRight: Radius.circular(R.w(context, 16)),
               ),
             ),
             child: Row(
@@ -148,9 +149,9 @@ class _TypingIndicatorState extends State<TypingIndicator>
                     return Transform.translate(
                       offset: Offset(0, offset),
                       child: Container(
-                        margin: EdgeInsets.only(right: index < 2 ? 4 : 0),
-                        width: 6,
-                        height: 6,
+                        margin: EdgeInsets.only(right: index < 2 ? R.w(context, 4) : 0),
+                        width: R.w(context, 6),
+                        height: R.w(context, 6),
                         decoration: BoxDecoration(
                           color: AppColors.primary.withValues(alpha: 0.5),
                           shape: BoxShape.circle,

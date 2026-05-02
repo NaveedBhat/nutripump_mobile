@@ -5,6 +5,7 @@ import '../../core/constants/app_typography.dart';
 import '../../core/widgets/custom_network_image.dart';
 import '../../core/widgets/primary_button.dart';
 import '../../core/widgets/animated_enter.dart';
+import '../../core/utils/responsive.dart';
 
 class OurStoryScreen extends StatelessWidget {
   const OurStoryScreen({super.key});
@@ -16,7 +17,7 @@ class OurStoryScreen extends StatelessWidget {
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-            expandedHeight: 400,
+            expandedHeight: R.h(context, 400),
             pinned: true,
             backgroundColor: AppColors.deepCharcoal,
             leading: IconButton(
@@ -44,16 +45,16 @@ class OurStoryScreen extends StatelessWidget {
                     ),
                   ),
                   Positioned(
-                    bottom: 40,
-                    left: 24,
-                    right: 24,
+                    bottom: R.h(context, 40),
+                    left: R.w(context, 24),
+                    right: R.w(context, 24),
                     child: AnimatedEnter(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text('OUR HERITAGE', style: AppTypography.labelGold(context).copyWith(letterSpacing: 2)),
-                          const SizedBox(height: 8),
-                          Text('Rooted in\nthe Valley', style: AppTypography.h1(context).copyWith(color: Colors.white, fontSize: 36, height: 1.1)),
+                          SizedBox(height: R.h(context, 8)),
+                          Text('Rooted in\nthe Valley', style: AppTypography.h1(context).copyWith(color: Colors.white, fontSize: R.sp(context, 36), height: 1.1)),
                         ],
                       ),
                     ),
@@ -64,7 +65,7 @@ class OurStoryScreen extends StatelessWidget {
           ),
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.all(24),
+              padding: EdgeInsets.all(R.w(context, 24)),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -72,10 +73,10 @@ class OurStoryScreen extends StatelessWidget {
                     delay: const Duration(milliseconds: 100),
                     child: Text(
                       'NutriPump Artisanal was born from a simple realization: the purest treasures of the Earth are being lost to mass production. We journey to the heart of Kashmir and the high altitudes of the Himalayas to source ingredients exactly as nature intended — unadulterated, raw, and vibrant.',
-                      style: AppTypography.bodySM(context).copyWith(fontSize: 15, height: 1.8, color: AppColors.deepCharcoal.withValues(alpha: 0.8)),
+                      style: AppTypography.bodySM(context).copyWith(fontSize: R.sp(context, 15), height: 1.8, color: AppColors.deepCharcoal.withValues(alpha: 0.8)),
                     ),
                   ),
-                  const SizedBox(height: 40),
+                  SizedBox(height: R.h(context, 40)),
                   AnimatedEnter(
                     delay: const Duration(milliseconds: 200),
                     child: _buildValueProp(
@@ -85,7 +86,7 @@ class OurStoryScreen extends StatelessWidget {
                       'Our oils are extracted using ancient wooden presses (kachhi ghani), ensuring no heat destroys the vital nutrients.',
                     ),
                   ),
-                  const SizedBox(height: 24),
+                  SizedBox(height: R.h(context, 24)),
                   AnimatedEnter(
                     delay: const Duration(milliseconds: 300),
                     child: _buildValueProp(
@@ -95,7 +96,7 @@ class OurStoryScreen extends StatelessWidget {
                       'We partner directly with multi-generational farmers in the Kashmir Valley, ensuring fair trade and sustainable harvesting practices.',
                     ),
                   ),
-                  const SizedBox(height: 24),
+                  SizedBox(height: R.h(context, 24)),
                   AnimatedEnter(
                     delay: const Duration(milliseconds: 400),
                     child: _buildValueProp(
@@ -105,7 +106,7 @@ class OurStoryScreen extends StatelessWidget {
                       'Every single batch is lab-verified. No additives, no synthetic colors, no preservatives. Just 100% natural goodness.',
                     ),
                   ),
-                  const SizedBox(height: 56),
+                  SizedBox(height: R.h(context, 56)),
                   AnimatedEnter(
                     delay: const Duration(milliseconds: 500),
                     child: PrimaryButton(
@@ -113,7 +114,7 @@ class OurStoryScreen extends StatelessWidget {
                       onPressed: () => context.go('/shop'),
                     ),
                   ),
-                  const SizedBox(height: 40),
+                  SizedBox(height: R.h(context, 40)),
                 ],
               ),
             ),
@@ -128,20 +129,20 @@ class OurStoryScreen extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          padding: const EdgeInsets.all(12),
+          padding: EdgeInsets.all(R.w(context, 12)),
           decoration: BoxDecoration(
             color: AppColors.primary.withValues(alpha: 0.1),
             shape: BoxShape.circle,
           ),
-          child: Icon(icon, color: AppColors.primary, size: 24),
+          child: Icon(icon, color: AppColors.primary, size: R.sp(context, 24)),
         ),
-        const SizedBox(width: 16),
+        SizedBox(width: R.w(context, 16)),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(title, style: AppTypography.h3(context).copyWith(fontSize: 18)),
-              const SizedBox(height: 6),
+              Text(title, style: AppTypography.h3(context).copyWith(fontSize: R.sp(context, 18))),
+              SizedBox(height: R.h(context, 6)),
               Text(
                 description,
                 style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, height: 1.5),

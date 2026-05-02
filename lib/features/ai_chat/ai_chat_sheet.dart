@@ -3,6 +3,7 @@ import 'package:speech_to_text/speech_to_text.dart' as stt;
 import '../../../services/api/ai_api.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_typography.dart';
+import '../../../core/utils/responsive.dart';
 import 'widgets/message_bubble.dart';
 
 class AiChatSheet extends StatefulWidget {
@@ -197,13 +198,13 @@ class _AiChatSheetState extends State<AiChatSheet> {
     return Container(
       height: screenHeight * 0.6, // Reduced to 60% for a compact, professional look
       margin: EdgeInsets.only(
-        left: 16,
-        right: 16,
-        bottom: bottomInset > 0 ? bottomInset + 16 : 90, // Slightly lower float
+        left: R.w(context, 16),
+        right: R.w(context, 16),
+        bottom: bottomInset > 0 ? bottomInset + R.h(context, 16) : R.h(context, 90), // Slightly lower float
       ),
       decoration: BoxDecoration(
         color: AppColors.backgroundLight,
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(R.w(context, 24)),
         border: Border.all(color: AppColors.primary.withValues(alpha: 0.15), width: 1.5), // Added sleek border
         boxShadow: [
           BoxShadow(
@@ -215,15 +216,15 @@ class _AiChatSheetState extends State<AiChatSheet> {
         ],
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(22), // slightly smaller to fit inside border
+        borderRadius: BorderRadius.circular(R.w(context, 22)), // slightly smaller to fit inside border
         child: Column(
           children: [
           // Header
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10), // Tighter padding
-            decoration: const BoxDecoration(
+            padding: EdgeInsets.symmetric(horizontal: R.w(context, 16), vertical: R.h(context, 10)), // Tighter padding
+            decoration: BoxDecoration(
               color: AppColors.deepCharcoal,
-              borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+              borderRadius: BorderRadius.vertical(top: Radius.circular(R.w(context, 24))),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -231,36 +232,36 @@ class _AiChatSheetState extends State<AiChatSheet> {
                 Row(
                   children: [
                     Container(
-                      width: 32,
-                      height: 32,
+                      width: R.w(context, 32),
+                      height: R.w(context, 32),
                       decoration: const BoxDecoration(
                         color: AppColors.primary,
                         shape: BoxShape.circle,
                       ),
                       clipBehavior: Clip.antiAlias,
                       child: Padding(
-                        padding: const EdgeInsets.all(6.0),
+                        padding: EdgeInsets.all(R.w(context, 6)),
                         child: Image.asset(
                           'assets/images/chatbotlogo.webp',
                           errorBuilder: (context, error, stackTrace) =>
-                              const Icon(Icons.support_agent_rounded, size: 20, color: AppColors.deepCharcoal),
+                              Icon(Icons.support_agent_rounded, size: R.sp(context, 20), color: AppColors.deepCharcoal),
                         ),
                       ),
                     ),
-                    const SizedBox(width: 12),
+                    SizedBox(width: R.w(context, 12)),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text('NutriPump AI', style: AppTypography.bodySM(context).copyWith(color: Colors.white, fontWeight: FontWeight.bold, height: 1)),
-                        const SizedBox(height: 2),
-                        Text('Your Kashmir product guide', style: AppTypography.label(context).copyWith(color: Colors.white.withValues(alpha: 0.5), fontSize: 10)),
+                        SizedBox(height: R.h(context, 2)),
+                        Text('Your Kashmir product guide', style: AppTypography.label(context).copyWith(color: Colors.white.withValues(alpha: 0.5), fontSize: R.sp(context, 10))),
                       ],
                     ),
                   ],
                 ),
                 IconButton(
                   onPressed: widget.onClose,
-                  icon: const Icon(Icons.close_rounded, color: Colors.white70, size: 20),
+                  icon: Icon(Icons.close_rounded, color: Colors.white70, size: R.sp(context, 20)),
                   padding: EdgeInsets.zero,
                   constraints: const BoxConstraints(),
                 ),
@@ -273,7 +274,7 @@ class _AiChatSheetState extends State<AiChatSheet> {
             child: ListView.builder(
               controller: _scrollController,
               physics: const BouncingScrollPhysics(),
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+              padding: EdgeInsets.fromLTRB(R.w(context, 16), R.h(context, 16), R.w(context, 16), R.h(context, 8)),
               itemCount: _messages.length + (_isLoading ? 1 : 0),
               itemBuilder: (context, index) {
                 if (index == _messages.length) {
@@ -290,12 +291,12 @@ class _AiChatSheetState extends State<AiChatSheet> {
           // Suggested Queries (only show initially)
           if (_messages.length <= 1 && !_isLoading)
             Padding(
-              padding: const EdgeInsets.only(left: 16, right: 16, bottom: 12),
+              padding: EdgeInsets.only(left: R.w(context, 16), right: R.w(context, 16), bottom: R.h(context, 12)),
               child: SizedBox(
                 width: double.infinity,
                 child: Wrap(
-                  spacing: 6, // Reduced from 8
-                  runSpacing: 6, // Reduced from 8
+                  spacing: R.w(context, 6), // Reduced from 8
+                  runSpacing: R.h(context, 6), // Reduced from 8
                   children: _suggestedQueries.map((query) {
                     return ActionChip(
                       label: Text(
@@ -303,15 +304,15 @@ class _AiChatSheetState extends State<AiChatSheet> {
                         style: AppTypography.label(context).copyWith(
                           color: AppColors.deepCharcoal,
                           fontWeight: FontWeight.w600,
-                          fontSize: 10, // Reduced from 11
+                          fontSize: R.sp(context, 10), // Reduced from 11
                         ),
                       ),
                       padding: EdgeInsets.zero,
-                      labelPadding: const EdgeInsets.symmetric(horizontal: 6, vertical: -2), // Very tight padding
+                      labelPadding: EdgeInsets.symmetric(horizontal: R.w(context, 6), vertical: R.h(context, -2)), // Very tight padding
                       visualDensity: const VisualDensity(horizontal: -4, vertical: -4), // Most compact density
                       backgroundColor: AppColors.primary.withValues(alpha: 0.1),
                       side: BorderSide(color: AppColors.primary.withValues(alpha: 0.15), width: 0.5),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(R.w(context, 20))),
                     onPressed: () => _sendSuggestedQuery(query),
                   );
                 }).toList(),
@@ -321,7 +322,7 @@ class _AiChatSheetState extends State<AiChatSheet> {
 
           // Input Area
           Container(
-            padding: const EdgeInsets.fromLTRB(14, 10, 14, 14), // Tighter padding for input
+            padding: EdgeInsets.fromLTRB(R.w(context, 14), R.h(context, 10), R.w(context, 14), R.h(context, 14)), // Tighter padding for input
             decoration: BoxDecoration(
               color: Colors.white,
               border: Border(top: BorderSide(color: AppColors.primary.withValues(alpha: 0.08))),
@@ -335,10 +336,10 @@ class _AiChatSheetState extends State<AiChatSheet> {
                     child: Container(
                       decoration: BoxDecoration(
                         color: AppColors.primary.withValues(alpha: 0.05),
-                        borderRadius: BorderRadius.circular(16),
+                        borderRadius: BorderRadius.circular(R.w(context, 16)),
                         border: Border.all(color: AppColors.primary.withValues(alpha: 0.15)),
                       ),
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      padding: EdgeInsets.symmetric(horizontal: R.w(context, 16)),
                       child: TextField(
                         controller: _textController,
                         focusNode: _focusNode,
@@ -351,26 +352,26 @@ class _AiChatSheetState extends State<AiChatSheet> {
                           border: InputBorder.none,
                           isDense: true,
                           counterText: '', // Hide the character counter UI
-                          contentPadding: const EdgeInsets.symmetric(vertical: 10),
+                          contentPadding: EdgeInsets.symmetric(vertical: R.h(context, 10)),
                         ),
                         textInputAction: TextInputAction.send,
                         onSubmitted: (_) => _sendMessage(),
                       ),
                     ),
                   ),
-                  const SizedBox(width: 8),
+                  SizedBox(width: R.w(context, 8)),
                   // ── Mic Button ───────────────────────────────────────────
                   GestureDetector(
                     onTap: _isListening ? _stopListening : _startListening,
                     child: AnimatedContainer(
                       duration: const Duration(milliseconds: 200),
-                      width: 44,
-                      height: 44,
+                      width: R.w(context, 44),
+                      height: R.w(context, 44),
                       decoration: BoxDecoration(
                         color: _isListening
                             ? AppColors.error.withValues(alpha: 0.15)
                             : AppColors.primary.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(16),
+                        borderRadius: BorderRadius.circular(R.w(context, 16)),
                         border: _isListening
                             ? Border.all(color: AppColors.error.withValues(alpha: 0.4), width: 1.5)
                             : null,
@@ -378,26 +379,26 @@ class _AiChatSheetState extends State<AiChatSheet> {
                       child: Icon(
                         _isListening ? Icons.mic_rounded : Icons.mic_none_rounded,
                         color: _isListening ? AppColors.error : AppColors.deepCharcoal,
-                        size: 20,
+                        size: R.sp(context, 20),
                       ),
                     ),
                   ),
-                  const SizedBox(width: 8),
+                  SizedBox(width: R.w(context, 8)),
                   GestureDetector(
                     onTap: (_isLoading || _textController.text.trim().isEmpty)
                       ? null
                       : () => _sendMessage(),
                     child: Container(
-                      width: 44,
-                      height: 44,
+                      width: R.w(context, 44),
+                      height: R.w(context, 44),
                       decoration: BoxDecoration(
                         color: AppColors.primary,
-                        borderRadius: BorderRadius.circular(16),
+                        borderRadius: BorderRadius.circular(R.w(context, 16)),
                       ),
                       child: Icon(
                         Icons.send_rounded,
                         color: AppColors.deepCharcoal.withValues(alpha: _isLoading ? 0.5 : 1.0),
-                        size: 20,
+                        size: R.sp(context, 20),
                       ),
                     ),
                   ),

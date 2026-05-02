@@ -13,6 +13,7 @@ import '../../providers/cart_provider.dart';
 import '../../models/product.dart';
 import '../../models/models.dart';
 import '../../core/utils/formatters.dart';
+import '../../core/utils/responsive.dart';
 
 class ProductDetailScreen extends ConsumerStatefulWidget {
   final String slug;
@@ -148,12 +149,12 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                   _buildSliverAppBar(product),
                   SliverToBoxAdapter(
                     child: Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 24, 20, 24),
+                      padding: EdgeInsets.fromLTRB(R.w(context, 20), R.h(context, 24), R.w(context, 20), R.h(context, 24)),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           _buildHeader(product, displayPrice, displayCompareAt),
-                          const SizedBox(height: 24),
+                          SizedBox(height: R.h(context, 24)),
                           if (product.sizes != null && product.sizes!.isNotEmpty)
                             _buildSizeSelector(product.sizes!),
                           _buildTrustBadges(),
@@ -161,7 +162,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                           _buildFrequentlyBoughtTogether(product),
                           _buildReviewsSection(product),
                           _buildYouMayAlsoLike(product),
-                          const SizedBox(height: 120),
+                          SizedBox(height: R.h(context, 120)),
                         ],
                       ),
                     ),
@@ -180,20 +181,20 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
 
   Widget _buildSliverAppBar(Product product) {
     return SliverAppBar(
-      expandedHeight: 340,
+      expandedHeight: R.h(context, 340),
       pinned: true,
       backgroundColor: Colors.white,
       elevation: 0,
       actions: [
         // ── Share button ─────────────────────────────────────────────────────────
         Container(
-          margin: const EdgeInsets.only(right: 4),
+          margin: EdgeInsets.only(right: R.w(context, 4)),
           decoration: BoxDecoration(
             color: Colors.white.withValues(alpha: 0.8),
             shape: BoxShape.circle,
           ),
           child: IconButton(
-            icon: const Icon(Icons.ios_share_rounded, size: 20, color: AppColors.deepCharcoal),
+            icon: Icon(Icons.ios_share_rounded, size: R.sp(context, 20), color: AppColors.deepCharcoal),
             tooltip: 'Share product',
             onPressed: () {
               final url = 'https://nutripump.store/product/${product.slug}';
@@ -212,7 +213,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
             final wishlist = ref.watch(wishlistProvider);
             final isWishlisted = wishlist.any((p) => p.id == product.id);
             return Container(
-              margin: const EdgeInsets.only(right: 8),
+              margin: EdgeInsets.only(right: R.w(context, 8)),
               decoration: BoxDecoration(
                 color: Colors.white.withValues(alpha: 0.8),
                 shape: BoxShape.circle,
@@ -221,7 +222,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                 icon: Icon(
                   isWishlisted ? Icons.favorite : Icons.favorite_border,
                   color: isWishlisted ? AppColors.error : AppColors.deepCharcoal,
-                  size: 20,
+                  size: R.sp(context, 20),
                 ),
                 onPressed: () {
                   ref.read(wishlistProvider.notifier).toggle(product);
@@ -249,7 +250,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
               },
             ),
             Container(
-              height: 100,
+              height: R.h(context, 100),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.bottomCenter,
@@ -260,13 +261,13 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
             ),
             if (product.images.length > 1)
               Padding(
-                padding: const EdgeInsets.only(bottom: 20),
+                padding: EdgeInsets.only(bottom: R.h(context, 20)),
                 child: SmoothPageIndicator(
                   controller: _pageController,
                   count: product.images.length,
                   effect: ExpandingDotsEffect(
-                    dotHeight: 5,
-                    dotWidth: 5,
+                    dotHeight: R.w(context, 5),
+                    dotWidth: R.w(context, 5),
                     activeDotColor: Colors.white,
                     dotColor: Colors.white.withValues(alpha: 0.5),
                   ),
@@ -284,41 +285,41 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
       children: [
         if (product.shortDescription.isNotEmpty)
           Container(
-            margin: const EdgeInsets.only(bottom: 8),
+            margin: EdgeInsets.only(bottom: R.h(context, 8)),
             child: Text(
               product.shortDescription.toUpperCase(),
               style: AppTypography.label(context).copyWith(
                 color: AppColors.primary,
                 letterSpacing: 2.0,
-                fontSize: 9,
+                fontSize: R.sp(context, 9),
                 fontWeight: FontWeight.w900,
               ),
             ),
           ),
-        Text(product.name, style: AppTypography.h1(context).copyWith(fontSize: 26, height: 1.1)),
-        const SizedBox(height: 12),
+        Text(product.name, style: AppTypography.h1(context).copyWith(fontSize: R.sp(context, 26), height: 1.1)),
+        SizedBox(height: R.h(context, 12)),
         Wrap(
           crossAxisAlignment: WrapCrossAlignment.center,
-          spacing: 8,
-          runSpacing: 6,
+          spacing: R.w(context, 8),
+          runSpacing: R.h(context, 6),
           children: [
-            Text(formatPrice(price), style: AppTypography.h2(context).copyWith(fontSize: 24)),
+            Text(formatPrice(price), style: AppTypography.h2(context).copyWith(fontSize: R.sp(context, 24))),
             if (compareAt != null && compareAt > price) ...[
               Text(
                 formatPrice(compareAt),
-                style: AppTypography.priceStrike(context).copyWith(fontSize: 16, decorationThickness: 2),
+                style: AppTypography.priceStrike(context).copyWith(fontSize: R.sp(context, 16), decorationThickness: 2),
               ),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
+                padding: EdgeInsets.symmetric(horizontal: R.w(context, 7), vertical: R.h(context, 3)),
                 decoration: BoxDecoration(
                   color: AppColors.error.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(5),
+                  borderRadius: BorderRadius.circular(R.w(context, 5)),
                 ),
                 child: Text(
                   '${calculateDiscount(compareAt, price)}% OFF',
                   style: AppTypography.label(context).copyWith(
                     color: AppColors.error,
-                    fontSize: 9,
+                    fontSize: R.sp(context, 9),
                     fontWeight: FontWeight.w800,
                   ),
                 ),
@@ -326,20 +327,20 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
             ],
           ],
         ),
-        const SizedBox(height: 12),
+        SizedBox(height: R.h(context, 12)),
         Row(
           children: [
             Row(
               children: List.generate(5, (index) => Icon(
                 Icons.star,
-                size: 14,
+                size: R.sp(context, 14),
                 color: index < (product.rating.floor()) ? AppColors.primary : AppColors.primary.withValues(alpha: 0.2),
               )),
             ),
-            const SizedBox(width: 6),
+            SizedBox(width: R.w(context, 6)),
             Text(
               '${product.reviewCount} REVIEWS',
-              style: AppTypography.label(context).copyWith(color: AppColors.neutralGold, fontSize: 9, letterSpacing: 1.0, fontWeight: FontWeight.w800),
+              style: AppTypography.label(context).copyWith(color: AppColors.neutralGold, fontSize: R.sp(context, 9), letterSpacing: 1.0, fontWeight: FontWeight.w800),
             ),
           ],
         ),
@@ -354,24 +355,24 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('SELECT JAR SIZE', style: AppTypography.label(context).copyWith(color: AppColors.neutralGold, letterSpacing: 1.5, fontSize: 10)),
+            Text('SELECT JAR SIZE', style: AppTypography.label(context).copyWith(color: AppColors.neutralGold, letterSpacing: 1.5, fontSize: R.sp(context, 10))),
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-              decoration: BoxDecoration(color: AppColors.primary.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(4)),
-              child: Text('SMALL BATCH FRESH', style: AppTypography.label(context).copyWith(color: AppColors.primary, fontSize: 8)),
+              padding: EdgeInsets.symmetric(horizontal: R.w(context, 6), vertical: R.h(context, 2)),
+              decoration: BoxDecoration(color: AppColors.primary.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(R.w(context, 4))),
+              child: Text('SMALL BATCH FRESH', style: AppTypography.label(context).copyWith(color: AppColors.primary, fontSize: R.sp(context, 8))),
             ),
           ],
         ),
-        const SizedBox(height: 12),
+        SizedBox(height: R.h(context, 12)),
         GridView.builder(
           shrinkWrap: true,
           padding: EdgeInsets.zero,
           physics: const NeverScrollableScrollPhysics(),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
             childAspectRatio: 3.0,
-            crossAxisSpacing: 10,
-            mainAxisSpacing: 10,
+            crossAxisSpacing: R.w(context, 10),
+            mainAxisSpacing: R.h(context, 10),
           ),
           itemCount: sizes.length,
           itemBuilder: (context, idx) {
@@ -380,25 +381,25 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
             return GestureDetector(
               onTap: () => setState(() => _selectedSize = size),
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
+                padding: EdgeInsets.symmetric(horizontal: R.w(context, 12)),
                 decoration: BoxDecoration(
                   color: isSelected ? AppColors.primary.withValues(alpha: 0.05) : Colors.white.withValues(alpha: 0.5),
                   border: Border.all(
                     color: isSelected ? AppColors.primary : AppColors.borderLight,
                     width: isSelected ? 2 : 1,
                   ),
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(R.w(context, 12)),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
                       size.label,
-                      style: AppTypography.bodySM(context).copyWith(fontWeight: isSelected ? FontWeight.w800 : FontWeight.w600, color: isSelected ? AppColors.deepCharcoal : AppColors.neutralGold, fontSize: 12),
+                      style: AppTypography.bodySM(context).copyWith(fontWeight: isSelected ? FontWeight.w800 : FontWeight.w600, color: isSelected ? AppColors.deepCharcoal : AppColors.neutralGold, fontSize: R.sp(context, 12)),
                     ),
                     Text(
                       formatPrice(size.price),
-                      style: AppTypography.label(context).copyWith(fontWeight: FontWeight.w800, color: isSelected ? AppColors.primary : AppColors.neutralGold, fontSize: 10),
+                      style: AppTypography.label(context).copyWith(fontWeight: FontWeight.w800, color: isSelected ? AppColors.primary : AppColors.neutralGold, fontSize: R.sp(context, 10)),
                     ),
                   ],
                 ),
@@ -412,32 +413,32 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
 
   Widget _buildTrustBadges() {
     return Container(
-      margin: const EdgeInsets.only(top: 24),
+      margin: EdgeInsets.only(top: R.h(context, 24)),
       child: Row(
         children: [
           Expanded(
             child: Container(
-              padding: const EdgeInsets.all(10),
+              padding: EdgeInsets.all(R.w(context, 10)),
               decoration: BoxDecoration(
                 color: const Color(0xFFF9F9F9),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(R.w(context, 12)),
                 border: Border.all(color: AppColors.borderLight),
               ),
               child: Row(
                 children: [
                   Container(
-                    padding: const EdgeInsets.all(6),
-                    decoration: BoxDecoration(color: AppColors.primary.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(6)),
-                    child: const Icon(Icons.auto_awesome, color: AppColors.primary, size: 14),
+                    padding: EdgeInsets.all(R.w(context, 6)),
+                    decoration: BoxDecoration(color: AppColors.primary.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(R.w(context, 6))),
+                    child: Icon(Icons.auto_awesome, color: AppColors.primary, size: R.sp(context, 14)),
                   ),
-                  const SizedBox(width: 8),
+                  SizedBox(width: R.w(context, 8)),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('PURITY GUARANTEED', style: AppTypography.label(context).copyWith(fontSize: 7, letterSpacing: 1.0)),
-                        const SizedBox(height: 2),
-                        Text('100% Cold-Pressed', style: AppTypography.bodySM(context).copyWith(fontSize: 9, fontWeight: FontWeight.w700)),
+                        Text('PURITY GUARANTEED', style: AppTypography.label(context).copyWith(fontSize: R.sp(context, 7), letterSpacing: 1.0)),
+                        SizedBox(height: R.h(context, 2)),
+                        Text('100% Cold-Pressed', style: AppTypography.bodySM(context).copyWith(fontSize: R.sp(context, 9), fontWeight: FontWeight.w700)),
                       ],
                     ),
                   ),
@@ -445,30 +446,30 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
               ),
             ),
           ),
-          const SizedBox(width: 8),
+          SizedBox(width: R.w(context, 8)),
           Expanded(
             child: Container(
-              padding: const EdgeInsets.all(10),
+              padding: EdgeInsets.all(R.w(context, 10)),
               decoration: BoxDecoration(
                 color: const Color(0xFFF9F9F9),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(R.w(context, 12)),
                 border: Border.all(color: AppColors.borderLight),
               ),
               child: Row(
                 children: [
                   Container(
-                    padding: const EdgeInsets.all(6),
-                    decoration: BoxDecoration(color: AppColors.primary.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(6)),
-                    child: const Icon(Icons.verified_outlined, color: AppColors.primary, size: 14),
+                    padding: EdgeInsets.all(R.w(context, 6)),
+                    decoration: BoxDecoration(color: AppColors.primary.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(R.w(context, 6))),
+                    child: Icon(Icons.verified_outlined, color: AppColors.primary, size: R.sp(context, 14)),
                   ),
-                  const SizedBox(width: 8),
+                  SizedBox(width: R.w(context, 8)),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('FROM SRINAGAR', style: AppTypography.label(context).copyWith(fontSize: 7, letterSpacing: 1.0)),
-                        const SizedBox(height: 2),
-                        Text('Arrives in 3-5 Days', style: AppTypography.bodySM(context).copyWith(fontSize: 9, fontWeight: FontWeight.w700)),
+                        Text('FROM SRINAGAR', style: AppTypography.label(context).copyWith(fontSize: R.sp(context, 7), letterSpacing: 1.0)),
+                        SizedBox(height: R.h(context, 2)),
+                        Text('Arrives in 3-5 Days', style: AppTypography.bodySM(context).copyWith(fontSize: R.sp(context, 9), fontWeight: FontWeight.w700)),
                       ],
                     ),
                   ),
@@ -483,8 +484,8 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
 
   Widget _buildTabs(Product product) {
     return Container(
-      margin: const EdgeInsets.only(top: 24),
-      padding: const EdgeInsets.only(top: 24),
+      margin: EdgeInsets.only(top: R.h(context, 24)),
+      padding: EdgeInsets.only(top: R.h(context, 24)),
       decoration: const BoxDecoration(
         border: Border(top: BorderSide(color: AppColors.borderLight)),
       ),
@@ -499,8 +500,8 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                 return GestureDetector(
                   onTap: () => setState(() => _activeTab = tab),
                   child: Container(
-                    margin: const EdgeInsets.only(right: 24),
-                    padding: const EdgeInsets.only(bottom: 8),
+                    margin: EdgeInsets.only(right: R.w(context, 24)),
+                    padding: EdgeInsets.only(bottom: R.h(context, 8)),
                     decoration: BoxDecoration(
                       border: Border(bottom: BorderSide(color: isActive ? AppColors.primary : Colors.transparent, width: 2)),
                     ),
@@ -510,7 +511,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                         color: isActive ? AppColors.primary : AppColors.neutralGold,
                         fontWeight: FontWeight.w800,
                         letterSpacing: 1.5,
-                        fontSize: 10,
+                        fontSize: R.sp(context, 10),
                       ),
                     ),
                   ),
@@ -518,7 +519,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
               }).toList(),
             ),
           ),
-          const SizedBox(height: 24),
+          SizedBox(height: R.h(context, 24)),
           AnimatedSwitcher(
             duration: const Duration(milliseconds: 300),
             child: _buildTabContent(product, key: ValueKey(_activeTab)),
@@ -534,9 +535,9 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
         key: key,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Deeply Sourced & Crafted', style: AppTypography.h3(context).copyWith(fontSize: 16)),
-          const SizedBox(height: 12),
-          Text(product.description, style: AppTypography.bodySM(context).copyWith(height: 1.6, color: AppColors.neutralGold, fontSize: 13)),
+          Text('Deeply Sourced & Crafted', style: AppTypography.h3(context).copyWith(fontSize: R.sp(context, 16))),
+          SizedBox(height: R.h(context, 12)),
+          Text(product.description, style: AppTypography.bodySM(context).copyWith(height: 1.6, color: AppColors.neutralGold, fontSize: R.sp(context, 13))),
         ],
       );
     } else if (_activeTab == 'Ingredients') {
@@ -544,26 +545,26 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
         key: key,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('What\'s Inside', style: AppTypography.h3(context).copyWith(fontSize: 16)),
-          const SizedBox(height: 6),
-          Text('100% Transparent. No hidden preservatives.', style: AppTypography.bodySM(context).copyWith(fontStyle: FontStyle.italic, color: AppColors.neutralGold, fontSize: 12)),
-          const SizedBox(height: 16),
+          Text('What\'s Inside', style: AppTypography.h3(context).copyWith(fontSize: R.sp(context, 16))),
+          SizedBox(height: R.h(context, 6)),
+          Text('100% Transparent. No hidden preservatives.', style: AppTypography.bodySM(context).copyWith(fontStyle: FontStyle.italic, color: AppColors.neutralGold, fontSize: R.sp(context, 12))),
+          SizedBox(height: R.h(context, 16)),
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: EdgeInsets.all(R.w(context, 16)),
             decoration: BoxDecoration(
               color: AppColors.primary.withValues(alpha: 0.05),
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(R.w(context, 12)),
               border: Border.all(color: AppColors.primary.withValues(alpha: 0.1)),
             ),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Icon(Icons.auto_awesome, color: AppColors.primary, size: 16),
-                const SizedBox(width: 12),
+                Icon(Icons.auto_awesome, color: AppColors.primary, size: R.sp(context, 16)),
+                SizedBox(width: R.w(context, 12)),
                 Expanded(
                   child: Text(
                     product.ingredients ?? 'Crafted with 100% natural ingredients. Check packaging for specific list.',
-                    style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w600, height: 1.5, fontSize: 12),
+                    style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w600, height: 1.5, fontSize: R.sp(context, 12)),
                   ),
                 ),
               ],
@@ -579,22 +580,22 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Nutrition per 100g', style: AppTypography.h3(context).copyWith(fontSize: 16)),
+              Text('Nutrition per 100g', style: AppTypography.h3(context).copyWith(fontSize: R.sp(context, 16))),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
-                decoration: BoxDecoration(border: Border.all(color: AppColors.primary.withValues(alpha: 0.2)), borderRadius: BorderRadius.circular(100)),
-                child: Text('VERIFIED', style: AppTypography.label(context).copyWith(color: AppColors.primary, fontSize: 7, letterSpacing: 1.5)),
+                padding: EdgeInsets.symmetric(horizontal: R.w(context, 6), vertical: R.h(context, 3)),
+                decoration: BoxDecoration(border: Border.all(color: AppColors.primary.withValues(alpha: 0.2)), borderRadius: BorderRadius.circular(R.w(context, 100))),
+                child: Text('VERIFIED', style: AppTypography.label(context).copyWith(color: AppColors.primary, fontSize: R.sp(context, 7), letterSpacing: 1.5)),
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: R.h(context, 16)),
           GridView.count(
             crossAxisCount: 2,
             shrinkWrap: true,
             padding: EdgeInsets.zero,
             physics: const NeverScrollableScrollPhysics(),
-            mainAxisSpacing: 10,
-            crossAxisSpacing: 10,
+            mainAxisSpacing: R.h(context, 10),
+            crossAxisSpacing: R.w(context, 10),
             childAspectRatio: 1.6,
             children: [
               _buildNutritionCard('Calories', product.calories ?? '654', 'kcal'),
@@ -612,18 +613,18 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
     return Container(
       decoration: BoxDecoration(
         color: const Color(0xFFF5F1E9),
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(R.w(context, 16)),
         border: Border.all(color: AppColors.primary.withValues(alpha: 0.05)),
       ),
-      padding: const EdgeInsets.all(12),
+      padding: EdgeInsets.all(R.w(context, 12)),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(value, style: AppTypography.h2(context).copyWith(fontSize: 20, color: const Color(0xFF1B3B36))),
-          const SizedBox(height: 2),
-          Text(label.toUpperCase(), style: AppTypography.label(context).copyWith(fontSize: 8, letterSpacing: 1.0, color: const Color(0xFF1B3B36).withValues(alpha: 0.7))),
-          const SizedBox(height: 2),
-          Text(sub, style: AppTypography.label(context).copyWith(fontSize: 7, color: const Color(0xFF1B3B36).withValues(alpha: 0.5))),
+          Text(value, style: AppTypography.h2(context).copyWith(fontSize: R.sp(context, 20), color: const Color(0xFF1B3B36))),
+          SizedBox(height: R.h(context, 2)),
+          Text(label.toUpperCase(), style: AppTypography.label(context).copyWith(fontSize: R.sp(context, 8), letterSpacing: 1.0, color: const Color(0xFF1B3B36).withValues(alpha: 0.7))),
+          SizedBox(height: R.h(context, 2)),
+          Text(sub, style: AppTypography.label(context).copyWith(fontSize: R.sp(context, 7), color: const Color(0xFF1B3B36).withValues(alpha: 0.5))),
         ],
       ),
     );
@@ -632,14 +633,14 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
   Widget _buildCheckbox(bool value) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 180),
-      width: 22,
-      height: 22,
+      width: R.w(context, 22),
+      height: R.w(context, 22),
       decoration: BoxDecoration(
         color: value ? AppColors.primary : Colors.white,
         border: Border.all(color: value ? AppColors.primary : AppColors.borderLight, width: 2),
-        borderRadius: BorderRadius.circular(6),
+        borderRadius: BorderRadius.circular(R.w(context, 6)),
       ),
-      child: value ? const Icon(Icons.check, color: AppColors.deepCharcoal, size: 14) : null,
+      child: value ? Icon(Icons.check, color: AppColors.deepCharcoal, size: R.sp(context, 14)) : null,
     );
   }
 
@@ -662,21 +663,21 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
         int itemCount = (_fbtThisItem ? 1 : 0) + (_fbtChecked ? 1 : 0);
 
         return Container(
-          margin: const EdgeInsets.only(top: 32),
-          padding: const EdgeInsets.only(top: 32),
+          margin: EdgeInsets.only(top: R.h(context, 32)),
+          padding: EdgeInsets.only(top: R.h(context, 32)),
           decoration: const BoxDecoration(
             border: Border(top: BorderSide(color: AppColors.borderLight)),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Frequently Bought Together', style: AppTypography.h2(context).copyWith(fontSize: 20)),
-              const SizedBox(height: 16),
+              Text('Frequently Bought Together', style: AppTypography.h2(context).copyWith(fontSize: R.sp(context, 20))),
+              SizedBox(height: R.h(context, 16)),
               Container(
-                padding: const EdgeInsets.all(16),
+                padding: EdgeInsets.all(R.w(context, 16)),
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(R.w(context, 16)),
                   border: Border.all(color: AppColors.borderLight),
                   boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.03), blurRadius: 12, offset: const Offset(0, 4))],
                 ),
@@ -689,69 +690,69 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                           opacity: _fbtThisItem ? 1.0 : 0.4,
                           duration: const Duration(milliseconds: 200),
                           child: ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: CustomNetworkImage(imageUrl: product.images.first, width: 64, height: 64, fit: BoxFit.cover),
+                            borderRadius: BorderRadius.circular(R.w(context, 10)),
+                            child: CustomNetworkImage(imageUrl: product.images.first, width: R.w(context, 64), height: R.w(context, 64), fit: BoxFit.cover),
                           ),
                         ),
-                        const SizedBox(width: 10),
+                        SizedBox(width: R.w(context, 10)),
                         Container(
-                          padding: const EdgeInsets.all(4),
+                          padding: EdgeInsets.all(R.w(context, 4)),
                           decoration: const BoxDecoration(color: Color(0xFFF0F0F0), shape: BoxShape.circle),
-                          child: const Icon(Icons.add, color: AppColors.neutralGold, size: 16),
+                          child: Icon(Icons.add, color: AppColors.neutralGold, size: R.sp(context, 16)),
                         ),
-                        const SizedBox(width: 10),
+                        SizedBox(width: R.w(context, 10)),
                         AnimatedOpacity(
                           opacity: _fbtChecked ? 1.0 : 0.4,
                           duration: const Duration(milliseconds: 200),
                           child: ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: CustomNetworkImage(imageUrl: fbtProduct.images.first, width: 64, height: 64, fit: BoxFit.cover),
+                            borderRadius: BorderRadius.circular(R.w(context, 10)),
+                            child: CustomNetworkImage(imageUrl: fbtProduct.images.first, width: R.w(context, 64), height: R.w(context, 64), fit: BoxFit.cover),
                           ),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 16),
+                    SizedBox(height: R.h(context, 16)),
                     const Divider(color: AppColors.borderLight, height: 1),
-                    const SizedBox(height: 12),
+                    SizedBox(height: R.h(context, 12)),
                     // This item row
                     GestureDetector(
                       onTap: () => setState(() => _fbtThisItem = !_fbtThisItem),
                       child: Row(
                         children: [
                           _buildCheckbox(_fbtThisItem),
-                          const SizedBox(width: 10),
+                          SizedBox(width: R.w(context, 10)),
                           Expanded(
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Flexible(child: Text(product.name, style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: 12), overflow: TextOverflow.ellipsis)),
-                                const SizedBox(width: 8),
-                                Text(formatPrice(product.price), style: AppTypography.label(context).copyWith(color: const Color(0xFF1A7A42), fontWeight: FontWeight.w800, fontSize: 11)),
+                                Flexible(child: Text(product.name, style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: R.sp(context, 12)), overflow: TextOverflow.ellipsis)),
+                                SizedBox(width: R.w(context, 8)),
+                                Text(formatPrice(product.price), style: AppTypography.label(context).copyWith(color: const Color(0xFF1A7A42), fontWeight: FontWeight.w800, fontSize: R.sp(context, 11))),
                               ],
                             ),
                           ),
                         ],
                       ),
                     ),
-                    const SizedBox(height: 10),
+                    SizedBox(height: R.h(context, 10)),
                     // FBT product row
                     GestureDetector(
                       onTap: () => setState(() => _fbtChecked = !_fbtChecked),
                       child: Row(
                         children: [
                           _buildCheckbox(_fbtChecked),
-                          const SizedBox(width: 10),
+                          SizedBox(width: R.w(context, 10)),
                           Expanded(
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Flexible(child: Text(fbtProduct.name, style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w600, fontSize: 12), overflow: TextOverflow.ellipsis)),
-                                const SizedBox(width: 8),
+                                Flexible(child: Text(fbtProduct.name, style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w600, fontSize: R.sp(context, 12)), overflow: TextOverflow.ellipsis)),
+                                SizedBox(width: R.w(context, 8)),
                                 Row(
                                   children: [
-                                    Text(formatPrice(discountedFbtPrice), style: AppTypography.label(context).copyWith(color: const Color(0xFF1A7A42), fontWeight: FontWeight.w800, fontSize: 11)),
-                                    const SizedBox(width: 4),
-                                    Text(formatPrice(fbtProduct.price), style: AppTypography.priceStrike(context).copyWith(fontSize: 10)),
+                                    Text(formatPrice(discountedFbtPrice), style: AppTypography.label(context).copyWith(color: const Color(0xFF1A7A42), fontWeight: FontWeight.w800, fontSize: R.sp(context, 11))),
+                                    SizedBox(width: R.w(context, 4)),
+                                    Text(formatPrice(fbtProduct.price), style: AppTypography.priceStrike(context).copyWith(fontSize: R.sp(context, 10))),
                                   ],
                                 ),
                               ],
@@ -760,25 +761,25 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 16),
+                    SizedBox(height: R.h(context, 16)),
                     const Divider(color: AppColors.borderLight, height: 1),
-                    const SizedBox(height: 12),
+                    SizedBox(height: R.h(context, 12)),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('TOTAL', style: AppTypography.label(context).copyWith(color: AppColors.neutralGold, fontSize: 9, letterSpacing: 2.0)),
-                        Text(itemCount == 0 ? '—' : formatPrice(totalPrice), style: AppTypography.h3(context).copyWith(fontSize: 20)),
+                        Text('TOTAL', style: AppTypography.label(context).copyWith(color: AppColors.neutralGold, fontSize: R.sp(context, 9), letterSpacing: 2.0)),
+                        Text(itemCount == 0 ? '—' : formatPrice(totalPrice), style: AppTypography.h3(context).copyWith(fontSize: R.sp(context, 20))),
                       ],
                     ),
-                    const SizedBox(height: 12),
+                    SizedBox(height: R.h(context, 12)),
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: itemCount == 0 ? AppColors.borderLight : AppColors.primary,
                           foregroundColor: AppColors.deepCharcoal,
-                          padding: const EdgeInsets.symmetric(vertical: 14),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                          padding: EdgeInsets.symmetric(vertical: R.h(context, 14)),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(R.w(context, 12))),
                           elevation: 0,
                         ),
                         onPressed: itemCount == 0 ? null : () {
@@ -788,7 +789,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                         },
                         child: Text(
                           itemCount == 0 ? 'Select at least one item' : 'Add $itemCount Item${itemCount == 1 ? '' : 's'} to Cart',
-                          style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: 12),
+                          style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: R.sp(context, 12)),
                         ),
                       ),
                     ),
@@ -809,58 +810,58 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
     final reviewsAsync = ref.watch(productReviewsProvider(product.id));
 
     return Container(
-      margin: const EdgeInsets.only(top: 32),
-      padding: const EdgeInsets.only(top: 32),
+      margin: EdgeInsets.only(top: R.h(context, 32)),
+      padding: EdgeInsets.only(top: R.h(context, 32)),
       decoration: const BoxDecoration(
         border: Border(top: BorderSide(color: AppColors.borderLight)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('What people are saying', style: AppTypography.h2(context).copyWith(fontSize: 20)),
-          const SizedBox(height: 16),
+          Text('What people are saying', style: AppTypography.h2(context).copyWith(fontSize: R.sp(context, 20))),
+          SizedBox(height: R.h(context, 16)),
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(color: AppColors.primary.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(12)),
-                child: const Icon(Icons.star, color: AppColors.primary, size: 20),
+                padding: EdgeInsets.all(R.w(context, 10)),
+                decoration: BoxDecoration(color: AppColors.primary.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(R.w(context, 12))),
+                child: Icon(Icons.star, color: AppColors.primary, size: R.sp(context, 20)),
               ),
-              const SizedBox(width: 12),
+              SizedBox(width: R.w(context, 12)),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     product.rating > 0 ? product.rating.toStringAsFixed(1) : '—',
-                    style: AppTypography.h2(context).copyWith(fontSize: 24),
+                    style: AppTypography.h2(context).copyWith(fontSize: R.sp(context, 24)),
                   ),
                   Text(
                     '${product.reviewCount} Global Ratings',
-                    style: AppTypography.label(context).copyWith(color: AppColors.neutralGold, fontSize: 10),
+                    style: AppTypography.label(context).copyWith(color: AppColors.neutralGold, fontSize: R.sp(context, 10)),
                   ),
                 ],
               ),
             ],
           ),
-          const SizedBox(height: 24),
+          SizedBox(height: R.h(context, 24)),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Customer Reviews', style: AppTypography.h2(context).copyWith(fontSize: 18)),
+              Text('Customer Reviews', style: AppTypography.h2(context).copyWith(fontSize: R.sp(context, 18))),
               GestureDetector(
                 onTap: () => _showReviewBottomSheet(context, product),
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                  padding: EdgeInsets.symmetric(horizontal: R.w(context, 14), vertical: R.h(context, 8)),
                   decoration: BoxDecoration(
                     color: AppColors.deepCharcoal,
-                    borderRadius: BorderRadius.circular(100),
+                    borderRadius: BorderRadius.circular(R.w(context, 100)),
                   ),
-                  child: Text('Write a Review', style: AppTypography.label(context).copyWith(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w800)),
+                  child: Text('Write a Review', style: AppTypography.label(context).copyWith(color: Colors.white, fontSize: R.sp(context, 10), fontWeight: FontWeight.w800)),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: R.h(context, 16)),
           reviewsAsync.when(
             loading: () => const Center(child: Padding(padding: EdgeInsets.symmetric(vertical: 24), child: CircularProgressIndicator())),
             error: (_, __) => const SizedBox.shrink(),
@@ -903,10 +904,10 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
     final displayName = review.isAnonymous ? 'Anonymous' : (review.userName ?? 'Customer');
     final ago = _timeAgo(review.createdAt);
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(R.w(context, 16)),
       decoration: BoxDecoration(
         color: const Color(0xFFF9F9F9),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(R.w(context, 12)),
         border: Border.all(color: AppColors.borderLight),
       ),
       child: Column(
@@ -918,43 +919,43 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                 children: List.generate(5, (index) => Icon(
                   index < review.rating.floor() ? Icons.star : Icons.star_border,
                   color: AppColors.primary,
-                  size: 12,
+                  size: R.sp(context, 12),
                 )),
               ),
               if (review.verified) ...[
-                const SizedBox(width: 8),
+                SizedBox(width: R.w(context, 8)),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                  decoration: BoxDecoration(color: const Color(0xFFE6F4EA), borderRadius: BorderRadius.circular(100)),
-                  child: Text('Verified', style: AppTypography.label(context).copyWith(color: const Color(0xFF137333), fontSize: 8)),
+                  padding: EdgeInsets.symmetric(horizontal: R.w(context, 6), vertical: R.h(context, 2)),
+                  decoration: BoxDecoration(color: const Color(0xFFE6F4EA), borderRadius: BorderRadius.circular(R.w(context, 100))),
+                  child: Text('Verified', style: AppTypography.label(context).copyWith(color: const Color(0xFF137333), fontSize: R.sp(context, 8))),
                 ),
               ],
               const Spacer(),
-              Text(ago, style: AppTypography.label(context).copyWith(color: AppColors.neutralGold, fontSize: 9)),
+              Text(ago, style: AppTypography.label(context).copyWith(color: AppColors.neutralGold, fontSize: R.sp(context, 9))),
             ],
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: R.h(context, 8)),
           if (review.title.isNotEmpty)
-            Text(review.title, style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: 12)),
-          if (review.title.isNotEmpty) const SizedBox(height: 4),
-          Text(review.body, style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, fontSize: 12, height: 1.4)),
-          const SizedBox(height: 8),
-          Text('— $displayName', style: AppTypography.label(context).copyWith(color: AppColors.deepCharcoal, fontSize: 10)),
+            Text(review.title, style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: R.sp(context, 12))),
+          if (review.title.isNotEmpty) SizedBox(height: R.h(context, 4)),
+          Text(review.body, style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, fontSize: R.sp(context, 12), height: 1.4)),
+          SizedBox(height: R.h(context, 8)),
+          Text('— $displayName', style: AppTypography.label(context).copyWith(color: AppColors.deepCharcoal, fontSize: R.sp(context, 10))),
           if (review.adminReply != null) ...[
-            const SizedBox(height: 12),
+            SizedBox(height: R.h(context, 12)),
             Container(
-              padding: const EdgeInsets.all(12),
+              padding: EdgeInsets.all(R.w(context, 12)),
               decoration: BoxDecoration(
                 color: AppColors.primary.withValues(alpha: 0.05),
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(R.w(context, 8)),
                 border: Border.all(color: AppColors.primary.withValues(alpha: 0.1)),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('NutriPump Team', style: AppTypography.label(context).copyWith(color: AppColors.primary, fontSize: 9, fontWeight: FontWeight.w800)),
-                  const SizedBox(height: 4),
-                  Text(review.adminReply!, style: AppTypography.bodySM(context).copyWith(fontSize: 11, height: 1.4)),
+                  Text('NutriPump Team', style: AppTypography.label(context).copyWith(color: AppColors.primary, fontSize: R.sp(context, 9), fontWeight: FontWeight.w800)),
+                  SizedBox(height: R.h(context, 4)),
+                  Text(review.adminReply!, style: AppTypography.bodySM(context).copyWith(fontSize: R.sp(context, 11), height: 1.4)),
                 ],
               ),
             ),
@@ -994,11 +995,11 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
       backgroundColor: Colors.transparent,
       builder: (ctx) => StatefulBuilder(
         builder: (ctx, setModalState) => Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+            borderRadius: BorderRadius.vertical(top: Radius.circular(R.w(context, 28))),
           ),
-          padding: EdgeInsets.fromLTRB(24, 24, 24, MediaQuery.of(ctx).viewInsets.bottom + 32),
+          padding: EdgeInsets.fromLTRB(R.w(context, 24), R.h(context, 24), R.w(context, 24), MediaQuery.of(ctx).viewInsets.bottom + R.h(context, 32)),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -1006,33 +1007,33 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
               children: [
                 Center(
                   child: Container(
-                    width: 40, height: 4,
-                    decoration: BoxDecoration(color: AppColors.borderLight, borderRadius: BorderRadius.circular(2)),
+                    width: R.w(context, 40), height: R.h(context, 4),
+                    decoration: BoxDecoration(color: AppColors.borderLight, borderRadius: BorderRadius.circular(R.w(context, 2))),
                   ),
                 ),
-                const SizedBox(height: 20),
-                Text('Write a Review', style: AppTypography.h2(context).copyWith(fontSize: 22)),
-                const SizedBox(height: 24),
-                Text('Your Rating', style: AppTypography.label(context).copyWith(color: AppColors.neutralGold, fontSize: 10, letterSpacing: 1.5)),
-                const SizedBox(height: 10),
+                SizedBox(height: R.h(context, 20)),
+                Text('Write a Review', style: AppTypography.h2(context).copyWith(fontSize: R.sp(context, 22))),
+                SizedBox(height: R.h(context, 24)),
+                Text('Your Rating', style: AppTypography.label(context).copyWith(color: AppColors.neutralGold, fontSize: R.sp(context, 10), letterSpacing: 1.5)),
+                SizedBox(height: R.h(context, 10)),
                 Row(
                   children: List.generate(5, (i) {
                     return GestureDetector(
                       onTap: () => setModalState(() => rating = i + 1),
                       child: Padding(
-                        padding: const EdgeInsets.only(right: 8),
+                        padding: EdgeInsets.only(right: R.w(context, 8)),
                         child: Icon(
                           i < rating ? Icons.star : Icons.star_border,
                           color: AppColors.primary,
-                          size: 32,
+                          size: R.sp(context, 32),
                         ),
                       ),
                     );
                   }),
                 ),
-                const SizedBox(height: 20),
-                Text('Review Title', style: AppTypography.label(context).copyWith(color: AppColors.neutralGold, fontSize: 10, letterSpacing: 1.5)),
-                const SizedBox(height: 8),
+                SizedBox(height: R.h(context, 20)),
+                Text('Review Title', style: AppTypography.label(context).copyWith(color: AppColors.neutralGold, fontSize: R.sp(context, 10), letterSpacing: 1.5)),
+                SizedBox(height: R.h(context, 8)),
                 TextField(
                   controller: titleCtrl,
                   decoration: InputDecoration(
@@ -1040,15 +1041,15 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                     hintStyle: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold.withValues(alpha: 0.5)),
                     filled: true,
                     fillColor: const Color(0xFFF9F9F9),
-                    contentPadding: const EdgeInsets.all(16),
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: const BorderSide(color: AppColors.borderLight)),
-                    enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: const BorderSide(color: AppColors.borderLight)),
-                    focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: const BorderSide(color: AppColors.primary, width: 2)),
+                    contentPadding: EdgeInsets.all(R.w(context, 16)),
+                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(R.w(context, 14)), borderSide: const BorderSide(color: AppColors.borderLight)),
+                    enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(R.w(context, 14)), borderSide: const BorderSide(color: AppColors.borderLight)),
+                    focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(R.w(context, 14)), borderSide: const BorderSide(color: AppColors.primary, width: 2)),
                   ),
                 ),
-                const SizedBox(height: 16),
-                Text('Review Details', style: AppTypography.label(context).copyWith(color: AppColors.neutralGold, fontSize: 10, letterSpacing: 1.5)),
-                const SizedBox(height: 8),
+                SizedBox(height: R.h(context, 16)),
+                Text('Review Details', style: AppTypography.label(context).copyWith(color: AppColors.neutralGold, fontSize: R.sp(context, 10), letterSpacing: 1.5)),
+                SizedBox(height: R.h(context, 8)),
                 TextField(
                   controller: bodyCtrl,
                   maxLines: 4,
@@ -1057,50 +1058,50 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                     hintStyle: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold.withValues(alpha: 0.5)),
                     filled: true,
                     fillColor: const Color(0xFFF9F9F9),
-                    contentPadding: const EdgeInsets.all(16),
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: const BorderSide(color: AppColors.borderLight)),
-                    enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: const BorderSide(color: AppColors.borderLight)),
-                    focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: const BorderSide(color: AppColors.primary, width: 2)),
+                    contentPadding: EdgeInsets.all(R.w(context, 16)),
+                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(R.w(context, 14)), borderSide: const BorderSide(color: AppColors.borderLight)),
+                    enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(R.w(context, 14)), borderSide: const BorderSide(color: AppColors.borderLight)),
+                    focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(R.w(context, 14)), borderSide: const BorderSide(color: AppColors.primary, width: 2)),
                   ),
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: R.h(context, 16)),
                 GestureDetector(
                   onTap: () => setModalState(() => isAnonymous = !isAnonymous),
                   child: Row(
                     children: [
                       AnimatedContainer(
                         duration: const Duration(milliseconds: 200),
-                        width: 44,
-                        height: 24,
+                        width: R.w(context, 44),
+                        height: R.h(context, 24),
                         decoration: BoxDecoration(
                           color: isAnonymous ? AppColors.primary : AppColors.borderLight,
-                          borderRadius: BorderRadius.circular(100),
+                          borderRadius: BorderRadius.circular(R.w(context, 100)),
                         ),
                         child: AnimatedAlign(
                           duration: const Duration(milliseconds: 200),
                           alignment: isAnonymous ? Alignment.centerRight : Alignment.centerLeft,
                           child: Container(
-                            margin: const EdgeInsets.all(3),
-                            width: 18,
-                            height: 18,
+                            margin: EdgeInsets.all(R.w(context, 3)),
+                            width: R.w(context, 18),
+                            height: R.h(context, 18),
                             decoration: const BoxDecoration(color: Colors.white, shape: BoxShape.circle),
                           ),
                         ),
                       ),
-                      const SizedBox(width: 12),
-                      Text('Post Anonymously', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: 13)),
+                      SizedBox(width: R.w(context, 12)),
+                      Text('Post Anonymously', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: R.sp(context, 13))),
                     ],
                   ),
                 ),
-                const SizedBox(height: 24),
+                SizedBox(height: R.h(context, 24)),
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.primary,
                       foregroundColor: AppColors.deepCharcoal,
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                      padding: EdgeInsets.symmetric(vertical: R.h(context, 16)),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(R.w(context, 14))),
                       elevation: 0,
                     ),
                     onPressed: isSubmitting ? null : () async {
@@ -1132,8 +1133,8 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                       }
                     },
                     child: isSubmitting
-                        ? const SizedBox(height: 20, width: 20, child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.deepCharcoal))
-                        : Text('Submit Review', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: 14)),
+                        ? SizedBox(height: R.h(context, 20), width: R.w(context, 20), child: const CircularProgressIndicator(strokeWidth: 2, color: AppColors.deepCharcoal))
+                        : Text('Submit Review', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: R.sp(context, 14))),
                   ),
                 ),
               ],
@@ -1153,25 +1154,25 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
         if (related.isEmpty) return const SizedBox.shrink();
         
         return Container(
-          margin: const EdgeInsets.only(top: 32),
-          padding: const EdgeInsets.only(top: 32),
+          margin: EdgeInsets.only(top: R.h(context, 32)),
+          padding: EdgeInsets.only(top: R.h(context, 32)),
           decoration: const BoxDecoration(
             border: Border(top: BorderSide(color: AppColors.borderLight)),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('You May Also Like', style: AppTypography.h2(context).copyWith(fontSize: 20)),
-              const SizedBox(height: 16),
+              Text('You May Also Like', style: AppTypography.h2(context).copyWith(fontSize: R.sp(context, 20))),
+              SizedBox(height: R.h(context, 16)),
               SizedBox(
-                height: 280,
+                height: R.h(context, 280),
                 child: ListView.separated(
                   scrollDirection: Axis.horizontal,
                   itemCount: related.length,
-                  separatorBuilder: (_, __) => const SizedBox(width: 16),
+                  separatorBuilder: (_, __) => SizedBox(width: R.w(context, 16)),
                   itemBuilder: (context, index) {
                     return SizedBox(
-                      width: 160,
+                      width: R.w(context, 160),
                       child: ProductCard(product: related[index]),
                     );
                   },
@@ -1190,7 +1191,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
     return Positioned(
       bottom: 0, left: 0, right: 0,
       child: Container(
-        padding: EdgeInsets.fromLTRB(20, 12, 20, MediaQuery.of(context).padding.bottom + 12),
+        padding: EdgeInsets.fromLTRB(R.w(context, 20), R.h(context, 12), R.w(context, 20), MediaQuery.of(context).padding.bottom + R.h(context, 12)),
         decoration: BoxDecoration(
           color: Colors.white,
           border: const Border(top: BorderSide(color: AppColors.borderLight)),
@@ -1201,33 +1202,33 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
             Container(
               decoration: BoxDecoration(
                 border: Border.all(color: AppColors.borderLight),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(R.w(context, 12)),
               ),
               child: Row(
                 children: [
                   IconButton(
-                    icon: const Icon(Icons.remove, size: 16),
+                    icon: Icon(Icons.remove, size: R.sp(context, 16)),
                     onPressed: () => setState(() { if (_quantity > 1) _quantity--; }),
                     color: AppColors.neutralGold,
-                    padding: const EdgeInsets.all(8),
+                    padding: EdgeInsets.all(R.w(context, 8)),
                     constraints: const BoxConstraints(),
                   ),
-                  Text('$_quantity', style: AppTypography.h3(context).copyWith(fontSize: 14)),
+                  Text('$_quantity', style: AppTypography.h3(context).copyWith(fontSize: R.sp(context, 14))),
                   IconButton(
-                    icon: const Icon(Icons.add, size: 16),
+                    icon: Icon(Icons.add, size: R.sp(context, 16)),
                     onPressed: _quantity < product.stockCount
                         ? () => setState(() { _quantity++; })
                         : null,
                     color: _quantity < product.stockCount
                         ? AppColors.neutralGold
                         : AppColors.borderLight,
-                    padding: const EdgeInsets.all(8),
+                    padding: EdgeInsets.all(R.w(context, 8)),
                     constraints: const BoxConstraints(),
                   ),
                 ],
               ),
             ),
-            const SizedBox(width: 12),
+            SizedBox(width: R.w(context, 12)),
             Expanded(
               child: ElevatedButton(
                 onPressed: () {
@@ -1247,16 +1248,16 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primary,
                   foregroundColor: AppColors.deepCharcoal,
-                  padding: const EdgeInsets.symmetric(vertical: 14),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  padding: EdgeInsets.symmetric(vertical: R.h(context, 14)),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(R.w(context, 12))),
                   elevation: 0,
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Icon(Icons.shopping_bag_outlined, size: 16),
-                    const SizedBox(width: 6),
-                    Text('Add to Bag — ${formatPrice(price * _quantity)}', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: 12)),
+                    Icon(Icons.shopping_bag_outlined, size: R.sp(context, 16)),
+                    SizedBox(width: R.w(context, 6)),
+                    Text('Add to Bag — ${formatPrice(price * _quantity)}', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: R.sp(context, 12))),
                   ],
                 ),
               ),

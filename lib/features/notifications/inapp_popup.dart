@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_typography.dart';
+import '../../core/utils/responsive.dart';
 
 class InAppPopup extends StatefulWidget {
   final String title;
@@ -81,29 +82,29 @@ class _InAppPopupState extends State<InAppPopup>
 
   Widget _buildContent(Color textCol, Color subTextCol) {
     return Padding(
-      padding: const EdgeInsets.all(24),
+      padding: EdgeInsets.all(R.w(context, 24)),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // NutriPump branding pill
           Container(
-            margin: const EdgeInsets.only(bottom: 12),
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+            margin: EdgeInsets.only(bottom: R.h(context, 12)),
+            padding: EdgeInsets.symmetric(horizontal: R.w(context, 10), vertical: R.h(context, 4)),
             decoration: BoxDecoration(
               color: AppColors.primary.withValues(alpha: 0.18),
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(R.w(context, 20)),
               border: Border.all(
                 color: AppColors.primary.withValues(alpha: 0.4),
                 width: 0.8,
               ),
             ),
-            child: const Text(
+            child: Text(
               'NutriPump',
               style: TextStyle(
                 fontFamily: 'Georgia',
                 color: AppColors.primary,
-                fontSize: 10,
+                fontSize: R.sp(context, 10),
                 fontWeight: FontWeight.bold,
                 letterSpacing: 1.5,
               ),
@@ -114,7 +115,7 @@ class _InAppPopupState extends State<InAppPopup>
             widget.title,
             style: AppTypography.h1(context).copyWith(color: textCol, height: 1.2),
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: R.h(context, 8)),
           Text(
             widget.body,
             style: AppTypography.bodySM(context).copyWith(color: subTextCol),
@@ -123,7 +124,7 @@ class _InAppPopupState extends State<InAppPopup>
           // ── CTA Button ──────────────────────────────────
           if (widget.ctaLabel != null && widget.ctaLabel!.isNotEmpty)
             Padding(
-              padding: const EdgeInsets.only(top: 20),
+              padding: EdgeInsets.only(top: R.h(context, 20)),
               child: GestureDetector(
                 onTap: () {
                   _dismiss();
@@ -132,10 +133,10 @@ class _InAppPopupState extends State<InAppPopup>
                   }
                 },
                 child: Container(
-                  padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                  padding: EdgeInsets.symmetric(vertical: R.h(context, 10), horizontal: R.w(context, 20)),
                   decoration: BoxDecoration(
                     color: AppColors.primary,
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(R.w(context, 10)),
                     boxShadow: [
                       BoxShadow(
                         color: AppColors.primary.withValues(alpha: 0.4),
@@ -192,7 +193,7 @@ class _InAppPopupState extends State<InAppPopup>
             ScaleTransition(
               scale: _scaleAnim,
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 28),
+                padding: EdgeInsets.symmetric(horizontal: R.w(context, 28)),
                 child: Stack(
                   clipBehavior: Clip.none,
                   children: [
@@ -202,7 +203,7 @@ class _InAppPopupState extends State<InAppPopup>
                         width: double.infinity,
                         decoration: BoxDecoration(
                           color: bg,
-                          borderRadius: BorderRadius.circular(24),
+                          borderRadius: BorderRadius.circular(R.w(context, 24)),
                           boxShadow: [
                             BoxShadow(
                               color: Colors.black.withValues(alpha: 0.35),
@@ -263,13 +264,13 @@ class _InAppPopupState extends State<InAppPopup>
 
                     // ── Close Button (Half Outside) ─────────────────────────
                     Positioned(
-                      top: -16,
-                      right: -16,
+                      top: R.h(context, -16),
+                      right: R.w(context, -16),
                       child: GestureDetector(
                         onTap: _dismiss,
                         child: Container(
-                          width: 36,
-                          height: 36,
+                          width: R.w(context, 36),
+                          height: R.w(context, 36),
                           decoration: BoxDecoration(
                             color: AppColors.deepCharcoal,
                             shape: BoxShape.circle,
@@ -285,10 +286,10 @@ class _InAppPopupState extends State<InAppPopup>
                               ),
                             ],
                           ),
-                          child: const Icon(
+                          child: Icon(
                             Icons.close,
                             color: Colors.white,
-                            size: 18,
+                            size: R.sp(context, 18),
                           ),
                         ),
                       ),

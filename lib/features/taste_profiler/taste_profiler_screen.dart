@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_typography.dart';
 import '../../core/widgets/product_card.dart';
+import '../../core/utils/responsive.dart';
 import 'taste_profiler_state.dart';
 import '../../utils/ai_matcher.dart';
 
@@ -162,10 +163,10 @@ class TasteProfilerScreen extends ConsumerWidget {
           Stack(
             alignment: Alignment.center,
             children: [
-              const SizedBox(
-                width: 120,
-                height: 120,
-                child: CircularProgressIndicator(
+              SizedBox(
+                width: R.w(context, 120),
+                height: R.w(context, 120),
+                child: const CircularProgressIndicator(
                   strokeWidth: 2,
                   valueColor: AlwaysStoppedAnimation<Color>(AppColors.primary),
                 ),
@@ -174,7 +175,7 @@ class TasteProfilerScreen extends ConsumerWidget {
                       onPlay: (AnimationController controller) =>
                           controller.repeat())
                   .rotate(duration: const Duration(seconds: 3)),
-              const Icon(Icons.auto_awesome, color: AppColors.primary, size: 48)
+              Icon(Icons.auto_awesome, color: AppColors.primary, size: R.sp(context, 48))
                   .animate(
                       onPlay: (AnimationController controller) =>
                           controller.repeat(reverse: true))
@@ -184,15 +185,15 @@ class TasteProfilerScreen extends ConsumerWidget {
                       duration: const Duration(seconds: 1)),
             ],
           ),
-          const SizedBox(height: 32),
+          SizedBox(height: R.h(context, 32)),
           Text(
             'Analyzing your\nHimalayan Soul Profile...',
             textAlign: TextAlign.center,
             style: AppTypography.h2(context).copyWith(fontStyle: FontStyle.italic),
           ).animate().fadeIn().slideY(begin: 0.2, end: 0),
-          const SizedBox(height: 16),
+          SizedBox(height: R.h(context, 16)),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 32.0),
+            padding: EdgeInsets.symmetric(horizontal: R.w(context, 32)),
             child: Text(
               'Our AI is matching your sensory preferences with the generational harvests of Kashmir.',
               textAlign: TextAlign.center,
@@ -209,7 +210,7 @@ class TasteProfilerScreen extends ConsumerWidget {
     final currentStep = _steps[state.step];
 
     return Padding(
-      padding: const EdgeInsets.all(24.0),
+      padding: EdgeInsets.all(R.w(context, 24)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -219,47 +220,47 @@ class TasteProfilerScreen extends ConsumerWidget {
             textAlign: TextAlign.center,
             style: AppTypography.h2(context).copyWith(color: AppColors.deepCharcoal),
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: R.h(context, 8)),
           Text(
             'A sensory journey to find the precise craft that resonates with your profile.',
             textAlign: TextAlign.center,
             style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold),
           ),
-          const SizedBox(height: 32),
+          SizedBox(height: R.h(context, 32)),
 
           // Progress Bar
           ClipRRect(
-            borderRadius: BorderRadius.circular(4),
+            borderRadius: BorderRadius.circular(R.w(context, 4)),
             child: LinearProgressIndicator(
               value: (state.step + 1) / _steps.length,
               backgroundColor: AppColors.primary.withAlpha(25),
               valueColor: const AlwaysStoppedAnimation<Color>(AppColors.primary),
-              minHeight: 6,
+              minHeight: R.h(context, 6),
             ),
           ),
-          const SizedBox(height: 32),
+          SizedBox(height: R.h(context, 32)),
           Text(
             'STEP ${state.step + 1} OF ${_steps.length}',
             textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 12,
+            style: TextStyle(
+              fontSize: R.sp(context, 12),
               fontWeight: FontWeight.w900,
               letterSpacing: 2.0,
               color: AppColors.primary,
             ),
           ),
-          const SizedBox(height: 12),
+          SizedBox(height: R.h(context, 12)),
           Text(
             currentStep.question,
             textAlign: TextAlign.center,
             style: AppTypography.h1(context),
           ),
-          const SizedBox(height: 48),
+          SizedBox(height: R.h(context, 48)),
           ListView.separated(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             itemCount: currentStep.options.length,
-            separatorBuilder: (_, __) => const SizedBox(height: 16),
+            separatorBuilder: (_, __) => SizedBox(height: R.h(context, 16)),
             itemBuilder: (context, index) {
               final option = currentStep.options[index];
               return _OptionCard(
@@ -304,27 +305,27 @@ class TasteProfilerScreen extends ConsumerWidget {
     final message = AiMatcher.getRecommendedMessage(state.profile, topMatch);
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(24.0),
+      padding: EdgeInsets.all(R.w(context, 24)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Center(
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              padding: EdgeInsets.symmetric(horizontal: R.w(context, 16), vertical: R.h(context, 8)),
               decoration: BoxDecoration(
                 color: AppColors.primary.withAlpha(25),
                 border: Border.all(color: AppColors.primary.withAlpha(50)),
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(R.w(context, 20)),
               ),
-              child: const Row(
+              child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(Icons.favorite, color: AppColors.primary, size: 16),
-                  SizedBox(width: 8),
+                  Icon(Icons.favorite, color: AppColors.primary, size: R.sp(context, 16)),
+                  SizedBox(width: R.w(context, 8)),
                   Text(
                     'YOUR SOUL MATCH IS HERE',
                     style: TextStyle(
-                      fontSize: 10,
+                      fontSize: R.sp(context, 10),
                       fontWeight: FontWeight.w900,
                       letterSpacing: 2.0,
                       color: AppColors.primary,
@@ -334,13 +335,13 @@ class TasteProfilerScreen extends ConsumerWidget {
               ),
             ),
           ),
-          const SizedBox(height: 24),
+          SizedBox(height: R.h(context, 24)),
           Text(
             'Crafted for your profile.',
             textAlign: TextAlign.center,
             style: AppTypography.h1(context),
           ).animate().fadeIn().slideY(begin: 0.1, end: 0),
-          const SizedBox(height: 16),
+          SizedBox(height: R.h(context, 16)),
           Text(
             message,
             textAlign: TextAlign.center,
@@ -349,7 +350,7 @@ class TasteProfilerScreen extends ConsumerWidget {
               fontStyle: FontStyle.italic,
             ),
           ).animate().fadeIn(delay: const Duration(milliseconds: 200)),
-          const SizedBox(height: 48),
+          SizedBox(height: R.h(context, 48)),
 
           // Top Match
           Stack(
@@ -359,7 +360,7 @@ class TasteProfilerScreen extends ConsumerWidget {
               Container(
                 decoration: BoxDecoration(
                   border: Border.all(color: AppColors.primary, width: 2),
-                  borderRadius: BorderRadius.circular(24),
+                  borderRadius: BorderRadius.circular(R.w(context, 24)),
                   boxShadow: [
                     BoxShadow(
                       color: AppColors.primary.withAlpha(50),
@@ -369,7 +370,7 @@ class TasteProfilerScreen extends ConsumerWidget {
                   ],
                 ),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(22),
+                  borderRadius: BorderRadius.circular(R.w(context, 22)),
                   child: AspectRatio(
                     aspectRatio: 0.75,
                     child: ProductCard(product: topMatch),
@@ -377,13 +378,13 @@ class TasteProfilerScreen extends ConsumerWidget {
                 ),
               ),
               Positioned(
-                top: -12,
+                top: R.h(context, -12),
                 child: Container(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 24, vertical: 4),
+                      EdgeInsets.symmetric(horizontal: R.w(context, 24), vertical: R.h(context, 4)),
                   decoration: BoxDecoration(
                     color: AppColors.primary,
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(R.w(context, 20)),
                     boxShadow: const [
                       BoxShadow(
                           color: Colors.black12,
@@ -391,10 +392,10 @@ class TasteProfilerScreen extends ConsumerWidget {
                           spreadRadius: 1),
                     ],
                   ),
-                  child: const Text(
+                  child: Text(
                     'TOP RECOMMENDATION',
                     style: TextStyle(
-                      fontSize: 10,
+                      fontSize: R.sp(context, 10),
                       fontWeight: FontWeight.w900,
                       color: AppColors.deepCharcoal,
                       letterSpacing: 1.0,
@@ -408,20 +409,20 @@ class TasteProfilerScreen extends ConsumerWidget {
               duration: const Duration(milliseconds: 500)),
 
           if (otherMatches.isNotEmpty) ...[
-            const SizedBox(height: 48),
+            SizedBox(height: R.h(context, 48)),
             Text(
               'Other Perfect Pairings',
               style: AppTypography.h3(context),
             ).animate().fadeIn(delay: const Duration(milliseconds: 600)),
-            const SizedBox(height: 16),
+            SizedBox(height: R.h(context, 16)),
             GridView.builder(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 childAspectRatio: 0.65,
-                crossAxisSpacing: 16,
-                mainAxisSpacing: 16,
+                crossAxisSpacing: R.w(context, 16),
+                mainAxisSpacing: R.h(context, 16),
               ),
               itemCount: otherMatches.length,
               itemBuilder: (context, index) {
@@ -432,7 +433,7 @@ class TasteProfilerScreen extends ConsumerWidget {
               },
             ),
           ],
-          const SizedBox(height: 48),
+          SizedBox(height: R.h(context, 48)),
           Center(
             child: TextButton.icon(
               onPressed: () => ref.read(tasteProfilerProvider.notifier).reset(),
@@ -442,7 +443,7 @@ class TasteProfilerScreen extends ConsumerWidget {
               style: TextButton.styleFrom(foregroundColor: AppColors.primary),
             ),
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: R.h(context, 16)),
           ElevatedButton.icon(
             onPressed: () => context.go('/'),
             icon: const Icon(Icons.shopping_bag_outlined),
@@ -450,12 +451,12 @@ class TasteProfilerScreen extends ConsumerWidget {
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.deepCharcoal,
               foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(vertical: 16),
+              padding: EdgeInsets.symmetric(vertical: R.h(context, 16)),
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16)),
+                  borderRadius: BorderRadius.circular(R.w(context, 16))),
             ),
           ),
-          const SizedBox(height: 32),
+          SizedBox(height: R.h(context, 32)),
         ],
       ),
     );
@@ -472,13 +473,13 @@ class _OptionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(24),
+      borderRadius: BorderRadius.circular(R.w(context, 24)),
       child: Container(
-        padding: const EdgeInsets.all(24),
+        padding: EdgeInsets.all(R.w(context, 24)),
         decoration: BoxDecoration(
           color: Colors.white,
           border: Border.all(color: AppColors.primary.withAlpha(38)),
-          borderRadius: BorderRadius.circular(24),
+          borderRadius: BorderRadius.circular(R.w(context, 24)),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withAlpha(7),
@@ -490,22 +491,22 @@ class _OptionCard extends StatelessWidget {
         child: Row(
           children: [
             Container(
-              width: 56,
-              height: 56,
+              width: R.w(context, 56),
+              height: R.w(context, 56),
               decoration: BoxDecoration(
                 color: AppColors.primary.withAlpha(25),
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(R.w(context, 16)),
               ),
-              child: Icon(option.icon, color: AppColors.primary, size: 28),
+              child: Icon(option.icon, color: AppColors.primary, size: R.sp(context, 28)),
             ),
-            const SizedBox(width: 20),
+            SizedBox(width: R.w(context, 20)),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(option.label,
-                      style: AppTypography.h3(context).copyWith(fontSize: 18)),
-                  const SizedBox(height: 4),
+                      style: AppTypography.h3(context).copyWith(fontSize: R.sp(context, 18))),
+                  SizedBox(height: R.h(context, 4)),
                   Text(
                     option.desc,
                     style: AppTypography.bodySM(context)

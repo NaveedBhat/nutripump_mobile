@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_typography.dart';
 import '../../core/utils/formatters.dart';
+import '../../core/utils/responsive.dart';
 import '../../models/cart_item.dart';
 import '../../models/product.dart';
 import '../../providers/cart_provider.dart';
@@ -30,7 +31,7 @@ class CartScreen extends ConsumerWidget {
             Text('Your Cart', style: AppTypography.h3(context)),
             Text(
               'HAND-HARVESTED TREASURES',
-              style: AppTypography.label(context).copyWith(fontSize: 10, color: AppColors.neutralGold, letterSpacing: 1.5),
+              style: AppTypography.label(context).copyWith(fontSize: R.sp(context, 10), color: AppColors.neutralGold, letterSpacing: 1.5),
             ),
           ],
         ),
@@ -54,7 +55,7 @@ class CartScreen extends ConsumerWidget {
                 _buildFreeShippingWidget(context, cartState.subtotal, cartState.freeThreshold),
                 Expanded(
                   child: ListView(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    padding: EdgeInsets.symmetric(horizontal: R.w(context, 16), vertical: R.h(context, 12)),
                     children: [
                       ...cartState.items.map((item) => _buildCartItem(context, ref, item)),
                     ],
@@ -74,7 +75,7 @@ class CartScreen extends ConsumerWidget {
 
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+      padding: EdgeInsets.symmetric(horizontal: R.w(context, 20), vertical: R.h(context, 16)),
       decoration: BoxDecoration(
         color: AppColors.primary.withValues(alpha: 0.05),
         border: Border(bottom: BorderSide(color: AppColors.primary.withValues(alpha: 0.1))),
@@ -86,11 +87,11 @@ class CartScreen extends ConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  width: 8,
-                  height: 8,
+                  width: R.w(context, 8),
+                  height: R.w(context, 8),
                   decoration: const BoxDecoration(color: AppColors.success, shape: BoxShape.circle),
                 ),
-                const SizedBox(width: 8),
+                SizedBox(width: R.w(context, 8)),
                 Text('FREE EXPRESS SHIPPING UNLOCKED', style: AppTypography.label(context).copyWith(color: AppColors.success, letterSpacing: 1.2)),
               ],
             )
@@ -107,12 +108,12 @@ class CartScreen extends ConsumerWidget {
                 ],
               ),
             ),
-          const SizedBox(height: 12),
+          SizedBox(height: R.h(context, 12)),
           ClipRRect(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(R.w(context, 10)),
             child: LinearProgressIndicator(
               value: progress,
-              minHeight: 6,
+              minHeight: R.h(context, 6),
               backgroundColor: AppColors.primary.withValues(alpha: 0.2),
               valueColor: AlwaysStoppedAnimation<Color>(isUnlocked ? AppColors.success : AppColors.primary),
             ),
@@ -125,11 +126,11 @@ class CartScreen extends ConsumerWidget {
   // ── Cart Item (Glassmorphism + Enhanced UI) ──────────────────────────────
   Widget _buildCartItem(BuildContext context, WidgetRef ref, CartItem item) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(12),
+      margin: EdgeInsets.only(bottom: R.h(context, 12)),
+      padding: EdgeInsets.all(R.w(context, 12)),
       decoration: BoxDecoration(
         color: Colors.white.withValues(alpha: 0.6),
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(R.w(context, 16)),
         border: Border.all(color: AppColors.primary.withValues(alpha: 0.15)),
         boxShadow: [
           BoxShadow(color: AppColors.deepCharcoal.withValues(alpha: 0.05), blurRadius: 10, offset: const Offset(0, 4)),
@@ -139,11 +140,11 @@ class CartScreen extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            width: 80,
-            height: 80,
+            width: R.w(context, 80),
+            height: R.w(context, 80),
             decoration: BoxDecoration(
               color: AppColors.primary.withValues(alpha: 0.05),
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(R.w(context, 12)),
               border: Border.all(color: AppColors.primary.withValues(alpha: 0.1)),
               image: item.product.primaryImage.isNotEmpty
                   ? DecorationImage(
@@ -157,7 +158,7 @@ class CartScreen extends ConsumerWidget {
                 ? const Icon(Icons.image_outlined, color: AppColors.neutralGold)
                 : null,
           ),
-          const SizedBox(width: 16),
+          SizedBox(width: R.w(context, 16)),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -176,28 +177,28 @@ class CartScreen extends ConsumerWidget {
                     GestureDetector(
                       onTap: () => ref.read(cartProvider.notifier).removeItem(item.cartItemId),
                       child: Container(
-                        padding: const EdgeInsets.all(4),
+                        padding: EdgeInsets.all(R.w(context, 4)),
                         decoration: BoxDecoration(color: AppColors.error.withValues(alpha: 0.1), shape: BoxShape.circle),
-                        child: const Icon(Icons.close_rounded, size: 14, color: AppColors.error),
+                        child: Icon(Icons.close_rounded, size: R.sp(context, 14), color: AppColors.error),
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 4),
+                SizedBox(height: R.h(context, 4)),
                 Row(
                   children: [
-                    Text(item.selectedWeight ?? item.product.weight, style: AppTypography.label(context).copyWith(fontSize: 10, color: AppColors.neutralGold)),
+                    Text(item.selectedWeight ?? item.product.weight, style: AppTypography.label(context).copyWith(fontSize: R.sp(context, 10), color: AppColors.neutralGold)),
                     if (item.product.stockCount > 0 && item.product.stockCount <= 5) ...[
-                      const SizedBox(width: 8),
+                      SizedBox(width: R.w(context, 8)),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-                        decoration: BoxDecoration(color: AppColors.error.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(4)),
-                        child: Text('ONLY ${item.product.stockCount} LEFT', style: AppTypography.label(context).copyWith(fontSize: 8, color: AppColors.error)),
+                        padding: EdgeInsets.symmetric(horizontal: R.w(context, 4), vertical: R.h(context, 2)),
+                        decoration: BoxDecoration(color: AppColors.error.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(R.w(context, 4))),
+                        child: Text('ONLY ${item.product.stockCount} LEFT', style: AppTypography.label(context).copyWith(fontSize: R.sp(context, 8), color: AppColors.error)),
                       ),
                     ],
                   ],
                 ),
-                const SizedBox(height: 12),
+                SizedBox(height: R.h(context, 12)),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -205,28 +206,28 @@ class CartScreen extends ConsumerWidget {
                       decoration: BoxDecoration(
                         color: Colors.white,
                         border: Border.all(color: AppColors.primary.withValues(alpha: 0.2)),
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(R.w(context, 8)),
                       ),
                       child: Row(
                         children: [
                           InkWell(
                             onTap: () => ref.read(cartProvider.notifier).updateQuantity(item.cartItemId, item.quantity - 1),
-                            child: const Padding(padding: EdgeInsets.all(6), child: Icon(Icons.remove, size: 14)),
+                            child: Padding(padding: EdgeInsets.all(R.w(context, 6)), child: Icon(Icons.remove, size: R.sp(context, 14))),
                           ),
-                          SizedBox(width: 20, child: Text('${item.quantity}', textAlign: TextAlign.center, style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.bold))),
+                          SizedBox(width: R.w(context, 20), child: Text('${item.quantity}', textAlign: TextAlign.center, style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.bold))),
                           InkWell(
                             onTap: item.quantity < item.product.stockCount
                                 ? () => ref.read(cartProvider.notifier).updateQuantity(item.cartItemId, item.quantity + 1)
                                 : null,
                             child: Padding(
-                              padding: const EdgeInsets.all(6),
-                              child: Icon(Icons.add, size: 14, color: item.quantity < item.product.stockCount ? AppColors.deepCharcoal : AppColors.borderLight),
+                              padding: EdgeInsets.all(R.w(context, 6)),
+                              child: Icon(Icons.add, size: R.sp(context, 14), color: item.quantity < item.product.stockCount ? AppColors.deepCharcoal : AppColors.borderLight),
                             ),
                           ),
                         ],
                       ),
                     ),
-                    Text(formatPrice(item.effectivePrice * item.quantity), style: AppTypography.price(context).copyWith(fontSize: 14, color: AppColors.deepCharcoal)),
+                    Text(formatPrice(item.effectivePrice * item.quantity), style: AppTypography.price(context).copyWith(fontSize: R.sp(context, 14), color: AppColors.deepCharcoal)),
                   ],
                 ),
               ],
@@ -256,7 +257,7 @@ class CartScreen extends ConsumerWidget {
               if (upsells.isEmpty) return const SizedBox.shrink();
 
               return Container(
-                padding: const EdgeInsets.symmetric(vertical: 16),
+                padding: EdgeInsets.symmetric(vertical: R.h(context, 16)),
                 decoration: BoxDecoration(
                   color: AppColors.primary.withValues(alpha: 0.05),
                   border: Border(bottom: BorderSide(color: AppColors.primary.withValues(alpha: 0.1))),
@@ -265,59 +266,59 @@ class CartScreen extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      padding: EdgeInsets.symmetric(horizontal: R.w(context, 20)),
                       child: Row(
                         children: [
-                          const Icon(Icons.auto_awesome_rounded, size: 14, color: AppColors.primary),
-                          const SizedBox(width: 6),
-                          Text('FREQUENTLY PAIRED WITH YOUR SELECTION', style: AppTypography.label(context).copyWith(fontSize: 9, color: AppColors.primary, letterSpacing: 1.5)),
+                          Icon(Icons.auto_awesome_rounded, size: R.sp(context, 14), color: AppColors.primary),
+                          SizedBox(width: R.w(context, 6)),
+                          Text('FREQUENTLY PAIRED WITH YOUR SELECTION', style: AppTypography.label(context).copyWith(fontSize: R.sp(context, 9), color: AppColors.primary, letterSpacing: 1.5)),
                         ],
                       ),
                     ),
-                    const SizedBox(height: 12),
+                    SizedBox(height: R.h(context, 12)),
                     SizedBox(
-                      height: 100,
+                      height: R.h(context, 100),
                       child: ListView.separated(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        padding: EdgeInsets.symmetric(horizontal: R.w(context, 20)),
                         scrollDirection: Axis.horizontal,
                         itemCount: upsells.length,
-                        separatorBuilder: (_, __) => const SizedBox(width: 12),
+                        separatorBuilder: (_, __) => SizedBox(width: R.w(context, 12)),
                         itemBuilder: (context, index) {
                           final p = upsells[index];
                           return Container(
-                            width: 200,
-                            padding: const EdgeInsets.all(8),
+                            width: R.w(context, 200),
+                            padding: EdgeInsets.all(R.w(context, 8)),
                             decoration: BoxDecoration(
                               color: Colors.white,
-                              borderRadius: BorderRadius.circular(12),
+                              borderRadius: BorderRadius.circular(R.w(context, 12)),
                               border: Border.all(color: AppColors.primary.withValues(alpha: 0.15)),
                             ),
                             child: Row(
                               children: [
                                 Container(
-                                  width: 50,
-                                  height: 50,
+                                  width: R.w(context, 50),
+                                  height: R.w(context, 50),
                                   decoration: BoxDecoration(
                                     color: AppColors.primary.withValues(alpha: 0.05),
-                                    borderRadius: BorderRadius.circular(8),
+                                    borderRadius: BorderRadius.circular(R.w(context, 8)),
                                     image: p.primaryImage.isNotEmpty ? DecorationImage(image: NetworkImage(p.primaryImage), fit: BoxFit.cover) : null,
                                   ),
                                 ),
-                                const SizedBox(width: 10),
+                                SizedBox(width: R.w(context, 10)),
                                 Expanded(
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Text(p.name, maxLines: 2, overflow: TextOverflow.ellipsis, style: AppTypography.bodySM(context).copyWith(fontSize: 10, fontWeight: FontWeight.bold)),
-                                      const SizedBox(height: 4),
+                                      Text(p.name, maxLines: 2, overflow: TextOverflow.ellipsis, style: AppTypography.bodySM(context).copyWith(fontSize: R.sp(context, 10), fontWeight: FontWeight.bold)),
+                                      SizedBox(height: R.h(context, 4)),
                                       Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Text(formatPrice(p.price), style: AppTypography.price(context).copyWith(fontSize: 12, color: AppColors.success)),
+                                          Text(formatPrice(p.price), style: AppTypography.price(context).copyWith(fontSize: R.sp(context, 12), color: AppColors.success)),
                                           GestureDetector(
                                             onTap: () => ref.read(cartProvider.notifier).addItem(p, qty: 1),
-                                            child: const Icon(Icons.add_circle_rounded, size: 20, color: AppColors.primary),
+                                            child: Icon(Icons.add_circle_rounded, size: R.sp(context, 20), color: AppColors.primary),
                                           ),
                                         ],
                                       ),
@@ -340,29 +341,29 @@ class CartScreen extends ConsumerWidget {
 
           // ── Pricing Summary ──
           Padding(
-            padding: const EdgeInsets.fromLTRB(24, 20, 24, 16),
+            padding: EdgeInsets.fromLTRB(R.w(context, 24), R.h(context, 20), R.w(context, 24), R.h(context, 16)),
             child: Column(
               children: [
                 // Apply Promo Button
                 GestureDetector(
                   onTap: () => context.push('/cart/promos'),
                   child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    padding: EdgeInsets.symmetric(horizontal: R.w(context, 16), vertical: R.h(context, 12)),
                     decoration: BoxDecoration(
                       color: state.appliedPromo != null ? AppColors.success.withValues(alpha: 0.1) : AppColors.primary.withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(R.w(context, 12)),
                       border: Border.all(color: state.appliedPromo != null ? AppColors.success : AppColors.primary, width: 1.5),
                     ),
                     child: Row(
                       children: [
-                        Icon(state.appliedPromo != null ? Icons.check_circle_outline_rounded : Icons.local_offer_outlined, size: 20, color: state.appliedPromo != null ? AppColors.success : AppColors.primary),
-                        const SizedBox(width: 12),
+                        Icon(state.appliedPromo != null ? Icons.check_circle_outline_rounded : Icons.local_offer_outlined, size: R.sp(context, 20), color: state.appliedPromo != null ? AppColors.success : AppColors.primary),
+                        SizedBox(width: R.w(context, 12)),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(state.appliedPromo != null ? '\'${state.appliedPromo!.code}\' Applied' : 'Apply Promo Code', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, color: state.appliedPromo != null ? AppColors.success : AppColors.deepCharcoal)),
-                              if (state.appliedPromo != null) Text('You saved ${formatPrice(state.discount)}', style: AppTypography.label(context).copyWith(fontSize: 10, color: AppColors.success)),
+                              if (state.appliedPromo != null) Text('You saved ${formatPrice(state.discount)}', style: AppTypography.label(context).copyWith(fontSize: R.sp(context, 10), color: AppColors.success)),
                             ],
                           ),
                         ),
@@ -371,31 +372,31 @@ class CartScreen extends ConsumerWidget {
                     ),
                   ),
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: R.h(context, 16)),
                 
                 _buildSummaryRow(context, 'Subtotal', state.subtotal),
-                const SizedBox(height: 8),
+                SizedBox(height: R.h(context, 8)),
                 if (state.shipping == 0)
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text('Shipping Delivery', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w600, color: AppColors.success)),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                        decoration: BoxDecoration(color: AppColors.success.withValues(alpha: 0.1), border: Border.all(color: AppColors.success.withValues(alpha: 0.2)), borderRadius: BorderRadius.circular(12)),
-                        child: Text('FREE', style: AppTypography.label(context).copyWith(fontSize: 9, color: AppColors.success)),
+                        padding: EdgeInsets.symmetric(horizontal: R.w(context, 8), vertical: R.h(context, 2)),
+                        decoration: BoxDecoration(color: AppColors.success.withValues(alpha: 0.1), border: Border.all(color: AppColors.success.withValues(alpha: 0.2)), borderRadius: BorderRadius.circular(R.w(context, 12))),
+                        child: Text('FREE', style: AppTypography.label(context).copyWith(fontSize: R.sp(context, 9), color: AppColors.success)),
                       ),
                     ],
                   )
                 else
                   _buildSummaryRow(context, 'Estimated Shipping', state.shipping),
 
-                const SizedBox(height: 8),
+                SizedBox(height: R.h(context, 8)),
                 _buildSummaryRow(context, 'Estimated Taxes (${(state.gstRate * 100).toInt()}%)', state.gst),
 
-                const SizedBox(height: 16),
+                SizedBox(height: R.h(context, 16)),
                 const Divider(color: AppColors.borderLight, height: 1),
-                const SizedBox(height: 16),
+                SizedBox(height: R.h(context, 16)),
 
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -405,19 +406,19 @@ class CartScreen extends ConsumerWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text('Estimated Total', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.bold, textBaseline: TextBaseline.alphabetic)),
-                        const SizedBox(height: 4),
-                        Text('Taxes & shipping verified at checkout', style: AppTypography.label(context).copyWith(fontSize: 9, color: AppColors.neutralGold)),
+                        SizedBox(height: R.h(context, 4)),
+                        Text('Taxes & shipping verified at checkout', style: AppTypography.label(context).copyWith(fontSize: R.sp(context, 9), color: AppColors.neutralGold)),
                       ],
                     ),
-                    Text(formatPrice(state.total), style: AppTypography.h2(context).copyWith(fontSize: 24, height: 1)),
+                    Text(formatPrice(state.total), style: AppTypography.h2(context).copyWith(fontSize: R.sp(context, 24), height: 1)),
                   ],
                 ),
-                const SizedBox(height: 24),
+                SizedBox(height: R.h(context, 24)),
                 
                 // Checkout Button
                 SizedBox(
                   width: double.infinity,
-                  height: 56,
+                  height: R.h(context, 56),
                   child: ElevatedButton(
                     onPressed: () {
                       final user = FirebaseAuth.instance.currentUser;
@@ -438,29 +439,29 @@ class CartScreen extends ConsumerWidget {
                       foregroundColor: AppColors.deepCharcoal,
                       elevation: 8,
                       shadowColor: AppColors.primary.withValues(alpha: 0.3),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(R.w(context, 16))),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text('Proceed to Checkout', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: 16)),
-                        const SizedBox(width: 8),
-                        const Icon(Icons.arrow_forward_rounded, size: 20),
+                        Text('Proceed to Checkout', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: R.sp(context, 16))),
+                        SizedBox(width: R.w(context, 8)),
+                        Icon(Icons.arrow_forward_rounded, size: R.sp(context, 20)),
                       ],
                     ),
                   ),
                 ),
 
-                const SizedBox(height: 20),
+                SizedBox(height: R.h(context, 20)),
                 
                 // Trust Badges
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     _buildTrustBadge(context, Icons.local_shipping_outlined, 'EXPRESS'),
-                    const SizedBox(width: 24),
+                    SizedBox(width: R.w(context, 24)),
                     _buildTrustBadge(context, Icons.shield_outlined, 'SECURE'),
-                    const SizedBox(width: 24),
+                    SizedBox(width: R.w(context, 24)),
                     _buildTrustBadge(context, Icons.verified_outlined, 'AUTHENTIC'),
                   ],
                 ),
@@ -476,9 +477,9 @@ class CartScreen extends ConsumerWidget {
   Widget _buildTrustBadge(BuildContext context, IconData icon, String label) {
     return Column(
       children: [
-        Icon(icon, size: 16, color: AppColors.deepCharcoal.withValues(alpha: 0.6)),
-        const SizedBox(height: 4),
-        Text(label, style: AppTypography.label(context).copyWith(fontSize: 8, color: AppColors.deepCharcoal.withValues(alpha: 0.6), letterSpacing: 1.5)),
+        Icon(icon, size: R.sp(context, 16), color: AppColors.deepCharcoal.withValues(alpha: 0.6)),
+        SizedBox(height: R.h(context, 4)),
+        Text(label, style: AppTypography.label(context).copyWith(fontSize: R.sp(context, 8), color: AppColors.deepCharcoal.withValues(alpha: 0.6), letterSpacing: 1.5)),
       ],
     );
   }
@@ -496,34 +497,34 @@ class CartScreen extends ConsumerWidget {
   Widget _buildEmptyState(BuildContext context) {
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(32),
+        padding: EdgeInsets.all(R.w(context, 32)),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              width: 80,
-              height: 80,
+              width: R.w(context, 80),
+              height: R.w(context, 80),
               decoration: BoxDecoration(color: AppColors.primary.withValues(alpha: 0.1), shape: BoxShape.circle, border: Border.all(color: AppColors.primary.withValues(alpha: 0.2))),
-              child: const Icon(Icons.shopping_bag_outlined, size: 32, color: AppColors.primary),
+              child: Icon(Icons.shopping_bag_outlined, size: R.sp(context, 32), color: AppColors.primary),
             ),
-            const SizedBox(height: 20),
-            Text('Your cart is empty', style: AppTypography.h2(context).copyWith(fontSize: 22)),
-            const SizedBox(height: 8),
-            Text('Discover hand-harvested artisanal treasures curated from the wild valleys of Kashmir.', textAlign: TextAlign.center, style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, fontSize: 12, height: 1.5)),
-            const SizedBox(height: 24),
+            SizedBox(height: R.h(context, 20)),
+            Text('Your cart is empty', style: AppTypography.h2(context).copyWith(fontSize: R.sp(context, 22))),
+            SizedBox(height: R.h(context, 8)),
+            Text('Discover hand-harvested artisanal treasures curated from the wild valleys of Kashmir.', textAlign: TextAlign.center, style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, fontSize: R.sp(context, 12), height: 1.5)),
+            SizedBox(height: R.h(context, 24)),
             SizedBox(
-              width: 220,
+              width: R.w(context, 220),
               child: ElevatedButton(
                 onPressed: () => context.go('/shop'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primary,
                   foregroundColor: AppColors.deepCharcoal,
                   elevation: 6,
-                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  padding: EdgeInsets.symmetric(vertical: R.h(context, 12)),
                   shadowColor: AppColors.primary.withValues(alpha: 0.3),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(R.w(context, 12))),
                 ),
-                child: Text('Explore The Pantry', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: 13)),
+                child: Text('Explore The Pantry', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: R.sp(context, 13))),
               ),
             ),
           ],

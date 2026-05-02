@@ -5,6 +5,7 @@ import 'package:timeago/timeago.dart' as timeago;
 
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_typography.dart';
+import '../../core/utils/responsive.dart';
 import '../../core/widgets/custom_network_image.dart';
 import '../../providers/providers.dart';
 
@@ -39,23 +40,23 @@ class NotificationsScreen extends ConsumerWidget {
       body: notifications.isEmpty
           ? _buildEmptyState(context)
           : ListView.builder(
-              padding: const EdgeInsets.only(top: 16, bottom: 32),
+              padding: EdgeInsets.only(top: R.h(context, 16), bottom: R.h(context, 32)),
               itemCount: notifications.length,
               itemBuilder: (context, index) {
                 final notification = notifications[index];
                 return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                  padding: EdgeInsets.symmetric(horizontal: R.w(context, 16), vertical: R.h(context, 6)),
                   child: Dismissible(
                     key: Key(notification.id),
                     direction: DismissDirection.endToStart,
                     background: Container(
                       decoration: BoxDecoration(
                         color: AppColors.error,
-                        borderRadius: BorderRadius.circular(16),
+                        borderRadius: BorderRadius.circular(R.w(context, 16)),
                       ),
                       alignment: Alignment.centerRight,
-                      padding: const EdgeInsets.only(right: 24),
-                      child: const Icon(Icons.delete_outline, color: Colors.white, size: 28),
+                      padding: EdgeInsets.only(right: R.w(context, 24)),
+                      child: Icon(Icons.delete_outline, color: Colors.white, size: R.sp(context, 28)),
                     ),
                     onDismissed: (_) {
                       ref.read(notificationsProvider.notifier).deleteNotification(notification.id);
@@ -63,7 +64,7 @@ class NotificationsScreen extends ConsumerWidget {
                     child: Container(
                       decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: BorderRadius.circular(14),
+                        borderRadius: BorderRadius.circular(R.w(context, 14)),
                         border: Border.all(
                           color: notification.isRead ? AppColors.borderLight.withValues(alpha: 0.5) : AppColors.primary.withValues(alpha: 0.4),
                           width: 1.0,
@@ -89,12 +90,12 @@ class NotificationsScreen extends ConsumerWidget {
                           }
                         },
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                          padding: EdgeInsets.symmetric(horizontal: R.w(context, 16), vertical: R.h(context, 14)),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              _buildIconOrImage(notification.imageUrl, notification.isRead),
-                              const SizedBox(width: 12),
+                              _buildIconOrImage(context, notification.imageUrl, notification.isRead),
+                              SizedBox(width: R.w(context, 12)),
                               Expanded(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -114,9 +115,9 @@ class NotificationsScreen extends ConsumerWidget {
                                         ),
                                         if (!notification.isRead)
                                           Container(
-                                            margin: const EdgeInsets.only(left: 8, top: 2),
-                                            width: 6,
-                                            height: 6,
+                                            margin: EdgeInsets.only(left: R.w(context, 8), top: R.h(context, 2)),
+                                            width: R.w(context, 6),
+                                            height: R.w(context, 6),
                                             decoration: const BoxDecoration(
                                               color: AppColors.primary,
                                               shape: BoxShape.circle,
@@ -124,7 +125,7 @@ class NotificationsScreen extends ConsumerWidget {
                                           ),
                                       ],
                                     ),
-                                    const SizedBox(height: 4),
+                                    SizedBox(height: R.h(context, 4)),
                                     Text(
                                       notification.body,
                                       style: AppTypography.caption(context).copyWith(
@@ -134,20 +135,20 @@ class NotificationsScreen extends ConsumerWidget {
                                       maxLines: 2,
                                       overflow: TextOverflow.ellipsis,
                                     ),
-                                    const SizedBox(height: 8),
+                                    SizedBox(height: R.h(context, 8)),
                                     Row(
                                       children: [
                                         Icon(
                                           Icons.access_time, 
-                                          size: 12, 
+                                          size: R.sp(context, 12), 
                                           color: AppColors.neutralGold.withValues(alpha: 0.8),
                                         ),
-                                        const SizedBox(width: 4),
+                                        SizedBox(width: R.w(context, 4)),
                                         Text(
                                           timeago.format(notification.timestamp),
                                           style: AppTypography.caption(context).copyWith(
                                             color: AppColors.neutralGold.withValues(alpha: 0.8),
-                                            fontSize: 11,
+                                            fontSize: R.sp(context, 11),
                                             fontWeight: FontWeight.w600,
                                           ),
                                         ),
@@ -168,17 +169,17 @@ class NotificationsScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildIconOrImage(String? imageUrl, bool isRead) {
+  Widget _buildIconOrImage(BuildContext context, String? imageUrl, bool isRead) {
     if (imageUrl != null && imageUrl.isNotEmpty) {
       return Container(
-        width: 48,
-        height: 48,
+        width: R.w(context, 48),
+        height: R.w(context, 48),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(R.w(context, 10)),
           border: Border.all(color: AppColors.borderLight, width: 1),
         ),
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(9),
+          borderRadius: BorderRadius.circular(R.w(context, 9)),
           child: CustomNetworkImage(
             imageUrl: imageUrl,
             fit: BoxFit.cover,
@@ -187,11 +188,11 @@ class NotificationsScreen extends ConsumerWidget {
       );
     }
     return Container(
-      width: 48,
-      height: 48,
+      width: R.w(context, 48),
+      height: R.w(context, 48),
       decoration: BoxDecoration(
         color: isRead ? AppColors.backgroundLight : AppColors.primary.withValues(alpha: 0.08),
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(R.w(context, 10)),
         border: Border.all(
           color: isRead ? AppColors.borderLight : AppColors.primary.withValues(alpha: 0.3),
           width: 1.0,
@@ -200,7 +201,7 @@ class NotificationsScreen extends ConsumerWidget {
       child: Icon(
         Icons.notifications_outlined,
         color: isRead ? AppColors.neutralGold.withValues(alpha: 0.5) : AppColors.primary,
-        size: 20,
+        size: R.sp(context, 20),
       ),
     );
   }
@@ -212,15 +213,15 @@ class NotificationsScreen extends ConsumerWidget {
         children: [
           Icon(
             Icons.notifications_off_outlined,
-            size: 80,
+            size: R.sp(context, 80),
             color: Colors.grey.shade300,
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: R.h(context, 16)),
           Text(
             'No notifications yet',
             style: AppTypography.h3(context).copyWith(color: AppColors.neutralGold),
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: R.h(context, 8)),
           Text(
             'When you get updates or offers,\nthey\'ll show up here.',
             textAlign: TextAlign.center,

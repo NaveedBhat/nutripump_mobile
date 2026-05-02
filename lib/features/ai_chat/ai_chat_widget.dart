@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 import '../../../core/constants/app_colors.dart';
+import '../../../core/utils/responsive.dart';
 import 'ai_chat_sheet.dart';
 
 class AiChatWidget extends StatefulWidget {
@@ -140,16 +141,16 @@ class _AiChatWidgetState extends State<AiChatWidget>
 
         // Floating Action Button
         Positioned(
-          right: 16,
-          bottom: 16,
+          right: R.w(context, 16),
+          bottom: R.h(context, 16),
           child: AnimatedOpacity(
             duration: const Duration(milliseconds: 300),
             opacity: (keyboardOpen && !_isOpen) ? 0.0 : 1.0,
             child: IgnorePointer(
               ignoring: keyboardOpen && !_isOpen,
               child: SizedBox(
-                width: 56,
-                height: 56,
+                width: R.w(context, 56),
+                height: R.w(context, 56),
                 child: AnimatedBuilder(
                   animation: Listenable.merge([_scaleAnimation, _ringAnimation, _spinAnimation]),
                   builder: (context, child) {
@@ -163,8 +164,8 @@ class _AiChatWidgetState extends State<AiChatWidget>
                             child: Opacity(
                               opacity: _ringOpacity.value,
                               child: Container(
-                                width: 56,
-                                height: 56,
+                                width: R.w(context, 56),
+                                height: R.w(context, 56),
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   border: Border.all(color: AppColors.primary, width: 2),
@@ -179,8 +180,8 @@ class _AiChatWidgetState extends State<AiChatWidget>
                             child: Opacity(
                               opacity: _ringOpacity.value * 0.5,
                               child: Container(
-                                width: 56,
-                                height: 56,
+                                width: R.w(context, 56),
+                                height: R.w(context, 56),
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   border: Border.all(
@@ -198,8 +199,8 @@ class _AiChatWidgetState extends State<AiChatWidget>
                             onTap: _toggleChat,
                             child: AnimatedContainer(
                               duration: const Duration(milliseconds: 300),
-                              width: 56,
-                              height: 56,
+                              width: R.w(context, 56),
+                              height: R.w(context, 56),
                               decoration: BoxDecoration(
                                 color: Colors.black,
                                 shape: BoxShape.circle,
@@ -223,15 +224,15 @@ class _AiChatWidgetState extends State<AiChatWidget>
                                   );
                                 },
                                 child: _isOpen
-                                    ? const Icon(
+                                    ? Icon(
                                         Icons.keyboard_arrow_up_rounded,
-                                        key: ValueKey('icon'),
+                                        key: const ValueKey('icon'),
                                         color: AppColors.primary,
-                                        size: 28,
+                                        size: R.sp(context, 28),
                                       )
                                     : Padding(
                                         key: const ValueKey('image'),
-                                        padding: const EdgeInsets.all(8.0),
+                                        padding: EdgeInsets.all(R.w(context, 8)),
                                         child: Transform.rotate(
                                           angle: 3.14159 + _spinAnimation.value,
                                           child: Image.asset(

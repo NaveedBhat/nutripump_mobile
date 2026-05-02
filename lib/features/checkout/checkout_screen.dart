@@ -9,6 +9,7 @@ import '../../models/cart_item.dart';
 import '../../providers/cart_provider.dart';
 import '../../providers/providers.dart';
 import '../../services/api/checkout_api.dart';
+import '../../core/utils/responsive.dart';
 import '../account/address_book_screen.dart' show AddressFormSheet;
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -207,10 +208,10 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(Icons.shopping_cart_checkout_rounded, size: 64, color: AppColors.borderLight),
-              const SizedBox(height: 24),
+              Icon(Icons.shopping_cart_checkout_rounded, size: R.sp(context, 64), color: AppColors.borderLight),
+              SizedBox(height: R.h(context, 24)),
               Text('Your cart is empty', style: AppTypography.h2(context)),
-              const SizedBox(height: 24),
+              SizedBox(height: R.h(context, 24)),
               ElevatedButton(onPressed: () => context.pop(), child: const Text('Back to Shop')),
             ],
           ),
@@ -237,9 +238,9 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const CircularProgressIndicator(color: AppColors.primary),
-            const SizedBox(height: 24),
+            SizedBox(height: R.h(context, 24)),
             Text('Processing your order...', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700)),
-            const SizedBox(height: 8),
+            SizedBox(height: R.h(context, 8)),
             Text('Please do not close this screen', style: AppTypography.label(context).copyWith(color: AppColors.neutralGold)),
           ],
         ),
@@ -260,26 +261,26 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
     const steps = _CheckoutScreenState.steps;
     return Container(
       color: Colors.white,
-      padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 32),
+      padding: EdgeInsets.symmetric(vertical: R.h(context, 24), horizontal: R.w(context, 32)),
       child: Stack(
         alignment: Alignment.topCenter,
         children: [
           // ── Background Connector Lines ──
           Positioned(
-            top: 15, // Centers the 2px line exactly behind the 32px circles
-            left: 16, // Offset by half the circle width
-            right: 16,
+            top: R.h(context, 15), // Centers the 2px line exactly behind the 32px circles
+            left: R.w(context, 16), // Offset by half the circle width
+            right: R.w(context, 16),
             child: Row(
               children: [
                 Expanded(
                   child: Container(
-                    height: 2,
+                    height: R.h(context, 2),
                     color: 0 < currentStep ? AppColors.primary : AppColors.borderLight,
                   ),
                 ),
                 Expanded(
                   child: Container(
-                    height: 2,
+                    height: R.h(context, 2),
                     color: 1 < currentStep ? AppColors.primary : AppColors.borderLight,
                   ),
                 ),
@@ -303,13 +304,13 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Container(
-                        width: 32,
-                        height: 32,
+                        width: R.w(context, 32),
+                        height: R.w(context, 32),
                         decoration: BoxDecoration(
                           color: isActive ? AppColors.primary : Colors.white,
                           border: Border.all(
                             color: isActive ? AppColors.primary : AppColors.borderLight,
-                            width: 2,
+                            width: R.w(context, 2),
                           ),
                           shape: BoxShape.circle,
                           boxShadow: isCurrent
@@ -318,7 +319,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                         ),
                         alignment: Alignment.center,
                         child: isCompleted
-                            ? const Icon(Icons.check_rounded, size: 16, color: Colors.white)
+                            ? Icon(Icons.check_rounded, size: R.sp(context, 16), color: Colors.white)
                             : Text(
                           '${i + 1}',
                           style: AppTypography.label(context).copyWith(
@@ -327,11 +328,11 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 10),
+                      SizedBox(height: R.h(context, 10)),
                       Text(
                         steps[i].toUpperCase(),
                         style: AppTypography.label(context).copyWith(
-                          fontSize: 8,
+                          fontSize: R.sp(context, 8),
                           letterSpacing: 1.2,
                           color: isActive ? AppColors.primary : AppColors.neutralGold,
                           fontWeight: isActive ? FontWeight.w800 : FontWeight.w600,
@@ -351,16 +352,16 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
   Widget _buildStep0Details() {
     return SliverToBoxAdapter(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(R.w(context, 16)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text('1. Delivery Address', style: AppTypography.h3(context)),
-            const SizedBox(height: 16),
+            SizedBox(height: R.h(context, 16)),
             const _AddressSelectionSection(),
-            const SizedBox(height: 32),
+            SizedBox(height: R.h(context, 32)),
             Text('2. Payment Method', style: AppTypography.h3(context)),
-            const SizedBox(height: 16),
+            SizedBox(height: R.h(context, 16)),
             const _PaymentSelectionSection(),
           ],
         ),
@@ -371,38 +372,38 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
   Widget _buildStep1Review(CartState cart) {
     return SliverToBoxAdapter(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(R.w(context, 16)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Review Order', style: AppTypography.h2(context).copyWith(fontSize: 24)),
+                Text('Review Order', style: AppTypography.h2(context).copyWith(fontSize: R.sp(context, 24))),
                 TextButton(
                   onPressed: () => ref.read(checkoutStepProvider.notifier).state = 0,
-                  style: TextButton.styleFrom(backgroundColor: AppColors.primary.withValues(alpha: 0.1), padding: const EdgeInsets.symmetric(horizontal: 16)),
+                  style: TextButton.styleFrom(backgroundColor: AppColors.primary.withValues(alpha: 0.1), padding: EdgeInsets.symmetric(horizontal: R.w(context, 16))),
                   child: Text('EDIT DETAILS', style: AppTypography.label(context).copyWith(color: AppColors.primary, fontWeight: FontWeight.w800)),
                 )
               ],
             ),
-            const SizedBox(height: 24),
+            SizedBox(height: R.h(context, 24)),
 
             // Delivery Review
             Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20), border: Border.all(color: AppColors.primary.withValues(alpha: 0.2)), boxShadow: [BoxShadow(color: AppColors.primary.withValues(alpha: 0.05), blurRadius: 20)]),
+              padding: EdgeInsets.all(R.w(context, 20)),
+              decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(R.w(context, 20)), border: Border.all(color: AppColors.primary.withValues(alpha: 0.2)), boxShadow: [BoxShadow(color: AppColors.primary.withValues(alpha: 0.05), blurRadius: 20)]),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
-                      const Icon(Icons.local_shipping_outlined, size: 16, color: AppColors.primary),
-                      const SizedBox(width: 8),
-                      Text('DELIVERING TO', style: AppTypography.label(context).copyWith(color: AppColors.primary, letterSpacing: 1.5, fontSize: 10)),
+                      Icon(Icons.local_shipping_outlined, size: R.sp(context, 16), color: AppColors.primary),
+                      SizedBox(width: R.w(context, 8)),
+                      Text('DELIVERING TO', style: AppTypography.label(context).copyWith(color: AppColors.primary, letterSpacing: 1.5, fontSize: R.sp(context, 10))),
                     ],
                   ),
-                  const SizedBox(height: 12),
+                  SizedBox(height: R.h(context, 12)),
                   Consumer(
                       builder: (context, ref, _) {
                         final address = ref.watch(selectedAddressProvider);
@@ -410,11 +411,11 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(address.fullName, style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: 15)),
-                            const SizedBox(height: 4),
+                            Text(address.fullName, style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: R.sp(context, 15))),
+                            SizedBox(height: R.h(context, 4)),
                             Text('${address.addressLine1}${address.locality != null ? ', ${address.locality}' : ''}', style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold)),
                             Text('${address.city}, ${address.state} - ${address.pincode}', style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold)),
-                            const SizedBox(height: 6),
+                            SizedBox(height: R.h(context, 6)),
                             Text(address.phone, style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w600)),
                           ],
                         );
@@ -423,23 +424,23 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                 ],
               ),
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: R.h(context, 16)),
 
             // Payment Review
             Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20), border: Border.all(color: AppColors.primary.withValues(alpha: 0.2)), boxShadow: [BoxShadow(color: AppColors.primary.withValues(alpha: 0.05), blurRadius: 20)]),
+              padding: EdgeInsets.all(R.w(context, 20)),
+              decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(R.w(context, 20)), border: Border.all(color: AppColors.primary.withValues(alpha: 0.2)), boxShadow: [BoxShadow(color: AppColors.primary.withValues(alpha: 0.05), blurRadius: 20)]),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
-                      const Icon(Icons.account_balance_wallet_outlined, size: 16, color: AppColors.primary),
-                      const SizedBox(width: 8),
-                      Text('PAYMENT METHOD', style: AppTypography.label(context).copyWith(color: AppColors.primary, letterSpacing: 1.5, fontSize: 10)),
+                      Icon(Icons.account_balance_wallet_outlined, size: R.sp(context, 16), color: AppColors.primary),
+                      SizedBox(width: R.w(context, 8)),
+                      Text('PAYMENT METHOD', style: AppTypography.label(context).copyWith(color: AppColors.primary, letterSpacing: 1.5, fontSize: R.sp(context, 10))),
                     ],
                   ),
-                  const SizedBox(height: 12),
+                  SizedBox(height: R.h(context, 12)),
                   Consumer(
                       builder: (context, ref, _) {
                         final method = ref.watch(paymentMethodProvider);
@@ -447,8 +448,8 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(label, style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: 15)),
-                            const SizedBox(height: 4),
+                            Text(label, style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: R.sp(context, 15))),
+                            SizedBox(height: R.h(context, 4)),
                             Text(method == 'cod' ? 'Awaiting payment upon confirmed delivery.' : 'Secured digitally via Razorpay gateway.', style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold)),
                           ],
                         );
@@ -457,31 +458,31 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                 ],
               ),
             ),
-            const SizedBox(height: 32),
+            SizedBox(height: R.h(context, 32)),
 
             Text('Artisan Products to Ship', style: AppTypography.h3(context)),
-            const SizedBox(height: 16),
+            SizedBox(height: R.h(context, 16)),
             ...cart.items.map((item) => Padding(
-              padding: const EdgeInsets.only(bottom: 16),
+              padding: EdgeInsets.only(bottom: R.h(context, 16)),
               child: Row(
                 children: [
                   Container(
-                    width: 64,
-                    height: 64,
-                    decoration: BoxDecoration(color: AppColors.primary.withValues(alpha: 0.05), borderRadius: BorderRadius.circular(12), image: item.product.primaryImage.isNotEmpty ? DecorationImage(image: NetworkImage(item.product.primaryImage), fit: BoxFit.cover) : null),
+                    width: R.w(context, 64),
+                    height: R.w(context, 64),
+                    decoration: BoxDecoration(color: AppColors.primary.withValues(alpha: 0.05), borderRadius: BorderRadius.circular(R.w(context, 12)), image: item.product.primaryImage.isNotEmpty ? DecorationImage(image: NetworkImage(item.product.primaryImage), fit: BoxFit.cover) : null),
                   ),
-                  const SizedBox(width: 16),
+                  SizedBox(width: R.w(context, 16)),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(item.product.name, maxLines: 1, overflow: TextOverflow.ellipsis, style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.bold)),
-                        const SizedBox(height: 4),
-                        Text('${item.selectedWeight ?? item.product.weight} · Qty ${item.quantity}', style: AppTypography.label(context).copyWith(fontSize: 10, color: AppColors.neutralGold, letterSpacing: 1.2)),
+                        SizedBox(height: R.h(context, 4)),
+                        Text('${item.selectedWeight ?? item.product.weight} · Qty ${item.quantity}', style: AppTypography.label(context).copyWith(fontSize: R.sp(context, 10), color: AppColors.neutralGold, letterSpacing: 1.2)),
                       ],
                     ),
                   ),
-                  Text(formatPrice(item.effectivePrice * item.quantity), style: AppTypography.price(context).copyWith(fontSize: 14, color: AppColors.deepCharcoal)),
+                  Text(formatPrice(item.effectivePrice * item.quantity), style: AppTypography.price(context).copyWith(fontSize: R.sp(context, 14), color: AppColors.deepCharcoal)),
                 ],
               ),
             )),
@@ -497,7 +498,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
         color: Colors.white,
         boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), offset: const Offset(0, -10), blurRadius: 30)],
       ),
-      padding: EdgeInsets.fromLTRB(24, 20, 24, MediaQuery.of(context).padding.bottom + 20),
+      padding: EdgeInsets.fromLTRB(R.w(context, 24), R.h(context, 20), R.w(context, 24), MediaQuery.of(context).padding.bottom + R.h(context, 20)),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -509,14 +510,14 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                 final method = ref.watch(paymentMethodProvider);
                 final settings = ref.watch(paymentSettingsProvider).value;
                 final codCharge = (method == 'cod' && settings != null) ? settings.codCharge : 0.0;
-                return Text(formatPrice(cart.total + codCharge), style: AppTypography.h2(context).copyWith(fontSize: 24, height: 1));
+                return Text(formatPrice(cart.total + codCharge), style: AppTypography.h2(context).copyWith(fontSize: R.sp(context, 24), height: 1));
               }),
             ],
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: R.h(context, 16)),
           SizedBox(
             width: double.infinity,
-            height: 56,
+            height: R.h(context, 56),
             child: ElevatedButton(
               onPressed: () {
                 if (step == 0) {
@@ -535,14 +536,14 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                 foregroundColor: AppColors.deepCharcoal,
                 elevation: 8,
                 shadowColor: AppColors.primary.withValues(alpha: 0.3),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(R.w(context, 16))),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(step == 0 ? 'Review Order' : 'Place Order & Pay', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: 16)),
-                  const SizedBox(width: 8),
-                  Icon(step == 0 ? Icons.arrow_forward_rounded : Icons.lock_outline_rounded, size: 20),
+                  Text(step == 0 ? 'Review Order' : 'Place Order & Pay', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: R.sp(context, 16))),
+                  SizedBox(width: R.w(context, 8)),
+                  Icon(step == 0 ? Icons.arrow_forward_rounded : Icons.lock_outline_rounded, size: R.sp(context, 20)),
                 ],
               ),
             ),
@@ -576,17 +577,17 @@ class _AddressSelectionSection extends ConsumerWidget {
             if (addresses.isEmpty)
               Container(
                 width: double.infinity,
-                padding: const EdgeInsets.all(24),
-                decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16), border: Border.all(color: AppColors.borderLight, style: BorderStyle.none)),
+                padding: EdgeInsets.all(R.w(context, 24)),
+                decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(R.w(context, 16)), border: Border.all(color: AppColors.borderLight, style: BorderStyle.none)),
                 child: Column(
                   children: [
-                    const Icon(Icons.location_on_outlined, size: 32, color: AppColors.neutralGold),
-                    const SizedBox(height: 12),
+                    Icon(Icons.location_on_outlined, size: R.sp(context, 32), color: AppColors.neutralGold),
+                    SizedBox(height: R.h(context, 12)),
                     Text('No saved addresses found', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w600)),
-                    const SizedBox(height: 16),
+                    SizedBox(height: R.h(context, 16)),
                     ElevatedButton.icon(
                       onPressed: () => _showAddAddressSheet(context, user.uid, ref),
-                      icon: const Icon(Icons.add, size: 16),
+                      icon: Icon(Icons.add, size: R.sp(context, 16)),
                       label: const Text('Add New Address'),
                       style: ElevatedButton.styleFrom(backgroundColor: AppColors.deepCharcoal, foregroundColor: Colors.white),
                     )
@@ -599,18 +600,18 @@ class _AddressSelectionSection extends ConsumerWidget {
                 return GestureDetector(
                   onTap: () => ref.read(selectedAddressProvider.notifier).state = addr,
                   child: Container(
-                    margin: const EdgeInsets.only(bottom: 12),
-                    padding: const EdgeInsets.all(16),
+                    margin: EdgeInsets.only(bottom: R.h(context, 12)),
+                    padding: EdgeInsets.all(R.w(context, 16)),
                     decoration: BoxDecoration(
                       color: isSelected ? AppColors.primary.withValues(alpha: 0.05) : Colors.white,
-                      borderRadius: BorderRadius.circular(16),
+                      borderRadius: BorderRadius.circular(R.w(context, 16)),
                       border: Border.all(color: isSelected ? AppColors.primary : AppColors.borderLight, width: isSelected ? 2 : 1),
                     ),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Icon(isSelected ? Icons.radio_button_checked : Icons.radio_button_off, color: isSelected ? AppColors.primary : AppColors.neutralGold, size: 20),
-                        const SizedBox(width: 16),
+                        Icon(isSelected ? Icons.radio_button_checked : Icons.radio_button_off, color: isSelected ? AppColors.primary : AppColors.neutralGold, size: R.sp(context, 20)),
+                        SizedBox(width: R.w(context, 16)),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -619,15 +620,15 @@ class _AddressSelectionSection extends ConsumerWidget {
                                 children: [
                                   Text(addr.fullName, style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.bold)),
                                   if (addr.isDefault) ...[
-                                    const SizedBox(width: 8),
-                                    Container(padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2), decoration: BoxDecoration(color: AppColors.primary, borderRadius: BorderRadius.circular(4)), child: Text('DEFAULT', style: AppTypography.label(context).copyWith(fontSize: 8, color: AppColors.deepCharcoal))),
+                                    SizedBox(width: R.w(context, 8)),
+                                    Container(padding: EdgeInsets.symmetric(horizontal: R.w(context, 6), vertical: R.h(context, 2)), decoration: BoxDecoration(color: AppColors.primary, borderRadius: BorderRadius.circular(R.w(context, 4))), child: Text('DEFAULT', style: AppTypography.label(context).copyWith(fontSize: R.sp(context, 8), color: AppColors.deepCharcoal))),
                                   ]
                                 ],
                               ),
-                              const SizedBox(height: 4),
+                              SizedBox(height: R.h(context, 4)),
                               Text('${addr.addressLine1}${addr.locality != null ? ', ${addr.locality}' : ''}', style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold)),
                               Text('${addr.city}, ${addr.state} - ${addr.pincode}', style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold)),
-                              const SizedBox(height: 4),
+                              SizedBox(height: R.h(context, 4)),
                               Text(addr.phone, style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w600)),
                             ],
                           ),
@@ -637,7 +638,7 @@ class _AddressSelectionSection extends ConsumerWidget {
                   ),
                 );
               }),
-              const SizedBox(height: 12),
+              SizedBox(height: R.h(context, 12)),
               TextButton.icon(
                 onPressed: () => _showAddAddressSheet(context, user.uid, ref),
                 icon: const Icon(Icons.add_circle_outline, color: AppColors.primary),
@@ -782,15 +783,15 @@ class _PaymentSelectionSectionState
         if (isEnabled) ref.read(paymentMethodProvider.notifier).state = id;
       },
       child: Container(
-        margin: const EdgeInsets.only(bottom: 12),
-        padding: const EdgeInsets.all(16),
+        margin: EdgeInsets.only(bottom: R.h(context, 12)),
+        padding: EdgeInsets.all(R.w(context, 16)),
         decoration: BoxDecoration(
           color: !isEnabled
               ? AppColors.borderLight.withValues(alpha: 0.3)
               : isSelected
               ? AppColors.primary.withValues(alpha: 0.05)
               : Colors.white,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(R.w(context, 16)),
           border: Border.all(
               color: !isEnabled
                   ? AppColors.borderLight.withValues(alpha: 0.5)
@@ -803,43 +804,43 @@ class _PaymentSelectionSectionState
         child: Row(
           children: [
             Container(
-              padding: const EdgeInsets.all(8),
+              padding: EdgeInsets.all(R.w(context, 8)),
               decoration: BoxDecoration(
                   color: !isEnabled ? AppColors.borderLight : isSelected ? AppColors.primary : AppColors.backgroundLight,
-                  borderRadius: BorderRadius.circular(8)
+                  borderRadius: BorderRadius.circular(R.w(context, 8))
               ),
               child: Icon(
                   !isEnabled ? Icons.lock_outline : icon,
                   color: !isEnabled ? AppColors.neutralGold.withValues(alpha: 0.5) : isSelected ? AppColors.deepCharcoal : AppColors.neutralGold,
-                  size: 20
+                  size: R.sp(context, 20)
               ),
             ),
-            const SizedBox(width: 16),
+            SizedBox(width: R.w(context, 16)),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Wrap(
                     crossAxisAlignment: WrapCrossAlignment.center,
-                    spacing: 8,
-                    runSpacing: 4,
+                    spacing: R.w(context, 8),
+                    runSpacing: R.h(context, 4),
                     children: [
                       Text(title, style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.bold, color: !isEnabled ? AppColors.neutralGold : AppColors.deepCharcoal)),
                       if (!isEnabled)
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                          decoration: BoxDecoration(color: AppColors.borderLight, borderRadius: BorderRadius.circular(4)),
-                          child: Text(lockedReason ?? 'UNAVAILABLE', style: AppTypography.label(context).copyWith(fontSize: 8, color: AppColors.neutralGold)),
+                          padding: EdgeInsets.symmetric(horizontal: R.w(context, 6), vertical: R.h(context, 2)),
+                          decoration: BoxDecoration(color: AppColors.borderLight, borderRadius: BorderRadius.circular(R.w(context, 4))),
+                          child: Text(lockedReason ?? 'UNAVAILABLE', style: AppTypography.label(context).copyWith(fontSize: R.sp(context, 8), color: AppColors.neutralGold)),
                         ),
                       if (isEnabled && id == 'cod' && isSelected && codCharge > 0)
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                          decoration: BoxDecoration(color: Colors.amber.shade100, borderRadius: BorderRadius.circular(4), border: Border.all(color: Colors.amber.shade300)),
-                          child: Text('+₹${codCharge.toInt()} COD charge', style: AppTypography.label(context).copyWith(fontSize: 8, color: Colors.amber.shade900)),
+                          padding: EdgeInsets.symmetric(horizontal: R.w(context, 6), vertical: R.h(context, 2)),
+                          decoration: BoxDecoration(color: Colors.amber.shade100, borderRadius: BorderRadius.circular(R.w(context, 4)), border: Border.all(color: Colors.amber.shade300)),
+                          child: Text('+₹${codCharge.toInt()} COD charge', style: AppTypography.label(context).copyWith(fontSize: R.sp(context, 8), color: Colors.amber.shade900)),
                         ),
                     ],
                   ),
-                  Text(subtitle, style: AppTypography.label(context).copyWith(fontSize: 10, color: !isEnabled ? AppColors.neutralGold.withValues(alpha: 0.5) : AppColors.neutralGold)),
+                  Text(subtitle, style: AppTypography.label(context).copyWith(fontSize: R.sp(context, 10), color: !isEnabled ? AppColors.neutralGold.withValues(alpha: 0.5) : AppColors.neutralGold)),
                 ],
               ),
             ),
