@@ -6,6 +6,7 @@ import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_typography.dart';
 import '../../core/widgets/custom_network_image.dart';
 import '../../core/utils/formatters.dart';
+import '../../core/utils/responsive.dart';
 import '../../providers/cart_provider.dart';
 import '../../models/product.dart';
 
@@ -17,7 +18,38 @@ class WishlistScreen extends ConsumerWidget {
     final items = ref.watch(wishlistProvider);
 
     return Scaffold(
+      extendBody: true,
       backgroundColor: AppColors.backgroundLight,
+      bottomNavigationBar: items.isEmpty
+          ? null
+          : Padding(
+              padding: EdgeInsets.fromLTRB(
+                  R.w(context, 16),
+                  R.h(context, 16),
+                  R.w(context, 16),
+                  MediaQuery.paddingOf(context).bottom + R.h(context, 16)),
+              child: ElevatedButton.icon(
+                onPressed: () => _moveAllToCart(context, ref, items),
+                icon: Icon(Icons.shopping_bag_outlined,
+                    size: R.sp(context, 16), color: Colors.white),
+                label: Text(
+                  'Move All to Cart',
+                  style: AppTypography.bodySM(context).copyWith(
+                    color: Colors.white,
+                    fontSize: R.sp(context, 13),
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.deepCharcoal,
+                  foregroundColor: Colors.white,
+                  padding: EdgeInsets.symmetric(vertical: R.h(context, 14)),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(R.w(context, 12))),
+                  elevation: 0,
+                ),
+              ),
+            ),
       body: CustomScrollView(
         slivers: [
           // ── App Bar — clean, no item count / clear all ───────────────
@@ -28,7 +60,7 @@ class WishlistScreen extends ConsumerWidget {
             elevation: 0,
             surfaceTintColor: Colors.transparent,
             centerTitle: true,
-            title: Text('Saved for Later', style: AppTypography.h3(context)),
+            title: Text('Saved for Later', style: AppTypography.h3(context).copyWith(fontSize: R.sp(context, 16))),
             bottom: PreferredSize(
               preferredSize: const Size.fromHeight(1),
               child: Container(height: 1, color: AppColors.borderLight),
@@ -45,7 +77,7 @@ class WishlistScreen extends ConsumerWidget {
             // ── Item count + Clear All row ────────────────────────────
             SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(16, 16, 16, 4),
+                padding: EdgeInsets.fromLTRB(R.w(context, 16), R.h(context, 16), R.w(context, 16), R.h(context, 4)),
                 child: Row(
                   children: [
                     Text(
@@ -53,7 +85,7 @@ class WishlistScreen extends ConsumerWidget {
                       style: AppTypography.bodySM(context).copyWith(
                         color: AppColors.neutralGold,
                         fontWeight: FontWeight.w600,
-                        fontSize: 13,
+                        fontSize: R.sp(context, 12),
                       ),
                     ),
                     const Spacer(),
@@ -64,7 +96,7 @@ class WishlistScreen extends ConsumerWidget {
                         style: AppTypography.bodySM(context).copyWith(
                           color: AppColors.error,
                           fontWeight: FontWeight.w700,
-                          fontSize: 13,
+                          fontSize: R.sp(context, 12),
                         ),
                       ),
                     ),
@@ -76,23 +108,23 @@ class WishlistScreen extends ConsumerWidget {
             // ── Swipe hint ─────────────────────────────────────────────
             SliverToBoxAdapter(
               child: Container(
-                margin: const EdgeInsets.fromLTRB(16, 8, 16, 4),
-                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 9),
+                margin: EdgeInsets.fromLTRB(R.w(context, 16), R.h(context, 8), R.w(context, 16), R.h(context, 4)),
+                padding: EdgeInsets.symmetric(horizontal: R.w(context, 12), vertical: R.h(context, 8)),
                 decoration: BoxDecoration(
                   color: AppColors.primary.withValues(alpha: 0.07),
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(R.w(context, 10)),
                   border: Border.all(color: AppColors.primary.withValues(alpha: 0.13)),
                 ),
                 child: Row(
                   children: [
-                    const Icon(Icons.swipe_left_outlined,
-                        size: 15, color: AppColors.neutralGold),
-                    const SizedBox(width: 8),
+                    Icon(Icons.swipe_left_outlined,
+                        size: R.sp(context, 14), color: AppColors.neutralGold),
+                    SizedBox(width: R.w(context, 8)),
                     Text(
                       'Swipe left on a card to remove it',
                       style: AppTypography.bodySM(context).copyWith(
                         color: AppColors.neutralGold,
-                        fontSize: 12,
+                        fontSize: R.sp(context, 11),
                       ),
                     ),
                   ],
@@ -102,13 +134,13 @@ class WishlistScreen extends ConsumerWidget {
 
             // ── Product Grid ────────────────────────────────────────────
             SliverPadding(
-              padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
+              padding: EdgeInsets.fromLTRB(R.w(context, 16), R.h(context, 12), R.w(context, 16), R.h(context, 16)),
               sliver: SliverGrid(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   childAspectRatio: 0.72,
-                  crossAxisSpacing: 10,
-                  mainAxisSpacing: 10,
+                  crossAxisSpacing: R.w(context, 10),
+                  mainAxisSpacing: R.h(context, 10),
                 ),
                 delegate: SliverChildBuilderDelegate(
                   (context, i) => _WishlistCard(
@@ -119,27 +151,12 @@ class WishlistScreen extends ConsumerWidget {
                 ),
               ),
             ),
-
-            // ── Move All to Cart ────────────────────────────────────────
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(
-                    16, 0, 16, MediaQuery.of(context).padding.bottom + 24),
-                child: ElevatedButton.icon(
-                  onPressed: () => _moveAllToCart(context, ref, items),
-                  icon: const Icon(Icons.shopping_bag_outlined, size: 18),
-                  label: const Text('Move All to Cart'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.deepCharcoal,
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(vertical: 15),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(14)),
-                    elevation: 0,
-                  ),
-                ),
+            
+            // Padding so the last item isn't covered by the floating button
+            if (items.isNotEmpty)
+              SliverToBoxAdapter(
+                child: SizedBox(height: R.h(context, 100)),
               ),
-            ),
           ],
         ],
       ),
@@ -239,42 +256,42 @@ class _EmptyWishlistState extends State<_EmptyWishlist>
       opacity: _fade,
       child: Center(
         child: Padding(
-          padding: const EdgeInsets.all(40),
+          padding: EdgeInsets.symmetric(horizontal: R.w(context, 40), vertical: R.h(context, 60)),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ScaleTransition(
                 scale: _scale,
                 child: Container(
-                  width: 80,
-                  height: 80,
+                  width: R.w(context, 70),
+                  height: R.w(context, 70),
                   decoration: BoxDecoration(
                     color: AppColors.primary.withValues(alpha: 0.08),
                     shape: BoxShape.circle,
                     border: Border.all(
                         color: AppColors.primary.withValues(alpha: 0.15), width: 1.5),
                   ),
-                  child: const Icon(
+                  child: Icon(
                     Icons.favorite_border_rounded,
-                    size: 32,
+                    size: R.sp(context, 28),
                     color: AppColors.primary,
                   ),
                 ),
               ),
-              const SizedBox(height: 22),
+              SizedBox(height: R.h(context, 20)),
               Text('Your wishlist is empty',
-                  style: AppTypography.h2(context).copyWith(fontSize: 20)),
-              const SizedBox(height: 12),
+                  style: AppTypography.h2(context).copyWith(fontSize: R.sp(context, 18))),
+              SizedBox(height: R.h(context, 8)),
               Text(
                 'Explore our artisanal collection and save your favorites to review them later.',
                 textAlign: TextAlign.center,
                 style: AppTypography.bodySM(context).copyWith(
                   color: AppColors.neutralGold,
                   height: 1.4,
-                  fontSize: 12,
+                  fontSize: R.sp(context, 11),
                 ),
               ),
-              const SizedBox(height: 32),
+              SizedBox(height: R.h(context, 24)),
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
@@ -282,35 +299,35 @@ class _EmptyWishlistState extends State<_EmptyWishlist>
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primary,
                     foregroundColor: AppColors.deepCharcoal,
-                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    padding: EdgeInsets.symmetric(vertical: R.h(context, 12)),
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12)),
+                        borderRadius: BorderRadius.circular(R.w(context, 10))),
                     elevation: 0,
                   ),
                   child: Text(
                     'Explore the Shop',
                     style: AppTypography.bodySM(context).copyWith(
-                        fontWeight: FontWeight.w800, fontSize: 12),
+                        fontWeight: FontWeight.w800, fontSize: R.sp(context, 11)),
                   ),
                 ),
               ),
-              const SizedBox(height: 10),
+              SizedBox(height: R.h(context, 10)),
               SizedBox(
                 width: double.infinity,
                 child: OutlinedButton(
                   onPressed: () => context.push('/categories'),
                   style: OutlinedButton.styleFrom(
                     side: const BorderSide(color: AppColors.borderLight),
-                    padding: const EdgeInsets.symmetric(vertical: 11),
+                    padding: EdgeInsets.symmetric(vertical: R.h(context, 11)),
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12)),
+                        borderRadius: BorderRadius.circular(R.w(context, 10))),
                   ),
                   child: Text(
                     'Browse Collections',
                     style: AppTypography.bodySM(context).copyWith(
                       fontWeight: FontWeight.w700,
                       color: AppColors.deepCharcoal,
-                      fontSize: 12,
+                      fontSize: R.sp(context, 11),
                     ),
                   ),
                 ),
@@ -413,19 +430,19 @@ class _WishlistCardState extends ConsumerState<_WishlistCard>
           background: Container(
             decoration: BoxDecoration(
               color: AppColors.error.withValues(alpha: 0.10),
-              borderRadius: BorderRadius.circular(14),
+              borderRadius: BorderRadius.circular(R.w(context, 12)),
             ),
             alignment: Alignment.centerRight,
-            padding: const EdgeInsets.only(right: 16),
+            padding: EdgeInsets.only(right: R.w(context, 16)),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(Icons.delete_outline_rounded,
-                    color: AppColors.error, size: 22),
-                const SizedBox(height: 4),
+                Icon(Icons.delete_outline_rounded,
+                    color: AppColors.error, size: R.sp(context, 20)),
+                SizedBox(height: R.h(context, 4)),
                 Text('Remove',
                     style: AppTypography.label(context)
-                        .copyWith(color: AppColors.error, fontSize: 9)),
+                        .copyWith(color: AppColors.error, fontSize: R.sp(context, 8))),
               ],
             ),
           ),
@@ -434,7 +451,7 @@ class _WishlistCardState extends ConsumerState<_WishlistCard>
             child: Container(
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(14),
+                borderRadius: BorderRadius.circular(R.w(context, 12)),
                 boxShadow: [
                   BoxShadow(
                     color: AppColors.deepCharcoal.withValues(alpha: 0.05),
@@ -452,8 +469,8 @@ class _WishlistCardState extends ConsumerState<_WishlistCard>
                       fit: StackFit.expand,
                       children: [
                         ClipRRect(
-                          borderRadius: const BorderRadius.vertical(
-                              top: Radius.circular(14)),
+                          borderRadius: BorderRadius.vertical(
+                              top: Radius.circular(R.w(context, 12))),
                           child: CustomNetworkImage(
                             imageUrl: product.primaryImage,
                             fit: BoxFit.cover,
@@ -462,19 +479,19 @@ class _WishlistCardState extends ConsumerState<_WishlistCard>
                         // Badge top-left
                         if (product.badge != null)
                           Positioned(
-                            top: 8,
-                            left: 8,
+                            top: R.h(context, 8),
+                            left: R.w(context, 8),
                             child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 6, vertical: 3),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: R.w(context, 6), vertical: R.h(context, 3)),
                               decoration: BoxDecoration(
                                 color: Colors.white.withValues(alpha: 0.93),
-                                borderRadius: BorderRadius.circular(4),
+                                borderRadius: BorderRadius.circular(R.w(context, 4)),
                               ),
                               child: Text(
                                 product.badge!.toUpperCase(),
                                 style: AppTypography.label(context).copyWith(
-                                  fontSize: 7,
+                                  fontSize: R.sp(context, 7),
                                   fontWeight: FontWeight.w800,
                                   letterSpacing: 0.8,
                                 ),
@@ -484,19 +501,19 @@ class _WishlistCardState extends ConsumerState<_WishlistCard>
                         // Discount top-right
                         if (product.discountPercent > 0)
                           Positioned(
-                            top: 8,
-                            right: 8,
+                            top: R.h(context, 8),
+                            right: R.w(context, 8),
                             child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 5, vertical: 3),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: R.w(context, 5), vertical: R.h(context, 3)),
                               decoration: BoxDecoration(
                                 color: AppColors.error,
-                                borderRadius: BorderRadius.circular(4),
+                                borderRadius: BorderRadius.circular(R.w(context, 4)),
                               ),
                               child: Text(
                                 '-${product.discountPercent}%',
                                 style: AppTypography.label(context).copyWith(
-                                  fontSize: 7.5,
+                                  fontSize: R.sp(context, 7.5),
                                   color: Colors.white,
                                   fontWeight: FontWeight.w800,
                                 ),
@@ -506,20 +523,20 @@ class _WishlistCardState extends ConsumerState<_WishlistCard>
                         // Heart remove (shown when no discount badge)
                         if (product.discountPercent == 0)
                           Positioned(
-                            top: 7,
-                            right: 7,
+                            top: R.h(context, 7),
+                            right: R.w(context, 7),
                             child: GestureDetector(
                               onTap: _removeFromWishlist,
                               child: Container(
-                                width: 28,
-                                height: 28,
+                                width: R.w(context, 26),
+                                height: R.w(context, 26),
                                 decoration: BoxDecoration(
                                   color: Colors.white.withValues(alpha: 0.9),
                                   shape: BoxShape.circle,
                                 ),
-                                child: const Icon(
+                                child: Icon(
                                   Icons.favorite_rounded,
-                                  size: 14,
+                                  size: R.sp(context, 13),
                                   color: AppColors.error,
                                 ),
                               ),
@@ -531,7 +548,7 @@ class _WishlistCardState extends ConsumerState<_WishlistCard>
 
                   // ── Product info ───────────────────────────────────
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(10, 8, 10, 10),
+                    padding: EdgeInsets.fromLTRB(R.w(context, 10), R.h(context, 8), R.w(context, 10), R.h(context, 10)),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -543,11 +560,11 @@ class _WishlistCardState extends ConsumerState<_WishlistCard>
                             product.weight,
                           ].join(' · '),
                           style: AppTypography.labelGold(context)
-                              .copyWith(fontSize: 7.5, letterSpacing: 0.3),
+                              .copyWith(fontSize: R.sp(context, 7.5), letterSpacing: 0.3),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
-                        const SizedBox(height: 2),
+                        SizedBox(height: R.h(context, 2)),
                         // Name
                         Text(
                           product.name,
@@ -555,11 +572,11 @@ class _WishlistCardState extends ConsumerState<_WishlistCard>
                           overflow: TextOverflow.ellipsis,
                           style: AppTypography.bodySM(context).copyWith(
                             fontWeight: FontWeight.w700,
-                            fontSize: 12,
+                            fontSize: R.sp(context, 11),
                             height: 1.25,
                           ),
                         ),
-                        const SizedBox(height: 7),
+                        SizedBox(height: R.h(context, 6)),
 
                         // ── Price + Cart icon in ONE row ───────────────
                         Row(
@@ -575,16 +592,16 @@ class _WishlistCardState extends ConsumerState<_WishlistCard>
                                   Text(
                                     formatPrice(product.price),
                                     style: AppTypography.priceSM(context)
-                                        .copyWith(fontSize: 14),
+                                        .copyWith(fontSize: R.sp(context, 13)),
                                   ),
                                   if (product.compareAtPrice != null &&
                                       product.compareAtPrice! >
                                           product.price) ...[
-                                    const SizedBox(width: 4),
+                                    SizedBox(width: R.w(context, 4)),
                                     Text(
                                       formatPrice(product.compareAtPrice!),
                                       style: AppTypography.priceStrike(context)
-                                          .copyWith(fontSize: 9.5),
+                                          .copyWith(fontSize: R.sp(context, 9)),
                                     ),
                                   ],
                                 ],
@@ -594,15 +611,15 @@ class _WishlistCardState extends ConsumerState<_WishlistCard>
                             GestureDetector(
                               onTap: _addToCart,
                               child: Container(
-                                width: 34,
-                                height: 34,
+                                width: R.w(context, 30),
+                                height: R.w(context, 30),
                                 decoration: BoxDecoration(
                                   color: AppColors.primary,
-                                  borderRadius: BorderRadius.circular(9),
+                                  borderRadius: BorderRadius.circular(R.w(context, 8)),
                                 ),
-                                child: const Icon(
+                                child: Icon(
                                   Icons.shopping_bag_outlined,
-                                  size: 16,
+                                  size: R.sp(context, 15),
                                   color: AppColors.deepCharcoal,
                                 ),
                               ),

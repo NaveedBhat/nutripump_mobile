@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_typography.dart';
+import '../../core/utils/responsive.dart';
 import '../../core/widgets/custom_network_image.dart';
 import '../../providers/providers.dart';
 import '../../models/models.dart';
@@ -85,21 +86,21 @@ class _CategoriesScreenState extends ConsumerState<CategoriesScreen>
           // ── Section Header ────────────────────────────────────────────
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(24, 40, 24, 24),
+              padding: EdgeInsets.fromLTRB(R.w(context, 20), R.h(context, 32), R.w(context, 20), R.h(context, 20)),
               child: FadeTransition(
                 opacity: _headerFade,
                 child: Column(
                   children: [
                     Text(
                       'CURATED SELECTION',
-                      style: AppTypography.labelGold(context).copyWith(letterSpacing: 3, fontSize: 11),
+                      style: AppTypography.labelGold(context).copyWith(letterSpacing: 3, fontSize: R.sp(context, 10)),
                     ),
-                    const SizedBox(height: 12),
+                    SizedBox(height: R.h(context, 8)),
                     Text(
                       'MASTERFUL\nCRAFTSMANSHIP',
                       textAlign: TextAlign.center,
                       style: AppTypography.h1(context).copyWith(
-                        fontSize: 28,
+                        fontSize: R.sp(context, 24),
                         letterSpacing: 0.5,
                         height: 1.15,
                       ),
@@ -124,13 +125,13 @@ class _CategoriesScreenState extends ConsumerState<CategoriesScreen>
                   : cats;
 
               return SliverPadding(
-                padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                padding: EdgeInsets.fromLTRB(R.w(context, 16), R.h(context, 8), R.w(context, 16), R.h(context, 8)),
                 sliver: SliverGrid(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     childAspectRatio: 4 / 5,
-                    crossAxisSpacing: 12,
-                    mainAxisSpacing: 12,
+                    crossAxisSpacing: R.w(context, 12),
+                    mainAxisSpacing: R.h(context, 12),
                   ),
                   delegate: SliverChildBuilderDelegate(
                     (context, i) => _CategoryCard(
@@ -143,13 +144,13 @@ class _CategoriesScreenState extends ConsumerState<CategoriesScreen>
               );
             },
             loading: () => SliverPadding(
-              padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+              padding: EdgeInsets.fromLTRB(R.w(context, 16), R.h(context, 8), R.w(context, 16), R.h(context, 8)),
               sliver: SliverGrid(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   childAspectRatio: 4 / 5,
-                  crossAxisSpacing: 12,
-                  mainAxisSpacing: 12,
+                  crossAxisSpacing: R.w(context, 12),
+                  mainAxisSpacing: R.h(context, 12),
                 ),
                 delegate: SliverChildBuilderDelegate(
                   (_, __) => const _CategorySkeleton(),
@@ -161,13 +162,13 @@ class _CategoriesScreenState extends ConsumerState<CategoriesScreen>
           ),
 
           // ── Maker's Story ─────────────────────────────────────────────
-          const SliverToBoxAdapter(child: SizedBox(height: 32)),
+          SliverToBoxAdapter(child: SizedBox(height: R.h(context, 24))),
           const SliverToBoxAdapter(child: _MakersStorySection()),
 
           // ── Newsletter ────────────────────────────────────────────────
           SliverToBoxAdapter(child: _NewsletterSection(controller: _emailController)),
 
-          const SliverToBoxAdapter(child: SizedBox(height: 32)),
+          SliverToBoxAdapter(child: SizedBox(height: R.h(context, 32))),
         ],
       ),
     );
@@ -199,7 +200,7 @@ class _HeroBannerState extends State<_HeroBanner> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 280,
+      height: R.h(context, 240),
       child: Stack(
         fit: StackFit.expand,
         children: [
@@ -229,7 +230,7 @@ class _HeroBannerState extends State<_HeroBanner> {
           // Text content
           SafeArea(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
+              padding: EdgeInsets.symmetric(horizontal: R.w(context, 20)),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -237,28 +238,28 @@ class _HeroBannerState extends State<_HeroBanner> {
                     'CURATED COLLECTIONS',
                     style: AppTypography.labelGold(context).copyWith(
                       letterSpacing: 3,
-                      fontSize: 10,
+                      fontSize: R.sp(context, 9),
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  SizedBox(height: R.h(context, 8)),
                   Text(
                     'Explore Our\nCollections',
                     textAlign: TextAlign.center,
                     style: AppTypography.h1(context).copyWith(
                       color: Colors.white,
-                      fontSize: 34,
+                      fontSize: R.sp(context, 26),
                       height: 1.15,
                       letterSpacing: -0.5,
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: R.h(context, 12)),
                   Text(
                     'A refined heritage of artisanal excellence and handcrafted perfection, curated for the modern connoisseur.',
                     textAlign: TextAlign.center,
                     style: AppTypography.bodySM(context).copyWith(
                       color: Colors.white.withValues(alpha: 0.80),
                       fontStyle: FontStyle.italic,
-                      fontSize: 13,
+                      fontSize: R.sp(context, 11),
                       height: 1.6,
                     ),
                   ),
@@ -336,7 +337,7 @@ class _CategoryCardState extends State<_CategoryCard>
             scale: _pressed ? 0.97 : 1.0,
             duration: const Duration(milliseconds: 120),
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(14),
+              borderRadius: BorderRadius.circular(R.w(context, 12)),
               child: Stack(
                 fit: StackFit.expand,
                 children: [
@@ -379,7 +380,7 @@ class _CategoryCardState extends State<_CategoryCard>
                       offset: _pressed ? const Offset(0, -0.03) : Offset.zero,
                       duration: const Duration(milliseconds: 200),
                       child: Padding(
-                        padding: const EdgeInsets.fromLTRB(12, 0, 12, 14),
+                        padding: EdgeInsets.fromLTRB(R.w(context, 12), 0, R.w(context, 12), R.h(context, 12)),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisSize: MainAxisSize.min,
@@ -389,11 +390,11 @@ class _CategoryCardState extends State<_CategoryCard>
                               sublabel,
                               style: AppTypography.label(context).copyWith(
                                 color: AppColors.primary.withValues(alpha: 0.92),
-                                fontSize: 8,
+                                fontSize: R.sp(context, 8),
                                 letterSpacing: 1.8,
                               ),
                             ),
-                            const SizedBox(height: 4),
+                            SizedBox(height: R.h(context, 4)),
                             // Category name
                             Text(
                               cat.name,
@@ -401,19 +402,19 @@ class _CategoryCardState extends State<_CategoryCard>
                               overflow: TextOverflow.ellipsis,
                               style: AppTypography.h3(context).copyWith(
                                 color: Colors.white,
-                                fontSize: 15,
+                                fontSize: R.sp(context, 14),
                                 height: 1.2,
                               ),
                             ),
-                            const SizedBox(height: 10),
+                            SizedBox(height: R.h(context, 8)),
                             // SHOP NOW button
                             Container(
                               width: double.infinity,
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 8),
+                              padding: EdgeInsets.symmetric(
+                                  vertical: R.h(context, 8)),
                               decoration: BoxDecoration(
                                 color: AppColors.primary,
-                                borderRadius: BorderRadius.circular(6),
+                                borderRadius: BorderRadius.circular(R.w(context, 6)),
                               ),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -492,25 +493,25 @@ class _CategorySkeletonState extends State<_CategorySkeleton>
           _anim.value,
         )!;
         return ClipRRect(
-          borderRadius: BorderRadius.circular(14),
+          borderRadius: BorderRadius.circular(R.w(context, 12)),
           child: Container(
             color: color,
             child: Stack(
               children: [
                 Positioned(
-                  bottom: 14,
-                  left: 12,
-                  right: 12,
+                  bottom: R.h(context, 12),
+                  left: R.w(context, 12),
+                  right: R.w(context, 12),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(height: 8, width: 60, color: color.withValues(alpha: 0.5)),
-                      const SizedBox(height: 6),
-                      Container(height: 14, width: 100, color: color.withValues(alpha: 0.5)),
-                      const SizedBox(height: 10),
-                      Container(height: 30, decoration: BoxDecoration(
+                      Container(height: R.h(context, 8), width: R.w(context, 60), color: color.withValues(alpha: 0.5)),
+                      SizedBox(height: R.h(context, 4)),
+                      Container(height: R.h(context, 14), width: R.w(context, 100), color: color.withValues(alpha: 0.5)),
+                      SizedBox(height: R.h(context, 8)),
+                      Container(height: R.h(context, 28), decoration: BoxDecoration(
                         color: color.withValues(alpha: 0.5),
-                        borderRadius: BorderRadius.circular(6),
+                        borderRadius: BorderRadius.circular(R.w(context, 6)),
                       )),
                     ],
                   ),
@@ -534,7 +535,7 @@ class _MakersStorySection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: AppColors.deepCharcoal,
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 48),
+      padding: EdgeInsets.symmetric(horizontal: R.w(context, 20), vertical: R.h(context, 40)),
       child: Column(
         children: [
           // Image with gold accent offset
@@ -542,19 +543,19 @@ class _MakersStorySection extends StatelessWidget {
             clipBehavior: Clip.none,
             children: [
               Positioned(
-                top: -8,
-                left: -8,
-                right: 8,
-                bottom: 8,
+                top: R.h(context, -8),
+                left: R.w(context, -8),
+                right: R.w(context, 8),
+                bottom: R.h(context, 8),
                 child: Container(
                   decoration: BoxDecoration(
                     color: AppColors.primary.withValues(alpha: 0.2),
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(R.w(context, 16)),
                   ),
                 ),
               ),
               ClipRRect(
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(R.w(context, 16)),
                 child: const AspectRatio(
                   aspectRatio: 1,
                   child: CustomNetworkImage(
@@ -567,7 +568,7 @@ class _MakersStorySection extends StatelessWidget {
             ],
           ),
 
-          const SizedBox(height: 40),
+          SizedBox(height: R.h(context, 32)),
 
           // Text content
           Column(
@@ -575,29 +576,29 @@ class _MakersStorySection extends StatelessWidget {
             children: [
               Text(
                 'THE MAKER\'S STORY',
-                style: AppTypography.labelGold(context).copyWith(letterSpacing: 3, fontSize: 10),
+                style: AppTypography.labelGold(context).copyWith(letterSpacing: 3, fontSize: R.sp(context, 9)),
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: R.h(context, 12)),
               Text(
                 'Preserving Heritage Through the Hands of Masters',
                 style: AppTypography.h2(context).copyWith(
                   color: Colors.white,
-                  fontSize: 26,
+                  fontSize: R.sp(context, 24),
                   height: 1.25,
                 ),
               ),
-              const SizedBox(height: 20),
+              SizedBox(height: R.h(context, 16)),
               Text(
                 'Every piece in our collection tells a story of dedication, passing through the hands of master craftsmen in the valleys of Kashmir who preserve centuries-old traditions. We bridge the gap between ancient techniques and modern living.',
                 style: AppTypography.bodySM(context).copyWith(
                   color: Colors.white.withValues(alpha: 0.70),
                   height: 1.7,
-                  fontSize: 14,
+                  fontSize: R.sp(context, 13),
                 ),
               ),
-              const SizedBox(height: 20),
+              SizedBox(height: R.h(context, 16)),
               Container(
-                padding: const EdgeInsets.only(left: 16),
+                padding: EdgeInsets.only(left: R.w(context, 16)),
                 decoration: const BoxDecoration(
                   border: Border(
                     left: BorderSide(color: AppColors.primary, width: 2),
@@ -609,11 +610,11 @@ class _MakersStorySection extends StatelessWidget {
                     color: Colors.white.withValues(alpha: 0.70),
                     fontStyle: FontStyle.italic,
                     height: 1.7,
-                    fontSize: 14,
+                    fontSize: R.sp(context, 13),
                   ),
                 ),
               ),
-              const SizedBox(height: 28),
+              SizedBox(height: R.h(context, 24)),
               GestureDetector(
                 onTap: () {},
                 child: Row(
@@ -623,12 +624,12 @@ class _MakersStorySection extends StatelessWidget {
                       style: AppTypography.bodySM(context).copyWith(
                         color: AppColors.primary,
                         fontWeight: FontWeight.w700,
-                        fontSize: 14,
+                        fontSize: R.sp(context, 13),
                       ),
                     ),
-                    const SizedBox(width: 8),
-                    const Icon(Icons.arrow_forward_rounded,
-                        color: AppColors.primary, size: 18),
+                    SizedBox(width: R.w(context, 8)),
+                    Icon(Icons.arrow_forward_rounded,
+                        color: AppColors.primary, size: R.sp(context, 16)),
                   ],
                 ),
               ),
@@ -651,25 +652,25 @@ class _NewsletterSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: AppColors.primary.withValues(alpha: 0.10),
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 48),
+      padding: EdgeInsets.symmetric(horizontal: R.w(context, 20), vertical: R.h(context, 40)),
       child: Column(
         children: [
           Text(
             'Join the Collective',
             textAlign: TextAlign.center,
-            style: AppTypography.h2(context).copyWith(fontSize: 24),
+            style: AppTypography.h2(context).copyWith(fontSize: R.sp(context, 22)),
           ),
-          const SizedBox(height: 12),
+          SizedBox(height: R.h(context, 8)),
           Text(
             'Subscribe to receive exclusive access to limited artisanal drops, maker stories, and heritage events.',
             textAlign: TextAlign.center,
             style: AppTypography.bodySM(context).copyWith(
               color: AppColors.neutralGold,
               height: 1.6,
-              fontSize: 14,
+              fontSize: R.sp(context, 13),
             ),
           ),
-          const SizedBox(height: 28),
+          SizedBox(height: R.h(context, 24)),
           TextField(
             controller: controller,
             keyboardType: TextInputType.emailAddress,
@@ -677,30 +678,30 @@ class _NewsletterSection extends StatelessWidget {
               hintText: 'Enter your email address',
               hintStyle: AppTypography.bodySM(context).copyWith(
                 color: AppColors.neutralGold.withValues(alpha: 0.6),
-                fontSize: 13,
+                fontSize: R.sp(context, 12),
               ),
               filled: true,
               fillColor: Colors.white,
-              contentPadding: const EdgeInsets.symmetric(
-                  horizontal: 20, vertical: 16),
+              contentPadding: EdgeInsets.symmetric(
+                  horizontal: R.w(context, 16), vertical: R.h(context, 14)),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(14),
+                borderRadius: BorderRadius.circular(R.w(context, 12)),
                 borderSide: BorderSide(
                     color: AppColors.primary.withValues(alpha: 0.2)),
               ),
               enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(14),
+                borderRadius: BorderRadius.circular(R.w(context, 12)),
                 borderSide: BorderSide(
                     color: AppColors.primary.withValues(alpha: 0.2)),
               ),
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(14),
+                borderRadius: BorderRadius.circular(R.w(context, 12)),
                 borderSide:
                     const BorderSide(color: AppColors.primary, width: 2),
               ),
             ),
           ),
-          const SizedBox(height: 12),
+          SizedBox(height: R.h(context, 12)),
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
@@ -708,28 +709,28 @@ class _NewsletterSection extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primary,
                 foregroundColor: AppColors.deepCharcoal,
-                padding: const EdgeInsets.symmetric(vertical: 16),
+                padding: EdgeInsets.symmetric(vertical: R.h(context, 14)),
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(14)),
+                    borderRadius: BorderRadius.circular(R.w(context, 12))),
                 elevation: 0,
               ),
               child: Text(
                 'Subscribe',
                 style: AppTypography.bodySM(context).copyWith(
                   fontWeight: FontWeight.w800,
-                  fontSize: 15,
+                  fontSize: R.sp(context, 14),
                   color: AppColors.deepCharcoal,
                 ),
               ),
             ),
           ),
-          const SizedBox(height: 12),
+          SizedBox(height: R.h(context, 12)),
           Text(
             'By subscribing, you agree to our Terms of Service and Privacy Policy.',
             textAlign: TextAlign.center,
             style: AppTypography.bodySM(context).copyWith(
               color: AppColors.neutralGold.withValues(alpha: 0.7),
-              fontSize: 11,
+              fontSize: R.sp(context, 10),
             ),
           ),
         ],
