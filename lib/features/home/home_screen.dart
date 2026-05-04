@@ -12,6 +12,7 @@ import '../../core/widgets/custom_network_image.dart';
 import '../../providers/providers.dart';
 import '../../providers/cart_provider.dart';
 import 'widgets/announcement_bar.dart';
+import '../../core/widgets/skeleton_loaders.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -406,7 +407,7 @@ class _HeroCarouselState extends ConsumerState<_HeroCarousel> {
             ],
           );
         },
-        loading: () => const Center(child: CircularProgressIndicator(color: AppColors.primary)),
+        loading: () => const BannerSkeleton(),
         error: (_, __) => const Center(child: Text('Failed to load banners')),
       ),
     );
@@ -576,7 +577,7 @@ class _CategoriesSection extends ConsumerWidget {
                 },
               );
             },
-            loading: () => const Center(child: CircularProgressIndicator()),
+            loading: () => const CategoryListSkeleton(),
             error: (_, __) => const SizedBox(),
           ),
         ),
@@ -664,7 +665,7 @@ class _FeaturedProductsSection extends ConsumerWidget {
                 },
               );
             },
-            loading: () => const Center(child: CircularProgressIndicator()),
+            loading: () => const HorizontalProductListSkeleton(height: 240),
             error: (err, _) => Center(child: Text('Error: $err')),
           ),
         ),
@@ -785,7 +786,7 @@ class _AllProductsSection extends ConsumerWidget {
           ],
         );
       },
-      loading: () => const SizedBox(),
+      loading: () => const HorizontalProductListSkeleton(height: 240),
       error: (_, __) => const SizedBox(),
     );
   }

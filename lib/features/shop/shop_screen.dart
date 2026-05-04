@@ -9,6 +9,7 @@ import '../../core/widgets/product_card.dart';
 import '../../providers/providers.dart';
 import '../../models/models.dart';
 import 'ai_gift_builder.dart';
+import '../../core/widgets/skeleton_loaders.dart';
 
 const _sortOptions = [
   ('featured',   'Featured'),
@@ -262,12 +263,7 @@ class _ShopScreenState extends ConsumerState<ShopScreen> {
                   ),
                 );
               },
-              loading: () => const SliverToBoxAdapter(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 60),
-                  child: Center(child: CircularProgressIndicator()),
-                ),
-              ),
+              loading: () => const ProductGridSkeleton(),
               error: (e, _) => SliverToBoxAdapter(
                 child: Center(child: Padding(padding: const EdgeInsets.all(32), child: Text('Error: $e'))),
               ),
@@ -525,7 +521,7 @@ class _FilterSheet extends ConsumerWidget {
                       }).toList(),
                     );
                   },
-                  loading: () => SizedBox(height: R.h(context, 40), child: const Center(child: CircularProgressIndicator())),
+                  loading: () => const SizedBox(height: 40),
                   error: (_, __) => const SizedBox(),
                 ),
                 SizedBox(height: R.h(context, 24)),

@@ -196,7 +196,9 @@ class _AiChatSheetState extends State<AiChatSheet> {
     final screenHeight = MediaQuery.of(context).size.height;
     
     return Container(
-      height: screenHeight * 0.6, // Reduced to 60% for a compact, professional look
+      constraints: BoxConstraints(
+        maxHeight: screenHeight * 0.6, // Same size it was before when full
+      ),
       margin: EdgeInsets.only(
         left: R.w(context, 16),
         right: R.w(context, 16),
@@ -220,6 +222,7 @@ class _AiChatSheetState extends State<AiChatSheet> {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(R.w(context, 22)), // slightly smaller to fit inside border
         child: Column(
+          mainAxisSize: MainAxisSize.min, // Hug content
           children: [
           // Header
           Container(
@@ -275,8 +278,9 @@ class _AiChatSheetState extends State<AiChatSheet> {
           ),
           
           // Messages List
-          Expanded(
+          Flexible(
             child: ListView.builder(
+              shrinkWrap: true, // Shrink to fit messages initially
               controller: _scrollController,
               physics: const BouncingScrollPhysics(),
               padding: EdgeInsets.fromLTRB(R.w(context, 16), R.h(context, 16), R.w(context, 16), R.h(context, 8)),
@@ -331,49 +335,53 @@ class _AiChatSheetState extends State<AiChatSheet> {
           Container(
             padding: EdgeInsets.fromLTRB(R.w(context, 14), R.h(context, 10), R.w(context, 14), R.h(context, 14)), // Tighter padding for input
             decoration: BoxDecoration(
-              color: AppColors.surfaceDark,
+              color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Theme.of(context).colorScheme.surface,
               border: Border(top: BorderSide(color: AppColors.primary.withValues(alpha: 0.08))),
             ),
             child: SafeArea(
               top: false,
               bottom: false,
               child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Expanded(
                     child: Container(
-                      height: R.w(context, 44),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : const Color(0xFFF5F3EE),
-                        borderRadius: BorderRadius.circular(R.w(context, 16)),
-                        border: Theme.of(context).brightness == Brightness.dark ? Border.all(color: AppColors.borderDark, width: 1) : Border.all(color: AppColors.borderLight, width: 1),
+                      constraints: BoxConstraints(
+                        minHeight: R.w(context, 44),
+                        maxHeight: R.h(context, 120),
                       ),
-                      padding: EdgeInsets.symmetric(horizontal: R.w(context, 16)),
-                      child: Center(
-                        child: TextField(
-                          controller: _textController,
-                          focusNode: _focusNode,
-                          style: AppTypography.bodySM(context).copyWith(
-                            color: Theme.of(context).brightness == Brightness.dark ? const Color(0xFFF5F0E8) : AppColors.deepCharcoal,
-                          ),
-                          maxLength: 200,
-                          maxLines: 1,
-                          decoration: InputDecoration(
-                            hintText: 'Ask me anything...',
-                            hintStyle: AppTypography.bodySM(context).copyWith(
-                              color: Theme.of(context).brightness == Brightness.dark
-                                  ? Colors.white.withValues(alpha: 0.35)
-                                  : AppColors.neutralGold.withValues(alpha: 0.7),
-                            ),
-                            border: InputBorder.none,
-                            enabledBorder: InputBorder.none,
-                            focusedBorder: InputBorder.none,
-                            isDense: true,
-                            counterText: '', // Hide the character counter UI
-                            contentPadding: EdgeInsets.zero,
-                          ),
-                          textInputAction: TextInputAction.send,
-                          onSubmitted: (_) => _sendMessage(),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : AppColors.primary.withValues(alpha: 0.05),
+                        borderRadius: BorderRadius.circular(R.w(context, 16)),
+                        border: Theme.of(context).brightness == Brightness.dark ? Border.all(color: AppColors.borderDark, width: 1) : Border.all(color: AppColors.primary.withValues(alpha: 0.15), width: 1),
+                      ),
+                      padding: EdgeInsets.symmetric(horizontal: R.w(context, 16), vertical: R.h(context, 12)),
+                      child: TextField(
+                        controller: _textController,
+                        focusNode: _focusNode,
+                        style: AppTypography.bodySM(context).copyWith(
+                          color: Theme.of(context).brightness == Brightness.dark ? const Color(0xFFF5F0E8) : AppColors.deepCharcoal,
                         ),
+                        maxLength: 500,
+                        maxLines: null,
+                        minLines: 1,
+                        onChanged: (_) => setState(() {}), // Update send button state
+                        decoration: InputDecoration(
+                          hintText: 'Ask me anything...',
+                          hintStyle: AppTypography.bodySM(context).copyWith(
+                            color: Theme.of(context).brightness == Brightness.dark
+                                ? Colors.white.withValues(alpha: 0.35)
+                                : AppColors.neutralGold.withValues(alpha: 0.7),
+                          ),
+                          border: InputBorder.none,
+                          enabledBorder: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                          isDense: true,
+                          counterText: '', // Hide the character counter UI
+                          contentPadding: EdgeInsets.zero,
+                        ),
+                        textInputAction: TextInputAction.send,
+                        onSubmitted: (_) => _sendMessage(),
                       ),
                     ),
                   ),
@@ -398,7 +406,7 @@ class _AiChatSheetState extends State<AiChatSheet> {
                         _isListening ? Icons.mic_rounded : Icons.mic_none_rounded,
                         color: _isListening
                             ? AppColors.error
-                            : AppColors.neutralGold,
+                            : (Theme.of(context).brightness == Brightness.dark ? Colors.white.withValues(alpha: 0.7) : AppColors.neutralGold),
                         size: R.sp(context, 20),
                       ),
                     ),
@@ -412,12 +420,16 @@ class _AiChatSheetState extends State<AiChatSheet> {
                       width: R.w(context, 44),
                       height: R.w(context, 44),
                       decoration: BoxDecoration(
-                        color: AppColors.primary,
+                        color: (_textController.text.trim().isNotEmpty && !_isLoading)
+                            ? AppColors.primary
+                            : AppColors.primary.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(R.w(context, 16)),
                       ),
                       child: Icon(
-                        Icons.send_rounded,
-                        color: AppColors.deepCharcoal.withValues(alpha: _isLoading ? 0.5 : 1.0),
+                        Icons.send_outlined,
+                        color: (_textController.text.trim().isNotEmpty && !_isLoading)
+                            ? AppColors.deepCharcoal
+                            : (Theme.of(context).brightness == Brightness.dark ? Colors.white.withValues(alpha: 0.7) : AppColors.neutralGold),
                         size: R.sp(context, 20),
                       ),
                     ),

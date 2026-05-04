@@ -7,6 +7,7 @@ import '../../core/constants/app_typography.dart';
 import '../../core/utils/responsive.dart';
 import '../../providers/providers.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import '../../core/widgets/skeleton_loaders.dart';
 
 class AccountScreen extends ConsumerWidget {
   const AccountScreen({super.key});
@@ -25,7 +26,7 @@ class AccountScreen extends ConsumerWidget {
     return authAsync.when(
       loading: () => Scaffold(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        body: Center(child: CircularProgressIndicator()),
+        body: const AccountScreenSkeleton(),
       ),
       error: (_, __) {
         // Auth stream emitted an error (e.g. Firestore permission denied on sign-out).

@@ -14,6 +14,7 @@ import '../../models/product.dart';
 import '../../models/models.dart';
 import '../../core/utils/formatters.dart';
 import '../../core/utils/responsive.dart';
+import '../../core/widgets/skeleton_loaders.dart';
 
 class ProductDetailScreen extends ConsumerStatefulWidget {
   final String slug;
@@ -173,7 +174,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
             ],
           );
         },
-        loading: () => const Center(child: CircularProgressIndicator()),
+        loading: () => const ProductDetailSkeleton(),
         error: (err, stack) => Center(child: Text('Error: $err')),
       ),
     );
@@ -865,7 +866,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
           ),
           SizedBox(height: R.h(context, 16)),
           reviewsAsync.when(
-            loading: () => const Center(child: Padding(padding: EdgeInsets.symmetric(vertical: 24), child: CircularProgressIndicator())),
+            loading: () => const HorizontalProductListSkeleton(height: 240),
             error: (_, __) => const SizedBox.shrink(),
             data: (reviews) {
               if (reviews.isEmpty) {

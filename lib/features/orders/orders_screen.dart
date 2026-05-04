@@ -8,6 +8,7 @@ import '../../core/utils/formatters.dart';
 import '../../core/utils/responsive.dart';
 import '../../providers/providers.dart';
 import '../../models/order.dart';
+import '../../core/widgets/skeleton_loaders.dart';
 
 class OrdersScreen extends ConsumerWidget {
   const OrdersScreen({super.key});
@@ -34,7 +35,7 @@ class OrdersScreen extends ConsumerWidget {
         ),
       ),
       body: userAsync.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
+        loading: () => const OrdersListSkeleton(),
         error: (_, __) => const Center(child: Text('Something went wrong')),
         data: (user) {
           if (user == null) {
@@ -47,7 +48,7 @@ class OrdersScreen extends ConsumerWidget {
           final ordersAsync = ref.watch(userOrdersProvider(user.uid));
 
           return ordersAsync.when(
-            loading: () => const Center(child: CircularProgressIndicator()),
+            loading: () => const OrdersListSkeleton(),
             error: (e, __) => Center(child: Text('Error loading orders: $e')),
             data: (dynamicOrders) {
               // provider currently returns List<dynamic> from StreamProvider.family

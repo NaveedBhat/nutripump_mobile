@@ -7,6 +7,7 @@ import '../../core/utils/responsive.dart';
 import '../../core/widgets/product_card.dart';
 import '../../providers/providers.dart';
 import 'widgets/voice_search_bottom_sheet.dart';
+import '../../core/widgets/skeleton_loaders.dart';
 
 class SearchScreen extends ConsumerStatefulWidget {
   final bool autoStartVoice;
@@ -203,7 +204,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
             },
           );
         },
-        loading: () => const Center(child: CircularProgressIndicator()),
+        loading: () => const SearchResultsSkeleton(),
         error: (_, __) => const Center(child: Text('Failed to load products')),
       ),
     );

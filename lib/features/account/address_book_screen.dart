@@ -5,6 +5,7 @@ import '../../core/constants/app_typography.dart';
 import '../../core/utils/responsive.dart';
 import '../../providers/providers.dart';
 import '../../models/cart_item.dart';
+import '../../core/widgets/skeleton_loaders.dart';
 
 class AddressBookScreen extends ConsumerWidget {
   const AddressBookScreen({super.key});
@@ -27,7 +28,13 @@ class AddressBookScreen extends ConsumerWidget {
         ),
       ),
       body: userAsync.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
+        loading: () => ListView.separated(
+          padding: EdgeInsets.symmetric(horizontal: R.w(context, 16), vertical: R.h(context, 12)),
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: 3,
+          separatorBuilder: (_, __) => SizedBox(height: R.h(context, 12)),
+          itemBuilder: (_, __) => const AddressCardSkeleton(),
+        ),
         error: (_, __) => const Center(child: Text('Something went wrong')),
         data: (user) {
           if (user == null) {
@@ -39,7 +46,13 @@ class AddressBookScreen extends ConsumerWidget {
           final addressesAsync = ref.watch(userAddressesProvider(user.uid));
 
           return addressesAsync.when(
-            loading: () => const Center(child: CircularProgressIndicator()),
+            loading: () => ListView.separated(
+              padding: EdgeInsets.symmetric(horizontal: R.w(context, 16), vertical: R.h(context, 12)),
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: 3,
+              separatorBuilder: (_, __) => SizedBox(height: R.h(context, 12)),
+              itemBuilder: (_, __) => const AddressCardSkeleton(),
+            ),
             error: (e, __) => Center(child: Text('Error loading addresses: $e')),
             data: (dynamicAddresses) {
               final List<Address> addresses = dynamicAddresses.cast<Address>();
