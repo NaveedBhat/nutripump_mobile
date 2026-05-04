@@ -33,7 +33,7 @@ class AppTypography {
     fontWeight: FontWeight.w900,
     letterSpacing: -0.8,
     height: 1.05,
-    color: AppColors.deepCharcoal,
+    color: Theme.of(context).brightness == Brightness.dark ? const Color(0xFFF5F0E8) : AppColors.deepCharcoal,
   );
 
   static TextStyle displayLG(BuildContext context) => GoogleFonts.newsreader(
@@ -41,14 +41,14 @@ class AppTypography {
     fontWeight: FontWeight.w800,
     letterSpacing: -0.5,
     height: 1.1,
-    color: AppColors.deepCharcoal,
+    color: Theme.of(context).brightness == Brightness.dark ? const Color(0xFFF5F0E8) : AppColors.deepCharcoal,
   );
 
   static TextStyle displayMD(BuildContext context) => GoogleFonts.newsreader(
     fontSize: 22 * AppScale.of(context),
     fontWeight: FontWeight.w700,
     height: 1.15,
-    color: AppColors.deepCharcoal,
+    color: Theme.of(context).brightness == Brightness.dark ? const Color(0xFFF5F0E8) : AppColors.deepCharcoal,
   );
 
   // ── Headings ──────────────────────────────────────────────────
@@ -56,19 +56,19 @@ class AppTypography {
     fontSize: h1Value * AppScale.of(context),
     fontWeight: FontWeight.w700,
     letterSpacing: -0.3,
-    color: AppColors.deepCharcoal,
+    color: Theme.of(context).brightness == Brightness.dark ? const Color(0xFFF5F0E8) : AppColors.deepCharcoal,
   );
 
   static TextStyle h2(BuildContext context) => GoogleFonts.newsreader(
     fontSize: h2Value * AppScale.of(context),
     fontWeight: FontWeight.w700,
-    color: AppColors.deepCharcoal,
+    color: Theme.of(context).brightness == Brightness.dark ? const Color(0xFFF5F0E8) : AppColors.deepCharcoal,
   );
 
   static TextStyle h3(BuildContext context) => GoogleFonts.newsreader(
     fontSize: h3Value * AppScale.of(context),
     fontWeight: FontWeight.w600,
-    color: AppColors.deepCharcoal,
+    color: Theme.of(context).brightness == Brightness.dark ? const Color(0xFFF5F0E8) : AppColors.deepCharcoal,
   );
 
   // ── Body ──────────────────────────────────────────────────────
@@ -76,21 +76,21 @@ class AppTypography {
     fontSize: bodyLGValue * AppScale.of(context),
     fontWeight: FontWeight.w400,
     height: 1.6,
-    color: AppColors.deepCharcoal,
+    color: Theme.of(context).brightness == Brightness.dark ? const Color(0xFFF5F0E8) : AppColors.deepCharcoal,
   );
 
   static TextStyle body(BuildContext context) => GoogleFonts.newsreader(
     fontSize: bodyValue * AppScale.of(context),
     fontWeight: FontWeight.w400,
     height: 1.5,
-    color: AppColors.deepCharcoal,
+    color: Theme.of(context).brightness == Brightness.dark ? const Color(0xFFF5F0E8) : AppColors.deepCharcoal,
   );
 
   static TextStyle bodySM(BuildContext context) => GoogleFonts.newsreader(
     fontSize: bodySMValue * AppScale.of(context),
     fontWeight: FontWeight.w400,
     height: 1.5,
-    color: AppColors.deepCharcoal,
+    color: Theme.of(context).brightness == Brightness.dark ? const Color(0xFFF5F0E8) : AppColors.deepCharcoal,
   );
 
   // ── Utility ───────────────────────────────────────────────────
@@ -104,7 +104,7 @@ class AppTypography {
     fontSize: labelValue * AppScale.of(context),
     fontWeight: FontWeight.w800,
     letterSpacing: 1.5,
-    color: AppColors.deepCharcoal,
+    color: Theme.of(context).brightness == Brightness.dark ? const Color(0xFFF5F0E8) : AppColors.deepCharcoal,
   );
 
   static TextStyle labelGold(BuildContext context) => GoogleFonts.newsreader(
@@ -117,13 +117,13 @@ class AppTypography {
   static TextStyle price(BuildContext context) => GoogleFonts.newsreader(
     fontSize: priceValue * AppScale.of(context),
     fontWeight: FontWeight.w800,
-    color: AppColors.deepCharcoal,
+    color: Theme.of(context).brightness == Brightness.dark ? const Color(0xFFF5F0E8) : AppColors.deepCharcoal,
   );
 
   static TextStyle priceSM(BuildContext context) => GoogleFonts.newsreader(
     fontSize: priceSMValue * AppScale.of(context),
     fontWeight: FontWeight.w700,
-    color: AppColors.deepCharcoal,
+    color: Theme.of(context).brightness == Brightness.dark ? const Color(0xFFF5F0E8) : AppColors.deepCharcoal,
   );
 
   static TextStyle priceStrike(BuildContext context) => GoogleFonts.newsreader(

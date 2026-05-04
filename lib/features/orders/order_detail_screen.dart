@@ -18,9 +18,9 @@ class OrderDetailScreen extends ConsumerWidget {
     final orderAsync = ref.watch(orderByIdProvider(id));
 
     return Scaffold(
-      backgroundColor: AppColors.backgroundLight,
+      backgroundColor: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : AppColors.backgroundLight),
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : Colors.white),
         elevation: 0,
         surfaceTintColor: Colors.transparent,
         centerTitle: true,
@@ -445,7 +445,7 @@ class _TrackingTimeline extends StatelessWidget {
                       child: Icon(
                         _icons[i],
                         size: R.sp(context, 16),
-                        color: isDone ? AppColors.deepCharcoal : AppColors.neutralGold,
+                        color: isDone ? (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal) : AppColors.neutralGold,
                       ),
                     ),
                     if (!isLast)
@@ -473,7 +473,7 @@ class _TrackingTimeline extends StatelessWidget {
                         style: AppTypography.bodySM(context).copyWith(
                           fontWeight: isActive ? FontWeight.w800 : FontWeight.w600,
                           fontSize: R.sp(context, 13),
-                          color: isDone ? AppColors.deepCharcoal : AppColors.neutralGold,
+                          color: isDone ? (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal) : AppColors.neutralGold,
                         ),
                       ),
                       if (isActive && order.status == OrderStatus.shipped && order.trackingNumber != null) ...[
@@ -607,10 +607,10 @@ class _SectionCard extends StatelessWidget {
       width: double.infinity,
       padding: EdgeInsets.all(R.w(context, 16)),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
         borderRadius: BorderRadius.circular(R.w(context, 12)),
         border: Border.all(color: AppColors.borderLight),
-        boxShadow: [BoxShadow(color: AppColors.deepCharcoal.withValues(alpha: 0.02), blurRadius: 6, offset: const Offset(0, 2))],
+        boxShadow: [BoxShadow(color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal).withValues(alpha: 0.02), blurRadius: 6, offset: const Offset(0, 2))],
       ),
       child: child,
     );
@@ -666,7 +666,7 @@ class _ItemRow extends StatelessWidget {
 
   Widget _placeholder(BuildContext context) => Container(
     width: R.w(context, 52), height: R.w(context, 52),
-    color: AppColors.backgroundLight,
+    color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : AppColors.backgroundLight),
     child: Icon(Icons.image_outlined, size: R.sp(context, 24), color: AppColors.neutralGold),
   );
 }
@@ -688,12 +688,12 @@ class _PriceRow extends StatelessWidget {
           Text(label, style: AppTypography.bodySM(context).copyWith(
             fontSize: R.sp(context, 13),
             fontWeight: isBold ? FontWeight.w800 : FontWeight.normal,
-            color: isBold ? AppColors.deepCharcoal : AppColors.neutralGold,
+            color: isBold ? (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal) : AppColors.neutralGold,
           )),
           Text(value, style: AppTypography.bodySM(context).copyWith(
             fontSize: R.sp(context, 13),
             fontWeight: isBold ? FontWeight.w800 : FontWeight.w600,
-            color: isDiscount ? AppColors.success : AppColors.deepCharcoal,
+            color: isDiscount ? AppColors.success : (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal),
           )),
         ],
       ),

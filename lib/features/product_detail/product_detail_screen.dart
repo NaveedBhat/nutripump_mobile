@@ -125,7 +125,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
     final productAsync = ref.watch(productBySlugProvider(widget.slug));
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : Colors.white),
       body: productAsync.when(
         data: (product) {
           if (product == null) {
@@ -183,18 +183,18 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
     return SliverAppBar(
       expandedHeight: R.h(context, 340),
       pinned: true,
-      backgroundColor: Colors.white,
+      backgroundColor: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : Colors.white),
       elevation: 0,
       actions: [
         // ── Share button ─────────────────────────────────────────────────────────
         Container(
           margin: EdgeInsets.only(right: R.w(context, 4)),
           decoration: BoxDecoration(
-            color: Colors.white.withValues(alpha: 0.8),
+            color: (Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white).withValues(alpha: 0.8),
             shape: BoxShape.circle,
           ),
           child: IconButton(
-            icon: Icon(Icons.ios_share_rounded, size: R.sp(context, 20), color: AppColors.deepCharcoal),
+            icon: Icon(Icons.ios_share_rounded, size: R.sp(context, 20), color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal)),
             tooltip: 'Share product',
             onPressed: () {
               final url = 'https://nutripump.store/product/${product.slug}';
@@ -215,13 +215,13 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
             return Container(
               margin: EdgeInsets.only(right: R.w(context, 8)),
               decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.8),
+                color: (Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white).withValues(alpha: 0.8),
                 shape: BoxShape.circle,
               ),
               child: IconButton(
                 icon: Icon(
                   isWishlisted ? Icons.favorite : Icons.favorite_border,
-                  color: isWishlisted ? AppColors.error : AppColors.deepCharcoal,
+                  color: isWishlisted ? AppColors.error : (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal),
                   size: R.sp(context, 20),
                 ),
                 onPressed: () {
@@ -383,7 +383,9 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: R.w(context, 12)),
                 decoration: BoxDecoration(
-                  color: isSelected ? AppColors.primary.withValues(alpha: 0.05) : Colors.white.withValues(alpha: 0.5),
+                  color: isSelected
+                      ? AppColors.primary.withValues(alpha: 0.05)
+                      : (Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white.withValues(alpha: 0.5)),
                   border: Border.all(
                     color: isSelected ? AppColors.primary : AppColors.borderLight,
                     width: isSelected ? 2 : 1,
@@ -395,7 +397,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                   children: [
                     Text(
                       size.label,
-                      style: AppTypography.bodySM(context).copyWith(fontWeight: isSelected ? FontWeight.w800 : FontWeight.w600, color: isSelected ? AppColors.deepCharcoal : AppColors.neutralGold, fontSize: R.sp(context, 12)),
+                      style: AppTypography.bodySM(context).copyWith(fontWeight: isSelected ? FontWeight.w800 : FontWeight.w600, color: isSelected ? (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal) : AppColors.neutralGold, fontSize: R.sp(context, 12)),
                     ),
                     Text(
                       formatPrice(size.price),
@@ -420,7 +422,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
             child: Container(
               padding: EdgeInsets.all(R.w(context, 10)),
               decoration: BoxDecoration(
-                color: const Color(0xFFF9F9F9),
+                color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : const Color(0xFFF9F9F9),
                 borderRadius: BorderRadius.circular(R.w(context, 12)),
                 border: Border.all(color: AppColors.borderLight),
               ),
@@ -451,7 +453,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
             child: Container(
               padding: EdgeInsets.all(R.w(context, 10)),
               decoration: BoxDecoration(
-                color: const Color(0xFFF9F9F9),
+                color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : const Color(0xFFF9F9F9),
                 borderRadius: BorderRadius.circular(R.w(context, 12)),
                 border: Border.all(color: AppColors.borderLight),
               ),
@@ -612,7 +614,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
   Widget _buildNutritionCard(String label, String value, String sub) {
     return Container(
       decoration: BoxDecoration(
-        color: const Color(0xFFF5F1E9),
+        color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : const Color(0xFFF5F1E9),
         borderRadius: BorderRadius.circular(R.w(context, 16)),
         border: Border.all(color: AppColors.primary.withValues(alpha: 0.05)),
       ),
@@ -620,11 +622,11 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(value, style: AppTypography.h2(context).copyWith(fontSize: R.sp(context, 20), color: const Color(0xFF1B3B36))),
+          Text(value, style: AppTypography.h2(context).copyWith(fontSize: R.sp(context, 20), color: Theme.of(context).brightness == Brightness.dark ? const Color(0xFFF5F0E8) : const Color(0xFF1B3B36))),
           SizedBox(height: R.h(context, 2)),
-          Text(label.toUpperCase(), style: AppTypography.label(context).copyWith(fontSize: R.sp(context, 8), letterSpacing: 1.0, color: const Color(0xFF1B3B36).withValues(alpha: 0.7))),
+          Text(label.toUpperCase(), style: AppTypography.label(context).copyWith(fontSize: R.sp(context, 8), letterSpacing: 1.0, color: (Theme.of(context).brightness == Brightness.dark ? const Color(0xFFF5F0E8) : const Color(0xFF1B3B36)).withValues(alpha: 0.7))),
           SizedBox(height: R.h(context, 2)),
-          Text(sub, style: AppTypography.label(context).copyWith(fontSize: R.sp(context, 7), color: const Color(0xFF1B3B36).withValues(alpha: 0.5))),
+          Text(sub, style: AppTypography.label(context).copyWith(fontSize: R.sp(context, 7), color: (Theme.of(context).brightness == Brightness.dark ? const Color(0xFFF5F0E8) : const Color(0xFF1B3B36)).withValues(alpha: 0.5))),
         ],
       ),
     );
@@ -636,7 +638,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
       width: R.w(context, 22),
       height: R.w(context, 22),
       decoration: BoxDecoration(
-        color: value ? AppColors.primary : Colors.white,
+        color: value ? AppColors.primary : (Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white),
         border: Border.all(color: value ? AppColors.primary : AppColors.borderLight, width: 2),
         borderRadius: BorderRadius.circular(R.w(context, 6)),
       ),
@@ -676,7 +678,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
               Container(
                 padding: EdgeInsets.all(R.w(context, 16)),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
                   borderRadius: BorderRadius.circular(R.w(context, 16)),
                   border: Border.all(color: AppColors.borderLight),
                   boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.03), blurRadius: 12, offset: const Offset(0, 4))],
@@ -697,7 +699,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                         SizedBox(width: R.w(context, 10)),
                         Container(
                           padding: EdgeInsets.all(R.w(context, 4)),
-                          decoration: const BoxDecoration(color: Color(0xFFF0F0F0), shape: BoxShape.circle),
+                          decoration: BoxDecoration(color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : const Color(0xFFF0F0F0), shape: BoxShape.circle),
                           child: Icon(Icons.add, color: AppColors.neutralGold, size: R.sp(context, 16)),
                         ),
                         SizedBox(width: R.w(context, 10)),
@@ -853,7 +855,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                 child: Container(
                   padding: EdgeInsets.symmetric(horizontal: R.w(context, 14), vertical: R.h(context, 8)),
                   decoration: BoxDecoration(
-                    color: AppColors.deepCharcoal,
+                    color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : AppColors.deepCharcoal,
                     borderRadius: BorderRadius.circular(R.w(context, 100)),
                   ),
                   child: Text('Write a Review', style: AppTypography.label(context).copyWith(color: Colors.white, fontSize: R.sp(context, 10), fontWeight: FontWeight.w800)),
@@ -871,7 +873,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                   padding: const EdgeInsets.symmetric(vertical: 32),
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    color: const Color(0xFFF9F9F9),
+                    color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : const Color(0xFFF9F9F9),
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(color: AppColors.borderLight, style: BorderStyle.solid),
                   ),
@@ -906,7 +908,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
     return Container(
       padding: EdgeInsets.all(R.w(context, 16)),
       decoration: BoxDecoration(
-        color: const Color(0xFFF9F9F9),
+        color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : const Color(0xFFF9F9F9),
         borderRadius: BorderRadius.circular(R.w(context, 12)),
         border: Border.all(color: AppColors.borderLight),
       ),
@@ -940,7 +942,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
           if (review.title.isNotEmpty) SizedBox(height: R.h(context, 4)),
           Text(review.body, style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, fontSize: R.sp(context, 12), height: 1.4)),
           SizedBox(height: R.h(context, 8)),
-          Text('— $displayName', style: AppTypography.label(context).copyWith(color: AppColors.deepCharcoal, fontSize: R.sp(context, 10))),
+          Text('— $displayName', style: AppTypography.label(context).copyWith(color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal), fontSize: R.sp(context, 10))),
           if (review.adminReply != null) ...[
             SizedBox(height: R.h(context, 12)),
             Container(
@@ -996,7 +998,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
       builder: (ctx) => StatefulBuilder(
         builder: (ctx, setModalState) => Container(
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
             borderRadius: BorderRadius.vertical(top: Radius.circular(R.w(context, 28))),
           ),
           padding: EdgeInsets.fromLTRB(R.w(context, 24), R.h(context, 24), R.w(context, 24), MediaQuery.of(ctx).viewInsets.bottom + R.h(context, 32)),
@@ -1040,7 +1042,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                     hintText: 'Sum up your experience',
                     hintStyle: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold.withValues(alpha: 0.5)),
                     filled: true,
-                    fillColor: const Color(0xFFF9F9F9),
+                    fillColor: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : const Color(0xFFF9F9F9),
                     contentPadding: EdgeInsets.all(R.w(context, 16)),
                     border: OutlineInputBorder(borderRadius: BorderRadius.circular(R.w(context, 14)), borderSide: const BorderSide(color: AppColors.borderLight)),
                     enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(R.w(context, 14)), borderSide: const BorderSide(color: AppColors.borderLight)),
@@ -1057,7 +1059,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                     hintText: 'What did you love about it?',
                     hintStyle: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold.withValues(alpha: 0.5)),
                     filled: true,
-                    fillColor: const Color(0xFFF9F9F9),
+                    fillColor: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : const Color(0xFFF9F9F9),
                     contentPadding: EdgeInsets.all(R.w(context, 16)),
                     border: OutlineInputBorder(borderRadius: BorderRadius.circular(R.w(context, 14)), borderSide: const BorderSide(color: AppColors.borderLight)),
                     enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(R.w(context, 14)), borderSide: const BorderSide(color: AppColors.borderLight)),
@@ -1084,7 +1086,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                             margin: EdgeInsets.all(R.w(context, 3)),
                             width: R.w(context, 18),
                             height: R.h(context, 18),
-                            decoration: const BoxDecoration(color: Colors.white, shape: BoxShape.circle),
+                            decoration: BoxDecoration(color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white, shape: BoxShape.circle),
                           ),
                         ),
                       ),
@@ -1193,7 +1195,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
       child: Container(
         padding: EdgeInsets.fromLTRB(R.w(context, 20), R.h(context, 12), R.w(context, 20), MediaQuery.of(context).padding.bottom + R.h(context, 12)),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
           border: const Border(top: BorderSide(color: AppColors.borderLight)),
           boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.03), offset: const Offset(0, -5), blurRadius: 10)],
         ),
@@ -1255,9 +1257,9 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.shopping_bag_outlined, size: R.sp(context, 16)),
+                    Icon(Icons.shopping_bag_outlined, size: R.sp(context, 16), color: AppColors.deepCharcoal),
                     SizedBox(width: R.w(context, 6)),
-                    Text('Add to Bag — ${formatPrice(price * _quantity)}', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: R.sp(context, 12))),
+                    Text('Add to Bag — ${formatPrice(price * _quantity)}', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: R.sp(context, 12), color: AppColors.deepCharcoal)),
                   ],
                 ),
               ),

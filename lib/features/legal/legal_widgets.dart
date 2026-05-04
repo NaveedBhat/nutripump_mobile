@@ -79,13 +79,12 @@ class LegalSectionWidget extends StatelessWidget {
                 child: Container(
                   padding: EdgeInsets.all(R.w(context, 15)),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
                     borderRadius: BorderRadius.circular(R.w(context, 12)),
-                    border: Border.all(color: AppColors.borderLight),
+                    border: Border.all(color: Theme.of(context).brightness == Brightness.dark ? AppColors.borderDark : AppColors.borderLight),
                     boxShadow: [
                       BoxShadow(
-                        color:
-                            AppColors.deepCharcoal.withValues(alpha: 0.03),
+                        color: Colors.black.withValues(alpha: 0.03),
                         blurRadius: 8,
                         offset: const Offset(0, 2),
                       ),
@@ -99,7 +98,7 @@ class LegalSectionWidget extends StatelessWidget {
                         style: AppTypography.bodySM(context).copyWith(
                           fontWeight: FontWeight.w700,
                           fontSize: R.sp(context, 13),
-                          color: AppColors.deepCharcoal,
+                          color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal),
                         ),
                       ),
                       SizedBox(height: R.h(context, 5)),
@@ -108,7 +107,7 @@ class LegalSectionWidget extends StatelessWidget {
                         style: AppTypography.bodySM(context).copyWith(
                           fontSize: R.sp(context, 12.5),
                           height: 1.65,
-                          color: AppColors.deepCharcoal
+                          color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal)
                               .withValues(alpha: 0.65),
                         ),
                       ),

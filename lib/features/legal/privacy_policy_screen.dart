@@ -19,7 +19,7 @@ class PrivacyPolicyScreen extends ConsumerWidget {
     final contactEmail = storeSettings?.storeEmail ?? 'contact@nutripump.in';
 
     return Scaffold(
-      backgroundColor: AppColors.backgroundLight,
+      backgroundColor: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : AppColors.backgroundLight),
       body: CustomScrollView(
         slivers: [
           // ── App Bar ──────────────────────────────────────────────────
@@ -39,7 +39,7 @@ class PrivacyPolicyScreen extends ConsumerWidget {
             bottom: PreferredSize(
               preferredSize: const Size.fromHeight(1),
               child: Container(
-                  height: 1, color: Colors.white.withValues(alpha: 0.1)),
+                  height: 1, color: (Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white).withValues(alpha: 0.1)),
             ),
           ),
 
@@ -126,7 +126,7 @@ class PrivacyPolicyScreen extends ConsumerWidget {
                           Text(
                             page.intro,
                             style: AppTypography.bodySM(context).copyWith(
-                              color: Colors.white.withValues(alpha: 0.6),
+                              color: Colors.white.withValues(alpha: 0.7),
                               fontSize: R.sp(context, 13),
                               height: 1.6,
                             ),
@@ -135,7 +135,7 @@ class PrivacyPolicyScreen extends ConsumerWidget {
                           Text(
                             'Last updated: $lastUpdated',
                             style: AppTypography.label(context).copyWith(
-                              color: Colors.white.withValues(alpha: 0.3),
+                              color: Colors.white.withValues(alpha: 0.35),
                               fontSize: R.sp(context, 10),
                               fontFamily: 'monospace',
                             ),
@@ -150,14 +150,14 @@ class PrivacyPolicyScreen extends ConsumerWidget {
                       child: Container(
                         padding: EdgeInsets.all(R.w(context, 18)),
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
                           borderRadius: BorderRadius.circular(R.w(context, 16)),
                           border: Border.all(
                               color: AppColors.primary.withValues(alpha: 0.15)),
                           boxShadow: [
                             BoxShadow(
                               color:
-                                  AppColors.deepCharcoal.withValues(alpha: 0.04),
+                                  Colors.black.withValues(alpha: 0.04),
                               blurRadius: 12,
                               offset: const Offset(0, 3),
                             ),
@@ -169,7 +169,7 @@ class PrivacyPolicyScreen extends ConsumerWidget {
                             fontSize: R.sp(context, 13),
                             height: 1.7,
                             color:
-                                AppColors.deepCharcoal.withValues(alpha: 0.75),
+                                (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal).withValues(alpha: 0.75),
                           ),
                         ),
                       ),
@@ -245,7 +245,7 @@ class PrivacyPolicyScreen extends ConsumerWidget {
                             Text(
                               'If you have any questions, requests, or complaints about this Privacy Policy or our data practices, please reach out.',
                               style: AppTypography.bodySM(context).copyWith(
-                                color: Colors.white.withValues(alpha: 0.55),
+                                color: Colors.white.withValues(alpha: 0.6),
                                 fontSize: R.sp(context, 12.5),
                                 height: 1.6,
                               ),
@@ -291,7 +291,7 @@ class PrivacyPolicyScreen extends ConsumerWidget {
                               child: Text(
                                 'We respond within 5 business days',
                                 style: AppTypography.label(context).copyWith(
-                                  color: Colors.white.withValues(alpha: 0.3),
+                                  color: Colors.white.withValues(alpha: 0.35),
                                   fontSize: R.sp(context, 10),
                                   letterSpacing: 0.3,
                                 ),

@@ -21,9 +21,9 @@ class CartScreen extends ConsumerWidget {
     final productsAsync = ref.watch(allProductsProvider); // For upsell strip
 
     return Scaffold(
-      backgroundColor: AppColors.backgroundLight,
+      backgroundColor: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : AppColors.backgroundLight),
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : Colors.white),
         elevation: 0,
         surfaceTintColor: Colors.transparent,
         title: Column(
@@ -99,7 +99,7 @@ class CartScreen extends ConsumerWidget {
             RichText(
               textAlign: TextAlign.center,
               text: TextSpan(
-                style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w600, color: AppColors.deepCharcoal),
+                style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w600, color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal)),
                 children: [
                   const TextSpan(text: 'You are just '),
                   TextSpan(text: formatPrice(remaining), style: const TextStyle(color: AppColors.primary, fontWeight: FontWeight.bold)),
@@ -129,11 +129,11 @@ class CartScreen extends ConsumerWidget {
       margin: EdgeInsets.only(bottom: R.h(context, 12)),
       padding: EdgeInsets.all(R.w(context, 12)),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.6),
+        color: (Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white).withValues(alpha: 0.6),
         borderRadius: BorderRadius.circular(R.w(context, 16)),
         border: Border.all(color: AppColors.primary.withValues(alpha: 0.15)),
         boxShadow: [
-          BoxShadow(color: AppColors.deepCharcoal.withValues(alpha: 0.05), blurRadius: 10, offset: const Offset(0, 4)),
+          BoxShadow(color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal).withValues(alpha: 0.05), blurRadius: 10, offset: const Offset(0, 4)),
         ],
       ),
       child: Row(
@@ -171,7 +171,7 @@ class CartScreen extends ConsumerWidget {
                         item.product.name,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, color: AppColors.deepCharcoal),
+                        style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal)),
                       ),
                     ),
                     GestureDetector(
@@ -204,7 +204,7 @@ class CartScreen extends ConsumerWidget {
                   children: [
                     Container(
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
                         border: Border.all(color: AppColors.primary.withValues(alpha: 0.2)),
                         borderRadius: BorderRadius.circular(R.w(context, 8)),
                       ),
@@ -221,13 +221,13 @@ class CartScreen extends ConsumerWidget {
                                 : null,
                             child: Padding(
                               padding: EdgeInsets.all(R.w(context, 6)),
-                              child: Icon(Icons.add, size: R.sp(context, 14), color: item.quantity < item.product.stockCount ? AppColors.deepCharcoal : AppColors.borderLight),
+                              child: Icon(Icons.add, size: R.sp(context, 14), color: item.quantity < item.product.stockCount ? (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal) : AppColors.borderLight),
                             ),
                           ),
                         ],
                       ),
                     ),
-                    Text(formatPrice(item.effectivePrice * item.quantity), style: AppTypography.price(context).copyWith(fontSize: R.sp(context, 14), color: AppColors.deepCharcoal)),
+                    Text(formatPrice(item.effectivePrice * item.quantity), style: AppTypography.price(context).copyWith(fontSize: R.sp(context, 14), color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal))),
                   ],
                 ),
               ],
@@ -242,7 +242,7 @@ class CartScreen extends ConsumerWidget {
   Widget _buildOrderSummaryFooter(BuildContext context, WidgetRef ref, CartState state, AsyncValue<List<Product>> productsAsync) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
         boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), offset: const Offset(0, -10), blurRadius: 30)],
       ),
       child: Column(
@@ -289,7 +289,7 @@ class CartScreen extends ConsumerWidget {
                             width: R.w(context, 200),
                             padding: EdgeInsets.all(R.w(context, 8)),
                             decoration: BoxDecoration(
-                              color: Colors.white,
+                              color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
                               borderRadius: BorderRadius.circular(R.w(context, 12)),
                               border: Border.all(color: AppColors.primary.withValues(alpha: 0.15)),
                             ),
@@ -362,7 +362,7 @@ class CartScreen extends ConsumerWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(state.appliedPromo != null ? '\'${state.appliedPromo!.code}\' Applied' : 'Apply Promo Code', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, color: state.appliedPromo != null ? AppColors.success : AppColors.deepCharcoal)),
+                              Text(state.appliedPromo != null ? '\'${state.appliedPromo!.code}\' Applied' : 'Apply Promo Code', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, color: state.appliedPromo != null ? AppColors.success : (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal))),
                               if (state.appliedPromo != null) Text('You saved ${formatPrice(state.discount)}', style: AppTypography.label(context).copyWith(fontSize: R.sp(context, 10), color: AppColors.success)),
                             ],
                           ),
@@ -444,9 +444,9 @@ class CartScreen extends ConsumerWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text('Proceed to Checkout', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: R.sp(context, 16))),
+                        Text('Proceed to Checkout', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: R.sp(context, 16), color: AppColors.deepCharcoal)),
                         SizedBox(width: R.w(context, 8)),
-                        Icon(Icons.arrow_forward_rounded, size: R.sp(context, 20)),
+                        Icon(Icons.arrow_forward_rounded, size: R.sp(context, 20), color: AppColors.deepCharcoal),
                       ],
                     ),
                   ),
@@ -477,9 +477,9 @@ class CartScreen extends ConsumerWidget {
   Widget _buildTrustBadge(BuildContext context, IconData icon, String label) {
     return Column(
       children: [
-        Icon(icon, size: R.sp(context, 16), color: AppColors.deepCharcoal.withValues(alpha: 0.6)),
+        Icon(icon, size: R.sp(context, 16), color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal).withValues(alpha: 0.6)),
         SizedBox(height: R.h(context, 4)),
-        Text(label, style: AppTypography.label(context).copyWith(fontSize: R.sp(context, 8), color: AppColors.deepCharcoal.withValues(alpha: 0.6), letterSpacing: 1.5)),
+        Text(label, style: AppTypography.label(context).copyWith(fontSize: R.sp(context, 8), color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal).withValues(alpha: 0.6), letterSpacing: 1.5)),
       ],
     );
   }
@@ -489,7 +489,7 @@ class CartScreen extends ConsumerWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(label, style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, fontWeight: FontWeight.w500)),
-        Text(formatPrice(value), style: AppTypography.bodySM(context).copyWith(color: AppColors.deepCharcoal, fontWeight: FontWeight.w600)),
+        Text(formatPrice(value), style: AppTypography.bodySM(context).copyWith(color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal), fontWeight: FontWeight.w600)),
       ],
     );
   }
@@ -524,7 +524,7 @@ class CartScreen extends ConsumerWidget {
                   shadowColor: AppColors.primary.withValues(alpha: 0.3),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(R.w(context, 12))),
                 ),
-                child: Text('Explore The Pantry', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: R.sp(context, 13))),
+                child: Text('Explore The Pantry', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: R.sp(context, 13), color: AppColors.deepCharcoal)),
               ),
             ),
           ],

@@ -32,7 +32,7 @@ class CustomNetworkImage extends StatelessWidget {
         child: Container(
           width: width,
           height: height,
-          color: Colors.white,
+          color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
         ),
       ),
       errorWidget: (context, url, error) => Container(

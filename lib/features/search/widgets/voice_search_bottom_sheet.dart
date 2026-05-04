@@ -96,7 +96,7 @@ class _VoiceSearchBottomSheetState extends State<VoiceSearchBottomSheet> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
         borderRadius: BorderRadius.vertical(top: Radius.circular(R.w(context, 24))),
       ),
       padding: EdgeInsets.symmetric(horizontal: R.w(context, 24), vertical: R.h(context, 20)),
@@ -107,7 +107,7 @@ class _VoiceSearchBottomSheetState extends State<VoiceSearchBottomSheet> {
             Align(
               alignment: Alignment.centerRight,
               child: IconButton(
-                icon: const Icon(Icons.close, color: AppColors.deepCharcoal),
+                icon: Icon(Icons.close, color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal)),
                 onPressed: () => Navigator.pop(context),
               ),
             ),
@@ -138,7 +138,7 @@ class _VoiceSearchBottomSheetState extends State<VoiceSearchBottomSheet> {
                     color: AppColors.borderLight.withValues(alpha: 0.5),
                     shape: BoxShape.circle,
                   ),
-                  child: Icon(Icons.mic_none, size: R.sp(context, 48), color: AppColors.deepCharcoal),
+                  child: Icon(Icons.mic_none, size: R.sp(context, 48), color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal)),
                 ),
               ),
             SizedBox(height: R.h(context, 24)),
@@ -173,7 +173,7 @@ class _VoiceSearchBottomSheetState extends State<VoiceSearchBottomSheet> {
                   ),
                   child: Text(
                     _permissionStatus.isPermanentlyDenied ? 'Open Settings' : 'Turn on microphone',
-                    style: AppTypography.label(context).copyWith(color: AppColors.deepCharcoal, fontWeight: FontWeight.w800, fontSize: R.sp(context, 14)),
+                    style: AppTypography.label(context).copyWith(color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal), fontWeight: FontWeight.w800, fontSize: R.sp(context, 14)),
                   ),
                 ),
               ),

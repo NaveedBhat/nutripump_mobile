@@ -28,7 +28,11 @@ class MessageBubble extends StatelessWidget {
             ),
             padding: EdgeInsets.symmetric(horizontal: R.w(context, 14), vertical: R.h(context, 10)),
             decoration: BoxDecoration(
-              color: isUser ? AppColors.primary : Colors.white,
+              color: isUser
+                  ? AppColors.primary
+                  : (Theme.of(context).brightness == Brightness.dark
+                      ? AppColors.backgroundDark
+                      : Colors.white),
               border:
                   isUser ? null : Border.all(color: AppColors.primary.withValues(alpha: 0.1)),
               borderRadius: BorderRadius.only(
@@ -41,7 +45,11 @@ class MessageBubble extends StatelessWidget {
             child: Text(
               message.text,
               style: AppTypography.bodySM(context).copyWith(
-                color: AppColors.deepCharcoal,
+                color: isUser
+                    ? (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal)
+                    : (Theme.of(context).brightness == Brightness.dark
+                        ? const Color(0xFFF5F0E8)
+                        : (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal)),
                 fontWeight: isUser ? FontWeight.w500 : FontWeight.normal,
               ),
             ),
@@ -126,7 +134,9 @@ class _TypingIndicatorState extends State<TypingIndicator>
           Container(
             padding: EdgeInsets.symmetric(horizontal: R.w(context, 16), vertical: R.h(context, 12)),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? AppColors.backgroundDark
+                  : Colors.white,
               border: Border.all(color: AppColors.primary.withValues(alpha: 0.1)),
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(R.w(context, 16)),

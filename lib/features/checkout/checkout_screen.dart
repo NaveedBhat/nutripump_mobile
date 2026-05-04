@@ -203,7 +203,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
 
     if (cartState.items.isEmpty && !isProcessing) {
       return Scaffold(
-        backgroundColor: AppColors.backgroundLight,
+        backgroundColor: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : AppColors.backgroundLight),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -220,9 +220,9 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
     }
 
     return Scaffold(
-      backgroundColor: AppColors.backgroundLight,
+      backgroundColor: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : AppColors.backgroundLight),
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : Colors.white),
         elevation: 0,
         surfaceTintColor: Colors.transparent,
         title: Text('Checkout', style: AppTypography.h3(context)),
@@ -260,7 +260,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
   Widget _buildProgressBar(int currentStep) {
     const steps = _CheckoutScreenState.steps;
     return Container(
-      color: Colors.white,
+      color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
       padding: EdgeInsets.symmetric(vertical: R.h(context, 24), horizontal: R.w(context, 32)),
       child: Stack(
         alignment: Alignment.topCenter,
@@ -392,7 +392,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
             // Delivery Review
             Container(
               padding: EdgeInsets.all(R.w(context, 20)),
-              decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(R.w(context, 20)), border: Border.all(color: AppColors.primary.withValues(alpha: 0.2)), boxShadow: [BoxShadow(color: AppColors.primary.withValues(alpha: 0.05), blurRadius: 20)]),
+              decoration: BoxDecoration(color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white, borderRadius: BorderRadius.circular(R.w(context, 20)), border: Border.all(color: AppColors.primary.withValues(alpha: 0.2)), boxShadow: [BoxShadow(color: AppColors.primary.withValues(alpha: 0.05), blurRadius: 20)]),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -429,7 +429,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
             // Payment Review
             Container(
               padding: EdgeInsets.all(R.w(context, 20)),
-              decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(R.w(context, 20)), border: Border.all(color: AppColors.primary.withValues(alpha: 0.2)), boxShadow: [BoxShadow(color: AppColors.primary.withValues(alpha: 0.05), blurRadius: 20)]),
+              decoration: BoxDecoration(color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white, borderRadius: BorderRadius.circular(R.w(context, 20)), border: Border.all(color: AppColors.primary.withValues(alpha: 0.2)), boxShadow: [BoxShadow(color: AppColors.primary.withValues(alpha: 0.05), blurRadius: 20)]),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -482,7 +482,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                       ],
                     ),
                   ),
-                  Text(formatPrice(item.effectivePrice * item.quantity), style: AppTypography.price(context).copyWith(fontSize: R.sp(context, 14), color: AppColors.deepCharcoal)),
+                  Text(formatPrice(item.effectivePrice * item.quantity), style: AppTypography.price(context).copyWith(fontSize: R.sp(context, 14), color: Theme.of(context).brightness == Brightness.dark ? const Color(0xFFF5F0E8) : AppColors.deepCharcoal)),
                 ],
               ),
             )),
@@ -495,7 +495,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
   Widget _buildBottomActions(int step, CartState cart) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
         boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), offset: const Offset(0, -10), blurRadius: 30)],
       ),
       padding: EdgeInsets.fromLTRB(R.w(context, 24), R.h(context, 20), R.w(context, 24), MediaQuery.of(context).padding.bottom + R.h(context, 20)),
@@ -541,9 +541,9 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(step == 0 ? 'Review Order' : 'Place Order & Pay', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: R.sp(context, 16))),
+                  Text(step == 0 ? 'Review Order' : 'Place Order & Pay', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: R.sp(context, 16), color: AppColors.deepCharcoal)),
                   SizedBox(width: R.w(context, 8)),
-                  Icon(step == 0 ? Icons.arrow_forward_rounded : Icons.lock_outline_rounded, size: R.sp(context, 20)),
+                  Icon(step == 0 ? Icons.arrow_forward_rounded : Icons.lock_outline_rounded, size: R.sp(context, 20), color: AppColors.deepCharcoal),
                 ],
               ),
             ),
@@ -578,7 +578,7 @@ class _AddressSelectionSection extends ConsumerWidget {
               Container(
                 width: double.infinity,
                 padding: EdgeInsets.all(R.w(context, 24)),
-                decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(R.w(context, 16)), border: Border.all(color: AppColors.borderLight, style: BorderStyle.none)),
+                decoration: BoxDecoration(color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white, borderRadius: BorderRadius.circular(R.w(context, 16)), border: Border.all(color: AppColors.borderLight, style: BorderStyle.none)),
                 child: Column(
                   children: [
                     Icon(Icons.location_on_outlined, size: R.sp(context, 32), color: AppColors.neutralGold),
@@ -590,6 +590,7 @@ class _AddressSelectionSection extends ConsumerWidget {
                       icon: Icon(Icons.add, size: R.sp(context, 16)),
                       label: const Text('Add New Address'),
                       style: ElevatedButton.styleFrom(backgroundColor: AppColors.deepCharcoal, foregroundColor: Colors.white),
+                      
                     )
                   ],
                 ),
@@ -603,7 +604,7 @@ class _AddressSelectionSection extends ConsumerWidget {
                     margin: EdgeInsets.only(bottom: R.h(context, 12)),
                     padding: EdgeInsets.all(R.w(context, 16)),
                     decoration: BoxDecoration(
-                      color: isSelected ? AppColors.primary.withValues(alpha: 0.05) : Colors.white,
+                      color: isSelected ? AppColors.primary.withValues(alpha: 0.05) : (Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white),
                       borderRadius: BorderRadius.circular(R.w(context, 16)),
                       border: Border.all(color: isSelected ? AppColors.primary : AppColors.borderLight, width: isSelected ? 2 : 1),
                     ),
@@ -787,10 +788,10 @@ class _PaymentSelectionSectionState
         padding: EdgeInsets.all(R.w(context, 16)),
         decoration: BoxDecoration(
           color: !isEnabled
-              ? AppColors.borderLight.withValues(alpha: 0.3)
+              ? (Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : AppColors.borderLight.withValues(alpha: 0.3))
               : isSelected
               ? AppColors.primary.withValues(alpha: 0.05)
-              : Colors.white,
+              : (Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white),
           borderRadius: BorderRadius.circular(R.w(context, 16)),
           border: Border.all(
               color: !isEnabled
@@ -806,7 +807,7 @@ class _PaymentSelectionSectionState
             Container(
               padding: EdgeInsets.all(R.w(context, 8)),
               decoration: BoxDecoration(
-                  color: !isEnabled ? AppColors.borderLight : isSelected ? AppColors.primary : AppColors.backgroundLight,
+                  color: !isEnabled ? AppColors.borderLight : isSelected ? AppColors.primary : (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : AppColors.backgroundLight),
                   borderRadius: BorderRadius.circular(R.w(context, 8))
               ),
               child: Icon(
@@ -825,7 +826,7 @@ class _PaymentSelectionSectionState
                     spacing: R.w(context, 8),
                     runSpacing: R.h(context, 4),
                     children: [
-                      Text(title, style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.bold, color: !isEnabled ? AppColors.neutralGold : AppColors.deepCharcoal)),
+                      Text(title, style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.bold, color: !isEnabled ? AppColors.neutralGold : (Theme.of(context).brightness == Brightness.dark ? const Color(0xFFF5F0E8) : AppColors.deepCharcoal))),
                       if (!isEnabled)
                         Container(
                           padding: EdgeInsets.symmetric(horizontal: R.w(context, 6), vertical: R.h(context, 2)),

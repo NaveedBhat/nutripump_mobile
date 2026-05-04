@@ -17,9 +17,9 @@ class JournalScreen extends ConsumerWidget {
     final articles = ref.watch(filteredArticlesProvider);
 
     return Scaffold(
-      backgroundColor: AppColors.backgroundLight,
+      backgroundColor: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : AppColors.backgroundLight),
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : Colors.white),
         elevation: 0,
         surfaceTintColor: Colors.transparent,
         centerTitle: true,
@@ -53,12 +53,12 @@ class JournalScreen extends ConsumerWidget {
                     child: ChoiceChip(
                       label: Text(category,
                           style: AppTypography.bodySM(context).copyWith(
-                            color: isSelected ? Colors.white : AppColors.deepCharcoal,
+                            color: isSelected ? Colors.white : (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal),
                             fontWeight: isSelected ? FontWeight.w700 : FontWeight.w600,
                           )),
                       selected: isSelected,
                       onSelected: (_) => ref.read(selectedCategoryProvider.notifier).state = category,
-                      backgroundColor: Colors.white,
+                      backgroundColor: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : Colors.white),
                       selectedColor: AppColors.primary,
                       side: BorderSide(
                         color: isSelected ? AppColors.primary : AppColors.borderLight,
@@ -121,7 +121,7 @@ class _FeaturedArticleCard extends StatelessWidget {
           ),
           boxShadow: [
             BoxShadow(
-              color: AppColors.deepCharcoal.withValues(alpha: 0.1),
+              color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal).withValues(alpha: 0.1),
               blurRadius: 10,
               offset: const Offset(0, 4),
             ),
@@ -136,7 +136,7 @@ class _FeaturedArticleCard extends StatelessWidget {
               Container(
                 padding: EdgeInsets.symmetric(horizontal: R.w(context, 10), vertical: R.h(context, 4)),
                 decoration: BoxDecoration(color: AppColors.primary, borderRadius: BorderRadius.circular(R.w(context, 20))),
-                child: Text(article.category.toUpperCase(), style: AppTypography.label(context).copyWith(fontSize: R.sp(context, 10), color: AppColors.deepCharcoal)),
+                child: Text(article.category.toUpperCase(), style: AppTypography.label(context).copyWith(fontSize: R.sp(context, 10), color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal))),
               ),
               SizedBox(height: R.h(context, 12)),
               Text(
@@ -172,10 +172,10 @@ class _ArticleCard extends StatelessWidget {
       child: Container(
         margin: EdgeInsets.only(bottom: R.h(context, 16)),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
           borderRadius: BorderRadius.circular(R.w(context, 12)),
           border: Border.all(color: AppColors.borderLight),
-          boxShadow: [BoxShadow(color: AppColors.deepCharcoal.withValues(alpha: 0.02), blurRadius: 6, offset: const Offset(0, 2))],
+          boxShadow: [BoxShadow(color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal).withValues(alpha: 0.02), blurRadius: 6, offset: const Offset(0, 2))],
         ),
         child: Row(
           children: [
@@ -187,7 +187,7 @@ class _ArticleCard extends StatelessWidget {
                 height: R.w(context, 110),
                 fit: BoxFit.cover,
                 errorBuilder: (_, __, ___) => Container(
-                  width: R.w(context, 100), height: R.w(context, 110), color: AppColors.backgroundLight,
+                  width: R.w(context, 100), height: R.w(context, 110), color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : AppColors.backgroundLight),
                   child: const Icon(Icons.image_outlined, color: AppColors.neutralGold),
                 ),
               ),

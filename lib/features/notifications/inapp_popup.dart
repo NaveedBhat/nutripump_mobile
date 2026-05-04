@@ -288,7 +288,7 @@ class _InAppPopupState extends State<InAppPopup>
                           ),
                           child: Icon(
                             Icons.close,
-                            color: Colors.white,
+                            color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
                             size: R.sp(context, 18),
                           ),
                         ),

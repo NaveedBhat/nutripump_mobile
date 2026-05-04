@@ -10,6 +10,7 @@ import '../models/models.dart';
 import '../models/product.dart';
 
 export 'notifications_provider.dart';
+export 'theme_provider.dart';
 
 // ── Service Providers ────────────────────────────────────────
 final authServiceProvider = Provider<AuthService>((ref) => AuthService());

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../constants/app_colors.dart';
 import '../constants/app_typography.dart';
+import '../utils/responsive.dart';
 
 class PrimaryButton extends StatelessWidget {
   final String text;
@@ -46,9 +47,7 @@ class PrimaryButton extends StatelessWidget {
                 ],
                 Text(
                   text,
-                  style: AppTypography.bodySM(context).copyWith(
-                    fontWeight: FontWeight.w800,
-                    fontSize: 16,
+                  style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: R.sp(context, 16), color: AppColors.deepCharcoal
                   ),
                 ),
               ],

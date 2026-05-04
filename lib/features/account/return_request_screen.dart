@@ -83,9 +83,9 @@ class _ReturnRequestScreenState extends ConsumerState<ReturnRequestScreen> {
     final userAsync = ref.watch(authStateProvider);
 
     return Scaffold(
-      backgroundColor: AppColors.backgroundLight,
+      backgroundColor: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : AppColors.backgroundLight),
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : Colors.white),
         elevation: 0,
         surfaceTintColor: Colors.transparent,
         centerTitle: true,
@@ -157,7 +157,7 @@ class _ReturnRequestScreenState extends ConsumerState<ReturnRequestScreen> {
                             child: Text(
                               'Returns accepted within $returnDays days of delivery. '
                               'Refunds are processed within 5–7 business days after approval.',
-                              style: AppTypography.bodySM(context).copyWith(fontSize: R.sp(context, 12), height: 1.5, color: AppColors.deepCharcoal),
+                              style: AppTypography.bodySM(context).copyWith(fontSize: R.sp(context, 12), height: 1.5, color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal)),
                             ),
                           ),
                         ],
@@ -174,7 +174,7 @@ class _ReturnRequestScreenState extends ConsumerState<ReturnRequestScreen> {
                         width: double.infinity,
                         padding: EdgeInsets.all(R.w(context, 20)),
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
                           borderRadius: BorderRadius.circular(R.w(context, 12)),
                           border: Border.all(color: AppColors.borderLight),
                         ),
@@ -225,7 +225,7 @@ class _ReturnRequestScreenState extends ConsumerState<ReturnRequestScreen> {
                             hintStyle: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold.withValues(alpha: 0.5)),
                             contentPadding: EdgeInsets.symmetric(horizontal: R.w(context, 16), vertical: R.h(context, 12)),
                             filled: true,
-                            fillColor: Colors.white,
+                            fillColor: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
                             border: OutlineInputBorder(borderRadius: BorderRadius.circular(R.w(context, 12)), borderSide: const BorderSide(color: AppColors.borderLight)),
                             focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(R.w(context, 12)), borderSide: const BorderSide(color: AppColors.primary)),
                           ),
@@ -249,7 +249,7 @@ class _ReturnRequestScreenState extends ConsumerState<ReturnRequestScreen> {
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(R.w(context, 12))),
                           ),
                           child: _isLoading
-                              ? SizedBox(width: R.w(context, 24), height: R.w(context, 24), child: const CircularProgressIndicator(strokeWidth: 2, color: AppColors.deepCharcoal))
+                              ? SizedBox(width: R.w(context, 24), height: R.w(context, 24), child: CircularProgressIndicator(strokeWidth: 2, color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal)))
                               : Text('Submit Return Request', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: R.sp(context, 15))),
                         ),
                       ),
@@ -281,13 +281,13 @@ class _OrderSelectionCard extends StatelessWidget {
         margin: EdgeInsets.only(bottom: R.h(context, 10)),
         padding: EdgeInsets.all(R.w(context, 14)),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
           borderRadius: BorderRadius.circular(R.w(context, 12)),
           border: Border.all(
             color: isSelected ? AppColors.primary : AppColors.borderLight,
             width: isSelected ? 2 : 1,
           ),
-          boxShadow: [BoxShadow(color: AppColors.deepCharcoal.withValues(alpha: 0.02), blurRadius: 6, offset: const Offset(0, 2))],
+          boxShadow: [BoxShadow(color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal).withValues(alpha: 0.02), blurRadius: 6, offset: const Offset(0, 2))],
         ),
         child: Row(
           children: [
@@ -300,7 +300,7 @@ class _OrderSelectionCard extends StatelessWidget {
                 border: Border.all(color: isSelected ? AppColors.primary : AppColors.borderLight, width: 1.5),
               ),
               child: isSelected
-                  ? Icon(Icons.check_rounded, size: R.sp(context, 12), color: AppColors.deepCharcoal)
+                  ? Icon(Icons.check_rounded, size: R.sp(context, 12), color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal))
                   : null,
             ),
             SizedBox(width: R.w(context, 12)),
@@ -361,7 +361,7 @@ class _ReasonTile extends StatelessWidget {
                 color: isSelected ? AppColors.primary : Colors.white,
                 border: Border.all(color: isSelected ? AppColors.primary : AppColors.borderLight, width: 1.5),
               ),
-              child: isSelected ? Icon(Icons.check_rounded, size: R.sp(context, 10), color: AppColors.deepCharcoal) : null,
+              child: isSelected ? Icon(Icons.check_rounded, size: R.sp(context, 10), color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal)) : null,
             ),
             SizedBox(width: R.w(context, 10)),
             Text(reason, style: AppTypography.bodySM(context).copyWith(fontSize: R.sp(context, 13))),

@@ -17,16 +17,16 @@ class NotificationsScreen extends ConsumerWidget {
     final notifications = ref.watch(notificationsProvider);
 
     return Scaffold(
-      backgroundColor: AppColors.backgroundLight,
+      backgroundColor: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : AppColors.backgroundLight),
       appBar: AppBar(
         title: Text('Notifications', style: AppTypography.h3(context)),
         centerTitle: true,
-        backgroundColor: AppColors.backgroundLight,
+        backgroundColor: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : AppColors.backgroundLight),
         elevation: 0,
         actions: [
           if (notifications.isNotEmpty)
             IconButton(
-              icon: const Icon(Icons.done_all, color: AppColors.deepCharcoal),
+              icon: Icon(Icons.done_all, color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal)),
               tooltip: 'Mark all as read',
               onPressed: () {
                 ref.read(notificationsProvider.notifier).markAllAsRead();
@@ -63,7 +63,7 @@ class NotificationsScreen extends ConsumerWidget {
                     },
                     child: Container(
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
                         borderRadius: BorderRadius.circular(R.w(context, 14)),
                         border: Border.all(
                           color: notification.isRead ? AppColors.borderLight.withValues(alpha: 0.5) : AppColors.primary.withValues(alpha: 0.4),
@@ -108,7 +108,7 @@ class NotificationsScreen extends ConsumerWidget {
                                             notification.title,
                                             style: AppTypography.bodySM(context).copyWith(
                                               fontWeight: notification.isRead ? FontWeight.w600 : FontWeight.w800,
-                                              color: AppColors.deepCharcoal,
+                                              color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal),
                                               height: 1.2,
                                             ),
                                           ),
@@ -129,7 +129,7 @@ class NotificationsScreen extends ConsumerWidget {
                                     Text(
                                       notification.body,
                                       style: AppTypography.caption(context).copyWith(
-                                        color: AppColors.deepCharcoal.withValues(alpha: 0.7),
+                                        color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal).withValues(alpha: 0.7),
                                         height: 1.3,
                                       ),
                                       maxLines: 2,
@@ -191,7 +191,7 @@ class NotificationsScreen extends ConsumerWidget {
       width: R.w(context, 48),
       height: R.w(context, 48),
       decoration: BoxDecoration(
-        color: isRead ? AppColors.backgroundLight : AppColors.primary.withValues(alpha: 0.08),
+        color: isRead ? (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : AppColors.backgroundLight) : AppColors.primary.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(R.w(context, 10)),
         border: Border.all(
           color: isRead ? AppColors.borderLight : AppColors.primary.withValues(alpha: 0.3),

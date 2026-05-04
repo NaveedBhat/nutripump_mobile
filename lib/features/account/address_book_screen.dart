@@ -14,9 +14,9 @@ class AddressBookScreen extends ConsumerWidget {
     final userAsync = ref.watch(authStateProvider);
 
     return Scaffold(
-      backgroundColor: AppColors.backgroundLight,
+      backgroundColor: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : AppColors.backgroundLight),
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : Colors.white),
         elevation: 0,
         surfaceTintColor: Colors.transparent,
         centerTitle: true,
@@ -113,8 +113,8 @@ class AddressBookScreen extends ConsumerWidget {
                 height: R.h(context, 46),
                 child: ElevatedButton.icon(
                   onPressed: () => _showAddressForm(context, ref, userAsync.value!.uid),
-                  icon: Icon(Icons.add_rounded, size: R.sp(context, 20)),
-                  label: Text('Add New Address', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: R.sp(context, 14))),
+                  icon: Icon(Icons.add_rounded, size: R.sp(context, 20), color: AppColors.deepCharcoal),
+                  label: Text('Add New Address', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: R.sp(context, 14), color: AppColors.deepCharcoal)),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primary,
                     foregroundColor: AppColors.deepCharcoal,
@@ -133,7 +133,7 @@ class AddressBookScreen extends ConsumerWidget {
     return showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        backgroundColor: Colors.white,
+        backgroundColor: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : Colors.white),
         title: Text('Delete Address', style: AppTypography.h3(context)),
         content: Text('Are you sure you want to delete this address? This action cannot be undone.', style: AppTypography.bodySM(context)),
         actions: [
@@ -178,12 +178,12 @@ class _AddressCard extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(R.w(context, 16)),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
         borderRadius: BorderRadius.circular(R.w(context, 12)),
         border: Border.all(color: address.isDefault ? AppColors.primary.withValues(alpha: 0.5) : AppColors.borderLight),
         boxShadow: [
           BoxShadow(
-            color: AppColors.deepCharcoal.withValues(alpha: 0.02),
+            color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal).withValues(alpha: 0.02),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -386,7 +386,7 @@ class _AddressFormSheetState extends State<AddressFormSheet> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
         borderRadius: BorderRadius.vertical(top: Radius.circular(R.w(context, 20))),
       ),
       padding: EdgeInsets.only(
@@ -475,8 +475,8 @@ class _AddressFormSheetState extends State<AddressFormSheet> {
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(R.w(context, 12))),
                     ),
                     child: _isLoading
-                        ? SizedBox(width: R.w(context, 24), height: R.w(context, 24), child: const CircularProgressIndicator(strokeWidth: 2, color: AppColors.deepCharcoal))
-                        : Text('Save Address', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: R.sp(context, 16))),
+                        ? SizedBox(width: R.w(context, 24), height: R.w(context, 24), child: CircularProgressIndicator(strokeWidth: 2, color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal)))
+                        : Text('Save Address', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: R.sp(context, 16), color: AppColors.deepCharcoal)),
                   ),
                 ),
               ],
@@ -501,7 +501,7 @@ class _AddressFormSheetState extends State<AddressFormSheet> {
           decoration: InputDecoration(
             contentPadding: EdgeInsets.symmetric(horizontal: R.w(context, 12), vertical: R.h(context, 12)),
             filled: true,
-            fillColor: AppColors.backgroundLight,
+            fillColor: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : AppColors.backgroundLight,
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(R.w(context, 8)), borderSide: BorderSide.none),
             focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(R.w(context, 8)), borderSide: const BorderSide(color: AppColors.primary)),
             errorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(R.w(context, 8)), borderSide: const BorderSide(color: AppColors.error)),

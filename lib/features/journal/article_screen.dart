@@ -19,21 +19,21 @@ class ArticleScreen extends ConsumerWidget {
     );
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : Colors.white),
       body: CustomScrollView(
         slivers: [
           // ── App Bar / Header Image ────────────────────────────
           SliverAppBar(
             expandedHeight: R.h(context, 300),
             pinned: true,
-            backgroundColor: Colors.white,
+            backgroundColor: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : Colors.white),
             elevation: 0,
             leading: Padding(
               padding: EdgeInsets.all(R.w(context, 8)),
               child: CircleAvatar(
-                backgroundColor: Colors.white.withValues(alpha: 0.8),
+                backgroundColor: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : Colors.white).withValues(alpha: 0.8),
                 child: IconButton(
-                  icon: const Icon(Icons.arrow_back_rounded, color: AppColors.deepCharcoal),
+                  icon: Icon(Icons.arrow_back_rounded, color: Theme.of(context).brightness == Brightness.dark ? Colors.white : AppColors.deepCharcoal),
                   onPressed: () => context.pop(),
                 ),
               ),
@@ -65,7 +65,7 @@ class ArticleScreen extends ConsumerWidget {
           SliverToBoxAdapter(
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
                 borderRadius: BorderRadius.vertical(top: Radius.circular(R.w(context, 24))),
               ),
               transform: Matrix4.translationValues(0, -R.h(context, 24), 0),
@@ -107,7 +107,7 @@ class ArticleScreen extends ConsumerWidget {
                     children: [
                       CircleAvatar(
                         radius: R.w(context, 16),
-                        backgroundColor: AppColors.backgroundLight,
+                        backgroundColor: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : AppColors.backgroundLight),
                         child: Text(article.author[0], style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700)),
                       ),
                       SizedBox(width: R.w(context, 10)),
@@ -131,7 +131,7 @@ class ArticleScreen extends ConsumerWidget {
                       fontSize: R.sp(context, 16),
                       fontWeight: FontWeight.w600,
                       height: 1.5,
-                      color: AppColors.deepCharcoal.withValues(alpha: 0.8),
+                      color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal).withValues(alpha: 0.8),
                     ),
                   ),
                   SizedBox(height: R.h(context, 24)),
@@ -142,7 +142,7 @@ class ArticleScreen extends ConsumerWidget {
                     style: AppTypography.bodySM(context).copyWith(
                       fontSize: R.sp(context, 15),
                       height: 1.8,
-                      color: AppColors.deepCharcoal,
+                      color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal),
                     ),
                   ),
                   SizedBox(height: R.h(context, 40)),

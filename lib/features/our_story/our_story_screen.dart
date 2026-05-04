@@ -13,7 +13,7 @@ class OurStoryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF9F8F6),
+      backgroundColor: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : Color(0xFFF9F8F6))),
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
@@ -39,7 +39,7 @@ class OurStoryScreen extends StatelessWidget {
                         end: Alignment.bottomCenter,
                         colors: [
                           Colors.transparent,
-                          AppColors.deepCharcoal.withValues(alpha: 0.8),
+                          (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal).withValues(alpha: 0.8),
                         ],
                       ),
                     ),
@@ -73,7 +73,7 @@ class OurStoryScreen extends StatelessWidget {
                     delay: const Duration(milliseconds: 100),
                     child: Text(
                       'NutriPump Artisanal was born from a simple realization: the purest treasures of the Earth are being lost to mass production. We journey to the heart of Kashmir and the high altitudes of the Himalayas to source ingredients exactly as nature intended — unadulterated, raw, and vibrant.',
-                      style: AppTypography.bodySM(context).copyWith(fontSize: R.sp(context, 15), height: 1.8, color: AppColors.deepCharcoal.withValues(alpha: 0.8)),
+                      style: AppTypography.bodySM(context).copyWith(fontSize: R.sp(context, 15), height: 1.8, color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal).withValues(alpha: 0.8)),
                     ),
                   ),
                   SizedBox(height: R.h(context, 40)),

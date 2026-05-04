@@ -19,13 +19,13 @@ class HomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle.dark,
+      value: Theme.of(context).brightness == Brightness.dark ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark,
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : Colors.white),
         body: SafeArea(
           bottom: false,
           child: Container(
-            color: const Color(0xFFF8F6F1),
+            color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : Color(0xFFF8F6F1))),
             child: Column(
               children: [
                 const AnnouncementBar(),
@@ -83,20 +83,25 @@ class _HomeAppBar extends ConsumerWidget {
       pinned: true,
       floating: true,
       elevation: 0,
-      backgroundColor: Colors.white,
+      backgroundColor: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : Colors.white),
       surfaceTintColor: Colors.transparent,
       title: GestureDetector(
         onTap: () => context.push('/search'),
         child: Container(
           height: R.h(context, 36),
           decoration: BoxDecoration(
-            color: const Color(0xFFF5F3EE),
+            color: Theme.of(context).brightness == Brightness.dark
+                ? AppColors.surfaceDark   // distinct dark card surface
+                : const Color(0xFFF5F3EE),
             borderRadius: BorderRadius.circular(R.w(context, 10)),
+            border: Theme.of(context).brightness == Brightness.dark
+                ? Border.all(color: AppColors.borderDark, width: 1)
+                : null,
           ),
           child: Row(
             children: [
               SizedBox(width: R.w(context, 10)),
-              Icon(Icons.search_rounded, color: AppColors.neutralGold, size: R.sp(context, 18)),
+              Icon(Icons.search_rounded, color: Theme.of(context).brightness == Brightness.dark ? Colors.white : AppColors.neutralGold, size: R.sp(context, 18)),
               SizedBox(width: R.w(context, 8)),
               Expanded(
                 child: Text(
@@ -112,7 +117,7 @@ class _HomeAppBar extends ConsumerWidget {
                 onTap: () => context.push('/search', extra: {'autoStartVoice': true}),
                 child: Padding(
                   padding: EdgeInsets.all(R.w(context, 8)),
-                  child: Icon(Icons.mic_none, color: AppColors.neutralGold, size: R.sp(context, 18)),
+                  child: Icon(Icons.mic_none, color: Theme.of(context).brightness == Brightness.dark ? Colors.white : AppColors.neutralGold, size: R.sp(context, 18)),
                 ),
               ),
               SizedBox(width: R.w(context, 2)),
@@ -128,7 +133,7 @@ class _HomeAppBar extends ConsumerWidget {
               clipBehavior: Clip.none,
               children: [
                 IconButton(
-                  icon: const Icon(Icons.notifications_none_outlined, color: AppColors.deepCharcoal, size: 22),
+                  icon: Icon(Icons.notifications_none_outlined, color: (Theme.of(context).brightness == Brightness.dark ? Colors.white : AppColors.deepCharcoal), size: 22),
                   onPressed: () => context.push('/notifications'),
                 ),
                 if (unreadCount > 0)
@@ -159,7 +164,7 @@ class _HomeAppBar extends ConsumerWidget {
               clipBehavior: Clip.none,
               children: [
                 IconButton(
-                  icon: const Icon(Icons.shopping_bag_outlined, color: AppColors.deepCharcoal, size: 22),
+                  icon: Icon(Icons.shopping_bag_outlined, color: (Theme.of(context).brightness == Brightness.dark ? Colors.white : AppColors.deepCharcoal), size: 22),
                   onPressed: () => context.push('/cart'),
                 ),
                 if (count > 0)
@@ -351,7 +356,7 @@ class _HeroCarouselState extends ConsumerState<_HeroCarousel> {
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: AppTypography.bodySM(context).copyWith(
-                                  color: Colors.white.withValues(alpha: 0.7),
+                                  color: Colors.white.withValues(alpha: 0.75),
                                   fontSize: R.sp(context, 11),
                                 ),
                               ),
@@ -454,7 +459,7 @@ class _TrustStripState extends State<_TrustStrip> with SingleTickerProviderState
     ];
 
     return Container(
-      color: Colors.white,
+      color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
       height: R.h(context, 38),
       child: ListView.builder(
         controller: _scrollController,
@@ -539,7 +544,7 @@ class _CategoriesSection extends ConsumerWidget {
                           height: circleSize,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: const Color(0xFFF0EBE0),
+                            color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : Color(0xFFF0EBE0))),
                             border: Border.all(color: AppColors.primary.withValues(alpha: 0.2), width: 1.5),
                           ),
                           child: Padding(
@@ -696,7 +701,7 @@ class _WhyNutriPump extends StatelessWidget {
                   margin: EdgeInsets.only(right: v == values.last ? 0 : R.w(context, 10)),
                   padding: EdgeInsets.all(R.w(context, 12)),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
                     borderRadius: BorderRadius.circular(R.w(context, 14)),
                     border: Border.all(color: AppColors.borderLight),
                     boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 8, offset: const Offset(0, 2))],
@@ -838,12 +843,12 @@ class _TasteProfilerCta extends StatelessWidget {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(Icons.auto_awesome, color: AppColors.deepCharcoal, size: R.sp(context, 13)),
+                    Icon(Icons.auto_awesome, color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal), size: R.sp(context, 13)),
                     SizedBox(width: R.w(context, 7)),
                     Text(
                       'TAKE THE QUIZ',
                       style: AppTypography.label(context).copyWith(
-                        color: AppColors.deepCharcoal,
+                        color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal),
                         fontWeight: FontWeight.w900,
                         fontSize: R.sp(context, 10),
                         letterSpacing: 1.0,
@@ -959,17 +964,17 @@ class _B2BSection extends StatelessWidget {
                 Container(
                   padding: EdgeInsets.symmetric(vertical: R.h(context, 10), horizontal: R.w(context, 14)),
                   decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.05),
+                    color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white.withValues(alpha: 0.05),
                     borderRadius: BorderRadius.circular(R.w(context, 10)),
-                    border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
+                    border: Border.all(color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white.withValues(alpha: 0.08)),
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       _b2bStat(context, '500+', 'Partners'),
-                      Container(width: 1, height: R.h(context, 22), color: Colors.white.withValues(alpha: 0.1)),
+                      Container(width: 1, height: R.h(context, 22), color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white.withValues(alpha: 0.1)),
                       _b2bStat(context, '50+', 'Restaurants'),
-                      Container(width: 1, height: R.h(context, 22), color: Colors.white.withValues(alpha: 0.1)),
+                      Container(width: 1, height: R.h(context, 22), color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white.withValues(alpha: 0.1)),
                       _b2bStat(context, '10+', 'Hotels'),
                     ],
                   ),
@@ -1142,7 +1147,7 @@ class _HoneyWheelSectionState extends State<_HoneyWheelSection>
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: const Color(0xFF1A2820),
-                          border: Border.all(color: Colors.white.withValues(alpha: 0.15), width: 1.5),
+                          border: Border.all(color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white.withValues(alpha: 0.15), width: 1.5),
                           boxShadow: [BoxShadow(color: profile.color.withValues(alpha: 0.4), blurRadius: 40, spreadRadius: -5)],
                         ),
                         child: Column(

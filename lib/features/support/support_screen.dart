@@ -106,7 +106,7 @@ class _SupportScreenState extends ConsumerState<SupportScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.backgroundLight,
+      backgroundColor: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : AppColors.backgroundLight),
       appBar: AppBar(
         title: Text('Priority Support', style: AppTypography.h3(context).copyWith(fontSize: R.sp(context, 16))),
         backgroundColor: Colors.transparent,
@@ -274,7 +274,7 @@ class _SupportScreenState extends ConsumerState<SupportScreen> {
       hintText: hint,
       hintStyle: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold.withValues(alpha: 0.5)),
       filled: true,
-      fillColor: Colors.white,
+      fillColor: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
       contentPadding: EdgeInsets.symmetric(horizontal: R.w(context, 16), vertical: R.h(context, 16)),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(R.w(context, 12)),
@@ -294,7 +294,7 @@ class _SupportScreenState extends ConsumerState<SupportScreen> {
   Widget _buildSupportPromise() {
     return Container(
       width: double.infinity,
-      color: Colors.white,
+      color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
       padding: EdgeInsets.all(R.w(context, 32)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -337,7 +337,7 @@ class _SupportScreenState extends ConsumerState<SupportScreen> {
           width: R.w(context, 48),
           height: R.w(context, 48),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
             borderRadius: BorderRadius.circular(R.w(context, 16)),
             border: Border.all(color: AppColors.primary.withValues(alpha: 0.2)),
             boxShadow: [

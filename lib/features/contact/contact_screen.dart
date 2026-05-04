@@ -105,9 +105,9 @@ class _ContactScreenState extends State<ContactScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.backgroundLight,
+      backgroundColor: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : AppColors.backgroundLight),
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : Colors.white),
         elevation: 0,
         surfaceTintColor: Colors.transparent,
         centerTitle: true,
@@ -208,7 +208,7 @@ class _ContactScreenState extends State<ContactScreen> {
                 width: double.infinity,
                 padding: EdgeInsets.symmetric(vertical: R.h(context, 40), horizontal: R.w(context, 20)),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
                   borderRadius: BorderRadius.circular(R.w(context, 16)),
                   border: Border.all(color: AppColors.borderLight),
                 ),
@@ -299,7 +299,7 @@ class _ContactScreenState extends State<ContactScreen> {
                       initialValue: _inquiryType,
                       decoration: _inputDecoration(''),
                       icon: const Icon(Icons.keyboard_arrow_down_rounded, color: AppColors.neutralGold),
-                      style: AppTypography.bodySM(context).copyWith(color: AppColors.deepCharcoal),
+                      style: AppTypography.bodySM(context).copyWith(color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal)),
                       items: const [
                         DropdownMenuItem(value: 'general', child: Text('General Support')),
                         DropdownMenuItem(value: 'wholesale', child: Text('B2B & Wholesale')),
@@ -340,10 +340,10 @@ class _ContactScreenState extends State<ContactScreen> {
                         onPressed: _isSending ? null : _submitForm,
                         icon: _isSending
                             ? SizedBox(width: R.w(context, 18), height: R.w(context, 18), child: const CircularProgressIndicator(strokeWidth: 2, color: AppColors.deepCharcoal))
-                            : Icon(Icons.send_rounded, size: R.sp(context, 18)),
+                            : Icon(Icons.send_rounded, size: R.sp(context, 18), color: AppColors.deepCharcoal),
                         label: Text(
                           _isSending ? 'Sending...' : (_inquiryType == 'wholesale' ? 'Request Kit' : 'Send Message'),
-                          style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: R.sp(context, 15)),
+                          style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: R.sp(context, 15), color: AppColors.deepCharcoal),
                         ),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.primary,
@@ -365,7 +365,7 @@ class _ContactScreenState extends State<ContactScreen> {
               width: double.infinity,
               padding: EdgeInsets.all(R.w(context, 20)),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
                 borderRadius: BorderRadius.circular(R.w(context, 12)),
                 border: Border.all(color: AppColors.borderLight),
               ),
@@ -401,7 +401,7 @@ class _ContactScreenState extends State<ContactScreen> {
       hintStyle: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold.withValues(alpha: 0.5)),
       contentPadding: EdgeInsets.symmetric(horizontal: R.w(context, 16), vertical: R.h(context, 14)),
       filled: true,
-      fillColor: Colors.white,
+      fillColor: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
       border: OutlineInputBorder(borderRadius: BorderRadius.circular(R.w(context, 12)), borderSide: const BorderSide(color: AppColors.borderLight)),
       enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(R.w(context, 12)), borderSide: const BorderSide(color: AppColors.borderLight)),
       focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(R.w(context, 12)), borderSide: const BorderSide(color: AppColors.primary)),
@@ -432,12 +432,12 @@ class _ContactTile extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: R.w(context, 16), vertical: R.h(context, 14)),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
           borderRadius: BorderRadius.circular(R.w(context, 12)),
           border: Border.all(color: AppColors.borderLight),
           boxShadow: [
             BoxShadow(
-              color: AppColors.deepCharcoal.withValues(alpha: 0.02),
+              color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal).withValues(alpha: 0.02),
               blurRadius: 6,
               offset: const Offset(0, 2),
             ),

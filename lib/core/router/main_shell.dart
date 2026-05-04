@@ -70,7 +70,7 @@ class MainShell extends ConsumerWidget {
           ),
           boxShadow: [
             BoxShadow(
-              color: AppColors.deepCharcoal.withValues(alpha: 0.06),
+              color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal).withValues(alpha: 0.06),
               blurRadius: 16,
               offset: const Offset(0, -4),
             ),

@@ -129,7 +129,9 @@ class _AIGiftBuilderState extends ConsumerState<AIGiftBuilder> {
                       margin: EdgeInsets.only(bottom: R.h(context, 10)),
                       padding: EdgeInsets.symmetric(horizontal: R.w(context, 16), vertical: R.h(context, 13)),
                       decoration: BoxDecoration(
-                        color: selected ? AppColors.primary.withValues(alpha: 0.12) : Colors.white,
+                        color: selected
+                            ? AppColors.primary.withValues(alpha: 0.12)
+                            : (Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white),
                         border: Border.all(color: selected ? AppColors.primary : AppColors.borderLight, width: selected ? 1.5 : 1),
                         borderRadius: BorderRadius.circular(R.w(context, 12)),
                       ),
@@ -138,7 +140,7 @@ class _AIGiftBuilderState extends ConsumerState<AIGiftBuilder> {
                           Expanded(
                             child: Text(p, style: AppTypography.bodySM(context).copyWith(
                               fontWeight: selected ? FontWeight.w800 : FontWeight.w600,
-                              color: selected ? AppColors.deepCharcoal : AppColors.neutralGold,
+                              color: selected ? (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal) : AppColors.neutralGold,
                               fontSize: R.sp(context, 13),
                             )),
                           ),
@@ -155,7 +157,9 @@ class _AIGiftBuilderState extends ConsumerState<AIGiftBuilder> {
               SizedBox(height: R.h(context, 10)),
               Container(
                 decoration: BoxDecoration(
-                  color: const Color(0xFFF8F8F5),
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? AppColors.surfaceDark
+                      : const Color(0xFFF8F8F5),
                   border: Border.all(color: AppColors.borderLight),
                   borderRadius: BorderRadius.circular(R.w(context, 12)),
                 ),
@@ -170,7 +174,9 @@ class _AIGiftBuilderState extends ConsumerState<AIGiftBuilder> {
                           duration: const Duration(milliseconds: 200),
                           padding: EdgeInsets.symmetric(vertical: R.h(context, 10)),
                           decoration: BoxDecoration(
-                            color: selected ? Colors.white : Colors.transparent,
+                            color: selected
+                                ? (Theme.of(context).brightness == Brightness.dark ? AppColors.backgroundDark : Colors.white)
+                                : Colors.transparent,
                             borderRadius: BorderRadius.circular(R.w(context, 9)),
                             border: selected ? Border.all(color: AppColors.borderLight) : null,
                             boxShadow: selected ? [BoxShadow(color: Colors.black.withValues(alpha: 0.04), blurRadius: 6)] : null,
@@ -178,7 +184,7 @@ class _AIGiftBuilderState extends ConsumerState<AIGiftBuilder> {
                           child: Center(
                             child: Text(b, style: AppTypography.bodySM(context).copyWith(
                               fontWeight: selected ? FontWeight.w800 : FontWeight.w600,
-                              color: selected ? AppColors.deepCharcoal : AppColors.neutralGold,
+                              color: selected ? (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal) : AppColors.neutralGold,
                               fontSize: R.sp(context, 12),
                             )),
                           ),
@@ -199,7 +205,9 @@ class _AIGiftBuilderState extends ConsumerState<AIGiftBuilder> {
                   hintText: 'e.g., Wishing you a joyous harvest season...',
                   hintStyle: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold.withValues(alpha: 0.6), fontSize: R.sp(context, 12)),
                   filled: true,
-                  fillColor: const Color(0xFFF8F8F5),
+                  fillColor: Theme.of(context).brightness == Brightness.dark
+                      ? AppColors.surfaceDark
+                      : const Color(0xFFF8F8F5),
                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(R.w(context, 12)), borderSide: const BorderSide(color: AppColors.borderLight)),
                   enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(R.w(context, 12)), borderSide: const BorderSide(color: AppColors.borderLight)),
                   focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(R.w(context, 12)), borderSide: const BorderSide(color: AppColors.primary, width: 1.5)),
@@ -210,7 +218,9 @@ class _AIGiftBuilderState extends ConsumerState<AIGiftBuilder> {
 
               Container(
                 decoration: BoxDecoration(
-                  color: AppColors.deepCharcoal,
+                  color: Theme.of(context).brightness == Brightness.dark
+                    ? AppColors.surfaceDark
+                    : (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal),
                   borderRadius: BorderRadius.circular(R.w(context, 20)),
                 ),
                 padding: EdgeInsets.all(R.w(context, 20)),
@@ -253,8 +263,8 @@ class _AIGiftBuilderState extends ConsumerState<AIGiftBuilder> {
                         margin: EdgeInsets.only(bottom: R.h(context, 10)),
                         padding: EdgeInsets.all(R.w(context, 10)),
                         decoration: BoxDecoration(
-                          color: Colors.white.withValues(alpha: 0.06),
-                          border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
+                          color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white.withValues(alpha: 0.06),
+                          border: Border.all(color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white.withValues(alpha: 0.1)),
                           borderRadius: BorderRadius.circular(R.w(context, 12)),
                         ),
                         child: Row(
@@ -337,7 +347,7 @@ class _AIGiftBuilderState extends ConsumerState<AIGiftBuilder> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(Icons.check_rounded, size: R.sp(context, 18), color: AppColors.deepCharcoal),
+                              Icon(Icons.check_rounded, size: R.sp(context, 18), color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal)),
                               SizedBox(width: R.w(context, 8)),
                               Text('Add Curated Box to Cart', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: R.sp(context, 14))),
                             ],

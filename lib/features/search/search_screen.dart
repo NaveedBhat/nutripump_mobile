@@ -61,25 +61,30 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
     final productsAsync = ref.watch(allProductsProvider);
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F6F1),
+      backgroundColor: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : Color(0xFFF8F6F1))),
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : Colors.white),
         elevation: 0,
         surfaceTintColor: Colors.transparent,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppColors.deepCharcoal),
+          icon: Icon(Icons.arrow_back, color: Theme.of(context).brightness == Brightness.dark ? Colors.white : AppColors.deepCharcoal),
           onPressed: () => context.pop(),
         ),
         title: Container(
           height: R.h(context, 40),
           decoration: BoxDecoration(
-            color: const Color(0xFFF5F3EE),
+            color: Theme.of(context).brightness == Brightness.dark
+                ? AppColors.surfaceDark
+                : const Color(0xFFF5F3EE),
             borderRadius: BorderRadius.circular(R.w(context, 10)),
+            border: Theme.of(context).brightness == Brightness.dark
+                ? Border.all(color: AppColors.borderDark, width: 1)
+                : null,
           ),
           child: TextField(
             controller: _searchController,
             autofocus: true,
-            style: AppTypography.bodySM(context).copyWith(color: AppColors.deepCharcoal),
+            style: AppTypography.bodySM(context).copyWith(color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal)),
             decoration: InputDecoration(
               hintText: 'Search honey, saffron, nuts...',
               hintStyle: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold.withValues(alpha: 0.7)),

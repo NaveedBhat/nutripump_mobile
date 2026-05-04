@@ -10,7 +10,7 @@ import '../utils/responsive.dart';
 import 'custom_network_image.dart';
 
 // Mirrors the web BADGE_STYLES map exactly
-({Color bg, Color text}) _badgeColors(String badge) {
+({Color bg, Color text}) _badgeColors(BuildContext context, String badge) {
   switch (badge.toUpperCase()) {
     case 'BESTSELLER':
       return (bg: AppColors.primary, text: AppColors.deepCharcoal);
@@ -42,11 +42,11 @@ class ProductCard extends ConsumerWidget {
       onTap: () => context.push('/product/${product.slug}'),
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
           borderRadius: BorderRadius.circular(14),
           boxShadow: [
             BoxShadow(
-              color: AppColors.deepCharcoal.withValues(alpha: 0.06),
+              color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal).withValues(alpha: 0.06),
               blurRadius: 10,
               offset: const Offset(0, 3),
             ),
@@ -73,7 +73,7 @@ class ProductCard extends ConsumerWidget {
                       top: R.h(context, 8),
                       left: R.w(context, 8),
                       child: Builder(builder: (context) {
-                        final colors = _badgeColors(product.badge!);
+                        final colors = _badgeColors(context, product.badge!);
                         return Container(
                           padding: EdgeInsets.symmetric(
                             horizontal: R.w(context, 5), vertical: R.h(context, 3)),

@@ -203,7 +203,9 @@ class _AiChatSheetState extends State<AiChatSheet> {
         bottom: bottomInset > 0 ? bottomInset + R.h(context, 16) : R.h(context, 90), // Slightly lower float
       ),
       decoration: BoxDecoration(
-        color: AppColors.backgroundLight,
+        color: Theme.of(context).brightness == Brightness.dark
+            ? AppColors.surfaceDark
+            : Colors.white,
         borderRadius: BorderRadius.circular(R.w(context, 24)),
         border: Border.all(color: AppColors.primary.withValues(alpha: 0.15), width: 1.5), // Added sleek border
         boxShadow: [
@@ -223,7 +225,9 @@ class _AiChatSheetState extends State<AiChatSheet> {
           Container(
             padding: EdgeInsets.symmetric(horizontal: R.w(context, 16), vertical: R.h(context, 10)), // Tighter padding
             decoration: BoxDecoration(
-              color: AppColors.deepCharcoal,
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? AppColors.surfaceDark
+                  : (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal),
               borderRadius: BorderRadius.vertical(top: Radius.circular(R.w(context, 24))),
             ),
             child: Row(
@@ -245,7 +249,7 @@ class _AiChatSheetState extends State<AiChatSheet> {
                           'assets/images/chatbotlogo.webp',
                           gaplessPlayback: true,
                           errorBuilder: (context, error, stackTrace) =>
-                              Icon(Icons.support_agent_rounded, size: R.sp(context, 20), color: AppColors.deepCharcoal),
+                              Icon(Icons.support_agent_rounded, size: R.sp(context, 20), color: AppColors.primary),
                         ),
                       ),
                     ),
@@ -303,7 +307,9 @@ class _AiChatSheetState extends State<AiChatSheet> {
                       label: Text(
                         query,
                         style: AppTypography.label(context).copyWith(
-                          color: AppColors.deepCharcoal,
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? const Color(0xFFF5F0E8)
+                              : (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal),
                           fontWeight: FontWeight.w600,
                           fontSize: R.sp(context, 10), // Reduced from 11
                         ),
@@ -325,7 +331,7 @@ class _AiChatSheetState extends State<AiChatSheet> {
           Container(
             padding: EdgeInsets.fromLTRB(R.w(context, 14), R.h(context, 10), R.w(context, 14), R.h(context, 14)), // Tighter padding for input
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: AppColors.surfaceDark,
               border: Border(top: BorderSide(color: AppColors.primary.withValues(alpha: 0.08))),
             ),
             child: SafeArea(
@@ -337,21 +343,27 @@ class _AiChatSheetState extends State<AiChatSheet> {
                     child: Container(
                       height: R.w(context, 44),
                       decoration: BoxDecoration(
-                        color: AppColors.primary.withValues(alpha: 0.05),
+                        color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : const Color(0xFFF5F3EE),
                         borderRadius: BorderRadius.circular(R.w(context, 16)),
-                        border: Border.all(color: AppColors.primary.withValues(alpha: 0.15)),
+                        border: Theme.of(context).brightness == Brightness.dark ? Border.all(color: AppColors.borderDark, width: 1) : Border.all(color: AppColors.borderLight, width: 1),
                       ),
                       padding: EdgeInsets.symmetric(horizontal: R.w(context, 16)),
                       child: Center(
                         child: TextField(
                           controller: _textController,
                           focusNode: _focusNode,
-                          style: AppTypography.bodySM(context),
+                          style: AppTypography.bodySM(context).copyWith(
+                            color: Theme.of(context).brightness == Brightness.dark ? const Color(0xFFF5F0E8) : AppColors.deepCharcoal,
+                          ),
                           maxLength: 200,
                           maxLines: 1,
                           decoration: InputDecoration(
                             hintText: 'Ask me anything...',
-                            hintStyle: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold.withValues(alpha: 0.5)),
+                            hintStyle: AppTypography.bodySM(context).copyWith(
+                              color: Theme.of(context).brightness == Brightness.dark
+                                  ? Colors.white.withValues(alpha: 0.35)
+                                  : AppColors.neutralGold.withValues(alpha: 0.7),
+                            ),
                             border: InputBorder.none,
                             enabledBorder: InputBorder.none,
                             focusedBorder: InputBorder.none,
@@ -384,7 +396,9 @@ class _AiChatSheetState extends State<AiChatSheet> {
                       ),
                       child: Icon(
                         _isListening ? Icons.mic_rounded : Icons.mic_none_rounded,
-                        color: _isListening ? AppColors.error : AppColors.deepCharcoal,
+                        color: _isListening
+                            ? AppColors.error
+                            : AppColors.neutralGold,
                         size: R.sp(context, 20),
                       ),
                     ),

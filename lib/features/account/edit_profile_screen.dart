@@ -96,10 +96,10 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(
-            colorScheme: const ColorScheme.light(
+            colorScheme: ColorScheme.light(
               primary: AppColors.primary,
-              onPrimary: AppColors.deepCharcoal,
-              onSurface: AppColors.deepCharcoal,
+              onPrimary: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal),
+              onSurface: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal),
             ),
           ),
           child: child!,
@@ -116,9 +116,9 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.backgroundLight,
+      backgroundColor: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : AppColors.backgroundLight),
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : Colors.white),
         elevation: 0,
         surfaceTintColor: Colors.transparent,
         centerTitle: true,
@@ -189,7 +189,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                   DropdownMenuItem(value: 'Other', child: Text('Other')),
                 ],
                 onChanged: (val) => setState(() => _selectedGender = val),
-                style: AppTypography.bodySM(context).copyWith(color: AppColors.deepCharcoal),
+                style: AppTypography.bodySM(context).copyWith(color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal)),
                 decoration: _inputDecoration('Select gender'),
                 icon: const Icon(Icons.keyboard_arrow_down_rounded, color: AppColors.neutralGold),
               ),
@@ -211,9 +211,9 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                   child: _isLoading
                       ? SizedBox(
                           width: R.w(context, 24), height: R.w(context, 24),
-                          child: const CircularProgressIndicator(strokeWidth: 2, color: AppColors.deepCharcoal),
+                          child: CircularProgressIndicator(strokeWidth: 2, color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal)),
                         )
-                      : Text('Save Changes', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: R.sp(context, 16))),
+                      : Text('Save Changes', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: R.sp(context, 16), color: AppColors.deepCharcoal)),
                 ),
               ),
             ],
@@ -236,7 +236,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
       hintStyle: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold.withValues(alpha: 0.5)),
       contentPadding: EdgeInsets.symmetric(horizontal: R.w(context, 16), vertical: R.h(context, 16)),
       filled: true,
-      fillColor: Colors.white,
+      fillColor: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(R.w(context, 12)),
         borderSide: const BorderSide(color: AppColors.borderLight),

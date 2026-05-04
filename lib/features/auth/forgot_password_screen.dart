@@ -101,7 +101,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                 child: Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
-                    color: AppColors.backgroundLight,
+                    color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : AppColors.backgroundLight),
                     borderRadius: BorderRadius.vertical(top: Radius.circular(R.w(context, 32))),
                   ),
                   child: SingleChildScrollView(
@@ -124,12 +124,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                           onSubmitted: (_) => _handleResetPassword(),
                           decoration: InputDecoration(
                             hintText: 'you@example.com',
-                            hintStyle: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold.withValues(alpha: 0.5)),
-                            prefixIcon: Icon(Icons.mail_outline_rounded, size: R.sp(context, 18), color: AppColors.neutralGold),
-                            filled: true, fillColor: Colors.white,
-                            contentPadding: EdgeInsets.symmetric(vertical: R.h(context, 16)),
-                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(R.w(context, 14)), borderSide: BorderSide.none),
-                            focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(R.w(context, 14)), borderSide: const BorderSide(color: AppColors.primary, width: 1.5)),
+                            prefixIcon: Icon(Icons.mail_outline_rounded, size: R.sp(context, 18), color: Theme.of(context).brightness == Brightness.dark ? const Color(0xFFF5F0E8) : AppColors.neutralGold),
                           ),
                         ),
                         SizedBox(height: R.h(context, 36)),
@@ -145,7 +140,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(R.w(context, 14))),
                           ),
                           child: _isLoading
-                              ? SizedBox(height: R.h(context, 20), width: R.w(context, 20), child: const CircularProgressIndicator(strokeWidth: 2, valueColor: AlwaysStoppedAnimation(AppColors.deepCharcoal)))
+                              ? SizedBox(height: R.h(context, 20), width: R.w(context, 20), child: CircularProgressIndicator(strokeWidth: 2, valueColor: AlwaysStoppedAnimation(AppColors.deepCharcoal)))
                               : Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [

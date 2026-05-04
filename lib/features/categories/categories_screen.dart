@@ -77,7 +77,7 @@ class _CategoriesScreenState extends ConsumerState<CategoriesScreen>
     final categoriesAsync = ref.watch(categoriesProvider);
 
     return Scaffold(
-      backgroundColor: AppColors.backgroundLight,
+      backgroundColor: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : AppColors.backgroundLight),
       body: CustomScrollView(
         slivers: [
           // ── Hero Banner ───────────────────────────────────────────────
@@ -246,7 +246,7 @@ class _HeroBannerState extends State<_HeroBanner> {
                     'Explore Our\nCollections',
                     textAlign: TextAlign.center,
                     style: AppTypography.h1(context).copyWith(
-                      color: Colors.white,
+                      color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
                       fontSize: R.sp(context, 26),
                       height: 1.15,
                       letterSpacing: -0.5,
@@ -257,7 +257,7 @@ class _HeroBannerState extends State<_HeroBanner> {
                     'A refined heritage of artisanal excellence and handcrafted perfection, curated for the modern connoisseur.',
                     textAlign: TextAlign.center,
                     style: AppTypography.bodySM(context).copyWith(
-                      color: Colors.white.withValues(alpha: 0.80),
+                      color: (Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white).withValues(alpha: 0.80),
                       fontStyle: FontStyle.italic,
                       fontSize: R.sp(context, 11),
                       height: 1.6,
@@ -429,7 +429,7 @@ class _CategoryCardState extends State<_CategoryCard>
                                     ),
                                   ),
                                   const SizedBox(width: 4),
-                                  const Icon(
+                                  Icon(
                                     Icons.arrow_forward_rounded,
                                     size: 10,
                                     color: AppColors.deepCharcoal,
@@ -534,7 +534,7 @@ class _MakersStorySection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: AppColors.deepCharcoal,
+      color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal),
       padding: EdgeInsets.symmetric(horizontal: R.w(context, 20), vertical: R.h(context, 40)),
       child: Column(
         children: [
@@ -582,7 +582,7 @@ class _MakersStorySection extends StatelessWidget {
               Text(
                 'Preserving Heritage Through the Hands of Masters',
                 style: AppTypography.h2(context).copyWith(
-                  color: Colors.white,
+                  color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
                   fontSize: R.sp(context, 24),
                   height: 1.25,
                 ),
@@ -591,7 +591,7 @@ class _MakersStorySection extends StatelessWidget {
               Text(
                 'Every piece in our collection tells a story of dedication, passing through the hands of master craftsmen in the valleys of Kashmir who preserve centuries-old traditions. We bridge the gap between ancient techniques and modern living.',
                 style: AppTypography.bodySM(context).copyWith(
-                  color: Colors.white.withValues(alpha: 0.70),
+                  color: (Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white).withValues(alpha: 0.70),
                   height: 1.7,
                   fontSize: R.sp(context, 13),
                 ),
@@ -607,7 +607,7 @@ class _MakersStorySection extends StatelessWidget {
                 child: Text(
                   '"Our mission is to celebrate the soul of the maker in a world of mass production."',
                   style: AppTypography.bodySM(context).copyWith(
-                    color: Colors.white.withValues(alpha: 0.70),
+                    color: (Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white).withValues(alpha: 0.70),
                     fontStyle: FontStyle.italic,
                     height: 1.7,
                     fontSize: R.sp(context, 13),
@@ -681,7 +681,7 @@ class _NewsletterSection extends StatelessWidget {
                 fontSize: R.sp(context, 12),
               ),
               filled: true,
-              fillColor: Colors.white,
+              fillColor: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
               contentPadding: EdgeInsets.symmetric(
                   horizontal: R.w(context, 16), vertical: R.h(context, 14)),
               border: OutlineInputBorder(
@@ -719,7 +719,7 @@ class _NewsletterSection extends StatelessWidget {
                 style: AppTypography.bodySM(context).copyWith(
                   fontWeight: FontWeight.w800,
                   fontSize: R.sp(context, 14),
-                  color: AppColors.deepCharcoal,
+                  color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal),
                 ),
               ),
             ),

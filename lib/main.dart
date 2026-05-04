@@ -11,6 +11,7 @@ import 'core/router/app_router.dart';
 import 'core/utils/app_scale.dart';
 import 'firebase_options.dart';
 import 'services/notification_service.dart';
+import 'providers/theme_provider.dart';
 
 // ── Global navigator key ───────────────────────────────────────────────────────
 // Used by NotificationService to navigate on notification tap from any state.
@@ -60,6 +61,7 @@ Future<void> main() async {
   await Hive.openBox('nutripump_cart');
   await Hive.openBox('nutripump_wishlist');
   await Hive.openBox('nutripump_notifications');
+  await Hive.openBox('nutripump_settings');
 
   // Initialize Firebase
   if (Firebase.apps.isEmpty) {
@@ -93,12 +95,13 @@ class NutriPumpApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final themeMode = ref.watch(themeProvider);
     return MaterialApp.router(
       title: 'NutriPump Artisanal',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light(context),
       darkTheme: AppTheme.dark(context),
-      themeMode: ThemeMode.system,
+      themeMode: themeMode,
       routerConfig: appRouter,
       builder: (context, child) {
         // 1. Lock text scale to 1.0 — prevents OS accessibility inflation.

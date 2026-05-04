@@ -19,7 +19,7 @@ class WishlistScreen extends ConsumerWidget {
 
     return Scaffold(
       extendBody: true,
-      backgroundColor: AppColors.backgroundLight,
+      backgroundColor: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : AppColors.backgroundLight),
       bottomNavigationBar: items.isEmpty
           ? null
           : Padding(
@@ -31,22 +31,23 @@ class WishlistScreen extends ConsumerWidget {
               child: ElevatedButton.icon(
                 onPressed: () => _moveAllToCart(context, ref, items),
                 icon: Icon(Icons.shopping_bag_outlined,
-                    size: R.sp(context, 16), color: Colors.white),
+                    size: R.sp(context, 16), color: AppColors.deepCharcoal),
                 label: Text(
                   'Move All to Cart',
                   style: AppTypography.bodySM(context).copyWith(
-                    color: Colors.white,
+                    color: AppColors.deepCharcoal,
                     fontSize: R.sp(context, 13),
                     fontWeight: FontWeight.w700,
                   ),
                 ),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.deepCharcoal,
-                  foregroundColor: Colors.white,
+                  backgroundColor: AppColors.primary,
+                  foregroundColor: AppColors.deepCharcoal,
                   padding: EdgeInsets.symmetric(vertical: R.h(context, 14)),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(R.w(context, 12))),
-                  elevation: 0,
+                  elevation: 4,
+                  shadowColor: AppColors.primary.withValues(alpha: 0.3),
                 ),
               ),
             ),
@@ -56,7 +57,7 @@ class WishlistScreen extends ConsumerWidget {
           SliverAppBar(
             pinned: true,
             floating: true,
-            backgroundColor: Colors.white,
+            backgroundColor: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : Colors.white),
             elevation: 0,
             surfaceTintColor: Colors.transparent,
             centerTitle: true,
@@ -326,7 +327,7 @@ class _EmptyWishlistState extends State<_EmptyWishlist>
                     'Browse Collections',
                     style: AppTypography.bodySM(context).copyWith(
                       fontWeight: FontWeight.w700,
-                      color: AppColors.deepCharcoal,
+                      color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal),
                       fontSize: R.sp(context, 11),
                     ),
                   ),
@@ -450,11 +451,11 @@ class _WishlistCardState extends ConsumerState<_WishlistCard>
             onTap: () => context.push('/product/${product.slug}'),
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
                 borderRadius: BorderRadius.circular(R.w(context, 12)),
                 boxShadow: [
                   BoxShadow(
-                    color: AppColors.deepCharcoal.withValues(alpha: 0.05),
+                    color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal).withValues(alpha: 0.05),
                     blurRadius: 10,
                     offset: const Offset(0, 3),
                   ),
@@ -485,7 +486,7 @@ class _WishlistCardState extends ConsumerState<_WishlistCard>
                               padding: EdgeInsets.symmetric(
                                   horizontal: R.w(context, 6), vertical: R.h(context, 3)),
                               decoration: BoxDecoration(
-                                color: Colors.white.withValues(alpha: 0.93),
+                                color: (Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white).withValues(alpha: 0.93),
                                 borderRadius: BorderRadius.circular(R.w(context, 4)),
                               ),
                               child: Text(
@@ -531,7 +532,7 @@ class _WishlistCardState extends ConsumerState<_WishlistCard>
                                 width: R.w(context, 26),
                                 height: R.w(context, 26),
                                 decoration: BoxDecoration(
-                                  color: Colors.white.withValues(alpha: 0.9),
+                                  color: (Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white).withValues(alpha: 0.9),
                                   shape: BoxShape.circle,
                                 ),
                                 child: Icon(

@@ -138,7 +138,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 child: Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
-                    color: AppColors.backgroundLight,
+                    color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : AppColors.backgroundLight),
                     borderRadius: BorderRadius.vertical(top: Radius.circular(R.w(context, 32))),
                   ),
                   child: SingleChildScrollView(
@@ -155,7 +155,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                         ElevatedButton(
                           onPressed: _isGoogleLoading ? null : _handleGoogleRegister,
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
+                            backgroundColor: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : Colors.white),
                             foregroundColor: AppColors.deepCharcoal,
                             elevation: 2,
                             shadowColor: Colors.black.withValues(alpha: 0.05),
@@ -201,12 +201,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                           textInputAction: TextInputAction.next,
                           decoration: InputDecoration(
                             hintText: 'John Doe',
-                            hintStyle: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold.withValues(alpha: 0.5)),
-                            prefixIcon: Icon(Icons.person_outline_rounded, size: R.sp(context, 18), color: AppColors.neutralGold),
-                            filled: true, fillColor: Colors.white,
-                            contentPadding: EdgeInsets.symmetric(vertical: R.h(context, 16)),
-                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(R.w(context, 14)), borderSide: BorderSide.none),
-                            focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(R.w(context, 14)), borderSide: const BorderSide(color: AppColors.primary, width: 1.5)),
+                            prefixIcon: Icon(Icons.person_outline_rounded, size: R.sp(context, 18), color: Theme.of(context).brightness == Brightness.dark ? const Color(0xFFF5F0E8) : AppColors.neutralGold),
                           ),
                         ),
                         SizedBox(height: R.h(context, 20)),
@@ -220,12 +215,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                           textInputAction: TextInputAction.next,
                           decoration: InputDecoration(
                             hintText: 'you@example.com',
-                            hintStyle: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold.withValues(alpha: 0.5)),
-                            prefixIcon: Icon(Icons.mail_outline_rounded, size: R.sp(context, 18), color: AppColors.neutralGold),
-                            filled: true, fillColor: Colors.white,
-                            contentPadding: EdgeInsets.symmetric(vertical: R.h(context, 16)),
-                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(R.w(context, 14)), borderSide: BorderSide.none),
-                            focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(R.w(context, 14)), borderSide: const BorderSide(color: AppColors.primary, width: 1.5)),
+                            prefixIcon: Icon(Icons.mail_outline_rounded, size: R.sp(context, 18), color: Theme.of(context).brightness == Brightness.dark ? const Color(0xFFF5F0E8) : AppColors.neutralGold),
                           ),
                         ),
                         SizedBox(height: R.h(context, 20)),
@@ -240,16 +230,11 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                           onSubmitted: (_) => _handleEmailRegister(),
                           decoration: InputDecoration(
                             hintText: '••••••••',
-                            hintStyle: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold.withValues(alpha: 0.5)),
-                            prefixIcon: Icon(Icons.lock_outline_rounded, size: R.sp(context, 18), color: AppColors.neutralGold),
+                            prefixIcon: Icon(Icons.lock_outline_rounded, size: R.sp(context, 18), color: Theme.of(context).brightness == Brightness.dark ? const Color(0xFFF5F0E8) : AppColors.neutralGold),
                             suffixIcon: IconButton(
-                              icon: Icon(_obscurePassword ? Icons.visibility_off_outlined : Icons.visibility_outlined, size: R.sp(context, 18), color: AppColors.neutralGold),
+                              icon: Icon(_obscurePassword ? Icons.visibility_off_outlined : Icons.visibility_outlined, size: R.sp(context, 18), color: Theme.of(context).brightness == Brightness.dark ? const Color(0xFFF5F0E8) : AppColors.neutralGold),
                               onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
                             ),
-                            filled: true, fillColor: Colors.white,
-                            contentPadding: EdgeInsets.symmetric(vertical: R.h(context, 16)),
-                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(R.w(context, 14)), borderSide: BorderSide.none),
-                            focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(R.w(context, 14)), borderSide: const BorderSide(color: AppColors.primary, width: 1.5)),
                           ),
                         ),
                         SizedBox(height: R.h(context, 20)),
@@ -264,16 +249,11 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                           onSubmitted: (_) => _handleEmailRegister(),
                           decoration: InputDecoration(
                             hintText: '••••••••',
-                            hintStyle: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold.withValues(alpha: 0.5)),
-                            prefixIcon: Icon(Icons.lock_outline_rounded, size: R.sp(context, 18), color: AppColors.neutralGold),
+                            prefixIcon: Icon(Icons.lock_outline_rounded, size: R.sp(context, 18), color: Theme.of(context).brightness == Brightness.dark ? const Color(0xFFF5F0E8) : AppColors.neutralGold),
                             suffixIcon: IconButton(
-                              icon: Icon(_obscureConfirmPassword ? Icons.visibility_off_outlined : Icons.visibility_outlined, size: R.sp(context, 18), color: AppColors.neutralGold),
+                              icon: Icon(_obscureConfirmPassword ? Icons.visibility_off_outlined : Icons.visibility_outlined, size: R.sp(context, 18), color: Theme.of(context).brightness == Brightness.dark ? const Color(0xFFF5F0E8) : AppColors.neutralGold),
                               onPressed: () => setState(() => _obscureConfirmPassword = !_obscureConfirmPassword),
                             ),
-                            filled: true, fillColor: Colors.white,
-                            contentPadding: EdgeInsets.symmetric(vertical: R.h(context, 16)),
-                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(R.w(context, 14)), borderSide: BorderSide.none),
-                            focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(R.w(context, 14)), borderSide: const BorderSide(color: AppColors.primary, width: 1.5)),
                           ),
                         ),
                         SizedBox(height: R.h(context, 36)),
@@ -289,13 +269,13 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(R.w(context, 14))),
                           ),
                           child: _isLoading
-                              ? SizedBox(height: R.h(context, 20), width: R.w(context, 20), child: const CircularProgressIndicator(strokeWidth: 2, valueColor: AlwaysStoppedAnimation(AppColors.deepCharcoal)))
+                              ? SizedBox(height: R.h(context, 20), width: R.w(context, 20), child: CircularProgressIndicator(strokeWidth: 2, valueColor: AlwaysStoppedAnimation(AppColors.deepCharcoal)))
                               : Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text('Create Account', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: R.sp(context, 16))),
+                                    Text('Create Account', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: R.sp(context, 16), color: AppColors.deepCharcoal)),
                                     SizedBox(width: R.w(context, 8)),
-                                    Icon(Icons.arrow_forward_rounded, size: R.sp(context, 18)),
+                                    Icon(Icons.arrow_forward_rounded, size: R.sp(context, 18), color: AppColors.deepCharcoal),
                                   ],
                                 ),
                         ),

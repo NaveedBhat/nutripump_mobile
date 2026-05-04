@@ -135,15 +135,104 @@ class AppTheme {
       outline: AppColors.borderDark,
     ),
     scaffoldBackgroundColor: AppColors.backgroundDark,
+    iconTheme: const IconThemeData(color: Colors.white),
     textTheme: _buildTextTheme(context, const Color(0xFFF5F0E8)),
     appBarTheme: AppBarTheme(
       backgroundColor: AppColors.backgroundDark,
-      foregroundColor: const Color(0xFFF5F0E8),
+      foregroundColor: Colors.white,
       elevation: 0,
       scrolledUnderElevation: 0,
       centerTitle: true,
       systemOverlayStyle: SystemUiOverlayStyle.light,
+      iconTheme: const IconThemeData(color: Colors.white),
+      actionsIconTheme: const IconThemeData(color: Colors.white),
       titleTextStyle: AppTypography.h3(context).copyWith(color: const Color(0xFFF5F0E8)),
+    ),
+    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+      backgroundColor: AppColors.backgroundDark,
+      selectedItemColor: AppColors.primary,
+      unselectedItemColor: AppColors.neutralGold,
+      showSelectedLabels: true,
+      showUnselectedLabels: true,
+      type: BottomNavigationBarType.fixed,
+      elevation: 0,
+    ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: AppColors.primary,
+        foregroundColor: AppColors.deepCharcoal, // Primary buttons usually have dark text even in dark mode for contrast
+        elevation: 0,
+        shadowColor: AppColors.shadowGold,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(50),
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+        textStyle: AppTypography.label(context).copyWith(fontSize: 14),
+      ),
+    ),
+    outlinedButtonTheme: OutlinedButtonThemeData(
+      style: OutlinedButton.styleFrom(
+        foregroundColor: const Color(0xFFF5F0E8), // White/cream text for outlined buttons in dark mode
+        side: const BorderSide(color: AppColors.primary, width: 1.5),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(50),
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+        textStyle: AppTypography.label(context).copyWith(fontSize: 14),
+      ),
+    ),
+    inputDecorationTheme: InputDecorationTheme(
+      filled: true,
+      fillColor: AppColors.surfaceDark,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(color: AppColors.borderDark),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(color: AppColors.borderDark),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(color: AppColors.primary, width: 1.5),
+      ),
+      errorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(color: AppColors.error),
+      ),
+      labelStyle: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold),
+      hintStyle: AppTypography.bodySM(context).copyWith(
+        color: const Color(0xFFF5F0E8).withValues(alpha: 0.5),
+      ),
+    ),
+    cardTheme: CardThemeData(
+      color: AppColors.surfaceDark,
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+        side: const BorderSide(color: AppColors.borderDark),
+      ),
+    ),
+    dividerTheme: const DividerThemeData(
+      color: AppColors.borderDark,
+      thickness: 1,
+    ),
+    chipTheme: ChipThemeData(
+      backgroundColor: AppColors.surfaceDark,
+      selectedColor: AppColors.primary,
+      labelStyle: AppTypography.label(context).copyWith(fontSize: 11, color: const Color(0xFFF5F0E8)),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(50),
+        side: const BorderSide(color: AppColors.borderDark),
+      ),
+    ),
+    snackBarTheme: SnackBarThemeData(
+      backgroundColor: AppColors.surfaceDark,
+      contentTextStyle: AppTypography.bodySM(context).copyWith(color: const Color(0xFFF5F0E8)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      behavior: SnackBarBehavior.floating,
     ),
   );
 

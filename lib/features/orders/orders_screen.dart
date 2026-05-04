@@ -17,9 +17,9 @@ class OrdersScreen extends ConsumerWidget {
     final userAsync = ref.watch(authStateProvider);
 
     return Scaffold(
-      backgroundColor: AppColors.backgroundLight,
+      backgroundColor: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : AppColors.backgroundLight),
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : Colors.white),
         elevation: 0,
         surfaceTintColor: Colors.transparent,
         centerTitle: true,
@@ -131,7 +131,7 @@ class _OrderCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final statusColor = _getStatusColor(order.status);
+    final statusColor = _getStatusColor(context, order.status);
     final statusBg = _getStatusBgColor(order.status);
     final statusIcon = _getStatusIcon(order.status);
     
@@ -145,12 +145,12 @@ class _OrderCard extends ConsumerWidget {
 
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
         borderRadius: BorderRadius.circular(R.w(context, 12)),
         border: Border.all(color: AppColors.primary.withValues(alpha: 0.2)),
         boxShadow: [
           BoxShadow(
-            color: AppColors.deepCharcoal.withValues(alpha: 0.02),
+            color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal).withValues(alpha: 0.02),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -533,18 +533,18 @@ class _OrderCard extends ConsumerWidget {
     return '${months[dt.month - 1]} ${dt.day}, ${dt.year}';
   }
 
-  Color _getStatusColor(OrderStatus status) {
+  Color _getStatusColor(BuildContext context, OrderStatus status) {
     switch (status) {
       case OrderStatus.delivered:
         return Colors.green.shade700;
       case OrderStatus.shipped:
         return Colors.blue.shade700;
       case OrderStatus.confirmed:
-        return AppColors.deepCharcoal;
+        return (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal);
       case OrderStatus.cancelled:
         return Colors.red.shade700;
       default:
-        return AppColors.deepCharcoal;
+        return (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal);
     }
   }
 

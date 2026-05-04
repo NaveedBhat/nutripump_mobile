@@ -127,12 +127,12 @@ class TasteProfilerScreen extends ConsumerWidget {
     final state = ref.watch(tasteProfilerProvider);
 
     return Scaffold(
-      backgroundColor: AppColors.backgroundLight,
+      backgroundColor: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : AppColors.backgroundLight),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppColors.deepCharcoal),
+          icon: Icon(Icons.arrow_back, color: Theme.of(context).brightness == Brightness.dark ? Colors.white : AppColors.deepCharcoal),
           onPressed: () => context.pop(),
         ),
         title: Text('Taste Profiler', style: AppTypography.h3(context)),
@@ -218,7 +218,7 @@ class TasteProfilerScreen extends ConsumerWidget {
           Text(
             'Artisanal Pulse.',
             textAlign: TextAlign.center,
-            style: AppTypography.h2(context).copyWith(color: AppColors.deepCharcoal),
+            style: AppTypography.h2(context).copyWith(color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal)),
           ),
           SizedBox(height: R.h(context, 8)),
           Text(
@@ -397,7 +397,7 @@ class TasteProfilerScreen extends ConsumerWidget {
                     style: TextStyle(
                       fontSize: R.sp(context, 10),
                       fontWeight: FontWeight.w900,
-                      color: AppColors.deepCharcoal,
+                      color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal),
                       letterSpacing: 1.0,
                     ),
                   ),
@@ -477,7 +477,7 @@ class _OptionCard extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.all(R.w(context, 24)),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
           border: Border.all(color: AppColors.primary.withAlpha(38)),
           borderRadius: BorderRadius.circular(R.w(context, 24)),
           boxShadow: [

@@ -79,7 +79,7 @@ class _ShopScreenState extends ConsumerState<ShopScreen> {
     final categoriesAsync = ref.watch(categoriesProvider);
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF9F8F6),
+      backgroundColor: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : Color(0xFFF9F8F6))),
       body: CustomScrollView(
         slivers: [
           // ── Hero Banner ──────────────────────────────────────────
@@ -113,14 +113,14 @@ class _ShopScreenState extends ConsumerState<ShopScreen> {
                     // Search bar
                     Container(
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
                         borderRadius: BorderRadius.circular(R.w(context, 10)),
                         border: Border.all(color: AppColors.primary.withValues(alpha: 0.2)),
                       ),
                       child: Row(
                         children: [
                           SizedBox(width: R.w(context, 12)),
-                          Icon(Icons.search_rounded, color: AppColors.neutralGold, size: R.sp(context, 16)),
+                          Icon(Icons.search_rounded, color: Theme.of(context).brightness == Brightness.dark ? Colors.white : AppColors.neutralGold, size: R.sp(context, 16)),
                           SizedBox(width: R.w(context, 8)),
                           Expanded(
                             child: TextField(
@@ -168,13 +168,13 @@ class _ShopScreenState extends ConsumerState<ShopScreen> {
                           child: Container(
                             padding: EdgeInsets.symmetric(horizontal: R.w(context, 12), vertical: R.h(context, 8)),
                             decoration: BoxDecoration(
-                              color: Colors.white,
+                              color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
                               border: Border.all(color: AppColors.borderLight),
                               borderRadius: BorderRadius.circular(R.w(context, 8)),
                             ),
                             child: Row(
                               children: [
-                                Icon(Icons.tune_rounded, size: R.sp(context, 13), color: AppColors.deepCharcoal),
+                                Icon(Icons.tune_rounded, size: R.sp(context, 13), color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal)),
                                 SizedBox(width: R.w(context, 6)),
                                 Text('Filters', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: R.sp(context, 11))),
                               ],
@@ -185,7 +185,7 @@ class _ShopScreenState extends ConsumerState<ShopScreen> {
                         // Sort dropdown
                         Container(
                           decoration: BoxDecoration(
-                            color: Colors.white,
+                            color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
                             border: Border.all(color: AppColors.borderLight),
                             borderRadius: BorderRadius.circular(R.w(context, 8)),
                           ),
@@ -202,7 +202,7 @@ class _ShopScreenState extends ConsumerState<ShopScreen> {
                                     style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: R.sp(context, 11)),
                                   ),
                                   SizedBox(width: R.w(context, 4)),
-                                  Icon(Icons.keyboard_arrow_down_rounded, size: R.sp(context, 14), color: AppColors.deepCharcoal),
+                                  Icon(Icons.keyboard_arrow_down_rounded, size: R.sp(context, 14), color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal)),
                                 ],
                               ),
                             ),
@@ -324,7 +324,9 @@ class _ShopScreenState extends ConsumerState<ShopScreen> {
     return Container(
       margin: EdgeInsets.fromLTRB(R.w(context, 16), R.h(context, 16), R.w(context, 16), R.h(context, 12)),
       decoration: BoxDecoration(
-        color: const Color(0xFFFFFDF8),
+        color: Theme.of(context).brightness == Brightness.dark
+            ? AppColors.surfaceDark
+            : const Color(0xFFFFFDF8),
         borderRadius: BorderRadius.circular(R.w(context, 12)),
         border: Border.all(color: AppColors.primary.withValues(alpha: 0.2)),
       ),
@@ -338,18 +340,20 @@ class _ShopScreenState extends ConsumerState<ShopScreen> {
                 duration: const Duration(milliseconds: 200),
                 padding: EdgeInsets.symmetric(vertical: R.h(context, 10)),
                 decoration: BoxDecoration(
-                  color: isCatalog ? Colors.white : Colors.transparent,
+                  color: isCatalog
+                      ? (Theme.of(context).brightness == Brightness.dark ? AppColors.backgroundDark : Colors.white)
+                      : Colors.transparent,
                   borderRadius: BorderRadius.circular(R.w(context, 11)),
                   boxShadow: isCatalog ? [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 6, offset: const Offset(0, 2))] : null,
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.grid_view_rounded, size: R.sp(context, 14), color: isCatalog ? AppColors.deepCharcoal : AppColors.neutralGold),
+                    Icon(Icons.grid_view_rounded, size: R.sp(context, 14), color: isCatalog ? (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal) : AppColors.neutralGold),
                     SizedBox(width: R.w(context, 6)),
                     Text('Catalog', style: AppTypography.bodySM(context).copyWith(
                       fontWeight: FontWeight.w800, fontSize: R.sp(context, 11),
-                      color: isCatalog ? AppColors.deepCharcoal : AppColors.neutralGold,
+                      color: isCatalog ? (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal) : AppColors.neutralGold,
                     )),
                   ],
                 ),
@@ -370,11 +374,11 @@ class _ShopScreenState extends ConsumerState<ShopScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.auto_awesome_rounded, size: R.sp(context, 14), color: !isCatalog ? AppColors.deepCharcoal : AppColors.neutralGold),
+                    Icon(Icons.auto_awesome_rounded, size: R.sp(context, 14), color: !isCatalog ? (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal) : AppColors.neutralGold),
                     SizedBox(width: R.w(context, 6)),
                     Text('AI Gift Builder', style: AppTypography.bodySM(context).copyWith(
                       fontWeight: FontWeight.w800, fontSize: R.sp(context, 11),
-                      color: !isCatalog ? AppColors.deepCharcoal : AppColors.neutralGold,
+                      color: !isCatalog ? (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal) : AppColors.neutralGold,
                     )),
                   ],
                 ),
@@ -408,7 +412,9 @@ class _ShopScreenState extends ConsumerState<ShopScreen> {
               padding: EdgeInsets.symmetric(horizontal: R.w(context, 14)),
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                color: isSelected ? AppColors.primary : Colors.white,
+                color: isSelected
+                    ? AppColors.primary
+                    : (Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white),
                 borderRadius: BorderRadius.circular(R.w(context, 16)),
                 border: Border.all(color: isSelected ? AppColors.primary : AppColors.borderLight),
               ),
@@ -416,7 +422,7 @@ class _ShopScreenState extends ConsumerState<ShopScreen> {
                 label,
                 style: AppTypography.bodySM(context).copyWith(
                   fontWeight: isSelected ? FontWeight.w800 : FontWeight.w600,
-                  color: isSelected ? AppColors.deepCharcoal : AppColors.neutralGold,
+                  color: isSelected ? (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal) : AppColors.neutralGold,
                   fontSize: R.sp(context, 11),
                 ),
               ),
@@ -449,7 +455,7 @@ class _FilterSheet extends ConsumerWidget {
     return Container(
       height: MediaQuery.of(context).size.height * 0.88,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
         borderRadius: BorderRadius.vertical(top: Radius.circular(R.w(context, 24))),
       ),
       child: Column(
@@ -579,7 +585,7 @@ class _FilterSheet extends ConsumerWidget {
                             borderRadius: BorderRadius.circular(R.w(context, 5)),
                           ),
                           child: filters.origins.contains(origin)
-                              ? Icon(Icons.check_rounded, size: R.sp(context, 13), color: AppColors.deepCharcoal)
+                              ? Icon(Icons.check_rounded, size: R.sp(context, 13), color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal))
                               : null,
                         ),
                         SizedBox(width: R.w(context, 12)),
@@ -615,10 +621,10 @@ class _FilterSheet extends ConsumerWidget {
                   child: filteredAsync.when(
                     data: (products) => Text(
                       'Show ${products.length} Product${products.length != 1 ? 's' : ''}',
-                      style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: R.sp(context, 15)),
+                      style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: R.sp(context, 15), color: AppColors.deepCharcoal),
                     ),
-                    loading: () => Text('Show Products', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: R.sp(context, 15))),
-                    error: (_, __) => Text('Show Products', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: R.sp(context, 15))),
+                    loading: () => Text('Show Products', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: R.sp(context, 15), color: AppColors.deepCharcoal)),
+                    error: (_, __) => Text('Show Products', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: R.sp(context, 15), color: AppColors.deepCharcoal)),
                   ),
                 ),
               ),

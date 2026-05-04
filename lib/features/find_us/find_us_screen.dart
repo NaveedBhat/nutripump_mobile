@@ -79,7 +79,7 @@ class _FindUsScreenState extends State<FindUsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.backgroundLight,
+      backgroundColor: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : AppColors.backgroundLight),
       body: CustomScrollView(
         slivers: [
           _buildHero(),
@@ -200,7 +200,7 @@ class _FindUsScreenState extends State<FindUsScreen> {
       width: double.infinity,
       padding: EdgeInsets.all(R.w(context, 24)),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
         borderRadius: BorderRadius.circular(R.w(context, 20)),
         border: Border.all(color: AppColors.primary.withValues(alpha: 0.1)),
         boxShadow: [
@@ -368,19 +368,19 @@ class _FindUsScreenState extends State<FindUsScreen> {
           SizedBox(height: R.h(context, 24)),
           
           _inputLabel('Name *'),
-          _buildInput(onSaved: (v) => _name = v!),
+          _buildInput(hintText: 'Jane Doe', onSaved: (v) => _name = v!),
 
           SizedBox(height: R.h(context, 16)),
           _inputLabel('Email *'),
-          _buildInput(onSaved: (v) => _email = v!, keyboardType: TextInputType.emailAddress),
+          _buildInput(hintText: 'jane@example.com', onSaved: (v) => _email = v!, keyboardType: TextInputType.emailAddress),
 
           SizedBox(height: R.h(context, 16)),
           _inputLabel('Subject'),
-          _buildInput(onSaved: (v) => _subject = v!, isRequired: false),
+          _buildInput(hintText: 'Partnership, Support, etc.', onSaved: (v) => _subject = v!, isRequired: false),
 
           SizedBox(height: R.h(context, 16)),
           _inputLabel('Message *'),
-          _buildInput(onSaved: (v) => _message = v!, maxLines: 4),
+          _buildInput(hintText: 'How can we help?', onSaved: (v) => _message = v!, maxLines: 4),
 
           SizedBox(height: R.h(context, 32)),
           PrimaryButton(
@@ -438,6 +438,7 @@ class _FindUsScreenState extends State<FindUsScreen> {
 
   Widget _buildInput({
     required Function(String?) onSaved,
+    String? hintText,
     int maxLines = 1,
     TextInputType? keyboardType,
     bool isRequired = true,
@@ -447,6 +448,8 @@ class _FindUsScreenState extends State<FindUsScreen> {
       maxLines: maxLines,
       keyboardType: keyboardType,
       decoration: InputDecoration(
+        hintText: hintText,
+        hintStyle: AppTypography.bodySM(context).copyWith(color: Colors.white.withValues(alpha: 0.3)),
         filled: true,
         fillColor: Colors.white.withValues(alpha: 0.05),
         contentPadding: EdgeInsets.symmetric(horizontal: R.w(context, 16), vertical: R.h(context, 16)),

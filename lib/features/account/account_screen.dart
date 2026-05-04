@@ -23,8 +23,8 @@ class AccountScreen extends ConsumerWidget {
     final authAsync = ref.watch(authStateProvider);
 
     return authAsync.when(
-      loading: () => const Scaffold(
-        backgroundColor: AppColors.backgroundLight,
+      loading: () => Scaffold(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         body: Center(child: CircularProgressIndicator()),
       ),
       error: (_, __) {
@@ -33,13 +33,13 @@ class AccountScreen extends ConsumerWidget {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (context.mounted) context.go('/');
         });
-        return const Scaffold(backgroundColor: AppColors.backgroundLight);
+        return Scaffold(backgroundColor: Theme.of(context).scaffoldBackgroundColor);
       },
       data: (user) {
         if (user == null) {
           // Fallback — listener above handles the navigation,
           // this just prevents a render error in the frame before redirect fires.
-          return const Scaffold(backgroundColor: AppColors.backgroundLight);
+          return Scaffold(backgroundColor: Theme.of(context).scaffoldBackgroundColor);
         }
         return _AccountView(user: user, ref: ref);
       },
@@ -60,20 +60,20 @@ class _AccountView extends StatelessWidget {
     final memberSince = _formatMemberSince(user.createdAt);
 
     return Scaffold(
-      backgroundColor: AppColors.backgroundLight,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: CustomScrollView(
         slivers: [
           // ── SliverAppBar ─────────────────────────────────────────────
           SliverAppBar(
             pinned: true,
-            backgroundColor: Colors.white,
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             surfaceTintColor: Colors.transparent,
             elevation: 0,
             centerTitle: true,
             title: Text('My Account', style: AppTypography.h3(context).copyWith(fontSize: R.sp(context, 16))),
             bottom: PreferredSize(
               preferredSize: const Size.fromHeight(1),
-              child: Container(height: 1, color: AppColors.borderLight),
+              child: Container(height: 1, color: Theme.of(context).colorScheme.outline),
             ),
           ),
 
@@ -139,6 +139,12 @@ class _AccountView extends StatelessWidget {
                   onTap: () => context.push('/account/security'),
                   showDivider: false,
                 ),
+
+                SizedBox(height: R.h(context, 16)),
+                
+                // ── App Preferences ─────────────────────────────────────
+                const _SectionHeader(title: 'App Preferences'),
+                const _ThemeSelectionTile(),
 
                 SizedBox(height: R.h(context, 16)),
 
@@ -209,7 +215,7 @@ class _AccountView extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: R.w(context, 16)),
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
                       borderRadius: BorderRadius.circular(R.w(context, 12)),
                       border: Border.all(color: AppColors.error.withValues(alpha: 0.15)),
                     ),
@@ -323,12 +329,12 @@ class _ProfileCard extends StatelessWidget {
       margin: EdgeInsets.fromLTRB(R.w(context, 16), R.h(context, 16), R.w(context, 16), 0),
       padding: EdgeInsets.symmetric(horizontal: R.w(context, 20), vertical: R.h(context, 20)),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
         borderRadius: BorderRadius.circular(R.w(context, 16)),
         border: Border.all(color: AppColors.primary.withValues(alpha: 0.15)),
         boxShadow: [
           BoxShadow(
-            color: AppColors.deepCharcoal.withValues(alpha: 0.04),
+            color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal).withValues(alpha: 0.04),
             blurRadius: 16,
             offset: const Offset(0, 4),
           ),
@@ -358,7 +364,7 @@ class _ProfileCard extends StatelessWidget {
                         child: Text(
                           user.initials as String,
                           style: AppTypography.h2(context).copyWith(
-                            color: AppColors.deepCharcoal,
+                            color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal),
                             fontSize: R.sp(context, 22),
                           ),
                         ),
@@ -376,10 +382,10 @@ class _ProfileCard extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: AppColors.primary,
                       shape: BoxShape.circle,
-                      border: Border.all(color: Colors.white, width: 2),
+                      border: Border.all(color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white, width: 2),
                     ),
                     child: Icon(Icons.edit_rounded,
-                        size: R.sp(context, 10), color: AppColors.deepCharcoal),
+                        size: R.sp(context, 10), color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal)),
                   ),
                 ),
               ),
@@ -423,7 +429,7 @@ class _ProfileCard extends StatelessWidget {
                     '${(user.isAdmin as bool) ? 'Admin' : 'Heritage Member'} · $memberSince',
                     style: AppTypography.label(context).copyWith(
                       fontSize: R.sp(context, 8),
-                      color: AppColors.deepCharcoal,
+                      color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal),
                       letterSpacing: 0.5,
                     ),
                   ),
@@ -510,9 +516,9 @@ class _StatChip extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: R.w(context, 12), vertical: R.h(context, 12)),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
         borderRadius: BorderRadius.circular(R.w(context, 12)),
-        border: Border.all(color: AppColors.borderLight),
+        border: Border.all(color: Theme.of(context).colorScheme.outline),
       ),
       child: Column(
         children: [
@@ -523,7 +529,7 @@ class _StatChip extends StatelessWidget {
             style: AppTypography.bodySM(context).copyWith(
               fontWeight: FontWeight.w800,
               fontSize: R.sp(context, 12),
-              color: AppColors.deepCharcoal,
+              color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal),
             ),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
@@ -587,7 +593,7 @@ class _NavTile extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: R.w(context, 16)),
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
           borderRadius: showDivider
               ? BorderRadius.zero
               : BorderRadius.vertical(bottom: Radius.circular(R.w(context, 12))),
@@ -637,7 +643,7 @@ class _NavTile extends StatelessWidget {
                       ),
                     ),
                     Icon(Icons.chevron_right_rounded,
-                        color: AppColors.borderLight, size: R.sp(context, 18)),
+                        color: Theme.of(context).colorScheme.outline, size: R.sp(context, 18)),
                   ],
                 ),
               ),
@@ -647,8 +653,207 @@ class _NavTile extends StatelessWidget {
                 padding: EdgeInsets.only(left: R.w(context, 62)),
                 child: Divider(
                     height: 1,
-                    color: AppColors.borderLight.withValues(alpha: 0.6)),
+                    color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.6)),
               ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Theme Selection Tile
+// ─────────────────────────────────────────────────────────────────────────────
+class _ThemeSelectionTile extends ConsumerWidget {
+  const _ThemeSelectionTile();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final themeMode = ref.watch(themeProvider);
+
+    String modeName = 'System';
+    IconData modeIcon = Icons.brightness_auto_rounded;
+    if (themeMode == ThemeMode.light) {
+      modeName = 'Light';
+      modeIcon = Icons.light_mode_rounded;
+    } else if (themeMode == ThemeMode.dark) {
+      modeName = 'Dark';
+      modeIcon = Icons.dark_mode_rounded;
+    }
+
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: R.w(context, 16)),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
+          borderRadius: BorderRadius.circular(R.w(context, 12)),
+        ),
+        child: InkWell(
+          onTap: () {
+            showModalBottomSheet(
+              context: context,
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(R.w(context, 20)))),
+              builder: (ctx) => const _ThemeSelectionSheet(),
+            );
+          },
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: R.w(context, 16), vertical: R.h(context, 12)),
+            child: Row(
+              children: [
+                Container(
+                  width: R.w(context, 34),
+                  height: R.w(context, 34),
+                  decoration: BoxDecoration(
+                    color: AppColors.primary.withValues(alpha: 0.08),
+                    borderRadius: BorderRadius.circular(R.w(context, 8)),
+                  ),
+                  child: Icon(Icons.color_lens_outlined, size: R.sp(context, 16), color: AppColors.primary),
+                ),
+                SizedBox(width: R.w(context, 12)),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Appearance',
+                        style: AppTypography.bodySM(context).copyWith(
+                          fontWeight: FontWeight.w700,
+                          fontSize: R.sp(context, 13),
+                        ),
+                      ),
+                      SizedBox(height: R.h(context, 1)),
+                      Text(
+                        'Customize your visual experience',
+                        style: AppTypography.labelGold(context).copyWith(
+                          fontSize: R.sp(context, 10),
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: R.w(context, 8), vertical: R.h(context, 4)),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
+                    borderRadius: BorderRadius.circular(R.w(context, 6)),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(modeIcon, size: R.sp(context, 12), color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal)),
+                      SizedBox(width: R.w(context, 4)),
+                      Text(
+                        modeName,
+                        style: AppTypography.bodySM(context).copyWith(
+                          fontWeight: FontWeight.w700,
+                          fontSize: R.sp(context, 10),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(width: R.w(context, 8)),
+                Icon(Icons.chevron_right_rounded, color: Theme.of(context).colorScheme.outline, size: R.sp(context, 18)),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _ThemeSelectionSheet extends ConsumerWidget {
+  const _ThemeSelectionSheet();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final themeMode = ref.watch(themeProvider);
+
+    return SafeArea(
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(R.w(context, 20), R.h(context, 20), R.w(context, 20), R.h(context, 16)),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Appearance', style: AppTypography.h3(context).copyWith(fontSize: R.sp(context, 18))),
+            SizedBox(height: R.h(context, 4)),
+            Text('Choose how NutriPump looks to you.', style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold)),
+            SizedBox(height: R.h(context, 24)),
+            _ThemeOption(
+              icon: Icons.brightness_auto_rounded,
+              label: 'System Default',
+              isSelected: themeMode == ThemeMode.system,
+              onTap: () {
+                ref.read(themeProvider.notifier).setTheme(ThemeMode.system);
+                Navigator.pop(context);
+              },
+            ),
+            const Divider(height: 1),
+            _ThemeOption(
+              icon: Icons.light_mode_rounded,
+              label: 'Light Mode',
+              isSelected: themeMode == ThemeMode.light,
+              onTap: () {
+                ref.read(themeProvider.notifier).setTheme(ThemeMode.light);
+                Navigator.pop(context);
+              },
+            ),
+            const Divider(height: 1),
+            _ThemeOption(
+              icon: Icons.dark_mode_rounded,
+              label: 'Dark Mode',
+              isSelected: themeMode == ThemeMode.dark,
+              onTap: () {
+                ref.read(themeProvider.notifier).setTheme(ThemeMode.dark);
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _ThemeOption extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final bool isSelected;
+  final VoidCallback onTap;
+
+  const _ThemeOption({
+    required this.icon,
+    required this.label,
+    required this.isSelected,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: R.h(context, 16)),
+        child: Row(
+          children: [
+            Icon(icon, color: isSelected ? AppColors.primary : (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal), size: R.sp(context, 20)),
+            SizedBox(width: R.w(context, 16)),
+            Expanded(
+              child: Text(
+                label,
+                style: AppTypography.bodySM(context).copyWith(
+                  fontWeight: isSelected ? FontWeight.w800 : FontWeight.w600,
+                  color: isSelected ? AppColors.primary : (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal),
+                  fontSize: R.sp(context, 14),
+                ),
+              ),
+            ),
+            if (isSelected)
+              Icon(Icons.check_circle_rounded, color: AppColors.primary, size: R.sp(context, 20)),
           ],
         ),
       ),
