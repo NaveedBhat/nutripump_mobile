@@ -243,6 +243,7 @@ class _AiChatSheetState extends State<AiChatSheet> {
                         padding: EdgeInsets.all(R.w(context, 6)),
                         child: Image.asset(
                           'assets/images/chatbotlogo.webp',
+                          gaplessPlayback: true,
                           errorBuilder: (context, error, stackTrace) =>
                               Icon(Icons.support_agent_rounded, size: R.sp(context, 20), color: AppColors.deepCharcoal),
                         ),

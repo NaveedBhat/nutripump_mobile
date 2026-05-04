@@ -237,6 +237,7 @@ class _AiChatWidgetState extends State<AiChatWidget>
                                           angle: 3.14159 + _spinAnimation.value,
                                           child: Image.asset(
                                             'assets/images/chatbotlogo.webp',
+                                            gaplessPlayback: true,
                                             errorBuilder: (context, error, stackTrace) =>
                                                 const Icon(Icons.support_agent_rounded, color: AppColors.primary),
                                           ),
