@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -55,6 +56,11 @@ class _CategoriesScreenState extends ConsumerState<CategoriesScreen>
   late final AnimationController _headerFade;
   final _emailController = TextEditingController();
 
+  String? _heroTitle;
+  String? _heroSubtitle;
+  String? _heroDesc;
+  String? _heroBg;
+
   @override
   void initState() {
     super.initState();
@@ -62,6 +68,27 @@ class _CategoriesScreenState extends ConsumerState<CategoriesScreen>
       ..forward();
     _headerFade = AnimationController(vsync: this, duration: const Duration(milliseconds: 700))
       ..forward();
+    _loadCategoryBanner();
+  }
+
+  Future<void> _loadCategoryBanner() async {
+    try {
+      final snap = await FirebaseFirestore.instance
+          .collection('settings')
+          .doc('categoryBanner')
+          .get();
+      if (snap.exists) {
+        final data = snap.data()!;
+        if (mounted) {
+          setState(() {
+            _heroTitle = data['title'] as String?;
+            _heroSubtitle = data['subtitle'] as String?;
+            _heroDesc = data['description'] as String?;
+            _heroBg = data['imageUrl'] as String?;
+          });
+        }
+      }
+    } catch (_) {}
   }
 
   @override
@@ -81,7 +108,15 @@ class _CategoriesScreenState extends ConsumerState<CategoriesScreen>
       body: CustomScrollView(
         slivers: [
           // ── Hero Banner ───────────────────────────────────────────────
-          SliverToBoxAdapter(child: _HeroBanner(zoomCtrl: _heroZoom)),
+          SliverToBoxAdapter(
+            child: _HeroBanner(
+              zoomCtrl: _heroZoom,
+              title: _heroTitle,
+              subtitle: _heroSubtitle,
+              description: _heroDesc,
+              imageUrl: _heroBg,
+            ),
+          ),
 
           // ── Section Header ────────────────────────────────────────────
           SliverToBoxAdapter(
@@ -180,7 +215,18 @@ class _CategoriesScreenState extends ConsumerState<CategoriesScreen>
 // ═══════════════════════════════════════════════════════════════════════════
 class _HeroBanner extends StatefulWidget {
   final AnimationController zoomCtrl;
-  const _HeroBanner({required this.zoomCtrl});
+  final String? title;
+  final String? subtitle;
+  final String? description;
+  final String? imageUrl;
+
+  const _HeroBanner({
+    required this.zoomCtrl,
+    this.title,
+    this.subtitle,
+    this.description,
+    this.imageUrl,
+  });
 
   @override
   State<_HeroBanner> createState() => _HeroBannerState();
@@ -209,8 +255,8 @@ class _HeroBannerState extends State<_HeroBanner> {
             animation: _scale,
             builder: (_, __) => Transform.scale(
               scale: _scale.value,
-              child: const CustomNetworkImage(
-                imageUrl: _fallbackBannerImage,
+              child: CustomNetworkImage(
+                imageUrl: widget.imageUrl ?? _fallbackBannerImage,
                 fit: BoxFit.cover,
               ),
             ),
@@ -235,7 +281,7 @@ class _HeroBannerState extends State<_HeroBanner> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'CURATED COLLECTIONS',
+                    widget.subtitle?.toUpperCase() ?? 'CURATED COLLECTIONS',
                     style: AppTypography.labelGold(context).copyWith(
                       letterSpacing: 3,
                       fontSize: R.sp(context, 9),
@@ -243,7 +289,7 @@ class _HeroBannerState extends State<_HeroBanner> {
                   ),
                   SizedBox(height: R.h(context, 8)),
                   Text(
-                    'Explore Our\nCollections',
+                    widget.title ?? 'Explore Our\nCollections',
                     textAlign: TextAlign.center,
                     style: AppTypography.h1(context).copyWith(
                       color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
@@ -254,7 +300,7 @@ class _HeroBannerState extends State<_HeroBanner> {
                   ),
                   SizedBox(height: R.h(context, 12)),
                   Text(
-                    'A refined heritage of artisanal excellence and handcrafted perfection, curated for the modern connoisseur.',
+                    widget.description ?? 'A refined heritage of artisanal excellence and handcrafted perfection, curated for the modern connoisseur.',
                     textAlign: TextAlign.center,
                     style: AppTypography.bodySM(context).copyWith(
                       color: (Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white).withValues(alpha: 0.80),
