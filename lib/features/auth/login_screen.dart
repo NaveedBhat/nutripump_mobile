@@ -281,6 +281,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           formControlName: 'email',
                           keyboardType: TextInputType.emailAddress,
                           textInputAction: TextInputAction.next,
+                          onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
+                          onTap: (control) {
+                            if (control.hasFocus) {
+                              control.unfocus();
+                              Future.delayed(const Duration(milliseconds: 50), () => control.focus());
+                            }
+                          },
                           decoration: InputDecoration(
                             hintText: 'you@example.com',
                             prefixIcon: Icon(Icons.mail_outline_rounded, size: R.sp(context, 18), color: Theme.of(context).brightness == Brightness.dark ? const Color(0xFFF5F0E8) : AppColors.neutralGold),
@@ -304,6 +311,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           formControlName: 'password',
                           obscureText: _obscurePassword,
                           textInputAction: TextInputAction.done,
+                          onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
+                          onTap: (control) {
+                            if (control.hasFocus) {
+                              control.unfocus();
+                              Future.delayed(const Duration(milliseconds: 50), () => control.focus());
+                            }
+                          },
                           onSubmitted: (_) => _handleEmailLogin(),
                           decoration: InputDecoration(
                             hintText: '••••••••',

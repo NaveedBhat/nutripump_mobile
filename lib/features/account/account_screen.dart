@@ -72,6 +72,27 @@ class _AccountView extends StatelessWidget {
             elevation: 0,
             centerTitle: true,
             title: Text('My Account', style: AppTypography.h3(context).copyWith(fontSize: R.sp(context, 16))),
+            actions: [
+              Consumer(
+                builder: (context, ref, _) {
+                  final themeMode = ref.watch(themeProvider);
+                  final isDark = themeMode == ThemeMode.dark || 
+                                (themeMode == ThemeMode.system && MediaQuery.platformBrightnessOf(context) == Brightness.dark);
+                  return IconButton(
+                    icon: Icon(
+                      isDark ? Icons.light_mode_rounded : Icons.dark_mode_rounded,
+                      color: Theme.of(context).brightness == Brightness.dark ? Colors.white : AppColors.neutralGold,
+                    ),
+                    onPressed: () {
+                      ref.read(themeProvider.notifier).setTheme(
+                        isDark ? ThemeMode.light : ThemeMode.dark
+                      );
+                    },
+                  );
+                },
+              ),
+              SizedBox(width: R.w(context, 8)),
+            ],
             bottom: PreferredSize(
               preferredSize: const Size.fromHeight(1),
               child: Container(height: 1, color: Theme.of(context).colorScheme.outline),
