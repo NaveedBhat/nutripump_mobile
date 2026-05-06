@@ -51,5 +51,16 @@
 		<string>This app requires speech recognition to transcribe your voice searches.</string>
 		<key>UIStatusBarHidden</key>
 		<false/>
+		<key>CFBundleURLTypes</key>
+		<array>
+			<dict>
+				<key>CFBundleTypeRole</key>
+				<string>Editor</string>
+				<key>CFBundleURLSchemes</key>
+				<array>
+					<string>com.googleusercontent.apps.1019289529063-sf4i4r5aa3r20q9obb8rhdp39rl7fear</string>
+				</array>
+			</dict>
+		</array>
 	</dict>
 </plist>

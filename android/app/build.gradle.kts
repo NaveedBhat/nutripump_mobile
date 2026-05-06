@@ -34,9 +34,9 @@ android {
     }
 
     buildTypes {
-        release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
+            release {
+            // NOTE: Currently using debug signing for local testing.
+            // Before Play Store upload, replace with production keystore signingConfig.
             signingConfig = signingConfigs.getByName("debug")
 
             // ── R8 shrinking & obfuscation ────────────────────────────
