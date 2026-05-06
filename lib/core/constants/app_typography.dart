@@ -133,3 +133,4 @@ class AppTypography {
     decoration: TextDecoration.lineThrough,
   );
 }
+

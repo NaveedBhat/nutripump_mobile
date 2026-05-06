@@ -38,6 +38,14 @@ android {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig = signingConfigs.getByName("debug")
+
+            // ── R8 shrinking & obfuscation ────────────────────────────
+            isMinifyEnabled = true
+            isShrinkResources = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
 }
@@ -52,3 +60,4 @@ dependencies {
     // in checkout 1.6.33+. It is not declared as a mandatory dependency so must be explicit.
    implementation("com.razorpay:customui:3.9.22")
 }
+

@@ -31,11 +31,35 @@ target 'Runner' do
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
 end
 
+# ── permission_handler: only compile the permissions we actually use ─────────
+# Reduces iOS binary size by excluding native code for ~20 unused permission types.
+# The app only needs: microphone (speech_to_text) and notifications (FCM).
 post_install do |installer|
   installer.pods_project.targets.each do |target|
     flutter_additional_ios_build_settings(target)
     target.build_configurations.each do |config|
       config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '13.0'
+
+      config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= [
+        '$(inherited)',
+        ## ── Enable only the permissions the app uses ──
+        'PERMISSION_MICROPHONE=1',
+        'PERMISSION_NOTIFICATIONS=1',
+        ## ── Disable all others ──
+        'PERMISSION_CAMERA=0',
+        'PERMISSION_PHOTOS=0',
+        'PERMISSION_LOCATION=0',
+        'PERMISSION_CONTACTS=0',
+        'PERMISSION_CALENDARS=0',
+        'PERMISSION_REMINDERS=0',
+        'PERMISSION_SPEECH_RECOGNIZER=0',
+        'PERMISSION_MEDIA_LIBRARY=0',
+        'PERMISSION_SENSORS=0',
+        'PERMISSION_BLUETOOTH=0',
+        'PERMISSION_APP_TRACKING_TRANSPARENCY=0',
+        'PERMISSION_CRITICAL_ALERTS=0',
+      ]
     end
   end
 end
+

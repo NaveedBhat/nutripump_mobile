@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:shimmer/shimmer.dart';
 import '../constants/app_colors.dart';
 
 class CustomNetworkImage extends StatelessWidget {
@@ -26,14 +25,9 @@ class CustomNetworkImage extends StatelessWidget {
       width: width,
       height: height,
       fit: fit,
-      placeholder: (context, url) => Shimmer.fromColors(
-        baseColor: AppColors.primary.withValues(alpha: 0.1),
-        highlightColor: AppColors.primary.withValues(alpha: 0.05),
-        child: Container(
-          width: width,
-          height: height,
-          color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
-        ),
+      placeholder: (context, url) => _ShimmerPlaceholder(
+        width: width,
+        height: height,
       ),
       errorWidget: (context, url, error) => Container(
         width: width,
@@ -56,3 +50,52 @@ class CustomNetworkImage extends StatelessWidget {
     return image;
   }
 }
+
+/// Lightweight shimmer placeholder using Flutter's built-in animation.
+/// Replaces the external `shimmer` package dependency.
+class _ShimmerPlaceholder extends StatefulWidget {
+  final double? width;
+  final double? height;
+  const _ShimmerPlaceholder({this.width, this.height});
+
+  @override
+  State<_ShimmerPlaceholder> createState() => _ShimmerPlaceholderState();
+}
+
+class _ShimmerPlaceholderState extends State<_ShimmerPlaceholder>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1200),
+    )..repeat(reverse: true);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return AnimatedBuilder(
+      animation: _controller,
+      builder: (context, child) {
+        final opacity = 0.3 + (_controller.value * 0.4);
+        return Container(
+          width: widget.width,
+          height: widget.height,
+          color: (isDark ? AppColors.surfaceDark : AppColors.primary)
+              .withValues(alpha: opacity),
+        );
+      },
+    );
+  }
+}
+

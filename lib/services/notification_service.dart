@@ -10,12 +10,12 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:http/http.dart' as http;
 
 // ── Singleton ─────────────────────────────────────────────────────────────────
 class NotificationService {
@@ -170,9 +170,10 @@ class NotificationService {
 
     if (imageUrl != null && imageUrl.isNotEmpty) {
       try {
-        final response = await http.get(Uri.parse(imageUrl));
+        final response = await Dio().get<List<int>>(imageUrl,
+          options: Options(responseType: ResponseType.bytes));
         final file = File('${Directory.systemTemp.path}/fcm_img_${DateTime.now().millisecondsSinceEpoch}.jpg');
-        await file.writeAsBytes(response.bodyBytes);
+        await file.writeAsBytes(response.data!);
         styleInfo = BigPictureStyleInformation(
           FilePathAndroidBitmap(file.path),
           largeIcon: const DrawableResourceAndroidBitmap('@mipmap/ic_launcher'),
