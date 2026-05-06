@@ -181,9 +181,8 @@ class ProductCard extends ConsumerWidget {
                             weight: product.weight,
                           );
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
+                            SnackBar(duration: const Duration(milliseconds: 2000), 
                               content: Text('${product.name} added to cart'),
-                              duration: const Duration(seconds: 2),
                               behavior: SnackBarBehavior.floating,
                               backgroundColor: AppColors.deepCharcoal,
                             ),

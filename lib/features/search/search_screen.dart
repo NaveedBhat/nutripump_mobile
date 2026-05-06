@@ -62,7 +62,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
     final productsAsync = ref.watch(allProductsProvider);
 
     return Scaffold(
-      backgroundColor: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : Color(0xFFF8F6F1))),
+      backgroundColor: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : const Color(0xFFF8F6F1))),
       appBar: AppBar(
         backgroundColor: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : Colors.white),
         elevation: 0,

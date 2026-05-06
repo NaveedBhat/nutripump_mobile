@@ -39,7 +39,7 @@ class _ContactScreenState extends State<ContactScreen> {
     if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Could not open link'), backgroundColor: AppColors.error),
+          const SnackBar(duration: Duration(milliseconds: 2000), content: Text('Could not open link'), backgroundColor: AppColors.error),
         );
       }
     }
@@ -94,7 +94,7 @@ class _ContactScreenState extends State<ContactScreen> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Could not send message. Please try again.'), backgroundColor: AppColors.error),
+          const SnackBar(duration: Duration(milliseconds: 2000), content: Text('Could not send message. Please try again.'), backgroundColor: AppColors.error),
         );
       }
     } finally {

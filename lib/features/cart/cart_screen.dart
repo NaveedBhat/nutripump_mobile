@@ -425,7 +425,7 @@ class CartScreen extends ConsumerWidget {
                       if (user == null && state.appliedPromo != null &&
                          (state.appliedPromo!.isFirstOrderOnly || state.appliedPromo!.oneTimeUsePerUser)) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
+                          const SnackBar(duration: Duration(milliseconds: 2000), 
                             content: Text('You need to log in to avail this exclusive promo code offer.'),
                             backgroundColor: AppColors.error,
                           ),

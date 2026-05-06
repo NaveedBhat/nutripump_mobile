@@ -720,13 +720,13 @@ class _CancelOrderDialogState extends ConsumerState<_CancelOrderDialog> {
       if (mounted) {
         Navigator.of(context).pop();
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Order cancelled successfully.')),
+          const SnackBar(duration: Duration(milliseconds: 2000), content: Text('Order cancelled successfully.')),
         );
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to cancel order: $e')),
+          SnackBar(duration: const Duration(milliseconds: 2000), content: Text('Failed to cancel order: $e')),
         );
       }
     } finally {

@@ -61,7 +61,7 @@ class _FindUsScreenState extends State<FindUsScreen> {
   void _showError(String message) {
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
+      SnackBar(duration: const Duration(milliseconds: 2000), 
         content: Text(message),
         backgroundColor: Colors.red.shade700,
         behavior: SnackBarBehavior.floating,

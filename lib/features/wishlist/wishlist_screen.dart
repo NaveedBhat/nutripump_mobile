@@ -172,7 +172,7 @@ class WishlistScreen extends ConsumerWidget {
     ref.read(wishlistProvider.notifier).clear();
     HapticFeedback.mediumImpact();
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
+      SnackBar(duration: const Duration(milliseconds: 2000), 
         content: Text('${items.length} items moved to cart'),
         action: SnackBarAction(
           label: 'VIEW CART',
@@ -388,7 +388,7 @@ class _WishlistCardState extends ConsumerState<_WishlistCard>
     HapticFeedback.lightImpact();
     ref.read(wishlistProvider.notifier).toggle(widget.product);
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
+      SnackBar(duration: const Duration(milliseconds: 2000), 
         content: Text('${widget.product.name} removed'),
         action: SnackBarAction(
           label: 'UNDO',
@@ -406,7 +406,7 @@ class _WishlistCardState extends ConsumerState<_WishlistCard>
       weight: widget.product.weight,
     );
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
+      SnackBar(duration: const Duration(milliseconds: 2000), 
         content: Text('${widget.product.name} added to cart'),
         action: SnackBarAction(
           label: 'VIEW CART',

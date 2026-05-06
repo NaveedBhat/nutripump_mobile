@@ -31,7 +31,7 @@ class NotificationsScreen extends ConsumerWidget {
               onPressed: () {
                 ref.read(notificationsProvider.notifier).markAllAsRead();
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('All notifications marked as read')),
+                  const SnackBar(duration: Duration(milliseconds: 2000), content: Text('All notifications marked as read')),
                 );
               },
             ),

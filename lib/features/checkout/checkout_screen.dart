@@ -73,7 +73,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
       if (mounted) {
         context.pushReplacement('/orders/$orderId');
         ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
+            SnackBar(duration: const Duration(milliseconds: 2000), 
               content: Text('Order placed successfully! 🎉', style: AppTypography.bodySM(context).copyWith(color: Colors.white)),
               backgroundColor: AppColors.success,
               behavior: SnackBarBehavior.floating,
@@ -84,7 +84,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
       ref.read(isProcessingProvider.notifier).state = false;
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Payment verification failed.', style: AppTypography.bodySM(context).copyWith(color: Colors.white)), backgroundColor: AppColors.error)
+            SnackBar(duration: const Duration(milliseconds: 2000), content: Text('Payment verification failed.', style: AppTypography.bodySM(context).copyWith(color: Colors.white)), backgroundColor: AppColors.error)
         );
       }
     }
@@ -98,7 +98,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
     ref.read(isProcessingProvider.notifier).state = false;
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Payment cancelled or failed.', style: AppTypography.bodySM(context).copyWith(color: Colors.white)), backgroundColor: AppColors.error)
+          SnackBar(duration: const Duration(milliseconds: 2000), content: Text('Payment cancelled or failed.', style: AppTypography.bodySM(context).copyWith(color: Colors.white)), backgroundColor: AppColors.error)
       );
     }
   }
@@ -110,7 +110,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
   void _handlePlaceOrder(CartState cart, Address address, String paymentMethod) async {
     final user = ref.read(authStateProvider).value;
     if (user == null) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Please log in to place an order.')));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(duration: Duration(milliseconds: 2000), content: Text('Please log in to place an order.')));
       return;
     }
 
@@ -133,7 +133,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
         if (mounted) {
           context.pushReplacement('/orders/$firestoreOrderId');
           ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
+              SnackBar(duration: const Duration(milliseconds: 2000), 
                 content: Text('Order placed successfully! 🎉', style: AppTypography.bodySM(context).copyWith(color: Colors.white)),
                 backgroundColor: AppColors.success,
                 behavior: SnackBarBehavior.floating,
@@ -184,11 +184,10 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
           }
         }
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          SnackBar(duration: const Duration(milliseconds: 2000), 
             content: Text(errorMsg, style: AppTypography.bodySM(context).copyWith(color: Colors.white)),
             backgroundColor: AppColors.error,
             behavior: SnackBarBehavior.floating,
-            duration: const Duration(seconds: 5),
           ),
         );
       }
@@ -522,7 +521,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
               onPressed: () {
                 if (step == 0) {
                   if (ref.read(selectedAddressProvider) == null) {
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Please select a delivery address')));
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(duration: Duration(milliseconds: 2000), content: Text('Please select a delivery address')));
                     return;
                   }
                   ref.read(checkoutStepProvider.notifier).state = 1;

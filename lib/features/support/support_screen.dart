@@ -88,7 +88,7 @@ class _SupportScreenState extends ConsumerState<SupportScreen> {
   void _showError(String message) {
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
+      SnackBar(duration: const Duration(milliseconds: 2000), 
         content: Row(
           children: [
             const Icon(Icons.error_outline_rounded, color: Colors.white),

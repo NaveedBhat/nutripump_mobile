@@ -37,14 +37,14 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
       
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Password reset email sent! Please check your inbox.')),
+          const SnackBar(duration: Duration(milliseconds: 2000), content: Text('Password reset email sent! Please check your inbox.')),
         );
         context.pop();
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: ${e.toString().replaceAll('Exception: ', '').split(']').last.trim()}')),
+          SnackBar(duration: const Duration(milliseconds: 2000), content: Text('Error: ${e.toString().replaceAll('Exception: ', '').split(']').last.trim()}')),
         );
       }
     } finally {
@@ -140,7 +140,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(R.w(context, 14))),
                           ),
                           child: _isLoading
-                              ? SizedBox(height: R.h(context, 20), width: R.w(context, 20), child: CircularProgressIndicator(strokeWidth: 2, valueColor: AlwaysStoppedAnimation(AppColors.deepCharcoal)))
+                              ? SizedBox(height: R.h(context, 20), width: R.w(context, 20), child: const CircularProgressIndicator(strokeWidth: 2, valueColor: AlwaysStoppedAnimation(AppColors.deepCharcoal)))
                               : Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [

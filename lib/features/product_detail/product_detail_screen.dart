@@ -56,7 +56,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
 
       if (!snap.exists) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          SnackBar(duration: const Duration(milliseconds: 2000), 
             content: Text(
               'Promo code "$code" is not valid.',
               style: AppTypography.bodySM(context).copyWith(color: Colors.white),
@@ -73,7 +73,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
       if (!promo.active ||
           (promo.expiresAt != null && DateTime.now().isAfter(promo.expiresAt!))) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          SnackBar(duration: const Duration(milliseconds: 2000), 
             content: Text(
               'Promo code "$code" has expired.',
               style: AppTypography.bodySM(context).copyWith(color: Colors.white),
@@ -92,7 +92,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
           : '₹${promo.value.toInt()} off';
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        SnackBar(duration: const Duration(milliseconds: 2000), 
           content: Row(
             children: [
               const Icon(Icons.local_offer_rounded, color: Colors.white),
@@ -107,7 +107,6 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
           ),
           backgroundColor: AppColors.success,
           behavior: SnackBarBehavior.floating,
-          duration: const Duration(seconds: 4),
         ),
       );
     } catch (_) {
@@ -228,7 +227,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                 onPressed: () {
                   ref.read(wishlistProvider.notifier).toggle(product);
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text(isWishlisted ? 'Removed from wishlist' : 'Added to wishlist')),
+                    SnackBar(duration: const Duration(milliseconds: 2000), content: Text(isWishlisted ? 'Removed from wishlist' : 'Added to wishlist')),
                   );
                 },
               ),
@@ -788,7 +787,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                         onPressed: itemCount == 0 ? null : () {
                           if (_fbtThisItem) ref.read(cartProvider.notifier).addItem(product, qty: 1);
                           if (_fbtChecked) ref.read(cartProvider.notifier).addItem(fbtProduct, qty: 1, bundlePrice: discountedFbtPrice);
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('$itemCount item${itemCount == 1 ? '' : 's'} added to cart')));
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(duration: const Duration(milliseconds: 2000), content: Text('$itemCount item${itemCount == 1 ? '' : 's'} added to cart')));
                         },
                         child: Text(
                           itemCount == 0 ? 'Select at least one item' : 'Add $itemCount Item${itemCount == 1 ? '' : 's'} to Cart',
@@ -980,7 +979,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
     final user = ref.read(authStateProvider).value;
     if (user == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please log in to write a review')),
+        const SnackBar(duration: Duration(milliseconds: 2000), content: Text('Please log in to write a review')),
       );
       context.push('/auth/login');
       return;
@@ -1111,7 +1110,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                       final title = titleCtrl.text.trim();
                       final body = bodyCtrl.text.trim();
                       if (title.isEmpty || body.isEmpty) {
-                        ScaffoldMessenger.of(ctx).showSnackBar(const SnackBar(content: Text('Please fill in all fields')));
+                        ScaffoldMessenger.of(ctx).showSnackBar(const SnackBar(duration: Duration(milliseconds: 2000), content: Text('Please fill in all fields')));
                         return;
                       }
                       setModalState(() => isSubmitting = true);
@@ -1128,11 +1127,11 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                         if (ctx.mounted) Navigator.of(ctx).pop();
                         if (mounted) {
                           ref.invalidate(productReviewsProvider(product.id));
-                          messenger.showSnackBar(const SnackBar(content: Text('Review submitted! Thank you.')));
+                          messenger.showSnackBar(const SnackBar(duration: Duration(milliseconds: 2000), content: Text('Review submitted! Thank you.')));
                         }
                       } catch (e) {
                         setModalState(() => isSubmitting = false);
-                        if (ctx.mounted) ScaffoldMessenger.of(ctx).showSnackBar(const SnackBar(content: Text('Failed to submit review. Please try again.')));
+                        if (ctx.mounted) ScaffoldMessenger.of(ctx).showSnackBar(const SnackBar(duration: Duration(milliseconds: 2000), content: Text('Failed to submit review. Please try again.')));
                       }
                     },
                     child: isSubmitting
@@ -1242,7 +1241,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                     bundlePrice: _selectedSize?.price ?? product.price,
                   );
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
+                    SnackBar(duration: const Duration(milliseconds: 2000), 
                       content: const Text('Added to cart'),
                       action: SnackBarAction(label: 'VIEW CART', onPressed: () => context.push('/cart')),
                     ),

@@ -52,7 +52,7 @@ class _SecurityScreenState extends ConsumerState<SecurityScreen> {
         _passwordCtrl.clear();
         _confirmPasswordCtrl.clear();
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Password updated successfully'), backgroundColor: AppColors.success),
+          const SnackBar(duration: Duration(milliseconds: 2000), content: Text('Password updated successfully'), backgroundColor: AppColors.success),
         );
       }
     } on FirebaseAuthException catch (e) {
@@ -64,7 +64,7 @@ class _SecurityScreenState extends ConsumerState<SecurityScreen> {
           msg = 'Too many failed attempts. Please try again later.';
         }
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(msg), backgroundColor: AppColors.error),
+          SnackBar(duration: const Duration(milliseconds: 2000), content: Text(msg), backgroundColor: AppColors.error),
         );
       }
     } finally {

@@ -388,7 +388,7 @@ class _AddressFormSheetState extends State<AddressFormSheet> {
       if (mounted) Navigator.pop(context);
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error saving address: $e'), backgroundColor: AppColors.error));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(duration: const Duration(milliseconds: 2000), content: Text('Error saving address: $e'), backgroundColor: AppColors.error));
       }
     } finally {
       if (mounted) setState(() => _isLoading = false);

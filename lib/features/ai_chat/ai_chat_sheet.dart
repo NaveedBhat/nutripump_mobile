@@ -67,7 +67,7 @@ class _AiChatSheetState extends State<AiChatSheet> {
     if (!_speechAvailable) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          SnackBar(duration: const Duration(milliseconds: 2000), 
             content: Text('Microphone permission required', style: AppTypography.bodySM(context).copyWith(color: Colors.white)),
             backgroundColor: AppColors.error,
             behavior: SnackBarBehavior.floating,

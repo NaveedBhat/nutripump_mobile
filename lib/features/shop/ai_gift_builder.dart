@@ -329,7 +329,7 @@ class _AIGiftBuilderState extends ConsumerState<AIGiftBuilder> {
                       GestureDetector(
                         onTap: bundle.isNotEmpty ? () {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
+                            SnackBar(duration: const Duration(milliseconds: 2000), 
                               content: Text('Gift Box added to cart!', style: AppTypography.bodySM(context).copyWith(color: Colors.white)),
                               backgroundColor: AppColors.deepCharcoal,
                               behavior: SnackBarBehavior.floating,

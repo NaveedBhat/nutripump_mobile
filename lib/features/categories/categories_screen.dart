@@ -475,7 +475,7 @@ class _CategoryCardState extends State<_CategoryCard>
                                     ),
                                   ),
                                   const SizedBox(width: 4),
-                                  Icon(
+                                  const Icon(
                                     Icons.arrow_forward_rounded,
                                     size: 10,
                                     color: AppColors.deepCharcoal,

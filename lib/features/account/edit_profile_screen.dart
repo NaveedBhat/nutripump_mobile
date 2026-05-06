@@ -64,7 +64,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
       
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          SnackBar(duration: const Duration(milliseconds: 2000), 
             content: Text('Profile updated successfully', style: AppTypography.bodySM(context).copyWith(color: Colors.white)),
             backgroundColor: AppColors.success,
             behavior: SnackBarBehavior.floating,
@@ -75,7 +75,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          SnackBar(duration: const Duration(milliseconds: 2000), 
             content: Text('Failed to update profile: $e', style: AppTypography.bodySM(context).copyWith(color: Colors.white)),
             backgroundColor: AppColors.error,
             behavior: SnackBarBehavior.floating,

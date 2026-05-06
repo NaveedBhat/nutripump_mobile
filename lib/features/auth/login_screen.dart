@@ -45,13 +45,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       if (!user.emailVerified) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Please verify your email first.')),
+            const SnackBar(duration: Duration(milliseconds: 2000), content: Text('Please verify your email first.')),
           );
         }
       } else {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Welcome back! 🌿')),
+            const SnackBar(duration: Duration(milliseconds: 2000), content: Text('Welcome back! 🌿')),
           );
           _navigateSuccess();
         }
@@ -76,7 +76,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         }
 
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          SnackBar(duration: const Duration(milliseconds: 2000), 
             content: Row(
               children: [
                 const Icon(Icons.error_outline_rounded, color: Colors.white, size: 20),
@@ -88,7 +88,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             behavior: SnackBarBehavior.floating,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             margin: const EdgeInsets.all(16),
-            duration: const Duration(seconds: 4),
             elevation: 4,
           ),
         );
@@ -104,14 +103,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       final user = await ref.read(authServiceProvider).signInWithGoogle();
       if (user != null && mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Welcome! 🌿')),
+          const SnackBar(duration: Duration(milliseconds: 2000), content: Text('Welcome! 🌿')),
         );
         _navigateSuccess();
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          SnackBar(duration: const Duration(milliseconds: 2000), 
             content: const Row(
               children: [
                 Icon(Icons.error_outline_rounded, color: Colors.white, size: 20),
@@ -341,7 +340,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(R.w(context, 14))),
                           ),
                           child: _isLoading
-                              ? SizedBox(height: R.h(context, 20), width: R.w(context, 20), child: CircularProgressIndicator(strokeWidth: 2, valueColor: AlwaysStoppedAnimation(AppColors.deepCharcoal)))
+                              ? SizedBox(height: R.h(context, 20), width: R.w(context, 20), child: const CircularProgressIndicator(strokeWidth: 2, valueColor: AlwaysStoppedAnimation(AppColors.deepCharcoal)))
                               : Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [

@@ -115,9 +115,14 @@ class AppTheme {
     ),
     snackBarTheme: SnackBarThemeData(
       backgroundColor: AppColors.deepCharcoal,
-      contentTextStyle: AppTypography.bodySM(context).copyWith(color: Colors.white),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      contentTextStyle: AppTypography.bodySM(context).copyWith(color: Colors.white, fontWeight: FontWeight.w500),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       behavior: SnackBarBehavior.floating,
+      elevation: 10,
+      insetPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+      actionTextColor: AppColors.primary,
+      showCloseIcon: true,
+      closeIconColor: Colors.white70,
     ),
   );
 
@@ -229,10 +234,15 @@ class AppTheme {
       ),
     ),
     snackBarTheme: SnackBarThemeData(
-      backgroundColor: AppColors.surfaceDark,
-      contentTextStyle: AppTypography.bodySM(context).copyWith(color: const Color(0xFFF5F0E8)),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      backgroundColor: const Color(0xFFF5F0E8), // Cream color for high contrast against dark mode
+      contentTextStyle: AppTypography.bodySM(context).copyWith(color: AppColors.deepCharcoal, fontWeight: FontWeight.w600),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       behavior: SnackBarBehavior.floating,
+      elevation: 10,
+      insetPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+      actionTextColor: AppColors.primary,
+      showCloseIcon: true,
+      closeIconColor: AppColors.deepCharcoal.withValues(alpha: 0.7),
     ),
   );
 

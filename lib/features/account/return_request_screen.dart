@@ -71,7 +71,7 @@ class _ReturnRequestScreenState extends ConsumerState<ReturnRequestScreen> {
   }
 
   void _showSnack(String msg, {bool isError = false}) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(duration: const Duration(milliseconds: 2000), 
       content: Text(msg, style: AppTypography.bodySM(context).copyWith(color: Colors.white)),
       backgroundColor: isError ? AppColors.error : AppColors.success,
       behavior: SnackBarBehavior.floating,

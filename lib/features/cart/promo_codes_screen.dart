@@ -98,7 +98,7 @@ class _PromoCodesScreenState extends ConsumerState<PromoCodesScreen> {
       ref.read(cartProvider.notifier).applyPromo(promo);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          SnackBar(duration: const Duration(milliseconds: 2000), 
             content: Text("'${promo.code}' applied successfully!", style: AppTypography.bodySM(context).copyWith(color: Colors.white)),
             backgroundColor: AppColors.success,
             behavior: SnackBarBehavior.floating,
@@ -113,7 +113,7 @@ class _PromoCodesScreenState extends ConsumerState<PromoCodesScreen> {
 
   void _showError(String msg) {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
+      SnackBar(duration: const Duration(milliseconds: 2000), 
         content: Text(msg, style: AppTypography.bodySM(context).copyWith(color: Colors.white)),
         backgroundColor: AppColors.error,
         behavior: SnackBarBehavior.floating,
@@ -174,7 +174,7 @@ class _PromoCodesScreenState extends ConsumerState<PromoCodesScreen> {
                             fillColor: Theme.of(context).brightness == Brightness.dark ? Colors.black.withValues(alpha: 0.2) : AppColors.backgroundLight,
                             border: OutlineInputBorder(borderRadius: BorderRadius.circular(R.w(context, 8)), borderSide: BorderSide(color: Theme.of(context).brightness == Brightness.dark ? AppColors.borderDark : Colors.transparent)),
                             enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(R.w(context, 8)), borderSide: BorderSide(color: Theme.of(context).brightness == Brightness.dark ? AppColors.borderDark : Colors.transparent)),
-                            focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(R.w(context, 8)), borderSide: BorderSide(color: AppColors.primary, width: 1.5)),
+                            focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(R.w(context, 8)), borderSide: const BorderSide(color: AppColors.primary, width: 1.5)),
                           ),
                         ),
                       ),
@@ -231,7 +231,7 @@ class _PromoCodesScreenState extends ConsumerState<PromoCodesScreen> {
                       onRemove: () {
                         ref.read(cartProvider.notifier).removePromo();
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
+                          SnackBar(duration: const Duration(milliseconds: 2000), 
                             content: Text('Promo code removed', style: AppTypography.bodySM(context).copyWith(color: Colors.white)),
                             behavior: SnackBarBehavior.floating,
                           ),

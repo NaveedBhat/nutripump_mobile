@@ -26,7 +26,7 @@ class HomeScreen extends ConsumerWidget {
         body: SafeArea(
           bottom: false,
           child: Container(
-            color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : Color(0xFFF8F6F1))),
+            color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : const Color(0xFFF8F6F1))),
             child: Column(
               children: [
                 const AnnouncementBar(),
@@ -545,7 +545,7 @@ class _CategoriesSection extends ConsumerWidget {
                           height: circleSize,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : Color(0xFFF0EBE0))),
+                            color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : const Color(0xFFF0EBE0))),
                             border: Border.all(color: AppColors.primary.withValues(alpha: 0.2), width: 1.5),
                           ),
                           child: Padding(

@@ -53,14 +53,14 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
       
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Account created! Please check your email to verify.')),
+          const SnackBar(duration: Duration(milliseconds: 2000), content: Text('Account created! Please check your email to verify.')),
         );
         context.go('/auth/login');
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: ${e.toString().replaceAll('Exception: ', '').split(']').last.trim()}')),
+          SnackBar(duration: const Duration(milliseconds: 2000), content: Text('Error: ${e.toString().replaceAll('Exception: ', '').split(']').last.trim()}')),
         );
       }
     } finally {
@@ -74,14 +74,14 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
       final user = await ref.read(authServiceProvider).signInWithGoogle();
       if (user != null && mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Welcome to NutriPump! 🌿')),
+          const SnackBar(duration: Duration(milliseconds: 2000), content: Text('Welcome to NutriPump! 🌿')),
         );
         context.go('/');
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Google sign up failed.')),
+          const SnackBar(duration: Duration(milliseconds: 2000), content: Text('Google sign up failed.')),
         );
       }
     } finally {
@@ -269,7 +269,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(R.w(context, 14))),
                           ),
                           child: _isLoading
-                              ? SizedBox(height: R.h(context, 20), width: R.w(context, 20), child: CircularProgressIndicator(strokeWidth: 2, valueColor: AlwaysStoppedAnimation(AppColors.deepCharcoal)))
+                              ? SizedBox(height: R.h(context, 20), width: R.w(context, 20), child: const CircularProgressIndicator(strokeWidth: 2, valueColor: AlwaysStoppedAnimation(AppColors.deepCharcoal)))
                               : Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
