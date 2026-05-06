@@ -7,7 +7,13 @@ import '../../core/constants/app_typography.dart';
 import '../../core/utils/responsive.dart';
 import '../../providers/providers.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import '../../core/widgets/skeleton_loaders.dart';
+
+final appVersionProvider = FutureProvider<String>((ref) async {
+  final info = await PackageInfo.fromPlatform();
+  return info.version;
+});
 
 class AccountScreen extends ConsumerWidget {
   const AccountScreen({super.key});
@@ -272,10 +278,19 @@ class _AccountView extends StatelessWidget {
                 // ── App version ─────────────────────────────────────────
                 Padding(
                   padding: EdgeInsets.only(bottom: R.h(context, 32)),
-                  child: Text(
-                    'NutriPump Artisanal v1.0.0',
-                    style: AppTypography.labelGold(context)
-                        .copyWith(fontSize: R.sp(context, 9), letterSpacing: 1),
+                  child: Consumer(
+                    builder: (context, ref, _) {
+                      final versionAsync = ref.watch(appVersionProvider);
+                      return versionAsync.when(
+                        data: (version) => Text(
+                          'NutriPump Artisanal v$version',
+                          style: AppTypography.labelGold(context)
+                              .copyWith(fontSize: R.sp(context, 9), letterSpacing: 1),
+                        ),
+                        loading: () => const SizedBox.shrink(),
+                        error: (_, __) => const SizedBox.shrink(),
+                      );
+                    },
                   ),
                 ),
               ],

@@ -164,6 +164,9 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
             'contact': address.phone,
             'email': user.email,
           },
+          // Razorpay requires a PUBLIC HTTPS LINK here (it cannot read local app assets).
+          // Upload that beautiful gold/black logo from your screenshot to your Firebase Storage and paste the link below!
+          'image': 'https://res.cloudinary.com/dil7vl8um/image/upload/v1778052094/nutripumplogo_j3luzq.webp',
           'theme': {
             'color': '#C5A866'
           }
