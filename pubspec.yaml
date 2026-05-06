@@ -72,7 +72,8 @@ dev_dependencies:
 flutter_launcher_icons:
   android: true
   ios: true
-  image_path: "launcher_assets/nutripumplogo_zoomed.png"
+  image_path_ios: "launcher_assets/icon_ios.png"
+  image_path_android: "launcher_assets/nutripumplogo_zoomed.png"
   adaptive_icon_background: "#F8F7F6"
   adaptive_icon_foreground: "launcher_assets/nutripumplogo_zoomed.png"
   min_sdk_android: 21
@@ -81,7 +82,8 @@ flutter_launcher_icons:
 
 flutter_native_splash:
   color: "#F8F7F6"
-  image: launcher_assets/nutripumplogo_zoomed.png
+  image_android: launcher_assets/nutripumplogo_zoomed.png
+  image_ios: launcher_assets/splash_ios.png
   android: true
   ios: true
 
