@@ -10,17 +10,137 @@ import '../../providers/providers.dart';
 import '../../models/order.dart';
 import '../../core/widgets/skeleton_loaders.dart';
 
-class OrdersScreen extends ConsumerWidget {
+// ── Order filter options ────────────────────────────────────────────────────
+enum _OrderFilter { all, active, delivered, cancelled, paymentFailed }
+enum _DateFilter  { all, last30Days, last3Months, last6Months, thisYear }
+
+class OrdersScreen extends ConsumerStatefulWidget {
   const OrdersScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<OrdersScreen> createState() => _OrdersScreenState();
+}
+
+class _OrdersScreenState extends ConsumerState<OrdersScreen> {
+  final _searchController = TextEditingController();
+  _OrderFilter _selectedFilter     = _OrderFilter.all;
+  _DateFilter  _selectedDateFilter = _DateFilter.all;
+  String _searchQuery = '';
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  String _filterLabel(_OrderFilter f) => switch (f) {
+    _OrderFilter.all           => 'All Orders',
+    _OrderFilter.active        => 'Active',
+    _OrderFilter.delivered     => 'Delivered',
+    _OrderFilter.cancelled     => 'Cancelled',
+    _OrderFilter.paymentFailed => 'Payment Failed',
+  };
+
+  String _dateFilterLabel(_DateFilter f) => switch (f) {
+    _DateFilter.all         => 'All Time',
+    _DateFilter.last30Days  => 'Last 30 Days',
+    _DateFilter.last3Months => 'Last 3 Months',
+    _DateFilter.last6Months => 'Last 6 Months',
+    _DateFilter.thisYear    => 'This Year (${DateTime.now().year})',
+  };
+
+  // Pure client-side filter — no providers touched
+  List<Order> _applyFilters(List<Order> orders) {
+    // Step 1: status filter
+    final List<Order> statusFiltered = switch (_selectedFilter) {
+      _OrderFilter.all => orders,
+      _OrderFilter.active => orders
+          .where((o) =>
+              o.status == OrderStatus.pending ||
+              o.status == OrderStatus.confirmed ||
+              o.status == OrderStatus.processing ||
+              o.status == OrderStatus.shipped)
+          .toList(),
+      _OrderFilter.delivered =>
+          orders.where((o) => o.status == OrderStatus.delivered).toList(),
+      _OrderFilter.cancelled => orders
+          .where((o) =>
+              o.status == OrderStatus.cancelled &&
+              o.paymentStatus != PaymentStatus.failed)
+          .toList(),
+      _OrderFilter.paymentFailed => orders
+          .where((o) =>
+              o.status == OrderStatus.cancelled &&
+              o.paymentStatus == PaymentStatus.failed)
+          .toList(),
+    };
+
+    // Step 2: date filter
+    final now = DateTime.now();
+    final List<Order> dateFiltered = switch (_selectedDateFilter) {
+      _DateFilter.all         => statusFiltered,
+      _DateFilter.last30Days  => statusFiltered
+          .where((o) => now.difference(o.createdAt).inDays <= 30)
+          .toList(),
+      _DateFilter.last3Months => statusFiltered
+          .where((o) => now.difference(o.createdAt).inDays <= 90)
+          .toList(),
+      _DateFilter.last6Months => statusFiltered
+          .where((o) => now.difference(o.createdAt).inDays <= 180)
+          .toList(),
+      _DateFilter.thisYear    => statusFiltered
+          .where((o) => o.createdAt.year == now.year)
+          .toList(),
+    };
+
+    // Step 3: search filter (order ID or product name)
+    if (_searchQuery.isEmpty) return dateFiltered;
+    final q = _searchQuery.toLowerCase();
+    return dateFiltered.where((o) {
+      if (formatOrderId(o.id).toLowerCase().contains(q)) return true;
+      return o.items.any((i) => i.product.name.toLowerCase().contains(q));
+    }).toList();
+  }
+
+  bool get _hasActiveFilter =>
+      _selectedFilter != _OrderFilter.all ||
+      _selectedDateFilter != _DateFilter.all ||
+      _searchQuery.isNotEmpty;
+
+  void _clearFilters() {
+    _searchController.clear();
+    setState(() {
+      _searchQuery = '';
+      _selectedFilter     = _OrderFilter.all;
+      _selectedDateFilter = _DateFilter.all;
+    });
+  }
+
+  void _showDateFilterSheet(BuildContext context) {
+    showModalBottomSheet<void>(
+      context: context,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      builder: (_) => _DateFilterSheet(
+        current: _selectedDateFilter,
+        labelFn: _dateFilterLabel,
+        onApply: (f) { if (mounted) setState(() => _selectedDateFilter = f); },
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final userAsync = ref.watch(authStateProvider);
 
     return Scaffold(
-      backgroundColor: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : AppColors.backgroundLight),
+      backgroundColor: (Theme.of(context).brightness == Brightness.dark
+          ? Theme.of(context).scaffoldBackgroundColor
+          : AppColors.backgroundLight),
       appBar: AppBar(
-        backgroundColor: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : Colors.white),
+        backgroundColor: (Theme.of(context).brightness == Brightness.dark
+            ? Theme.of(context).scaffoldBackgroundColor
+            : Colors.white),
         elevation: 0,
         surfaceTintColor: Colors.transparent,
         centerTitle: true,
@@ -28,7 +148,8 @@ class OrdersScreen extends ConsumerWidget {
           icon: Icon(Icons.arrow_back_ios_new_rounded, size: R.sp(context, 16)),
           onPressed: () => context.canPop() ? context.pop() : context.go('/'),
         ),
-        title: Text('My Orders', style: AppTypography.h3(context).copyWith(fontSize: R.sp(context, 16))),
+        title: Text('My Orders',
+            style: AppTypography.h3(context).copyWith(fontSize: R.sp(context, 16))),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1),
           child: Container(height: 1, color: AppColors.borderLight),
@@ -51,75 +172,478 @@ class OrdersScreen extends ConsumerWidget {
             loading: () => const OrdersListSkeleton(),
             error: (e, __) => Center(child: Text('Error loading orders: $e')),
             data: (dynamicOrders) {
-              // Show all orders — payment-abandoned ones use a dedicated 'Payment Failed' UI
-              final List<Order> orders = dynamicOrders.cast<Order>().toList();
+              // All orders — payment-abandoned ones use dedicated 'Payment Failed' UI
+              final List<Order> allOrders = dynamicOrders.cast<Order>().toList();
+              final List<Order> orders = _applyFilters(allOrders);
 
-              if (orders.isEmpty) {
-                return Center(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: R.w(context, 40)),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+              return Column(
+                children: [
+                  // ── Search Bar + Date-Filter Button ──────────────────────
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(R.w(context, 16),
+                        R.h(context, 12), R.w(context, 16), R.h(context, 8)),
+                    child: Row(
                       children: [
-                        Container(
-                          width: R.w(context, 76),
-                          height: R.w(context, 76),
-                          decoration: BoxDecoration(
-                            color: AppColors.primary.withValues(alpha: 0.10),
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                                color: AppColors.primary.withValues(alpha: 0.15),
-                                width: 1.5),
+                        Expanded(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).brightness ==
+                                      Brightness.dark
+                                  ? AppColors.surfaceDark
+                                  : Colors.white,
+                              borderRadius:
+                                  BorderRadius.circular(R.w(context, 12)),
+                              border: Border.all(
+                                  color:
+                                      AppColors.primary.withValues(alpha: 0.25)),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: AppColors.deepCharcoal
+                                      .withValues(alpha: 0.04),
+                                  blurRadius: 6,
+                                  offset: const Offset(0, 2),
+                                ),
+                              ],
+                            ),
+                            child: TextField(
+                              controller: _searchController,
+                              onChanged: (v) =>
+                                  setState(() => _searchQuery = v.trim()),
+                              style: AppTypography.bodySM(context)
+                                  .copyWith(fontSize: R.sp(context, 13)),
+                              decoration: InputDecoration(
+                                hintText: 'Search by order ID or product...',
+                                hintStyle:
+                                    AppTypography.bodySM(context).copyWith(
+                                  color: AppColors.neutralGold,
+                                  fontSize: R.sp(context, 12),
+                                ),
+                                prefixIcon: Icon(Icons.search_rounded,
+                                    size: R.sp(context, 18),
+                                    color: AppColors.neutralGold),
+                                suffixIcon: _searchQuery.isNotEmpty
+                                    ? IconButton(
+                                        icon: Icon(Icons.close_rounded,
+                                            size: R.sp(context, 16),
+                                            color: AppColors.neutralGold),
+                                        onPressed: () {
+                                          _searchController.clear();
+                                          setState(() => _searchQuery = '');
+                                        },
+                                      )
+                                    : null,
+                                border: InputBorder.none,
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: R.h(context, 12),
+                                    horizontal: R.w(context, 4)),
+                              ),
+                            ),
                           ),
-                          child: Icon(Icons.inventory_2_outlined,
-                              size: R.sp(context, 32), color: AppColors.primary),
                         ),
-                        SizedBox(height: R.h(context, 20)),
-                        Text('No orders yet',
-                            style: AppTypography.h2(context).copyWith(fontSize: R.sp(context, 18))),
-                        SizedBox(height: R.h(context, 8)),
-                        Text(
-                          'Your artisanal pantry awaits.',
-                          textAlign: TextAlign.center,
-                          style: AppTypography.bodySM(context).copyWith(
-                            color: AppColors.neutralGold,
-                            height: 1.6,
-                            fontSize: R.sp(context, 13),
+                        SizedBox(width: R.w(context, 8)),
+                        // Date-filter button — highlighted when active
+                        GestureDetector(
+                          onTap: () => _showDateFilterSheet(context),
+                          child: AnimatedContainer(
+                            duration: const Duration(milliseconds: 200),
+                            width: R.w(context, 46),
+                            height: R.w(context, 46),
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: _selectedDateFilter != _DateFilter.all
+                                  ? AppColors.primary
+                                  : (Theme.of(context).brightness ==
+                                          Brightness.dark
+                                      ? AppColors.surfaceDark
+                                      : Colors.white),
+                              borderRadius:
+                                  BorderRadius.circular(R.w(context, 12)),
+                              border: Border.all(
+                                color: _selectedDateFilter != _DateFilter.all
+                                    ? AppColors.primary
+                                    : AppColors.primary.withValues(alpha: 0.25),
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: AppColors.deepCharcoal
+                                      .withValues(alpha: 0.04),
+                                  blurRadius: 6,
+                                  offset: const Offset(0, 2),
+                                ),
+                              ],
+                            ),
+                            child: Icon(
+                              Icons.tune_rounded,
+                              size: R.sp(context, 18),
+                              color: _selectedDateFilter != _DateFilter.all
+                                  ? AppColors.deepCharcoal
+                                  : AppColors.neutralGold,
+                            ),
                           ),
-                        ),
-                        SizedBox(height: R.h(context, 32)),
-                        ElevatedButton(
-                          onPressed: () => context.go('/shop'),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.primary,
-                            foregroundColor: AppColors.deepCharcoal,
-                            padding: EdgeInsets.symmetric(
-                                vertical: R.h(context, 14), horizontal: R.w(context, 32)),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(R.w(context, 12))),
-                            elevation: 0,
-                          ),
-                          child: Text('Start Shopping',
-                              style: AppTypography.bodySM(context).copyWith(
-                                  fontWeight: FontWeight.w800, fontSize: R.sp(context, 14))),
                         ),
                       ],
                     ),
                   ),
-                );
-              }
 
-              return ListView.separated(
-                padding: EdgeInsets.symmetric(horizontal: R.w(context, 16), vertical: R.h(context, 12)),
-                itemCount: orders.length,
-                separatorBuilder: (_, __) => SizedBox(height: R.h(context, 12)),
-                itemBuilder: (context, index) {
-                  return _OrderCard(order: orders[index]);
-                },
+                  // ── Filter Chips ─────────────────────────────────────────
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    padding: EdgeInsets.symmetric(
+                        horizontal: R.w(context, 16)),
+                    child: Row(
+                      children: _OrderFilter.values.map((f) {
+                        final isSelected = _selectedFilter == f;
+                        return Padding(
+                          padding: EdgeInsets.only(right: R.w(context, 8)),
+                          child: GestureDetector(
+                            onTap: () => setState(() => _selectedFilter = f),
+                            child: AnimatedContainer(
+                              duration: const Duration(milliseconds: 200),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: R.w(context, 14),
+                                  vertical: R.h(context, 7)),
+                              decoration: BoxDecoration(
+                                color: isSelected
+                                    ? AppColors.primary
+                                    : (Theme.of(context).brightness ==
+                                            Brightness.dark
+                                        ? AppColors.surfaceDark
+                                        : Colors.white),
+                                borderRadius:
+                                    BorderRadius.circular(R.w(context, 20)),
+                                border: Border.all(
+                                  color: isSelected
+                                      ? AppColors.primary
+                                      : AppColors.primary
+                                          .withValues(alpha: 0.25),
+                                ),
+                                boxShadow: isSelected
+                                    ? [
+                                        BoxShadow(
+                                          color: AppColors.primary
+                                              .withValues(alpha: 0.2),
+                                          blurRadius: 4,
+                                          offset: const Offset(0, 2),
+                                        )
+                                      ]
+                                    : [],
+                              ),
+                              child: Text(
+                                _filterLabel(f),
+                                style: AppTypography.bodySM(context).copyWith(
+                                  fontSize: R.sp(context, 11),
+                                  fontWeight: isSelected
+                                      ? FontWeight.w700
+                                      : FontWeight.w500,
+                                  color: isSelected
+                                      ? AppColors.deepCharcoal
+                                      : AppColors.neutralGold,
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+
+                  SizedBox(height: R.h(context, 10)),
+
+                  // ── Orders List / Empty State ─────────────────────────────
+                  Expanded(
+                    child: orders.isEmpty
+                        ? Center(
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: R.w(context, 40)),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    width: R.w(context, 76),
+                                    height: R.w(context, 76),
+                                    decoration: BoxDecoration(
+                                      color: AppColors.primary
+                                          .withValues(alpha: 0.10),
+                                      shape: BoxShape.circle,
+                                      border: Border.all(
+                                          color: AppColors.primary
+                                              .withValues(alpha: 0.15),
+                                          width: 1.5),
+                                    ),
+                                    child: Icon(
+                                      _hasActiveFilter
+                                          ? Icons.search_off_rounded
+                                          : Icons.inventory_2_outlined,
+                                      size: R.sp(context, 32),
+                                      color: AppColors.primary,
+                                    ),
+                                  ),
+                                  SizedBox(height: R.h(context, 20)),
+                                  Text(
+                                    _hasActiveFilter
+                                        ? 'No orders found'
+                                        : 'No orders yet',
+                                    style: AppTypography.h2(context)
+                                        .copyWith(fontSize: R.sp(context, 18)),
+                                  ),
+                                  SizedBox(height: R.h(context, 8)),
+                                  Text(
+                                    _hasActiveFilter
+                                        ? 'Try adjusting your search or filter.'
+                                        : 'Your artisanal pantry awaits.',
+                                    textAlign: TextAlign.center,
+                                    style: AppTypography.bodySM(context)
+                                        .copyWith(
+                                      color: AppColors.neutralGold,
+                                      height: 1.6,
+                                      fontSize: R.sp(context, 13),
+                                    ),
+                                  ),
+                                  SizedBox(height: R.h(context, 28)),
+                                  if (_hasActiveFilter)
+                                    OutlinedButton(
+                                      onPressed: _clearFilters,
+                                      style: OutlinedButton.styleFrom(
+                                        foregroundColor: AppColors.deepCharcoal,
+                                        side: const BorderSide(
+                                            color: AppColors.primary),
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: R.h(context, 10),
+                                            horizontal: R.w(context, 24)),
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(
+                                                R.w(context, 10))),
+                                      ),
+                                      child: Text('Clear Filters',
+                                          style: AppTypography.bodySM(context)
+                                              .copyWith(
+                                                  fontWeight: FontWeight.w700,
+                                                  fontSize:
+                                                      R.sp(context, 13))),
+                                    )
+                                  else
+                                    ElevatedButton(
+                                      onPressed: () => context.go('/shop'),
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: AppColors.primary,
+                                        foregroundColor: AppColors.deepCharcoal,
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: R.h(context, 14),
+                                            horizontal: R.w(context, 32)),
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(
+                                                R.w(context, 12))),
+                                        elevation: 0,
+                                      ),
+                                      child: Text('Start Shopping',
+                                          style: AppTypography.bodySM(context)
+                                              .copyWith(
+                                                  fontWeight: FontWeight.w800,
+                                                  fontSize:
+                                                      R.sp(context, 14))),
+                                    ),
+                                ],
+                              ),
+                            ),
+                          )
+                        : ListView.separated(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: R.w(context, 16),
+                                vertical: R.h(context, 4)),
+                            itemCount: orders.length,
+                            separatorBuilder: (_, __) =>
+                                SizedBox(height: R.h(context, 12)),
+                            itemBuilder: (context, index) {
+                              return _OrderCard(order: orders[index]);
+                            },
+                          ),
+                  ),
+                ],
               );
             },
           );
         },
+      ),
+    );
+  }
+}
+
+// ── Date Filter Bottom Sheet ────────────────────────────────────────────────
+class _DateFilterSheet extends StatefulWidget {
+  final _DateFilter current;
+  final String Function(_DateFilter) labelFn;
+  final void Function(_DateFilter) onApply;
+  const _DateFilterSheet({
+    required this.current,
+    required this.labelFn,
+    required this.onApply,
+  });
+
+  @override
+  State<_DateFilterSheet> createState() => _DateFilterSheetState();
+}
+
+class _DateFilterSheetState extends State<_DateFilterSheet> {
+  late _DateFilter _selected;
+
+  @override
+  void initState() {
+    super.initState();
+    _selected = widget.current;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Theme.of(context).brightness == Brightness.dark
+            ? AppColors.surfaceDark
+            : Colors.white,
+        borderRadius: BorderRadius.vertical(
+            top: Radius.circular(R.w(context, 20))),
+      ),
+      padding: EdgeInsets.fromLTRB(
+          R.w(context, 20), R.h(context, 16),
+          R.w(context, 20), R.h(context, 32)),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Drag handle
+          Center(
+            child: Container(
+              width: R.w(context, 36),
+              height: R.h(context, 4),
+              margin: EdgeInsets.only(bottom: R.h(context, 16)),
+              decoration: BoxDecoration(
+                color: AppColors.borderLight,
+                borderRadius: BorderRadius.circular(R.w(context, 2)),
+              ),
+            ),
+          ),
+          // Title row
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('Filter by Date',
+                  style: AppTypography.h3(context)
+                      .copyWith(fontSize: R.sp(context, 16))),
+              if (_selected != _DateFilter.all)
+                GestureDetector(
+                  onTap: () {
+                    setState(() => _selected = _DateFilter.all);
+                    widget.onApply(_DateFilter.all);
+                    Navigator.of(context).pop();
+                  },
+                  child: Text(
+                    'Clear',
+                    style: AppTypography.bodySM(context).copyWith(
+                      color: AppColors.neutralGold,
+                      fontSize: R.sp(context, 12),
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+            ],
+          ),
+          SizedBox(height: R.h(context, 12)),
+          // Options
+          ..._DateFilter.values.map((f) {
+            final isSelected = _selected == f;
+            return InkWell(
+              onTap: () => setState(() => _selected = f),
+              borderRadius: BorderRadius.circular(R.w(context, 8)),
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: R.h(context, 13)),
+                child: Row(
+                  children: [
+                    AnimatedContainer(
+                      duration: const Duration(milliseconds: 180),
+                      width: R.w(context, 20),
+                      height: R.w(context, 20),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: isSelected
+                            ? AppColors.primary
+                            : Colors.transparent,
+                        border: Border.all(
+                          color: isSelected
+                              ? AppColors.primary
+                              : AppColors.borderLight,
+                          width: 2,
+                        ),
+                      ),
+                      child: isSelected
+                          ? Icon(Icons.check_rounded,
+                              size: R.sp(context, 12),
+                              color: AppColors.deepCharcoal)
+                          : null,
+                    ),
+                    SizedBox(width: R.w(context, 14)),
+                    Expanded(
+                      child: Text(
+                        widget.labelFn(f),
+                        style: AppTypography.bodySM(context).copyWith(
+                          fontSize: R.sp(context, 14),
+                          fontWeight: isSelected
+                              ? FontWeight.w700
+                              : FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                    if (f == _DateFilter.last30Days)
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: R.w(context, 8),
+                            vertical: R.h(context, 3)),
+                        decoration: BoxDecoration(
+                          color: AppColors.primary.withValues(alpha: 0.15),
+                          borderRadius:
+                              BorderRadius.circular(R.w(context, 20)),
+                        ),
+                        child: Text(
+                          'Popular',
+                          style: AppTypography.bodySM(context).copyWith(
+                            fontSize: R.sp(context, 10),
+                            color: AppColors.primary,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+            );
+          }),
+          Divider(
+              color: AppColors.borderLight, height: R.h(context, 24)),
+          // Apply button
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: () {
+                widget.onApply(_selected);
+                Navigator.of(context).pop();
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primary,
+                foregroundColor: AppColors.deepCharcoal,
+                elevation: 0,
+                padding: EdgeInsets.symmetric(vertical: R.h(context, 14)),
+                shape: RoundedRectangleBorder(
+                    borderRadius:
+                        BorderRadius.circular(R.w(context, 12))),
+              ),
+              child: Text(
+                'Apply Filter',
+                style: AppTypography.bodySM(context).copyWith(
+                    fontWeight: FontWeight.w800,
+                    fontSize: R.sp(context, 14)),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -522,9 +1046,8 @@ class _OrderCard extends ConsumerWidget {
                         ],
                         Expanded(
                           child: OutlinedButton(
-                            onPressed: () {
-                            context.push('/support?orderId=${formatOrderId(order.id)}');
-                            },
+                            onPressed: () =>
+                                context.push('/support?orderId=${formatOrderId(order.id)}'),
                             style: OutlinedButton.styleFrom(
                               foregroundColor: AppColors.deepCharcoal,
                               side: BorderSide(color: AppColors.neutralGold.withValues(alpha: 0.3)),
