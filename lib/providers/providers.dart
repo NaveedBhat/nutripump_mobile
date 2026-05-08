@@ -8,6 +8,8 @@ import '../services/api/checkout_api.dart';
 import '../models/user_profile.dart';
 import '../models/models.dart';
 import '../models/product.dart';
+import '../models/order.dart';
+import '../models/cart_item.dart' show Address;
 
 export 'notifications_provider.dart';
 export 'theme_provider.dart';
@@ -197,17 +199,17 @@ final filteredProductsProvider = Provider<AsyncValue<List<Product>>>((ref) {
 });
 
 // ── User orders ───────────────────────────────────────────────
-final userOrdersProvider = StreamProvider.family<List<dynamic>, String>(
+final userOrdersProvider = StreamProvider.family<List<Order>, String>(
   (ref, userId) => ref.watch(orderServiceProvider).userOrdersStream(userId),
 );
 
 // ── Single order ──────────────────────────────────────────────
-final orderByIdProvider = StreamProvider.family<dynamic, String>(
+final orderByIdProvider = StreamProvider.family<Order?, String>(
   (ref, id) => ref.watch(orderServiceProvider).orderStream(id),
 );
 
 // ── User addresses ────────────────────────────────────────────
-final userAddressesProvider = StreamProvider.family<List<dynamic>, String>(
+final userAddressesProvider = StreamProvider.family<List<Address>, String>(
   (ref, userId) => ref.watch(addressServiceProvider).addressesStream(userId),
 );
 

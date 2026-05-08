@@ -112,6 +112,7 @@ class Address {
     phone: d['phone'] as String? ?? '',
     addressLine1: d['addressLine1'] as String? ?? '',
     locality: d['locality'] as String?,
+    addressLine2: d['addressLine2'] as String?,
     city: d['city'] as String? ?? '',
     state: d['state'] as String? ?? '',
     pincode: d['pincode'] as String? ?? '',

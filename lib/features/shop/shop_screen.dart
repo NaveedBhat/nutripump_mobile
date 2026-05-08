@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -30,6 +31,7 @@ class ShopScreen extends ConsumerStatefulWidget {
 class _ShopScreenState extends ConsumerState<ShopScreen> {
   final _searchController = TextEditingController();
   String _viewMode = 'catalog';
+  Timer? _debounceTimer;
 
   static const _fallbackHero =
       'https://images.unsplash.com/photo-1647427062468-74ff21e8934f?q=80&w=1200&auto=format&fit=crop';
@@ -60,6 +62,7 @@ class _ShopScreenState extends ConsumerState<ShopScreen> {
 
   @override
   void dispose() {
+    _debounceTimer?.cancel();
     _searchController.dispose();
     super.dispose();
   }
@@ -126,7 +129,12 @@ class _ShopScreenState extends ConsumerState<ShopScreen> {
                           Expanded(
                             child: TextField(
                               controller: _searchController,
-                              onChanged: (v) => ref.read(shopFiltersProvider.notifier).setSearchQuery(v),
+                              onChanged: (v) {
+                                if (_debounceTimer?.isActive ?? false) _debounceTimer!.cancel();
+                                _debounceTimer = Timer(const Duration(milliseconds: 300), () {
+                                  ref.read(shopFiltersProvider.notifier).setSearchQuery(v);
+                                });
+                              },
                               decoration: InputDecoration(
                                 hintText: 'Search products, origins…',
                                 hintStyle: AppTypography.bodySM(context).copyWith(

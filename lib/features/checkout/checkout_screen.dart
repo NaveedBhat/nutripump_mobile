@@ -8,17 +8,17 @@ import '../../core/utils/formatters.dart';
 import '../../models/cart_item.dart';
 import '../../providers/cart_provider.dart';
 import '../../providers/providers.dart';
-import '../../services/api/checkout_api.dart';
 import '../../core/utils/responsive.dart';
 import '../account/address_book_screen.dart' show AddressFormSheet;
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 // ── Providers for Checkout State ──────────────────────────────────────────
-final checkoutStepProvider = StateProvider<int>((ref) => 0);
-final selectedAddressProvider = StateProvider<Address?>((ref) => null);
-final paymentMethodProvider = StateProvider<String>((ref) => 'upi');
-final isProcessingProvider = StateProvider<bool>((ref) => false);
+final checkoutStepProvider = StateProvider.autoDispose<int>((ref) => 0);
+final selectedAddressProvider = StateProvider.autoDispose<Address?>((ref) => null);
+final paymentMethodProvider = StateProvider.autoDispose<String>((ref) => 'upi');
+final isProcessingProvider = StateProvider.autoDispose<bool>((ref) => false);
 
 class CheckoutScreen extends ConsumerStatefulWidget {
   const CheckoutScreen({super.key});
@@ -40,6 +40,11 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
     _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
     _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
     _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
+    
+    // Restore pending order ID in case app was killed by OS while Razorpay was open
+    final box = Hive.box('nutripump_settings');
+    _pendingFirestoreOrderId = box.get('pending_order_id') as String?;
+
     // Pre-select default address if available
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       final user = ref.read(authStateProvider).value;
@@ -62,12 +67,16 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
   void _handlePaymentSuccess(PaymentSuccessResponse response) async {
     if (_pendingFirestoreOrderId == null) return;
     try {
-      final orderId = await CheckoutApi().verifyPayment(
+      final orderId = await ref.read(checkoutApiProvider).verifyPayment(
         razorpayPaymentId: response.paymentId!,
         razorpayOrderId: response.orderId!,
         razorpaySignature: response.signature!,
         firestoreOrderId: _pendingFirestoreOrderId!,
       );
+      
+      Hive.box('nutripump_settings').delete('pending_order_id');
+      _pendingFirestoreOrderId = null;
+      
       ref.read(cartProvider.notifier).clearCart();
       ref.read(isProcessingProvider.notifier).state = false;
       if (mounted) {
@@ -92,7 +101,8 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
 
   void _handlePaymentError(PaymentFailureResponse response) async {
     if (_pendingFirestoreOrderId != null) {
-      await CheckoutApi().cancelOrder(_pendingFirestoreOrderId!);
+      await ref.read(checkoutApiProvider).cancelOrder(_pendingFirestoreOrderId!);
+      Hive.box('nutripump_settings').delete('pending_order_id');
       _pendingFirestoreOrderId = null;
     }
     ref.read(isProcessingProvider.notifier).state = false;
@@ -115,12 +125,11 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
     }
 
     ref.read(isProcessingProvider.notifier).state = true;
-    final api = CheckoutApi();
 
     try {
 
       if (paymentMethod == 'cod') {
-        final firestoreOrderId = await api.createCodOrder(
+        final firestoreOrderId = await ref.read(checkoutApiProvider).createCodOrder(
           items: cart.items,
           address: address,
           userId: user.uid,
@@ -142,20 +151,26 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
         }
       } else {
         // Initialize Razorpay Order via backend
-        final orderResponse = await api.createOrder(
+        final orderResponse = await ref.read(checkoutApiProvider).createOrder(
           items: cart.items,
           address: address,
           userId: user.uid,
           appliedPromoCode: cart.appliedPromo?.code,
         );
         _pendingFirestoreOrderId = orderResponse.firestoreOrderId;
+        Hive.box('nutripump_settings').put('pending_order_id', _pendingFirestoreOrderId);
 
         // Use the backend-verified amount (in paise) returned by the server.
         // The backend is the authoritative source — it has already applied promo
         // discounts, GST, shipping, and Razorpay's own rounding. Never recompute
         // this client-side; a mismatch causes a financial data integrity issue.
+        final razorpayKey = dotenv.env['RAZORPAY_KEY_ID'];
+        if (razorpayKey == null || razorpayKey.isEmpty) {
+          throw Exception('Payment configuration missing. Please try again later.');
+        }
+
         final options = {
-          'key': dotenv.env['RAZORPAY_KEY_ID'],
+          'key': razorpayKey,
           'amount': orderResponse.amount,
           'name': 'NutriPump Artisanal',
           'description': 'Payment for Order ${orderResponse.orderId}',

@@ -57,8 +57,11 @@ class InAppPopupData {
 /// - Popup has expired
 /// - User already saw this campaign
 final inAppPopupProvider = StreamProvider<InAppPopupData?>((ref) async* {
-  final box = Hive.box('nutripump_notifications');
+  // Campaign tracking lives in the dedicated settings box, not the notifications
+  // box, to keep the two features decoupled.
+  final box = Hive.box('nutripump_settings');
   const seenKey = 'seen_campaigns';
+  bool hasYieldedThisSession = false;
 
   await for (final snapshot in FirebaseFirestore.instance
       .collection('settings')
@@ -98,13 +101,31 @@ final inAppPopupProvider = StreamProvider<InAppPopupData?>((ref) async* {
       continue;
     }
 
+    // Daily limit check: only show once per day
+    if (!hasYieldedThisSession) {
+      final lastImpressionStr = box.get('last_impression_date') as String?;
+      if (lastImpressionStr != null) {
+        final lastImpression = DateTime.tryParse(lastImpressionStr);
+        if (lastImpression != null) {
+          final now = DateTime.now();
+          if (lastImpression.year == now.year &&
+              lastImpression.month == now.month &&
+              lastImpression.day == now.day) {
+            yield null;
+            continue;
+          }
+        }
+      }
+    }
+
+    hasYieldedThisSession = true;
     yield popup;
   }
 });
 
 /// Call this after the popup has been displayed to prevent it showing again.
 void markCampaignSeen(String campaignId) {
-  final box = Hive.box('nutripump_notifications');
+  final box = Hive.box('nutripump_settings');
   const seenKey = 'seen_campaigns';
   final seenList = List<String>.from(box.get(seenKey, defaultValue: []));
   if (!seenList.contains(campaignId)) {

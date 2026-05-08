@@ -168,8 +168,8 @@ class Product {
       badge: badge, benefits: benefits, sizes: sizes, featured: featured,
       bundlePrice: bundlePrice, ingredients: ingredients, nutrition: nutrition,
       calories: calories, fat: fat, protein: protein, carbs: carbs,
-      flavorProfile: flavorProfile, vibe: vibe, createdAt: createdAt,
-      updatedAt: updatedAt,
+      flavorProfile: flavorProfile, vibe: vibe, texture: texture,
+      createdAt: createdAt, updatedAt: updatedAt,
     );
   }
 

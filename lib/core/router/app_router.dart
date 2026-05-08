@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:go_router/go_router.dart';
@@ -41,6 +43,7 @@ final _protectedRoutes = ['/checkout', '/account', '/orders'];
 final appRouter = GoRouter(
   // ── Shared navigator key lets NotificationService navigate on tap ──────────
   navigatorKey: navigatorKey,
+  refreshListenable: GoRouterRefreshStream(FirebaseAuth.instance.authStateChanges()),
   initialLocation: '/',
   redirect: (context, state) async {
     final authUser = FirebaseAuth.instance.currentUser;
@@ -182,3 +185,19 @@ final appRouter = GoRouter(
     GoRoute(path: '/terms', builder: (_, __) => const TermsOfServiceScreen()),
   ],
 );
+
+/// Converts a [Stream] into a [Listenable] so GoRouter can react to changes.
+class GoRouterRefreshStream extends ChangeNotifier {
+  late final StreamSubscription<dynamic> _subscription;
+  GoRouterRefreshStream(Stream<dynamic> stream) {
+    notifyListeners();
+    _subscription = stream.asBroadcastStream().listen(
+      (dynamic _) => notifyListeners(),
+    );
+  }
+  @override
+  void dispose() {
+    _subscription.cancel();
+    super.dispose();
+  }
+}

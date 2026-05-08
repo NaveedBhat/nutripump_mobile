@@ -107,15 +107,35 @@ class AuthService {
   }
 
   Future<void> updatePassword(String newPassword) async {
-    await _auth.currentUser?.updatePassword(newPassword);
+    try {
+      await _auth.currentUser?.updatePassword(newPassword);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'requires-recent-login') {
+        throw Exception(
+          'For your security, please sign out and sign back in before changing your password.',
+        );
+      }
+      rethrow;
+    }
   }
 
   Future<void> deleteAccount() async {
     final user = _auth.currentUser;
-    if (user != null) {
-      // Note: Cloud Functions should handle cascading deletes (orders, addresses, etc.)
-      await _db.collection('users').doc(user.uid).delete();
+    if (user == null) return;
+    try {
+      // Delete Auth record FIRST. If this throws requires-recent-login,
+      // the Firestore document is untouched — no orphaned data.
       await user.delete();
+      // Only delete Firestore profile after Auth deletion succeeds.
+      // Cloud Functions handle cascading deletes (orders, addresses, etc.)
+      await _db.collection('users').doc(user.uid).delete();
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'requires-recent-login') {
+        throw Exception(
+          'For your security, please sign out and sign back in before deleting your account.',
+        );
+      }
+      rethrow;
     }
   }
 

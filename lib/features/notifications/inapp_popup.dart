@@ -11,6 +11,7 @@ import 'package:go_router/go_router.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_typography.dart';
 import '../../core/utils/responsive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class InAppPopup extends StatefulWidget {
   final String title;
@@ -57,6 +58,12 @@ class _InAppPopupState extends State<InAppPopup>
     ).animate(CurvedAnimation(parent: _controller, curve: Curves.elasticOut));
 
     _controller.forward();
+
+    // Record that we showed a popup today
+    try {
+      final box = Hive.box('nutripump_settings');
+      box.put('last_impression_date', DateTime.now().toIso8601String());
+    } catch (_) {}
   }
 
   @override

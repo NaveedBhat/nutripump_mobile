@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -206,38 +207,60 @@ class _HeroCarousel extends ConsumerStatefulWidget {
 class _HeroCarouselState extends ConsumerState<_HeroCarousel> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
-  bool _isAutoPlaying = false;
+  // Stable reference to the shuffled 4th-slide product ID.
+  // Cached once when products load so rebuilds don't reshuffle.
+  String? _randomSlideId;
+  // Cancelable timer — avoids recursive Future.delayed memory leak.
+  Timer? _autoPlayTimer;
 
   @override
   void dispose() {
+    _autoPlayTimer?.cancel();
     _pageController.dispose();
     super.dispose();
   }
 
   void _startAutoPlay(int length) {
-    if (_isAutoPlaying || length <= 1) return;
-    _isAutoPlaying = true;
-    _autoPlayTick(length);
-  }
-
-  void _autoPlayTick(int length) {
-    Future.delayed(const Duration(seconds: 5), () {
-      if (!mounted) return;
-      if (_pageController.hasClients) {
-        final nextPage = (_currentPage + 1) % length;
-        _pageController.animateToPage(
-          nextPage,
-          duration: const Duration(milliseconds: 700),
-          curve: Curves.easeInOut,
-        );
-      }
-      _autoPlayTick(length);
+    if (_autoPlayTimer != null || length <= 1) return;
+    _autoPlayTimer = Timer.periodic(const Duration(seconds: 5), (_) {
+      if (!mounted || !_pageController.hasClients) return;
+      final nextPage = (_currentPage + 1) % length;
+      _pageController.animateToPage(
+        nextPage,
+        duration: const Duration(milliseconds: 700),
+        curve: Curves.easeInOut,
+      );
     });
   }
 
   @override
   Widget build(BuildContext context) {
     final productsAsync = ref.watch(allProductsProvider);
+
+    // Trigger autoplay and stable-slide selection outside build logic.
+    ref.listen<AsyncValue<List>>(allProductsProvider, (_, next) {
+      next.whenData((products) {
+        if (products.isEmpty) return;
+        // Cache the shuffled 4th-slide ID once — stable across rebuilds.
+        if (_randomSlideId == null) {
+          final deterministic = <dynamic>[];
+          final newArrivals = products.where((p) => p.badge?.toLowerCase().contains('new arrival') ?? false).toList();
+          final bestSellers = products.where((p) => p.badge?.toLowerCase().contains('bestseller') ?? false).toList();
+          deterministic.addAll([...newArrivals, ...bestSellers]);
+          if (deterministic.length < 3) {
+            deterministic.addAll(products.where((p) => p.featured && !deterministic.contains(p)));
+          }
+          final limit = deterministic.length > 3 ? 3 : deterministic.length;
+          final remaining = products.where((p) => !deterministic.take(limit).contains(p)).toList();
+          if (remaining.isNotEmpty) {
+            remaining.shuffle();
+            _randomSlideId = remaining.first.id as String?;
+          }
+        }
+        // Start autoplay once — noop if already running.
+        _startAutoPlay(4); // max 4 slides; actual count computed in build below
+      });
+    });
 
     return SizedBox(
       height: R.h(context, 240),
@@ -267,11 +290,17 @@ class _HeroCarouselState extends ConsumerState<_HeroCarousel> {
             slidesData = slidesData.take(3).toList();
           }
 
-          // 4. Add a 4th random banner from the remaining catalog that changes on every rebuild (swipe)
+          // 4. Add a stable 4th banner whose ID was cached once in ref.listen.
+          // This prevents reshuffling on every rebuild (e.g. theme change, scroll).
           final remainingProducts = products.where((p) => !slidesData.contains(p)).toList();
           if (remainingProducts.isNotEmpty) {
-            remainingProducts.shuffle();
-            slidesData.add(remainingProducts.first);
+            final stableSlide = _randomSlideId != null
+                ? remainingProducts.firstWhere(
+                    (p) => p.id == _randomSlideId,
+                    orElse: () => remainingProducts.first,
+                  )
+                : remainingProducts.first;
+            slidesData.add(stableSlide);
           }
 
           final slides = slidesData.map((p) {
@@ -285,7 +314,7 @@ class _HeroCarouselState extends ConsumerState<_HeroCarousel> {
              };
           }).toList();
 
-          _startAutoPlay(slides.length);
+          // Timer started in ref.listen — do NOT call _startAutoPlay here.
 
           return Stack(
             children: [

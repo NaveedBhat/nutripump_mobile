@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import '../models/app_notification.dart';
@@ -13,14 +15,19 @@ final unreadNotificationsCountProvider = Provider<int>((ref) {
 
 class NotificationsNotifier extends StateNotifier<List<AppNotification>> {
   final Box _box;
+  StreamSubscription<BoxEvent>? _boxSub;
 
   NotificationsNotifier()
       : _box = Hive.box('nutripump_notifications'),
         super([]) {
     _loadNotifications();
-    _box.watch().listen((event) {
-      _loadNotifications();
-    });
+    _boxSub = _box.watch().listen((_) => _loadNotifications());
+  }
+
+  @override
+  void dispose() {
+    _boxSub?.cancel();
+    super.dispose();
   }
 
   void _loadNotifications() {

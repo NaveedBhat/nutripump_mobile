@@ -196,6 +196,13 @@ class PromoCode {
     );
   }
 
+  /// Returns true if this promo code is superficially valid for the given cart.
+  ///
+  /// NOTE: `oneTimeUsePerUser` is intentionally NOT checked here. It is enforced
+  /// exclusively on the backend. The UI may show a valid discount preview for
+  /// a previously-used code; the server will reject it at checkout. Do not add
+  /// a client-side check here — that would require an extra Firestore read per
+  /// cart update and can be bypassed anyway.
   bool isValidFor(double orderTotal, bool isFirstOrder, List<String> cartProductIds) {
     if (!active) return false;
     if (expiresAt != null && DateTime.now().isAfter(expiresAt!)) return false;

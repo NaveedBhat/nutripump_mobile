@@ -53,8 +53,14 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Load .env file
+  // Load and validate .env file
   await dotenv.load(fileName: '.env');
+  final requiredEnvKeys = ['API_BASE_URL', 'RAZORPAY_KEY_ID'];
+  for (final key in requiredEnvKeys) {
+    if (!dotenv.env.containsKey(key) || dotenv.env[key]!.isEmpty) {
+      throw Exception('Missing required environment variable: $key. Please check your .env file.');
+    }
+  }
 
   // Initialize Hive for local persistence
   await Hive.initFlutter();

@@ -197,6 +197,10 @@ class CartNotifier extends StateNotifier<CartState> {
     }
   }
 
+  // Hive's box.put() is synchronous, so sequential calls from rapid mutations
+  // are always applied in order — no race condition is possible here.
+  // Cloud syncs are debounced (1.5s) via _debouncedPush to coalesce rapid
+  // add/remove events into a single Firestore write.
   void _saveToHive() {
     final box = Hive.box(_boxKey);
     box.put('items', state.items.map((e) => e.toMap()).toList());

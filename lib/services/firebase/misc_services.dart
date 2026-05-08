@@ -68,6 +68,16 @@ class ReviewService {
     required String title,
     required String body,
   }) async {
+    final existing = await _db.collection('reviews')
+        .where('productId', isEqualTo: productId)
+        .where('userId', isEqualTo: userId)
+        .limit(1)
+        .get();
+    
+    if (existing.docs.isNotEmpty) {
+      throw Exception('You have already submitted a review for this product.');
+    }
+
     await _db.collection('reviews').add({
       'productId': productId,
       'userId': userId,

@@ -172,7 +172,8 @@ class NotificationService {
       try {
         final response = await Dio().get<List<int>>(imageUrl,
           options: Options(responseType: ResponseType.bytes));
-        final file = File('${Directory.systemTemp.path}/fcm_img_${DateTime.now().millisecondsSinceEpoch}.jpg');
+        // Use a fixed filename to prevent unbounded accumulation of temp files
+        final file = File('${Directory.systemTemp.path}/fcm_img_latest.jpg');
         await file.writeAsBytes(response.data!);
         styleInfo = BigPictureStyleInformation(
           FilePathAndroidBitmap(file.path),

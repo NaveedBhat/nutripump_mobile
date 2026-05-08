@@ -28,9 +28,15 @@ class ProductDetailScreen extends ConsumerStatefulWidget {
 class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
   final PageController _pageController = PageController();
   ProductSize? _selectedSize;
+  Product? _currentProduct;
   int _quantity = 1;
   String _activeTab = 'Description';
   bool _fbtChecked = true;
+
+  /// Returns the currently selected size, falling back to the first available
+  /// size. Computed so it is accessible in all helper methods.
+  ProductSize? get effectiveSize =>
+      _selectedSize ?? (_currentProduct?.sizes?.isNotEmpty == true ? _currentProduct!.sizes!.first : null);
 
   @override
   void initState() {
@@ -135,12 +141,15 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
             );
           }
 
-          if (_selectedSize == null && product.sizes != null && product.sizes!.isNotEmpty) {
-            _selectedSize = product.sizes!.first;
+          // Keep _currentProduct in sync so helper methods can use effectiveSize
+          if (_currentProduct != product) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              if (mounted && _currentProduct != product) setState(() => _currentProduct = product);
+            });
           }
 
-          final displayPrice = _selectedSize?.price ?? product.price;
-          final displayCompareAt = _selectedSize?.compareAtPrice ?? product.compareAtPrice;
+          final displayPrice = effectiveSize?.price ?? product.price;
+          final displayCompareAt = effectiveSize?.compareAtPrice ?? product.compareAtPrice;
 
           return Stack(
             children: [
@@ -377,7 +386,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
           itemCount: sizes.length,
           itemBuilder: (context, idx) {
             final size = sizes[idx];
-            final isSelected = _selectedSize?.label == size.label;
+            final isSelected = effectiveSize?.label == size.label;
             return GestureDetector(
               onTap: () => setState(() => _selectedSize = size),
               child: Container(
@@ -656,7 +665,12 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
         if (related.isEmpty) return const SizedBox.shrink();
 
         final fbtProduct = related.first;
-        final discountedFbtPrice = fbtProduct.price * 0.9;
+        // Derive the bundle discount from the product's own compareAtPrice if
+        // available (i.e. its admin-set markdown). Fall back to 10%.
+        final fbtDiscountPct = fbtProduct.compareAtPrice != null && fbtProduct.compareAtPrice! > fbtProduct.price
+            ? ((fbtProduct.compareAtPrice! - fbtProduct.price) / fbtProduct.compareAtPrice! * 100).clamp(0.0, 100.0)
+            : 10.0;
+        final discountedFbtPrice = fbtProduct.price * (1 - fbtDiscountPct / 100);
 
         double totalPrice = 0;
         if (_fbtThisItem) totalPrice += product.price;
@@ -1237,8 +1251,8 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                   ref.read(cartProvider.notifier).addItem(
                     product,
                     qty: _quantity,
-                    weight: _selectedSize?.label ?? product.weight,
-                    bundlePrice: _selectedSize?.price ?? product.price,
+                    weight: effectiveSize?.label ?? product.weight,
+                    bundlePrice: effectiveSize?.price ?? product.price,
                   );
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(duration: const Duration(milliseconds: 2000), 
