@@ -15,7 +15,9 @@ class ThemeNotifier extends StateNotifier<ThemeMode> {
   }
 
   Future<void> _loadTheme() async {
-    final box = await Hive.openBox(_boxName);
+    // The box is already open — main() calls Hive.openBox() before app starts.
+    // Using the synchronous accessor eliminates the one-frame theme flash.
+    final box = Hive.box(_boxName);
     final savedMode = box.get(_key, defaultValue: 'light');
     
     switch (savedMode) {
@@ -34,7 +36,7 @@ class ThemeNotifier extends StateNotifier<ThemeMode> {
 
   Future<void> setTheme(ThemeMode mode) async {
     state = mode;
-    final box = await Hive.openBox(_boxName);
+    final box = Hive.box(_boxName);
     String stringMode;
     switch (mode) {
       case ThemeMode.light:

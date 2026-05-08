@@ -101,10 +101,16 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
 
   void _handlePaymentError(PaymentFailureResponse response) async {
     if (_pendingFirestoreOrderId != null) {
-      await ref.read(checkoutApiProvider).cancelOrder(_pendingFirestoreOrderId!);
+      try {
+        await ref.read(checkoutApiProvider).cancelOrder(_pendingFirestoreOrderId!);
+      } catch (_) {
+        // Best-effort cancel — if network is down the backend will
+        // clean up abandoned orders via a scheduled Cloud Function.
+      }
       Hive.box('nutripump_settings').delete('pending_order_id');
       _pendingFirestoreOrderId = null;
     }
+    if (!mounted) return;
     ref.read(isProcessingProvider.notifier).state = false;
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(

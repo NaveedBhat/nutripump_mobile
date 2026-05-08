@@ -51,9 +51,8 @@ class OrdersScreen extends ConsumerWidget {
             loading: () => const OrdersListSkeleton(),
             error: (e, __) => Center(child: Text('Error loading orders: $e')),
             data: (dynamicOrders) {
-              // provider currently returns List<dynamic> from StreamProvider.family
-              // but order_service.dart returns List<Order>
-              final List<Order> orders = dynamicOrders.cast<Order>();
+              // Show all orders — payment-abandoned ones use a dedicated 'Payment Failed' UI
+              final List<Order> orders = dynamicOrders.cast<Order>().toList();
 
               if (orders.isEmpty) {
                 return Center(
@@ -132,16 +131,32 @@ class _OrderCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final statusColor = _getStatusColor(context, order.status);
-    final statusBg = _getStatusBgColor(order.status);
-    final statusIcon = _getStatusIcon(order.status);
-    
+    // Detect payment-abandoned orders:
+    // Backend sets paymentStatus='failed' when the Razorpay payment is
+    // cancelled or fails. COD cancellations always have paymentStatus='pending'.
+    // This is the reliable, backend-verified discriminator.
+    final bool isPaymentAbandoned =
+        order.status == OrderStatus.cancelled &&
+        order.paymentStatus == PaymentStatus.failed;
+
+    final statusColor = isPaymentAbandoned
+        ? Colors.orange.shade700
+        : _getStatusColor(context, order.status);
+    final statusBg = isPaymentAbandoned
+        ? Colors.orange.shade100
+        : _getStatusBgColor(order.status);
+    final statusIcon = isPaymentAbandoned
+        ? Icons.payment_rounded
+        : _getStatusIcon(order.status);
+
     // Fallback store settings if provider isn't loaded yet
     final settingsAsync = ref.watch(storeSettingsProvider);
     final cancelHours = settingsAsync.valueOrNull?.cancellationWindowHours ?? 24;
     final returnDays = settingsAsync.valueOrNull?.returnWindowDays ?? 5;
 
-    final canCancel = order.canCancel && _isWithinWindow(order.createdAt, cancelHours);
+    // Payment-abandoned orders must not show the regular Cancel button
+    final canCancel = !isPaymentAbandoned &&
+        order.canCancel && _isWithinWindow(order.createdAt, cancelHours);
     final canReturn = order.canReturn && _isWithinReturnWindow(order.updatedAt, returnDays);
 
     return Container(
@@ -213,9 +228,11 @@ class _OrderCard extends ConsumerWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            order.status == OrderStatus.delivered
-                                ? 'Delivered near door'
-                                : 'Status: ${order.status.label}',
+                            isPaymentAbandoned
+                                ? 'Payment Failed'
+                                : order.status == OrderStatus.delivered
+                                    ? 'Delivered near door'
+                                    : 'Status: ${order.status.label}',
                             style: AppTypography.bodySM(context).copyWith(
                               fontWeight: FontWeight.w700,
                               fontSize: R.sp(context, 13),
@@ -223,11 +240,15 @@ class _OrderCard extends ConsumerWidget {
                           ),
                           SizedBox(height: R.h(context, 2)),
                           Text(
-                            order.status == OrderStatus.delivered
-                                ? 'Your order has been delivered. Enjoy!'
-                                : order.trackingNumber != null
-                                    ? 'Tracking: ${order.trackingNumber}'
-                                    : 'Your order is moving through our artisan network.',
+                            isPaymentAbandoned
+                                ? 'Revise your payment to complete this order'
+                                : order.status == OrderStatus.delivered
+                                    ? 'Your order has been delivered. Enjoy!'
+                                    : order.status == OrderStatus.cancelled
+                                        ? 'This order has been cancelled.'
+                                        : order.trackingNumber != null
+                                            ? 'Tracking: ${order.trackingNumber}'
+                                            : 'Your order is moving through our artisan network.',
                             style: AppTypography.bodySM(context).copyWith(
                               color: AppColors.neutralGold,
                               fontSize: R.sp(context, 11),
@@ -367,120 +388,174 @@ class _OrderCard extends ConsumerWidget {
 
                 // ── Action Buttons ─────────────────────────────────────────
                 SizedBox(height: R.h(context, 12)),
-                
-                // Cancellation countdown label
-                if (canCancel)
-                  Padding(
-                    padding: EdgeInsets.only(bottom: R.h(context, 12)),
-                    child: _TimeRemainingLabel(
-                      icon: Icons.access_time_rounded,
-                      text: _getCancelWithinText(order.createdAt, cancelHours),
-                      color: Colors.amber.shade700,
-                    ),
-                  ),
 
-                // Return countdown label
-                if (canReturn)
-                  Padding(
-                    padding: EdgeInsets.only(bottom: R.h(context, 12)),
-                    child: _TimeRemainingLabel(
-                      icon: Icons.access_time_rounded,
-                      text: _getReturnWithinText(order.updatedAt, returnDays),
-                      color: Colors.amber.shade700,
-                    ),
-                  ),
-
-                if (order.status == OrderStatus.delivered)
-                  Row(
-                    children: [
-                      Expanded(
-                        child: OutlinedButton(
-                          onPressed: () => context.push('/orders/${order.id}'),
-                          style: OutlinedButton.styleFrom(
-                            foregroundColor: AppColors.deepCharcoal,
-                            side: BorderSide(color: AppColors.neutralGold.withValues(alpha: 0.3)),
-                            backgroundColor: AppColors.neutralGold.withValues(alpha: 0.05),
-                            padding: EdgeInsets.zero,
-                            minimumSize: const Size(0, 32),
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(R.w(context, 6))),
-                          ),
-                          child: Text('View Details', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: R.sp(context, 10))),
-                        ),
+                if (isPaymentAbandoned) ...[
+                  // Payment-abandoned: full-width Retry Payment CTA (Flipkart-style)
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () => context.push('/checkout'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.primary,
+                        foregroundColor: AppColors.deepCharcoal,
+                        padding: EdgeInsets.zero,
+                        minimumSize: const Size(0, 36),
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(R.w(context, 8))),
                       ),
-                      if (canReturn) ...[
-                        SizedBox(width: R.w(context, 8)),
-                        Expanded(
-                          child: ElevatedButton(
-                            onPressed: () => context.push('/account/returns?orderId=${order.id}'),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: AppColors.primary,
-                              foregroundColor: AppColors.deepCharcoal,
-                              padding: EdgeInsets.zero,
-                              minimumSize: const Size(0, 32),
-                              elevation: 0,
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(R.w(context, 6))),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.refresh_rounded,
+                              size: R.sp(context, 14),
+                              color: AppColors.deepCharcoal),
+                          SizedBox(width: R.w(context, 6)),
+                          Text(
+                            'Retry Payment',
+                            style: AppTypography.bodySM(context).copyWith(
+                              fontWeight: FontWeight.w700,
+                              fontSize: R.sp(context, 12),
+                              color: AppColors.deepCharcoal,
                             ),
-                            child: Text('Return Item', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: R.sp(context, 10))),
                           ),
-                        ),
-                      ],
-                    ],
-                  )
-                else
-                  Row(
-                    children: [
-                      if (order.status != OrderStatus.cancelled) ...[
+                        ],
+                      ),
+                    ),
+                  ),
+                ] else ...[
+                  // Cancellation countdown label
+                  if (canCancel)
+                    Padding(
+                      padding: EdgeInsets.only(bottom: R.h(context, 12)),
+                      child: _TimeRemainingLabel(
+                        icon: Icons.access_time_rounded,
+                        text: _getCancelWithinText(order.createdAt, cancelHours),
+                        color: Colors.amber.shade700,
+                      ),
+                    ),
+
+                  // Return countdown label
+                  if (canReturn)
+                    Padding(
+                      padding: EdgeInsets.only(bottom: R.h(context, 12)),
+                      child: _TimeRemainingLabel(
+                        icon: Icons.access_time_rounded,
+                        text: _getReturnWithinText(order.updatedAt, returnDays),
+                        color: Colors.amber.shade700,
+                      ),
+                    ),
+
+                  if (order.status == OrderStatus.delivered)
+                    Row(
+                      children: [
                         Expanded(
                           child: OutlinedButton(
                             onPressed: () => context.push('/orders/${order.id}'),
                             style: OutlinedButton.styleFrom(
                               foregroundColor: AppColors.deepCharcoal,
-                              side: const BorderSide(color: AppColors.primary),
-                              backgroundColor: AppColors.primary.withValues(alpha: 0.1),
+                              side: BorderSide(color: AppColors.neutralGold.withValues(alpha: 0.3)),
+                              backgroundColor: AppColors.neutralGold.withValues(alpha: 0.05),
                               padding: EdgeInsets.zero,
                               minimumSize: const Size(0, 32),
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(R.w(context, 6))),
                             ),
-                            child: Text('Track Live', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: R.sp(context, 10)), maxLines: 1, overflow: TextOverflow.ellipsis),
+                            child: Text('View Details', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: R.sp(context, 10))),
                           ),
                         ),
-                        SizedBox(width: R.w(context, 6)),
+                        if (canReturn) ...[
+                          SizedBox(width: R.w(context, 8)),
+                          Expanded(
+                            child: ElevatedButton(
+                              onPressed: () => context.push('/account/returns?orderId=${order.id}'),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: AppColors.primary,
+                                foregroundColor: AppColors.deepCharcoal,
+                                padding: EdgeInsets.zero,
+                                minimumSize: const Size(0, 32),
+                                elevation: 0,
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(R.w(context, 6))),
+                              ),
+                              child: Text('Return Item', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: R.sp(context, 10))),
+                            ),
+                          ),
+                        ],
                       ],
-                      Expanded(
-                        child: OutlinedButton(
-                          onPressed: () {
-                          context.push('/support?orderId=${formatOrderId(order.id)}');
-                          },
-                          style: OutlinedButton.styleFrom(
-                            foregroundColor: AppColors.deepCharcoal,
-                            side: BorderSide(color: AppColors.neutralGold.withValues(alpha: 0.3)),
-                            backgroundColor: AppColors.neutralGold.withValues(alpha: 0.05),
-                            padding: EdgeInsets.zero,
-                            minimumSize: const Size(0, 32),
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(R.w(context, 6))),
+                    )
+                  else
+                    Row(
+                      children: [
+                        if (order.status == OrderStatus.cancelled) ...[
+                          // Cancelled orders: View Details → shows full invoice + cancellation reason
+                          Expanded(
+                            child: OutlinedButton(
+                              onPressed: () => context.push('/orders/${order.id}'),
+                              style: OutlinedButton.styleFrom(
+                                foregroundColor: AppColors.deepCharcoal,
+                                side: BorderSide(color: AppColors.neutralGold.withValues(alpha: 0.3)),
+                                backgroundColor: AppColors.neutralGold.withValues(alpha: 0.05),
+                                padding: EdgeInsets.zero,
+                                minimumSize: const Size(0, 32),
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(R.w(context, 6))),
+                              ),
+                              child: Text('View Details', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: R.sp(context, 10)), maxLines: 1, overflow: TextOverflow.ellipsis),
+                            ),
                           ),
-                          child: Text('Contact', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: R.sp(context, 10)), maxLines: 1, overflow: TextOverflow.ellipsis),
-                        ),
-                      ),
-                      if (canCancel) ...[
-                        SizedBox(width: R.w(context, 6)),
+                          SizedBox(width: R.w(context, 6)),
+                        ] else ...[
+                          // Active orders: Track Live
+                          Expanded(
+                            child: OutlinedButton(
+                              onPressed: () => context.push('/orders/${order.id}'),
+                              style: OutlinedButton.styleFrom(
+                                foregroundColor: AppColors.deepCharcoal,
+                                side: const BorderSide(color: AppColors.primary),
+                                backgroundColor: AppColors.primary.withValues(alpha: 0.1),
+                                padding: EdgeInsets.zero,
+                                minimumSize: const Size(0, 32),
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(R.w(context, 6))),
+                              ),
+                              child: Text('Track Live', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: R.sp(context, 10)), maxLines: 1, overflow: TextOverflow.ellipsis),
+                            ),
+                          ),
+                          SizedBox(width: R.w(context, 6)),
+                        ],
                         Expanded(
                           child: OutlinedButton(
-                            onPressed: () => _showCancelDialog(context, ref, order),
+                            onPressed: () {
+                            context.push('/support?orderId=${formatOrderId(order.id)}');
+                            },
                             style: OutlinedButton.styleFrom(
-                              foregroundColor: Colors.red,
-                              side: const BorderSide(color: Colors.red),
-                              backgroundColor: Colors.red.withValues(alpha: 0.05),
+                              foregroundColor: AppColors.deepCharcoal,
+                              side: BorderSide(color: AppColors.neutralGold.withValues(alpha: 0.3)),
+                              backgroundColor: AppColors.neutralGold.withValues(alpha: 0.05),
                               padding: EdgeInsets.zero,
                               minimumSize: const Size(0, 32),
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(R.w(context, 6))),
                             ),
-                            child: Text('Cancel', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, color: Colors.red, fontSize: R.sp(context, 10)), maxLines: 1, overflow: TextOverflow.ellipsis),
+                            child: Text('Contact', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: R.sp(context, 10)), maxLines: 1, overflow: TextOverflow.ellipsis),
                           ),
                         ),
+                        if (canCancel) ...[
+                          SizedBox(width: R.w(context, 6)),
+                          Expanded(
+                            child: OutlinedButton(
+                              onPressed: () => _showCancelDialog(context, ref, order),
+                              style: OutlinedButton.styleFrom(
+                                foregroundColor: Colors.red,
+                                side: const BorderSide(color: Colors.red),
+                                backgroundColor: Colors.red.withValues(alpha: 0.05),
+                                padding: EdgeInsets.zero,
+                                minimumSize: const Size(0, 32),
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(R.w(context, 6))),
+                              ),
+                              child: Text('Cancel', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, color: Colors.red, fontSize: R.sp(context, 10)), maxLines: 1, overflow: TextOverflow.ellipsis),
+                            ),
+                          ),
+                        ],
                       ],
-                    ],
-                  ),
+                    ),
+                ],
               ],
             ),
           ),
