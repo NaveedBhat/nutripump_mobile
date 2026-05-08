@@ -55,6 +55,7 @@ class _CategoriesScreenState extends ConsumerState<CategoriesScreen>
   late final AnimationController _heroZoom;
   late final AnimationController _headerFade;
   final _emailController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
 
   String? _heroTitle;
   String? _heroSubtitle;
@@ -69,6 +70,16 @@ class _CategoriesScreenState extends ConsumerState<CategoriesScreen>
     _headerFade = AnimationController(vsync: this, duration: const Duration(milliseconds: 700))
       ..forward();
     _loadCategoryBanner();
+    // Listen for tab re-tap to scroll to top (Categories is index 2)
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.listen<int?>(scrollTabEventProvider, (_, index) {
+        if (index == 2 && _scrollController.hasClients) {
+          _scrollController.animateTo(0,
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeOut);
+        }
+      });
+    });
   }
 
   Future<void> _loadCategoryBanner() async {
@@ -93,6 +104,7 @@ class _CategoriesScreenState extends ConsumerState<CategoriesScreen>
 
   @override
   void dispose() {
+    _scrollController.dispose();
     _heroZoom.dispose();
     _headerFade.dispose();
     _emailController.dispose();
@@ -106,6 +118,7 @@ class _CategoriesScreenState extends ConsumerState<CategoriesScreen>
     return Scaffold(
       backgroundColor: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : AppColors.backgroundLight),
       body: CustomScrollView(
+        controller: _scrollController,
         slivers: [
           // ── Hero Banner ───────────────────────────────────────────────
           SliverToBoxAdapter(

@@ -32,6 +32,7 @@ class _ShopScreenState extends ConsumerState<ShopScreen> {
   final _searchController = TextEditingController();
   String _viewMode = 'catalog';
   Timer? _debounceTimer;
+  final ScrollController _scrollController = ScrollController();
 
   static const _fallbackHero =
       'https://images.unsplash.com/photo-1647427062468-74ff21e8934f?q=80&w=1200&auto=format&fit=crop';
@@ -45,6 +46,14 @@ class _ShopScreenState extends ConsumerState<ShopScreen> {
       if (widget.category != null) {
         ref.read(shopFiltersProvider.notifier).setCategory(widget.category);
       }
+      // Listen for tab re-tap to scroll to top (Shop is index 1)
+      ref.listen<int?>(scrollTabEventProvider, (_, index) {
+        if (index == 1 && _scrollController.hasClients) {
+          _scrollController.animateTo(0,
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeOut);
+        }
+      });
     });
   }
 
@@ -62,6 +71,7 @@ class _ShopScreenState extends ConsumerState<ShopScreen> {
 
   @override
   void dispose() {
+    _scrollController.dispose();
     _debounceTimer?.cancel();
     _searchController.dispose();
     super.dispose();
@@ -85,6 +95,7 @@ class _ShopScreenState extends ConsumerState<ShopScreen> {
     return Scaffold(
       backgroundColor: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : const Color(0xFFF9F8F6))),
       body: CustomScrollView(
+        controller: _scrollController,
         slivers: [
           // ── Hero Banner ──────────────────────────────────────────
           SliverToBoxAdapter(child: _buildHeroBanner()),

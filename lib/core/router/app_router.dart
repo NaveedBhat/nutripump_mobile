@@ -71,19 +71,39 @@ final appRouter = GoRouter(
   },
   routes: [
     // ── Main Shell (Bottom Nav) ──────────────────────────────
-    ShellRoute(
-      builder: (context, state, child) => MainShell(child: child),
-      routes: [
-        GoRoute(path: '/', builder: (_, __) => const HomeScreen()),
-        GoRoute(
-          path: '/shop',
-          builder: (_, state) => ShopScreen(
-            category: state.uri.queryParameters['category'],
-          ),
+    StatefulShellRoute.indexedStack(
+      builder: (context, state, navigationShell) => MainShell(navigationShell: navigationShell),
+      branches: [
+        StatefulShellBranch(
+          routes: [
+            GoRoute(path: '/', builder: (_, __) => const HomeScreen()),
+          ],
         ),
-        GoRoute(path: '/categories', builder: (_, __) => const CategoriesScreen()),
-        GoRoute(path: '/wishlist', builder: (_, __) => const WishlistScreen()),
-        GoRoute(path: '/account', builder: (_, __) => const AccountScreen()),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: '/shop',
+              builder: (_, state) => ShopScreen(
+                category: state.uri.queryParameters['category'],
+              ),
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(path: '/categories', builder: (_, __) => const CategoriesScreen()),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(path: '/wishlist', builder: (_, __) => const WishlistScreen()),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(path: '/account', builder: (_, __) => const AccountScreen()),
+          ],
+        ),
       ],
     ),
 

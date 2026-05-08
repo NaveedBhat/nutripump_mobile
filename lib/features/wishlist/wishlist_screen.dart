@@ -9,12 +9,41 @@ import '../../core/utils/formatters.dart';
 import '../../core/utils/responsive.dart';
 import '../../providers/cart_provider.dart';
 import '../../models/product.dart';
+import '../../providers/providers.dart';
 
-class WishlistScreen extends ConsumerWidget {
+class WishlistScreen extends ConsumerStatefulWidget {
   const WishlistScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<WishlistScreen> createState() => _WishlistScreenState();
+}
+
+class _WishlistScreenState extends ConsumerState<WishlistScreen> {
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    // Listen for tab re-tap to scroll to top (Wishlist is index 3)
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.listen<int?>(scrollTabEventProvider, (_, index) {
+        if (index == 3 && _scrollController.hasClients) {
+          _scrollController.animateTo(0,
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeOut);
+        }
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final items = ref.watch(wishlistProvider);
 
     return Scaffold(
@@ -52,6 +81,7 @@ class WishlistScreen extends ConsumerWidget {
               ),
             ),
       body: CustomScrollView(
+        controller: _scrollController,
         slivers: [
           // ── App Bar — clean, no item count / clear all ───────────────
           SliverAppBar(

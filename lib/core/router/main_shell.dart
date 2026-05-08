@@ -1,18 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:go_router/go_router.dart';
 import '../constants/app_colors.dart';
 import '../constants/app_typography.dart';
-import '../../providers/inapp_popup_provider.dart';
 import '../../features/ai_chat/ai_chat_widget.dart';
 import '../../features/notifications/inapp_popup.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import '../../providers/inapp_popup_provider.dart';
+import '../../providers/providers.dart';
 
+/// 🔧 FEATURE FLAG — Hide bottom navigation bar when user scrolls down.
+/// Set to [true]  → immersive mode ON  (bar hides on scroll down)
+/// Set to [false] → immersive mode OFF (bar always visible)
+const bool kHideBottomBarOnScroll = false;
 
-class MainShell extends ConsumerWidget {
-  final Widget child;
-  const MainShell({super.key, required this.child});
+class MainShell extends ConsumerStatefulWidget {
+  final StatefulNavigationShell navigationShell;
+  const MainShell({super.key, required this.navigationShell});
+
+  @override
+  ConsumerState<MainShell> createState() => _MainShellState();
+}
+
+class _MainShellState extends ConsumerState<MainShell> {
+  bool _showBottomBar = true;
 
   static const _tabs = [
     _TabItem(label: 'Home',       icon: Icons.home_outlined,      activeIcon: Icons.home,           path: '/'),
@@ -22,60 +35,83 @@ class MainShell extends ConsumerWidget {
     _TabItem(label: 'Account',    icon: Icons.person_outline,      activeIcon: Icons.person,         path: '/account'),
   ];
 
-  int _currentIndex(BuildContext ctx) {
-    final loc = GoRouterState.of(ctx).uri.toString();
-    for (int i = _tabs.length - 1; i >= 0; i--) {
-      if (loc.startsWith(_tabs[i].path)) return i;
-    }
-    return 0;
-  }
-
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final idx = _currentIndex(context);
+  Widget build(BuildContext context) {
+    final idx = widget.navigationShell.currentIndex;
     final popupAsync = ref.watch(inAppPopupProvider);
 
-    return Scaffold(
-      body: Stack(
-        children: [
-          child,
-          const AiChatWidget(),
-          // ── In-App Popup Banner overlay ──────────────────────────────
-          if (popupAsync.value != null)
-            Positioned.fill(
-              child: InAppPopup(
-                title: popupAsync.value!.title,
-                body: popupAsync.value!.body,
-                imageUrl: popupAsync.value!.imageUrl,
-                ctaLabel: popupAsync.value!.ctaLabel,
-                deepLink: popupAsync.value!.deepLink,
-                bgColor: popupAsync.value!.bgColor,
-                onDismiss: () {
-                  markCampaignSeen(popupAsync.value!.campaignId);
-                  // Invalidate provider so it re-checks (it will emit null now)
-                  ref.invalidate(inAppPopupProvider);
-                },
-              ),
-            ),
-        ],
-      ),
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          color: Theme.of(context).scaffoldBackgroundColor,
-          border: Border(
-            top: BorderSide(
-              color: AppColors.primary.withValues(alpha: 0.12),
-              width: 1,
-            ),
+    // Reset bottom bar visibility whenever the active tab changes
+    // so the bar is never hidden when arriving on a fresh tab.
+    if (kHideBottomBarOnScroll && !_showBottomBar) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) setState(() => _showBottomBar = true);
+      });
+    }
+
+    return PopScope(
+      canPop: idx == 0,
+      onPopInvokedWithResult: (didPop, _) {
+        if (!didPop && idx != 0) {
+          widget.navigationShell.goBranch(0);
+        }
+      },
+      child: Scaffold(
+        body: NotificationListener<UserScrollNotification>(
+          onNotification: (notification) {
+            if (!kHideBottomBarOnScroll) return false;
+            if (notification.direction == ScrollDirection.reverse) {
+              if (_showBottomBar) setState(() => _showBottomBar = false);
+            } else if (notification.direction == ScrollDirection.forward) {
+              if (!_showBottomBar) setState(() => _showBottomBar = true);
+            }
+            return false;
+          },
+          child: Stack(
+            children: [
+              widget.navigationShell,
+              const AiChatWidget(),
+              // ── In-App Popup Banner overlay ──────────────────────────────
+              if (popupAsync.value != null)
+                Positioned.fill(
+                  child: InAppPopup(
+                    title: popupAsync.value!.title,
+                    body: popupAsync.value!.body,
+                    imageUrl: popupAsync.value!.imageUrl,
+                    ctaLabel: popupAsync.value!.ctaLabel,
+                    deepLink: popupAsync.value!.deepLink,
+                    bgColor: popupAsync.value!.bgColor,
+                    onDismiss: () {
+                      markCampaignSeen(popupAsync.value!.campaignId);
+                      // Invalidate provider so it re-checks (it will emit null now)
+                      ref.invalidate(inAppPopupProvider);
+                    },
+                  ),
+                ),
+            ],
           ),
-          boxShadow: [
-            BoxShadow(
-              color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal).withValues(alpha: 0.06),
-              blurRadius: 16,
-              offset: const Offset(0, -4),
-            ),
-          ],
         ),
+        bottomNavigationBar: AnimatedSize(
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+          child: kHideBottomBarOnScroll && !_showBottomBar
+              ? const SizedBox.shrink()
+              : Container(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).scaffoldBackgroundColor,
+                    border: Border(
+                      top: BorderSide(
+                        color: AppColors.primary.withValues(alpha: 0.12),
+                        width: 1,
+                      ),
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal).withValues(alpha: 0.06),
+                        blurRadius: 16,
+                        offset: const Offset(0, -4),
+                      ),
+                    ],
+                  ),
         child: SafeArea(
           top: false,
           child: SizedBox(
@@ -98,7 +134,14 @@ class MainShell extends ConsumerWidget {
                           return;
                         }
                       }
-                      if (!active) context.go(tab.path);
+                      if (active) {
+                        ref.read(scrollTabEventProvider.notifier).state = i;
+                      }
+
+                      widget.navigationShell.goBranch(
+                        i,
+                        initialLocation: i == widget.navigationShell.currentIndex,
+                      );
                     },
                     child: AnimatedContainer(
                       duration: const Duration(milliseconds: 200),
@@ -136,8 +179,10 @@ class MainShell extends ConsumerWidget {
             ),
           ),
         ),
-      ),
-    );
+        ), // Closes Container
+        ), // Closes AnimatedSize
+      ), // Closes Scaffold
+    ); // Closes PopScope
   }
 }
 

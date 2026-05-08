@@ -53,6 +53,12 @@ final authStateProvider = StreamProvider<UserProfile?>((ref) {
   );
 });
 
+final isOfflineProvider = StateProvider<bool>((ref) => false);
+
+/// Emits the tab index whenever an active tab is tapped again.
+/// The corresponding tab screen can listen to this to scroll to top.
+final scrollTabEventProvider = StateProvider<int?>((ref) => null);
+
 final isAdminProvider = Provider<bool>((ref) {
   return ref.watch(authStateProvider).value?.isAdmin ?? false;
 });

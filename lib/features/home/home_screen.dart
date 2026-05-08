@@ -15,11 +15,39 @@ import '../../providers/cart_provider.dart';
 import 'widgets/announcement_bar.dart';
 import '../../core/widgets/skeleton_loaders.dart';
 
-class HomeScreen extends ConsumerWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends ConsumerState<HomeScreen> {
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    // Listen for tab re-tap to scroll to top (Home is index 0)
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.listen<int?>(scrollTabEventProvider, (_, index) {
+        if (index == 0 && _scrollController.hasClients) {
+          _scrollController.animateTo(0,
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeOut);
+        }
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: Theme.of(context).brightness == Brightness.dark ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark,
       child: Scaffold(
@@ -33,6 +61,7 @@ class HomeScreen extends ConsumerWidget {
                 const AnnouncementBar(),
                 Expanded(
                   child: CustomScrollView(
+                    controller: _scrollController,
                     slivers: [
             _HomeAppBar(),
             SliverToBoxAdapter(
