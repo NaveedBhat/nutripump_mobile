@@ -26,6 +26,7 @@ import '../../features/journal/journal_screen.dart';
 import '../../features/orders/order_detail_screen.dart';
 import '../../features/orders/orders_screen.dart';
 import '../../features/our_story/our_story_screen.dart';
+import '../../features/about/about_screen.dart';
 import '../../features/notifications/notifications_screen.dart';
 import '../../features/product_detail/product_detail_screen.dart';
 import '../../features/shop/shop_screen.dart';
@@ -209,6 +210,7 @@ final appRouter = GoRouter(
         path: '/taste-profiler',
         builder: (_, __) => const TasteProfilerScreen()),
     GoRoute(path: '/our-story', builder: (_, __) => const OurStoryScreen()),
+    GoRoute(path: '/about', builder: (_, __) => const AboutScreen()),
     GoRoute(path: '/contact', builder: (_, __) => const ContactScreen()),
     GoRoute(
       path: '/support',

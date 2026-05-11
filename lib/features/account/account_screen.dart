@@ -214,15 +214,33 @@ class _AccountView extends StatelessWidget {
                 AccountNavTile(
                   icon: Icons.location_on_outlined,
                   label: 'Find Us',
-                  subtitle: 'Our presence & contact info',
+                  subtitle: 'Our stores & contact info',
                   onTap: () => context.push('/find-us'),
+                  showDivider: false,
                 ),
+
+                SizedBox(height: R.h(context, 16)),
+
+                // ── Discover ─────────────────────────────────────────────
+                const AccountSectionHeader(title: 'Discover'),
                 AccountNavTile(
                   icon: Icons.book_outlined,
                   label: 'Journal',
-                  subtitle: 'Heritage stories & recipes',
+                  subtitle: 'Heritage stories & artisan recipes',
                   onTap: () => context.push('/journal'),
                 ),
+                AccountNavTile(
+                  icon: Icons.auto_stories_outlined,
+                  label: 'Our Story',
+                  subtitle: 'Rooted in the Kashmir Valley',
+                  onTap: () => context.push('/our-story'),
+                  showDivider: false,
+                ),
+
+                SizedBox(height: R.h(context, 16)),
+
+                // ── Legal & Info ──────────────────────────────────────────
+                const AccountSectionHeader(title: 'Legal & Info'),
                 AccountNavTile(
                   icon: Icons.privacy_tip_outlined,
                   label: 'Privacy Policy',
@@ -234,6 +252,12 @@ class _AccountView extends StatelessWidget {
                   label: 'Terms of Service',
                   subtitle: 'Our legal agreement',
                   onTap: () => context.push('/terms'),
+                ),
+                AccountNavTile(
+                  icon: Icons.info_outline_rounded,
+                  label: 'About NutriPump',
+                  subtitle: 'The app, the ecosystem & the developer',
+                  onTap: () => context.push('/about'),
                   showDivider: false,
                 ),
 

@@ -34,7 +34,7 @@ class OurStoryScreen extends StatelessWidget {
                 children: [
                   const CustomNetworkImage(
                     imageUrl:
-                        'https://images.unsplash.com/photo-1596662951362-b48c66a4bc2c?q=80&w=800&auto=format&fit=crop', // Saffron field or Kashmir
+                        'https://res.cloudinary.com/dil7vl8um/image/upload/v1776608660/Gemini_Generated_Image_rooomqrooomqrooo_hnwsbv.webp',
                     fit: BoxFit.cover,
                   ),
                   Container(
