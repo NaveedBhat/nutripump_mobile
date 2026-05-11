@@ -48,12 +48,12 @@ class _VoiceSearchBottomSheetState extends State<VoiceSearchBottomSheet> {
     bool available = await _speech.initialize(
       onStatus: (status) {
         if (status == 'done' || status == 'notListening') {
-           if (mounted && _isListening) {
-             setState(() => _isListening = false);
-             if (_text.isNotEmpty) {
-               Navigator.pop(context, _text);
-             }
-           }
+          if (mounted && _isListening) {
+            setState(() => _isListening = false);
+            if (_text.isNotEmpty) {
+              Navigator.pop(context, _text);
+            }
+          }
         }
       },
       onError: (errorNotification) {
@@ -96,10 +96,14 @@ class _VoiceSearchBottomSheetState extends State<VoiceSearchBottomSheet> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(R.w(context, 24))),
+        color: Theme.of(context).brightness == Brightness.dark
+            ? AppColors.surfaceDark
+            : Colors.white,
+        borderRadius:
+            BorderRadius.vertical(top: Radius.circular(R.w(context, 24))),
       ),
-      padding: EdgeInsets.symmetric(horizontal: R.w(context, 24), vertical: R.h(context, 20)),
+      padding: EdgeInsets.symmetric(
+          horizontal: R.w(context, 24), vertical: R.h(context, 20)),
       child: SafeArea(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -107,7 +111,10 @@ class _VoiceSearchBottomSheetState extends State<VoiceSearchBottomSheet> {
             Align(
               alignment: Alignment.centerRight,
               child: IconButton(
-                icon: Icon(Icons.close, color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal)),
+                icon: Icon(Icons.close,
+                    color: (Theme.of(context).brightness == Brightness.dark
+                        ? Theme.of(context).colorScheme.onSurface
+                        : AppColors.deepCharcoal)),
                 onPressed: () => Navigator.pop(context),
               ),
             ),
@@ -119,9 +126,16 @@ class _VoiceSearchBottomSheetState extends State<VoiceSearchBottomSheet> {
                   color: AppColors.primary.withValues(alpha: 0.1),
                   shape: BoxShape.circle,
                 ),
-                child: Icon(Icons.mic, size: R.sp(context, 48), color: AppColors.primary)
-                    .animate(onPlay: (controller) => controller.repeat(reverse: true))
-                    .scaleXY(begin: 1.0, end: 1.2, duration: 800.ms, curve: Curves.easeInOut),
+                child: Icon(Icons.mic,
+                        size: R.sp(context, 48), color: AppColors.primary)
+                    .animate(
+                        onPlay: (controller) =>
+                            controller.repeat(reverse: true))
+                    .scaleXY(
+                        begin: 1.0,
+                        end: 1.2,
+                        duration: 800.ms,
+                        curve: Curves.easeInOut),
               )
             else
               GestureDetector(
@@ -138,25 +152,32 @@ class _VoiceSearchBottomSheetState extends State<VoiceSearchBottomSheet> {
                     color: AppColors.borderLight.withValues(alpha: 0.5),
                     shape: BoxShape.circle,
                   ),
-                  child: Icon(Icons.mic_none, size: R.sp(context, 48), color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal)),
+                  child: Icon(Icons.mic_none,
+                      size: R.sp(context, 48),
+                      color: (Theme.of(context).brightness == Brightness.dark
+                          ? Theme.of(context).colorScheme.onSurface
+                          : AppColors.deepCharcoal)),
                 ),
               ),
             SizedBox(height: R.h(context, 24)),
             Text(
               _isListening ? 'Listening...' : 'Shop faster with voice',
-              style: AppTypography.h2(context).copyWith(fontSize: R.sp(context, 22)),
+              style: AppTypography.h2(context)
+                  .copyWith(fontSize: R.sp(context, 22)),
             ),
             SizedBox(height: R.h(context, 8)),
             if (_text.isNotEmpty && _isListening)
               Text(
                 '"$_text"',
-                style: AppTypography.body(context).copyWith(fontStyle: FontStyle.italic, color: AppColors.neutralGold),
+                style: AppTypography.body(context).copyWith(
+                    fontStyle: FontStyle.italic, color: AppColors.neutralGold),
                 textAlign: TextAlign.center,
               )
             else if (_hasSpeechError)
               Text(
                 'Could not understand. Tap microphone to try again.',
-                style: AppTypography.bodySM(context).copyWith(color: AppColors.error),
+                style: AppTypography.bodySM(context)
+                    .copyWith(color: AppColors.error),
                 textAlign: TextAlign.center,
               ),
             SizedBox(height: R.h(context, 32)),
@@ -168,16 +189,25 @@ class _VoiceSearchBottomSheetState extends State<VoiceSearchBottomSheet> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primary,
                     padding: EdgeInsets.symmetric(vertical: R.h(context, 16)),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(R.w(context, 12))),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(R.w(context, 12))),
                     elevation: 0,
                   ),
                   child: Text(
-                    _permissionStatus.isPermanentlyDenied ? 'Open Settings' : 'Turn on microphone',
-                    style: AppTypography.label(context).copyWith(color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal), fontWeight: FontWeight.w800, fontSize: R.sp(context, 14)),
+                    _permissionStatus.isPermanentlyDenied
+                        ? 'Open Settings'
+                        : 'Turn on microphone',
+                    style: AppTypography.label(context).copyWith(
+                        color: (Theme.of(context).brightness == Brightness.dark
+                            ? Theme.of(context).colorScheme.onSurface
+                            : AppColors.deepCharcoal),
+                        fontWeight: FontWeight.w800,
+                        fontSize: R.sp(context, 14)),
                   ),
                 ),
               ),
-            if (!_permissionStatus.isGranted) SizedBox(height: R.h(context, 24)),
+            if (!_permissionStatus.isGranted)
+              SizedBox(height: R.h(context, 24)),
             Text(
               'You can always turn it off in permissions settings.\n\nYour audio is transcribed in the cloud then automatically deleted. We store and use the transcripts as described in our Privacy Notice.',
               textAlign: TextAlign.center,

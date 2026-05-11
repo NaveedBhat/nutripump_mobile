@@ -18,6 +18,10 @@ class AnimatedEnter extends StatelessWidget {
     return child
         .animate(delay: delay)
         .fadeIn(duration: 500.ms, curve: Curves.easeOut)
-        .slide(begin: offset, end: Offset.zero, duration: 500.ms, curve: Curves.easeOut);
+        .slide(
+            begin: offset,
+            end: Offset.zero,
+            duration: 500.ms,
+            curve: Curves.easeOut);
   }
 }

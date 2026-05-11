@@ -18,9 +18,13 @@ class OrderDetailScreen extends ConsumerWidget {
     final orderAsync = ref.watch(orderByIdProvider(id));
 
     return Scaffold(
-      backgroundColor: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : AppColors.backgroundLight),
+      backgroundColor: (Theme.of(context).brightness == Brightness.dark
+          ? Theme.of(context).scaffoldBackgroundColor
+          : AppColors.backgroundLight),
       appBar: AppBar(
-        backgroundColor: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : Colors.white),
+        backgroundColor: (Theme.of(context).brightness == Brightness.dark
+            ? Theme.of(context).scaffoldBackgroundColor
+            : Colors.white),
         elevation: 0,
         surfaceTintColor: Colors.transparent,
         centerTitle: true,
@@ -39,7 +43,8 @@ class OrderDetailScreen extends ConsumerWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(Icons.search_off_rounded, size: 48, color: AppColors.neutralGold),
+                  const Icon(Icons.search_off_rounded,
+                      size: 48, color: AppColors.neutralGold),
                   const SizedBox(height: 12),
                   Text('Order not found', style: AppTypography.h3(context)),
                 ],
@@ -86,11 +91,15 @@ class _OrderDetailBody extends ConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(formatOrderId(order.id),
-                          style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: R.sp(context, 15))),
+                          style: AppTypography.bodySM(context).copyWith(
+                              fontWeight: FontWeight.w800,
+                              fontSize: R.sp(context, 15))),
                       SizedBox(height: R.h(context, 4)),
                       Text(
                         'Placed on ${_formatDate(order.createdAt)}',
-                        style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, fontSize: R.sp(context, 12)),
+                        style: AppTypography.bodySM(context).copyWith(
+                            color: AppColors.neutralGold,
+                            fontSize: R.sp(context, 12)),
                       ),
                     ],
                   ),
@@ -99,25 +108,54 @@ class _OrderDetailBody extends ConsumerWidget {
               ],
             ),
           ),
-          
+
           // Cancellation countdown label
-          if (order.canCancel && _isWithinWindow(order.createdAt, ref.watch(storeSettingsProvider).valueOrNull?.cancellationWindowHours ?? 24))
+          if (order.canCancel &&
+              _isWithinWindow(
+                  order.createdAt,
+                  ref
+                          .watch(storeSettingsProvider)
+                          .valueOrNull
+                          ?.cancellationWindowHours ??
+                      24))
             Padding(
-              padding: EdgeInsets.only(top: R.h(context, 12), left: R.w(context, 4)),
+              padding:
+                  EdgeInsets.only(top: R.h(context, 12), left: R.w(context, 4)),
               child: _TimeRemainingLabel(
                 icon: Icons.access_time_rounded,
-                text: _getCancelWithinText(order.createdAt, ref.watch(storeSettingsProvider).valueOrNull?.cancellationWindowHours ?? 24),
+                text: _getCancelWithinText(
+                    order.createdAt,
+                    ref
+                            .watch(storeSettingsProvider)
+                            .valueOrNull
+                            ?.cancellationWindowHours ??
+                        24),
                 color: Colors.amber.shade700,
               ),
             ),
 
           // Return countdown label
-          if (order.status == OrderStatus.delivered && order.canReturn && _isWithinReturnWindow(order.updatedAt, ref.watch(storeSettingsProvider).valueOrNull?.returnWindowDays ?? 5))
+          if (order.status == OrderStatus.delivered &&
+              order.canReturn &&
+              _isWithinReturnWindow(
+                  order.updatedAt,
+                  ref
+                          .watch(storeSettingsProvider)
+                          .valueOrNull
+                          ?.returnWindowDays ??
+                      5))
             Padding(
-              padding: EdgeInsets.only(top: R.h(context, 12), left: R.w(context, 4)),
+              padding:
+                  EdgeInsets.only(top: R.h(context, 12), left: R.w(context, 4)),
               child: _TimeRemainingLabel(
                 icon: Icons.access_time_rounded,
-                text: _getReturnWithinText(order.updatedAt, ref.watch(storeSettingsProvider).valueOrNull?.returnWindowDays ?? 5),
+                text: _getReturnWithinText(
+                    order.updatedAt,
+                    ref
+                            .watch(storeSettingsProvider)
+                            .valueOrNull
+                            ?.returnWindowDays ??
+                        5),
                 color: Colors.amber.shade700,
               ),
             ),
@@ -129,12 +167,16 @@ class _OrderDetailBody extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Order Progress', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: R.sp(context, 14))),
+                Text('Order Progress',
+                    style: AppTypography.bodySM(context).copyWith(
+                        fontWeight: FontWeight.w800,
+                        fontSize: R.sp(context, 14))),
                 SizedBox(height: R.h(context, 20)),
                 if (isCancelled)
                   _CancelledBanner(order: order)
                 else
-                  _TrackingTimeline(currentIndex: currentIndex, steps: _steps, order: order),
+                  _TrackingTimeline(
+                      currentIndex: currentIndex, steps: _steps, order: order),
               ],
             ),
           ),
@@ -145,15 +187,20 @@ class _OrderDetailBody extends ConsumerWidget {
             _SectionCard(
               child: Row(
                 children: [
-                  Icon(Icons.local_shipping_outlined, size: R.sp(context, 20), color: AppColors.primary),
+                  Icon(Icons.local_shipping_outlined,
+                      size: R.sp(context, 20), color: AppColors.primary),
                   SizedBox(width: R.w(context, 12)),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Tracking Number', style: AppTypography.label(context).copyWith(fontSize: R.sp(context, 10))),
+                        Text('Tracking Number',
+                            style: AppTypography.label(context)
+                                .copyWith(fontSize: R.sp(context, 10))),
                         SizedBox(height: R.h(context, 2)),
-                        Text(order.trackingNumber!, style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700)),
+                        Text(order.trackingNumber!,
+                            style: AppTypography.bodySM(context)
+                                .copyWith(fontWeight: FontWeight.w700)),
                       ],
                     ),
                   ),
@@ -168,7 +215,10 @@ class _OrderDetailBody extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Items Ordered', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: R.sp(context, 14))),
+                Text('Items Ordered',
+                    style: AppTypography.bodySM(context).copyWith(
+                        fontWeight: FontWeight.w800,
+                        fontSize: R.sp(context, 14))),
                 SizedBox(height: R.h(context, 12)),
                 ...order.items.map((item) => _ItemRow(item: item)),
               ],
@@ -181,18 +231,35 @@ class _OrderDetailBody extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Price Breakdown', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: R.sp(context, 14))),
+                Text('Price Breakdown',
+                    style: AppTypography.bodySM(context).copyWith(
+                        fontWeight: FontWeight.w800,
+                        fontSize: R.sp(context, 14))),
                 SizedBox(height: R.h(context, 12)),
-                _PriceRow(label: 'Subtotal', value: formatPrice(order.subtotal)),
-                _PriceRow(label: 'GST (${order.subtotal > 0 ? (order.gst / order.subtotal * 100).round() : 0}%)', value: formatPrice(order.gst)),
-                _PriceRow(label: 'Shipping', value: order.shipping == 0 ? 'Free' : formatPrice(order.shipping)),
+                _PriceRow(
+                    label: 'Subtotal', value: formatPrice(order.subtotal)),
+                _PriceRow(
+                    label:
+                        'GST (${order.subtotal > 0 ? (order.gst / order.subtotal * 100).round() : 0}%)',
+                    value: formatPrice(order.gst)),
+                _PriceRow(
+                    label: 'Shipping',
+                    value: order.shipping == 0
+                        ? 'Free'
+                        : formatPrice(order.shipping)),
                 if (order.discount != null && order.discount! > 0)
-                  _PriceRow(label: 'Discount (${order.appliedPromoCode ?? ""})', value: '− ${formatPrice(order.discount!)}', isDiscount: true),
+                  _PriceRow(
+                      label: 'Discount (${order.appliedPromoCode ?? ""})',
+                      value: '− ${formatPrice(order.discount!)}',
+                      isDiscount: true),
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: R.h(context, 8)),
                   child: const Divider(color: AppColors.borderLight),
                 ),
-                _PriceRow(label: 'Total', value: formatPrice(order.total), isBold: true),
+                _PriceRow(
+                    label: 'Total',
+                    value: formatPrice(order.total),
+                    isBold: true),
               ],
             ),
           ),
@@ -203,14 +270,19 @@ class _OrderDetailBody extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Delivery Address', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: R.sp(context, 14))),
+                Text('Delivery Address',
+                    style: AppTypography.bodySM(context).copyWith(
+                        fontWeight: FontWeight.w800,
+                        fontSize: R.sp(context, 14))),
                 SizedBox(height: R.h(context, 10)),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
                       padding: EdgeInsets.only(top: R.h(context, 2)),
-                      child: Icon(Icons.location_on_outlined, size: R.sp(context, 18), color: AppColors.neutralGold),
+                      child: Icon(Icons.location_on_outlined,
+                          size: R.sp(context, 18),
+                          color: AppColors.neutralGold),
                     ),
                     SizedBox(width: R.w(context, 8)),
                     Expanded(
@@ -218,13 +290,20 @@ class _OrderDetailBody extends ConsumerWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(order.address.fullName,
-                              style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: R.sp(context, 13))),
+                              style: AppTypography.bodySM(context).copyWith(
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: R.sp(context, 13))),
                           SizedBox(height: R.h(context, 2)),
                           Text(order.address.phone,
-                              style: AppTypography.bodySM(context).copyWith(fontSize: R.sp(context, 12), color: AppColors.neutralGold)),
+                              style: AppTypography.bodySM(context).copyWith(
+                                  fontSize: R.sp(context, 12),
+                                  color: AppColors.neutralGold)),
                           SizedBox(height: R.h(context, 4)),
                           Text(order.address.oneLineAddress,
-                              style: AppTypography.bodySM(context).copyWith(fontSize: R.sp(context, 12), color: AppColors.neutralGold, height: 1.5)),
+                              style: AppTypography.bodySM(context).copyWith(
+                                  fontSize: R.sp(context, 12),
+                                  color: AppColors.neutralGold,
+                                  height: 1.5)),
                         ],
                       ),
                     ),
@@ -251,29 +330,41 @@ class _OrderDetailBody extends ConsumerWidget {
                     onPressed: () => context.push('/shop'),
                     style: OutlinedButton.styleFrom(
                       foregroundColor: AppColors.deepCharcoal,
-                      side: BorderSide(color: AppColors.neutralGold.withValues(alpha: 0.3)),
-                      backgroundColor: AppColors.neutralGold.withValues(alpha: 0.05),
+                      side: BorderSide(
+                          color: AppColors.neutralGold.withValues(alpha: 0.3)),
+                      backgroundColor:
+                          AppColors.neutralGold.withValues(alpha: 0.05),
                       padding: EdgeInsets.zero,
                       minimumSize: Size(0, R.h(context, 32)),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(R.w(context, 6))),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(R.w(context, 6))),
                     ),
-                    child: Text('Buy Again', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: R.sp(context, 10))),
+                    child: Text('Buy Again',
+                        style: AppTypography.bodySM(context).copyWith(
+                            fontWeight: FontWeight.w700,
+                            fontSize: R.sp(context, 10))),
                   ),
                 ),
                 if (order.canReturn) ...[
                   SizedBox(width: R.w(context, 12)),
                   Expanded(
                     child: ElevatedButton(
-                      onPressed: () => context.push('/account/returns?orderId=${order.id}'),
+                      onPressed: () =>
+                          context.push('/account/returns?orderId=${order.id}'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.primary,
                         foregroundColor: AppColors.deepCharcoal,
                         padding: EdgeInsets.zero,
                         minimumSize: Size(0, R.h(context, 32)),
                         elevation: 0,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(R.w(context, 6))),
+                        shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.circular(R.w(context, 6))),
                       ),
-                      child: Text('Return Item', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: R.sp(context, 10))),
+                      child: Text('Return Item',
+                          style: AppTypography.bodySM(context).copyWith(
+                              fontWeight: FontWeight.w700,
+                              fontSize: R.sp(context, 10))),
                     ),
                   ),
                 ],
@@ -288,13 +379,19 @@ class _OrderDetailBody extends ConsumerWidget {
                     onPressed: () => context.push('/contact'),
                     style: OutlinedButton.styleFrom(
                       foregroundColor: AppColors.deepCharcoal,
-                      side: BorderSide(color: AppColors.neutralGold.withValues(alpha: 0.3)),
-                      backgroundColor: AppColors.neutralGold.withValues(alpha: 0.05),
+                      side: BorderSide(
+                          color: AppColors.neutralGold.withValues(alpha: 0.3)),
+                      backgroundColor:
+                          AppColors.neutralGold.withValues(alpha: 0.05),
                       padding: EdgeInsets.zero,
                       minimumSize: Size(0, R.h(context, 32)),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(R.w(context, 6))),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(R.w(context, 6))),
                     ),
-                    child: Text('Contact', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: R.sp(context, 10))),
+                    child: Text('Contact',
+                        style: AppTypography.bodySM(context).copyWith(
+                            fontWeight: FontWeight.w700,
+                            fontSize: R.sp(context, 10))),
                   ),
                 ),
                 if (order.canCancel) ...[
@@ -308,9 +405,15 @@ class _OrderDetailBody extends ConsumerWidget {
                         backgroundColor: Colors.red.withValues(alpha: 0.05),
                         padding: EdgeInsets.zero,
                         minimumSize: Size(0, R.h(context, 32)),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(R.w(context, 6))),
+                        shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.circular(R.w(context, 6))),
                       ),
-                      child: Text('Cancel', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, color: Colors.red, fontSize: R.sp(context, 10))),
+                      child: Text('Cancel',
+                          style: AppTypography.bodySM(context).copyWith(
+                              fontWeight: FontWeight.w700,
+                              color: Colors.red,
+                              fontSize: R.sp(context, 10))),
                     ),
                   ),
                 ],
@@ -337,7 +440,9 @@ class _OrderDetailBody extends ConsumerWidget {
     if (remainingMs <= 0) return 'Cancellation window expired';
     final remainHrs = remainingMs ~/ (1000 * 60 * 60);
     final remainMins = (remainingMs % (1000 * 60 * 60)) ~/ (1000 * 60);
-    return remainHrs > 0 ? 'Cancel within ${remainHrs}h ${remainMins}m' : 'Cancel within ${remainMins}m';
+    return remainHrs > 0
+        ? 'Cancel within ${remainHrs}h ${remainMins}m'
+        : 'Cancel within ${remainMins}m';
   }
 
   String _getReturnWithinText(DateTime updatedAt, int returnDays) {
@@ -361,8 +466,20 @@ class _OrderDetailBody extends ConsumerWidget {
   }
 
   String _formatDate(DateTime dt) {
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-                    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const months = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec'
+    ];
     return '${dt.day} ${months[dt.month - 1]} ${dt.year}';
   }
 }
@@ -401,9 +518,16 @@ class _TrackingTimeline extends StatelessWidget {
   final int currentIndex;
   final List<OrderStatus> steps;
   final Order order;
-  const _TrackingTimeline({required this.currentIndex, required this.steps, required this.order});
+  const _TrackingTimeline(
+      {required this.currentIndex, required this.steps, required this.order});
 
-  static const _labels = ['Order Placed', 'Confirmed', 'Processing', 'Shipped', 'Delivered'];
+  static const _labels = [
+    'Order Placed',
+    'Confirmed',
+    'Processing',
+    'Shipped',
+    'Delivered'
+  ];
   static const _icons = [
     Icons.receipt_outlined,
     Icons.check_circle_outline,
@@ -435,25 +559,36 @@ class _TrackingTimeline extends StatelessWidget {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: isDone
-                            ? (isActive ? AppColors.primary : AppColors.primary.withValues(alpha: 0.7))
+                            ? (isActive
+                                ? AppColors.primary
+                                : AppColors.primary.withValues(alpha: 0.7))
                             : Colors.white,
                         border: Border.all(
-                          color: isDone ? AppColors.primary : AppColors.borderLight,
+                          color: isDone
+                              ? AppColors.primary
+                              : AppColors.borderLight,
                           width: isActive ? 2.5 : 1.5,
                         ),
                       ),
                       child: Icon(
                         _icons[i],
                         size: R.sp(context, 16),
-                        color: isDone ? (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal) : AppColors.neutralGold,
+                        color: isDone
+                            ? (Theme.of(context).brightness == Brightness.dark
+                                ? Theme.of(context).colorScheme.onSurface
+                                : AppColors.deepCharcoal)
+                            : AppColors.neutralGold,
                       ),
                     ),
                     if (!isLast)
                       Expanded(
                         child: Container(
                           width: R.w(context, 2),
-                          margin: EdgeInsets.symmetric(vertical: R.h(context, 4)),
-                          color: isDone ? AppColors.primary.withValues(alpha: 0.4) : AppColors.borderLight,
+                          margin:
+                              EdgeInsets.symmetric(vertical: R.h(context, 4)),
+                          color: isDone
+                              ? AppColors.primary.withValues(alpha: 0.4)
+                              : AppColors.borderLight,
                         ),
                       ),
                   ],
@@ -463,7 +598,8 @@ class _TrackingTimeline extends StatelessWidget {
               // Label
               Expanded(
                 child: Padding(
-                  padding: EdgeInsets.only(bottom: isLast ? 0 : R.h(context, 20)),
+                  padding:
+                      EdgeInsets.only(bottom: isLast ? 0 : R.h(context, 20)),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -471,15 +607,24 @@ class _TrackingTimeline extends StatelessWidget {
                       Text(
                         _labels[i],
                         style: AppTypography.bodySM(context).copyWith(
-                          fontWeight: isActive ? FontWeight.w800 : FontWeight.w600,
+                          fontWeight:
+                              isActive ? FontWeight.w800 : FontWeight.w600,
                           fontSize: R.sp(context, 13),
-                          color: isDone ? (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal) : AppColors.neutralGold,
+                          color: isDone
+                              ? (Theme.of(context).brightness == Brightness.dark
+                                  ? Theme.of(context).colorScheme.onSurface
+                                  : AppColors.deepCharcoal)
+                              : AppColors.neutralGold,
                         ),
                       ),
-                      if (isActive && order.status == OrderStatus.shipped && order.trackingNumber != null) ...[
+                      if (isActive &&
+                          order.status == OrderStatus.shipped &&
+                          order.trackingNumber != null) ...[
                         SizedBox(height: R.h(context, 2)),
                         Text('AWB: ${order.trackingNumber}',
-                            style: AppTypography.bodySM(context).copyWith(fontSize: R.sp(context, 11), color: AppColors.neutralGold)),
+                            style: AppTypography.bodySM(context).copyWith(
+                                fontSize: R.sp(context, 11),
+                                color: AppColors.neutralGold)),
                       ],
                     ],
                   ),
@@ -511,22 +656,29 @@ class _CancelledBanner extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(Icons.cancel_outlined, size: R.sp(context, 20), color: AppColors.error),
+          Icon(Icons.cancel_outlined,
+              size: R.sp(context, 20), color: AppColors.error),
           SizedBox(width: R.w(context, 10)),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Order Cancelled', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, color: AppColors.error)),
+                Text('Order Cancelled',
+                    style: AppTypography.bodySM(context).copyWith(
+                        fontWeight: FontWeight.w800, color: AppColors.error)),
                 if (order.cancellationReason != null) ...[
                   SizedBox(height: R.h(context, 4)),
                   Text('Reason: ${order.cancellationReason}',
-                      style: AppTypography.bodySM(context).copyWith(fontSize: R.sp(context, 12), color: AppColors.neutralGold)),
+                      style: AppTypography.bodySM(context).copyWith(
+                          fontSize: R.sp(context, 12),
+                          color: AppColors.neutralGold)),
                 ],
                 if (order.cancelledBy != null) ...[
                   SizedBox(height: R.h(context, 2)),
                   Text('Cancelled by: ${order.cancelledBy}',
-                      style: AppTypography.bodySM(context).copyWith(fontSize: R.sp(context, 11), color: AppColors.neutralGold)),
+                      style: AppTypography.bodySM(context).copyWith(
+                          fontSize: R.sp(context, 11),
+                          color: AppColors.neutralGold)),
                 ],
               ],
             ),
@@ -544,11 +696,27 @@ class _ReturnStatusCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final (color, icon, label) = switch (order.returnStatus) {
-      ReturnStatus.requested => (Colors.orange, Icons.pending_outlined, 'Return Requested'),
-      ReturnStatus.approved  => (AppColors.success, Icons.check_circle_outline, 'Return Approved'),
-      ReturnStatus.rejected  => (AppColors.error, Icons.cancel_outlined, 'Return Rejected'),
-      ReturnStatus.refunded  => (AppColors.success, Icons.currency_rupee_rounded, 'Refunded'),
-      ReturnStatus.none      => (AppColors.neutralGold, Icons.info_outline, ''),
+      ReturnStatus.requested => (
+          Colors.orange,
+          Icons.pending_outlined,
+          'Return Requested'
+        ),
+      ReturnStatus.approved => (
+          AppColors.success,
+          Icons.check_circle_outline,
+          'Return Approved'
+        ),
+      ReturnStatus.rejected => (
+          AppColors.error,
+          Icons.cancel_outlined,
+          'Return Rejected'
+        ),
+      ReturnStatus.refunded => (
+          AppColors.success,
+          Icons.currency_rupee_rounded,
+          'Refunded'
+        ),
+      ReturnStatus.none => (AppColors.neutralGold, Icons.info_outline, ''),
     };
 
     return Row(
@@ -560,11 +728,17 @@ class _ReturnStatusCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(label, style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, color: color, fontSize: R.sp(context, 14))),
+              Text(label,
+                  style: AppTypography.bodySM(context).copyWith(
+                      fontWeight: FontWeight.w800,
+                      color: color,
+                      fontSize: R.sp(context, 14))),
               if (order.returnReason != null) ...[
                 SizedBox(height: R.h(context, 4)),
                 Text('Reason: ${order.returnReason}',
-                    style: AppTypography.bodySM(context).copyWith(fontSize: R.sp(context, 12), color: AppColors.neutralGold)),
+                    style: AppTypography.bodySM(context).copyWith(
+                        fontSize: R.sp(context, 12),
+                        color: AppColors.neutralGold)),
               ],
             ],
           ),
@@ -581,18 +755,28 @@ class _StatusBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final (bg, text) = switch (status) {
-      OrderStatus.pending    => (Colors.orange.shade50, Colors.orange.shade700),
-      OrderStatus.confirmed  => (Colors.blue.shade50, Colors.blue.shade700),
+      OrderStatus.pending => (Colors.orange.shade50, Colors.orange.shade700),
+      OrderStatus.confirmed => (Colors.blue.shade50, Colors.blue.shade700),
       OrderStatus.processing => (Colors.purple.shade50, Colors.purple.shade700),
-      OrderStatus.shipped    => (Colors.indigo.shade50, Colors.indigo.shade700),
-      OrderStatus.delivered  => (AppColors.success.withValues(alpha: 0.1), AppColors.success),
-      OrderStatus.cancelled  => (AppColors.error.withValues(alpha: 0.08), AppColors.error),
-      OrderStatus.refunded   => (Colors.teal.shade50, Colors.teal.shade700),
+      OrderStatus.shipped => (Colors.indigo.shade50, Colors.indigo.shade700),
+      OrderStatus.delivered => (
+          AppColors.success.withValues(alpha: 0.1),
+          AppColors.success
+        ),
+      OrderStatus.cancelled => (
+          AppColors.error.withValues(alpha: 0.08),
+          AppColors.error
+        ),
+      OrderStatus.refunded => (Colors.teal.shade50, Colors.teal.shade700),
     };
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: R.w(context, 10), vertical: R.h(context, 4)),
-      decoration: BoxDecoration(color: bg, borderRadius: BorderRadius.circular(R.w(context, 20))),
-      child: Text(status.label, style: AppTypography.label(context).copyWith(fontSize: R.sp(context, 10), color: text)),
+      padding: EdgeInsets.symmetric(
+          horizontal: R.w(context, 10), vertical: R.h(context, 4)),
+      decoration: BoxDecoration(
+          color: bg, borderRadius: BorderRadius.circular(R.w(context, 20))),
+      child: Text(status.label,
+          style: AppTypography.label(context)
+              .copyWith(fontSize: R.sp(context, 10), color: text)),
     );
   }
 }
@@ -607,10 +791,20 @@ class _SectionCard extends StatelessWidget {
       width: double.infinity,
       padding: EdgeInsets.all(R.w(context, 16)),
       decoration: BoxDecoration(
-        color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
+        color: Theme.of(context).brightness == Brightness.dark
+            ? AppColors.surfaceDark
+            : Colors.white,
         borderRadius: BorderRadius.circular(R.w(context, 12)),
         border: Border.all(color: AppColors.borderLight),
-        boxShadow: [BoxShadow(color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal).withValues(alpha: 0.02), blurRadius: 6, offset: const Offset(0, 2))],
+        boxShadow: [
+          BoxShadow(
+              color: (Theme.of(context).brightness == Brightness.dark
+                      ? Theme.of(context).colorScheme.onSurface
+                      : AppColors.deepCharcoal)
+                  .withValues(alpha: 0.02),
+              blurRadius: 6,
+              offset: const Offset(0, 2))
+        ],
       ),
       child: child,
     );
@@ -631,7 +825,10 @@ class _ItemRow extends StatelessWidget {
           ClipRRect(
             borderRadius: BorderRadius.circular(R.w(context, 8)),
             child: item.product.primaryImage.isNotEmpty
-                ? Image.network(item.product.primaryImage, width: R.w(context, 52), height: R.w(context, 52), fit: BoxFit.cover,
+                ? Image.network(item.product.primaryImage,
+                    width: R.w(context, 52),
+                    height: R.w(context, 52),
+                    fit: BoxFit.cover,
                     errorBuilder: (_, __, ___) => _placeholder(context))
                 : _placeholder(context),
           ),
@@ -641,34 +838,45 @@ class _ItemRow extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(item.product.name,
-                    style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: R.sp(context, 13)),
-                    maxLines: 2, overflow: TextOverflow.ellipsis),
+                    style: AppTypography.bodySM(context).copyWith(
+                        fontWeight: FontWeight.w700,
+                        fontSize: R.sp(context, 13)),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis),
                 SizedBox(height: R.h(context, 2)),
-                Text(
-                    () {
-                      final w = (item.selectedWeight?.isNotEmpty == true
-                          ? item.selectedWeight!
-                          : item.product.weight.isNotEmpty
-                              ? item.product.weight
-                              : null);
-                      return w != null ? '$w · Qty: ${item.quantity}' : 'Qty: ${item.quantity}';
-                    }(),
-                    style: AppTypography.bodySM(context).copyWith(fontSize: R.sp(context, 12), color: AppColors.neutralGold)),
+                Text(() {
+                  final w = (item.selectedWeight?.isNotEmpty == true
+                      ? item.selectedWeight!
+                      : item.product.weight.isNotEmpty
+                          ? item.product.weight
+                          : null);
+                  return w != null
+                      ? '$w · Qty: ${item.quantity}'
+                      : 'Qty: ${item.quantity}';
+                }(),
+                    style: AppTypography.bodySM(context).copyWith(
+                        fontSize: R.sp(context, 12),
+                        color: AppColors.neutralGold)),
               ],
             ),
           ),
           Text(formatPrice(item.effectivePrice * item.quantity),
-              style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: R.sp(context, 13))),
+              style: AppTypography.bodySM(context).copyWith(
+                  fontWeight: FontWeight.w700, fontSize: R.sp(context, 13))),
         ],
       ),
     );
   }
 
   Widget _placeholder(BuildContext context) => Container(
-    width: R.w(context, 52), height: R.w(context, 52),
-    color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : AppColors.backgroundLight),
-    child: Icon(Icons.image_outlined, size: R.sp(context, 24), color: AppColors.neutralGold),
-  );
+        width: R.w(context, 52),
+        height: R.w(context, 52),
+        color: (Theme.of(context).brightness == Brightness.dark
+            ? Theme.of(context).scaffoldBackgroundColor
+            : AppColors.backgroundLight),
+        child: Icon(Icons.image_outlined,
+            size: R.sp(context, 24), color: AppColors.neutralGold),
+      );
 }
 
 class _PriceRow extends StatelessWidget {
@@ -676,7 +884,11 @@ class _PriceRow extends StatelessWidget {
   final String value;
   final bool isBold;
   final bool isDiscount;
-  const _PriceRow({required this.label, required this.value, this.isBold = false, this.isDiscount = false});
+  const _PriceRow(
+      {required this.label,
+      required this.value,
+      this.isBold = false,
+      this.isDiscount = false});
 
   @override
   Widget build(BuildContext context) {
@@ -685,16 +897,26 @@ class _PriceRow extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label, style: AppTypography.bodySM(context).copyWith(
-            fontSize: R.sp(context, 13),
-            fontWeight: isBold ? FontWeight.w800 : FontWeight.normal,
-            color: isBold ? (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal) : AppColors.neutralGold,
-          )),
-          Text(value, style: AppTypography.bodySM(context).copyWith(
-            fontSize: R.sp(context, 13),
-            fontWeight: isBold ? FontWeight.w800 : FontWeight.w600,
-            color: isDiscount ? AppColors.success : (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal),
-          )),
+          Text(label,
+              style: AppTypography.bodySM(context).copyWith(
+                fontSize: R.sp(context, 13),
+                fontWeight: isBold ? FontWeight.w800 : FontWeight.normal,
+                color: isBold
+                    ? (Theme.of(context).brightness == Brightness.dark
+                        ? Theme.of(context).colorScheme.onSurface
+                        : AppColors.deepCharcoal)
+                    : AppColors.neutralGold,
+              )),
+          Text(value,
+              style: AppTypography.bodySM(context).copyWith(
+                fontSize: R.sp(context, 13),
+                fontWeight: isBold ? FontWeight.w800 : FontWeight.w600,
+                color: isDiscount
+                    ? AppColors.success
+                    : (Theme.of(context).brightness == Brightness.dark
+                        ? Theme.of(context).colorScheme.onSurface
+                        : AppColors.deepCharcoal),
+              )),
         ],
       ),
     );
@@ -716,17 +938,22 @@ class _CancelOrderDialogState extends ConsumerState<_CancelOrderDialog> {
     setState(() => _isLoading = true);
     try {
       final service = ref.read(orderServiceProvider);
-      await service.cancelOrder(widget.order.id, 'User cancelled from mobile app');
+      await service.cancelOrder(
+          widget.order.id, 'User cancelled from mobile app');
       if (mounted) {
         Navigator.of(context).pop();
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(duration: Duration(milliseconds: 2000), content: Text('Order cancelled successfully.')),
+          const SnackBar(
+              duration: Duration(milliseconds: 2000),
+              content: Text('Order cancelled successfully.')),
         );
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(duration: const Duration(milliseconds: 2000), content: Text('Failed to cancel order: $e')),
+          SnackBar(
+              duration: const Duration(milliseconds: 2000),
+              content: Text('Failed to cancel order: $e')),
         );
       }
     } finally {
@@ -748,25 +975,37 @@ class _CancelOrderDialogState extends ConsumerState<_CancelOrderDialog> {
           style: OutlinedButton.styleFrom(
             foregroundColor: AppColors.deepCharcoal,
             side: const BorderSide(color: AppColors.borderLight),
-            padding: EdgeInsets.symmetric(horizontal: R.w(context, 16), vertical: R.h(context, 8)),
+            padding: EdgeInsets.symmetric(
+                horizontal: R.w(context, 16), vertical: R.h(context, 8)),
             minimumSize: Size(0, R.h(context, 36)),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(R.w(context, 8))),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(R.w(context, 8))),
           ),
-          child: Text('Keep Order', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700)),
+          child: Text('Keep Order',
+              style: AppTypography.bodySM(context)
+                  .copyWith(fontWeight: FontWeight.w700)),
         ),
         ElevatedButton(
           onPressed: _isLoading ? null : _handleCancel,
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.red,
             foregroundColor: Colors.white,
-            padding: EdgeInsets.symmetric(horizontal: R.w(context, 16), vertical: R.h(context, 8)),
+            padding: EdgeInsets.symmetric(
+                horizontal: R.w(context, 16), vertical: R.h(context, 8)),
             minimumSize: Size(0, R.h(context, 36)),
             elevation: 0,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(R.w(context, 8))),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(R.w(context, 8))),
           ),
           child: _isLoading
-              ? SizedBox(width: R.w(context, 16), height: R.w(context, 16), child: const CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
-              : Text('Confirm Cancel', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, color: Colors.white)),
+              ? SizedBox(
+                  width: R.w(context, 16),
+                  height: R.w(context, 16),
+                  child: const CircularProgressIndicator(
+                      strokeWidth: 2, color: Colors.white))
+              : Text('Confirm Cancel',
+                  style: AppTypography.bodySM(context).copyWith(
+                      fontWeight: FontWeight.w700, color: Colors.white)),
         ),
       ],
     );

@@ -30,7 +30,8 @@ class CartState {
   double get gst => subtotal * gstRate;
   double get discount => _calcDiscount();
   double get shipping => subtotal >= freeThreshold ? 0 : shippingCost;
-  double get total => (subtotal + gst + shipping - discount).clamp(0, double.infinity);
+  double get total =>
+      (subtotal + gst + shipping - discount).clamp(0, double.infinity);
   int get itemCount => items.fold(0, (s, i) => s + i.quantity);
 
   double _calcDiscount() {
@@ -50,14 +51,15 @@ class CartState {
     double? freeThreshold,
     double? shippingCost,
     bool? isFirstOrder,
-  }) => CartState(
-    items: items ?? this.items,
-    appliedPromo: clearPromo ? null : (appliedPromo ?? this.appliedPromo),
-    gstRate: gstRate ?? this.gstRate,
-    freeThreshold: freeThreshold ?? this.freeThreshold,
-    shippingCost: shippingCost ?? this.shippingCost,
-    isFirstOrder: isFirstOrder ?? this.isFirstOrder,
-  );
+  }) =>
+      CartState(
+        items: items ?? this.items,
+        appliedPromo: clearPromo ? null : (appliedPromo ?? this.appliedPromo),
+        gstRate: gstRate ?? this.gstRate,
+        freeThreshold: freeThreshold ?? this.freeThreshold,
+        shippingCost: shippingCost ?? this.shippingCost,
+        isFirstOrder: isFirstOrder ?? this.isFirstOrder,
+      );
 }
 
 // ── Cart Notifier ─────────────────────────────────────────────
@@ -75,21 +77,21 @@ class CartNotifier extends StateNotifier<CartState> {
 
     _ref.listen(authStateProvider, (prev, next) {
       final user = next.value;
-      
+
       final isFirst = user == null || user.totalOrders == 0;
       if (state.isFirstOrder != isFirst) {
-         state = state.copyWith(isFirstOrder: isFirst);
+        state = state.copyWith(isFirstOrder: isFirst);
       }
 
       if (user?.uid != _userId) {
         final wasLoggedIn = _userId != null;
         _userId = user?.uid;
-        
+
         // If the user signed out, clear their cart so the guest starts fresh
         if (wasLoggedIn && _userId == null) {
           clearCart();
         }
-        
+
         _setupSync();
       }
     }, fireImmediately: true);
@@ -109,42 +111,50 @@ class CartNotifier extends StateNotifier<CartState> {
   void _setupSync() {
     _sub?.cancel();
     if (_userId == null) return;
-    
+
     bool isFirstSnapshot = true;
-    
-    _sub = FirebaseFirestore.instance.collection('carts').doc(_userId!).snapshots().listen((snap) {
+
+    _sub = FirebaseFirestore.instance
+        .collection('carts')
+        .doc(_userId!)
+        .snapshots()
+        .listen((snap) {
       final data = snap.data();
-      final rawItems = data != null ? (data['items'] as List<dynamic>? ?? []) : [];
-      
-      final cloudItems = rawItems.map((item) {
-        try {
-           return CartItem.fromMap(item as Map<String, dynamic>);
-        } catch (_) {
-           return null;
-        }
-      }).whereType<CartItem>().toList();
+      final rawItems =
+          data != null ? (data['items'] as List<dynamic>? ?? []) : [];
+
+      final cloudItems = rawItems
+          .map((item) {
+            try {
+              return CartItem.fromMap(item as Map<String, dynamic>);
+            } catch (_) {
+              return null;
+            }
+          })
+          .whereType<CartItem>()
+          .toList();
 
       if (isFirstSnapshot) {
-         isFirstSnapshot = false;
-         
-         // Merge local guest items with cloud items
-         final guestItems = List<CartItem>.from(state.items);
-         final merged = [...cloudItems];
-         
-         for (var guest in guestItems) {
-            final exists = guest.isGiftBox 
-               ? cloudItems.any((ci) => ci.cartItemId == guest.cartItemId)
-               : cloudItems.any((ci) =>
-                   ci.product.id == guest.product.id &&
-                   (ci.selectedWeight ?? ci.product.weight) ==
-                       (guest.selectedWeight ?? guest.product.weight));
-            if (!exists) merged.add(guest);
-         }
-         
-         state = state.copyWith(items: merged);
-         _debouncedPush(immediate: true);
+        isFirstSnapshot = false;
+
+        // Merge local guest items with cloud items
+        final guestItems = List<CartItem>.from(state.items);
+        final merged = [...cloudItems];
+
+        for (var guest in guestItems) {
+          final exists = guest.isGiftBox
+              ? cloudItems.any((ci) => ci.cartItemId == guest.cartItemId)
+              : cloudItems.any((ci) =>
+                  ci.product.id == guest.product.id &&
+                  (ci.selectedWeight ?? ci.product.weight) ==
+                      (guest.selectedWeight ?? guest.product.weight));
+          if (!exists) merged.add(guest);
+        }
+
+        state = state.copyWith(items: merged);
+        _debouncedPush(immediate: true);
       } else {
-         state = state.copyWith(items: cloudItems);
+        state = state.copyWith(items: cloudItems);
       }
     });
   }
@@ -152,22 +162,22 @@ class CartNotifier extends StateNotifier<CartState> {
   void _debouncedPush({bool immediate = false}) {
     _saveToHive(); // Always keep local fallback updated
     if (_userId == null) return;
-    
+
     _debounceTimer?.cancel();
-    
+
     Future<void> action() async {
       try {
         final user = _ref.read(authStateProvider).value;
         if (user == null) return;
-        
+
         await FirebaseFirestore.instance.collection('carts').doc(_userId!).set({
-           'userId': user.uid,
-           'userEmail': user.email,
-           'userName': user.displayName,
-           'items': state.items.map((i) => i.toMap()).toList(),
-           'subtotal': state.items.fold(0.0, (s, i) => s + (i.lineTotal)),
-           'status': state.items.isEmpty ? 'empty' : 'abandoned',
-           'updatedAt': FieldValue.serverTimestamp(),
+          'userId': user.uid,
+          'userEmail': user.email,
+          'userName': user.displayName,
+          'items': state.items.map((i) => i.toMap()).toList(),
+          'subtotal': state.items.fold(0.0, (s, i) => s + (i.lineTotal)),
+          'status': state.items.isEmpty ? 'empty' : 'abandoned',
+          'updatedAt': FieldValue.serverTimestamp(),
         }, SetOptions(merge: true));
       } catch (e) {
         // silently fail
@@ -233,9 +243,10 @@ class CartNotifier extends StateNotifier<CartState> {
 
     // Match by product ID + selectedWeight so different sizes are separate cart lines
     final effectiveWeight = weight ?? product.weight;
-    final idx = state.items.indexWhere(
-      (i) => i.product.id == product.id && !i.isGiftBox &&
-             (i.selectedWeight ?? i.product.weight) == effectiveWeight);
+    final idx = state.items.indexWhere((i) =>
+        i.product.id == product.id &&
+        !i.isGiftBox &&
+        (i.selectedWeight ?? i.product.weight) == effectiveWeight);
     if (idx >= 0) {
       final updated = List<CartItem>.from(state.items);
       updated[idx] = updated[idx].copyWith(
@@ -266,10 +277,15 @@ class CartNotifier extends StateNotifier<CartState> {
   }
 
   void updateQuantity(String cartItemId, int qty) {
-    if (qty <= 0) { removeItem(cartItemId); return; }
-    final updated = state.items.map(
-      (i) => i.cartItemId == cartItemId ? i.copyWith(quantity: qty) : i,
-    ).toList();
+    if (qty <= 0) {
+      removeItem(cartItemId);
+      return;
+    }
+    final updated = state.items
+        .map(
+          (i) => i.cartItemId == cartItemId ? i.copyWith(quantity: qty) : i,
+        )
+        .toList();
     state = state.copyWith(items: updated);
     _debouncedPush();
   }
@@ -326,12 +342,12 @@ class WishlistNotifier extends StateNotifier<List<Product>> {
       if (user?.uid != _userId) {
         final wasLoggedIn = _userId != null;
         _userId = user?.uid;
-        
+
         // Clear wishlist on sign out
         if (wasLoggedIn && _userId == null) {
           clear();
         }
-        
+
         _setupSync();
       }
     }, fireImmediately: true);
@@ -340,29 +356,29 @@ class WishlistNotifier extends StateNotifier<List<Product>> {
   void _setupSync() {
     _sub?.cancel();
     if (_userId == null) return;
-    
+
     final service = _ref.read(wishlistServiceProvider);
     bool isFirstSnapshot = true;
-    
+
     _sub = service.wishlistsStream(_userId!).listen((cloudItems) {
       if (isFirstSnapshot) {
-         isFirstSnapshot = false;
-         // Merge local guest items with cloud items
-         final guestItems = List<Product>.from(state);
-         final merged = [...cloudItems];
-         for (var guest in guestItems) {
-            if (!cloudItems.any((Product c) => c.id == guest.id)) {
-               merged.add(guest);
-            }
-         }
-         state = merged;
-         _saveToHive();
-         // Push merged up to cloud
-         service.saveWishlist(_userId!, merged);
+        isFirstSnapshot = false;
+        // Merge local guest items with cloud items
+        final guestItems = List<Product>.from(state);
+        final merged = [...cloudItems];
+        for (var guest in guestItems) {
+          if (!cloudItems.any((Product c) => c.id == guest.id)) {
+            merged.add(guest);
+          }
+        }
+        state = merged;
+        _saveToHive();
+        // Push merged up to cloud
+        service.saveWishlist(_userId!, merged);
       } else {
-         // Subsequent sync down
-         state = cloudItems;
-         _saveToHive();
+        // Subsequent sync down
+        state = cloudItems;
+        _saveToHive();
       }
     });
   }

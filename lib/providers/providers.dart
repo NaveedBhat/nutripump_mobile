@@ -16,14 +16,20 @@ export 'theme_provider.dart';
 
 // ── Service Providers ────────────────────────────────────────
 final authServiceProvider = Provider<AuthService>((ref) => AuthService());
-final productServiceProvider = Provider<ProductService>((ref) => ProductService());
+final productServiceProvider =
+    Provider<ProductService>((ref) => ProductService());
 final orderServiceProvider = Provider<OrderService>((ref) => OrderService());
-final categoryServiceProvider = Provider<CategoryService>((ref) => CategoryService());
-final settingsServiceProvider = Provider<SettingsService>((ref) => SettingsService());
+final categoryServiceProvider =
+    Provider<CategoryService>((ref) => CategoryService());
+final settingsServiceProvider =
+    Provider<SettingsService>((ref) => SettingsService());
 final reviewServiceProvider = Provider<ReviewService>((ref) => ReviewService());
-final addressServiceProvider = Provider<AddressService>((ref) => AddressService());
-final wishlistServiceProvider = Provider<WishlistService>((ref) => WishlistService());
-final promoCodeServiceProvider = Provider<PromoCodeService>((ref) => PromoCodeService());
+final addressServiceProvider =
+    Provider<AddressService>((ref) => AddressService());
+final wishlistServiceProvider =
+    Provider<WishlistService>((ref) => WishlistService());
+final promoCodeServiceProvider =
+    Provider<PromoCodeService>((ref) => PromoCodeService());
 final checkoutApiProvider = Provider<CheckoutApi>((ref) => CheckoutApi());
 
 // ── Auth ─────────────────────────────────────────────────────
@@ -128,8 +134,10 @@ class ShopFilters {
 class ShopFiltersNotifier extends StateNotifier<ShopFilters> {
   ShopFiltersNotifier() : super(const ShopFilters());
 
-  void setCategory(String? category) => state = state.copyWith(category: category, clearCategory: category == null);
-  void setSearchQuery(String query) => state = state.copyWith(searchQuery: query);
+  void setCategory(String? category) => state =
+      state.copyWith(category: category, clearCategory: category == null);
+  void setSearchQuery(String query) =>
+      state = state.copyWith(searchQuery: query);
   void setPriceMax(double max) => state = state.copyWith(priceMax: max);
   void toggleOrigin(String origin) {
     final origins = List<String>.from(state.origins);
@@ -140,15 +148,19 @@ class ShopFiltersNotifier extends StateNotifier<ShopFilters> {
     }
     state = state.copyWith(origins: origins);
   }
+
   void setSortBy(String sort) => state = state.copyWith(sortBy: sort);
   void reset() => state = const ShopFilters();
 }
 
-final shopFiltersProvider = StateNotifierProvider<ShopFiltersNotifier, ShopFilters>((ref) => ShopFiltersNotifier());
+final shopFiltersProvider =
+    StateNotifierProvider<ShopFiltersNotifier, ShopFilters>(
+        (ref) => ShopFiltersNotifier());
 
 // ── All Products (cached) ──────────────────────────────────────
 final allProductsProvider = FutureProvider<List<Product>>((ref) async {
-  final res = await ref.watch(productServiceProvider).getProducts(pageSize: 1000);
+  final res =
+      await ref.watch(productServiceProvider).getProducts(pageSize: 1000);
   return res.products;
 });
 
@@ -163,11 +175,12 @@ final filteredProductsProvider = Provider<AsyncValue<List<Product>>>((ref) {
     // Search
     if (filters.searchQuery.trim().isNotEmpty) {
       final q = filters.searchQuery.trim().toLowerCase();
-      filtered = filtered.where((p) => 
-        p.name.toLowerCase().contains(q) || 
-        p.origin.toLowerCase().contains(q) ||
-        p.description.toLowerCase().contains(q)
-      ).toList();
+      filtered = filtered
+          .where((p) =>
+              p.name.toLowerCase().contains(q) ||
+              p.origin.toLowerCase().contains(q) ||
+              p.description.toLowerCase().contains(q))
+          .toList();
     }
 
     // Category
@@ -177,7 +190,8 @@ final filteredProductsProvider = Provider<AsyncValue<List<Product>>>((ref) {
 
     // Origins
     if (filters.origins.isNotEmpty) {
-      filtered = filtered.where((p) => filters.origins.contains(p.origin)).toList();
+      filtered =
+          filtered.where((p) => filters.origins.contains(p.origin)).toList();
     }
 
     // Price Max
@@ -187,10 +201,14 @@ final filteredProductsProvider = Provider<AsyncValue<List<Product>>>((ref) {
     filtered = List<Product>.from(filtered);
     filtered.sort((a, b) {
       switch (filters.sortBy) {
-        case 'price-asc': return a.price.compareTo(b.price);
-        case 'price-desc': return b.price.compareTo(a.price);
-        case 'rating': return b.rating.compareTo(a.rating);
-        case 'newest': return b.createdAt.compareTo(a.createdAt);
+        case 'price-asc':
+          return a.price.compareTo(b.price);
+        case 'price-desc':
+          return b.price.compareTo(a.price);
+        case 'rating':
+          return b.rating.compareTo(a.rating);
+        case 'newest':
+          return b.createdAt.compareTo(a.createdAt);
         case 'featured':
         default:
           final aNew = a.badge?.toUpperCase() == 'NEW ARRIVAL' ? 1 : 0;
@@ -220,4 +238,6 @@ final userAddressesProvider = StreamProvider.family<List<Address>, String>(
 );
 
 // ── Product Reviews ────────────────────────────────────────
-final productReviewsProvider = FutureProvider.family<List<Review>, String>((ref, productId) => ref.watch(reviewServiceProvider).getProductReviews(productId));
+final productReviewsProvider = FutureProvider.family<List<Review>, String>(
+    (ref, productId) =>
+        ref.watch(reviewServiceProvider).getProductReviews(productId));

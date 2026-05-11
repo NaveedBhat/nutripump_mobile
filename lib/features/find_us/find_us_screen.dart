@@ -31,9 +31,10 @@ class _FindUsScreenState extends State<FindUsScreen> {
     setState(() => _isSending = true);
 
     try {
-      final accessKey = dotenv.env['NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY'] ?? 
-                        dotenv.env['WEB3FORMS_ACCESS_KEY'] ?? '';
-      
+      final accessKey = dotenv.env['NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY'] ??
+          dotenv.env['WEB3FORMS_ACCESS_KEY'] ??
+          '';
+
       final dio = Dio();
       final response = await dio.post(
         'https://api.web3forms.com/submit',
@@ -41,7 +42,8 @@ class _FindUsScreenState extends State<FindUsScreen> {
           'access_key': accessKey,
           'name': _name,
           'email': _email,
-          'subject': _subject.isEmpty ? 'New Enquiry from Nutripump App' : _subject,
+          'subject':
+              _subject.isEmpty ? 'New Enquiry from Nutripump App' : _subject,
           'message': _message,
         },
       );
@@ -61,7 +63,8 @@ class _FindUsScreenState extends State<FindUsScreen> {
   void _showError(String message) {
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(duration: const Duration(milliseconds: 2000), 
+      SnackBar(
+        duration: const Duration(milliseconds: 2000),
         content: Text(message),
         backgroundColor: Colors.red.shade700,
         behavior: SnackBarBehavior.floating,
@@ -79,7 +82,9 @@ class _FindUsScreenState extends State<FindUsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : AppColors.backgroundLight),
+      backgroundColor: (Theme.of(context).brightness == Brightness.dark
+          ? Theme.of(context).scaffoldBackgroundColor
+          : AppColors.backgroundLight),
       body: CustomScrollView(
         slivers: [
           _buildHero(),
@@ -103,7 +108,8 @@ class _FindUsScreenState extends State<FindUsScreen> {
           fit: StackFit.expand,
           children: [
             const CustomNetworkImage(
-              imageUrl: 'https://res.cloudinary.com/dil7vl8um/image/upload/v1776608660/Gemini_Generated_Image_rooomqrooomqrooo_hnwsbv.webp',
+              imageUrl:
+                  'https://res.cloudinary.com/dil7vl8um/image/upload/v1776608660/Gemini_Generated_Image_rooomqrooomqrooo_hnwsbv.webp',
               fit: BoxFit.cover,
             ),
             Container(
@@ -124,7 +130,8 @@ class _FindUsScreenState extends State<FindUsScreen> {
                 children: [
                   Text(
                     'Our Presence',
-                    style: AppTypography.h1(context).copyWith(color: Colors.white, fontSize: R.sp(context, 40)),
+                    style: AppTypography.h1(context).copyWith(
+                        color: Colors.white, fontSize: R.sp(context, 40)),
                   ),
                   SizedBox(height: R.h(context, 8)),
                   Text(
@@ -149,7 +156,8 @@ class _FindUsScreenState extends State<FindUsScreen> {
       child: Column(
         children: [
           SizedBox(height: R.h(context, 24)),
-          Icon(Icons.language_rounded, size: R.sp(context, 48), color: AppColors.primary),
+          Icon(Icons.language_rounded,
+              size: R.sp(context, 48), color: AppColors.primary),
           SizedBox(height: R.h(context, 24)),
           Text(
             'Digital Soul, Global Reach',
@@ -159,7 +167,8 @@ class _FindUsScreenState extends State<FindUsScreen> {
           SizedBox(height: R.h(context, 16)),
           Text(
             'NutriPump is an online-first destination, meticulously designed to bring the heritage of Kashmir directly to your doorstep. We\'ve eliminated the traditional storefront to focus entirely on the quality of our craftsmanship and the efficiency of our global delivery.',
-            style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, height: 1.6),
+            style: AppTypography.bodySM(context)
+                .copyWith(color: AppColors.neutralGold, height: 1.6),
             textAlign: TextAlign.center,
           ),
         ],
@@ -200,7 +209,9 @@ class _FindUsScreenState extends State<FindUsScreen> {
       width: double.infinity,
       padding: EdgeInsets.all(R.w(context, 24)),
       decoration: BoxDecoration(
-        color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
+        color: Theme.of(context).brightness == Brightness.dark
+            ? AppColors.surfaceDark
+            : Colors.white,
         borderRadius: BorderRadius.circular(R.w(context, 20)),
         border: Border.all(color: AppColors.primary.withValues(alpha: 0.1)),
         boxShadow: [
@@ -219,14 +230,16 @@ class _FindUsScreenState extends State<FindUsScreen> {
               color: AppColors.primary.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(R.w(context, 16)),
             ),
-            child: Icon(icon, color: AppColors.primary, size: R.sp(context, 28)),
+            child:
+                Icon(icon, color: AppColors.primary, size: R.sp(context, 28)),
           ),
           SizedBox(height: R.h(context, 16)),
           Text(title, style: AppTypography.h3(context)),
           SizedBox(height: R.h(context, 8)),
           Text(
             desc,
-            style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, height: 1.5),
+            style: AppTypography.bodySM(context)
+                .copyWith(color: AppColors.neutralGold, height: 1.5),
             textAlign: TextAlign.center,
           ),
         ],
@@ -245,9 +258,10 @@ class _FindUsScreenState extends State<FindUsScreen> {
           ClipRRect(
             borderRadius: BorderRadius.circular(R.w(context, 20)),
             child: const AspectRatio(
-              aspectRatio: 4/3,
+              aspectRatio: 4 / 3,
               child: CustomNetworkImage(
-                imageUrl: 'https://res.cloudinary.com/dil7vl8um/image/upload/v1776608658/Gemini_Generated_Image_c8vnllc8vnllc8vn_ccefow.webp',
+                imageUrl:
+                    'https://res.cloudinary.com/dil7vl8um/image/upload/v1776608658/Gemini_Generated_Image_c8vnllc8vnllc8vn_ccefow.webp',
                 fit: BoxFit.cover,
               ),
             ),
@@ -259,13 +273,16 @@ class _FindUsScreenState extends State<FindUsScreen> {
           SizedBox(height: R.h(context, 16)),
           Text(
             'Habbakadal is the heart of Srinagar\'s craftsmanship. In these narrow, storied lanes, tradition meets modern logistics. It is where our master artisans gather, where the threads of tradition are woven into every piece, and where the soul of NutriPump resides.',
-            style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, height: 1.6),
+            style: AppTypography.bodySM(context)
+                .copyWith(color: AppColors.neutralGold, height: 1.6),
           ),
           SizedBox(height: R.h(context, 24)),
           TextButton.icon(
             onPressed: () => _launchUrl('https://maps.google.com'),
-            icon: const Icon(Icons.location_on_outlined, color: AppColors.primary),
-            label: Text('Explore Habbakadal, Kashmir', style: AppTypography.labelGold(context)),
+            icon: const Icon(Icons.location_on_outlined,
+                color: AppColors.primary),
+            label: Text('Explore Habbakadal, Kashmir',
+                style: AppTypography.labelGold(context)),
           ),
           SizedBox(height: R.h(context, 24)),
         ],
@@ -283,17 +300,17 @@ class _FindUsScreenState extends State<FindUsScreen> {
           SizedBox(height: R.h(context, 24)),
           Text('GET IN TOUCH', style: AppTypography.labelGold(context)),
           SizedBox(height: R.h(context, 8)),
-          Text('Contact Us', style: AppTypography.h2(context).copyWith(color: Colors.white)),
+          Text('Contact Us',
+              style: AppTypography.h2(context).copyWith(color: Colors.white)),
           SizedBox(height: R.h(context, 16)),
           Text(
             'Questions, bulk orders, or a simple hello — our team responds personally within 24 hours.',
-            style: AppTypography.bodySM(context).copyWith(color: Colors.white70, height: 1.5),
+            style: AppTypography.bodySM(context)
+                .copyWith(color: Colors.white70, height: 1.5),
           ),
           SizedBox(height: R.h(context, 32)),
-
           _buildContactMethods(),
           SizedBox(height: R.h(context, 32)),
-
           Container(
             padding: EdgeInsets.all(R.w(context, 24)),
             decoration: BoxDecoration(
@@ -312,16 +329,20 @@ class _FindUsScreenState extends State<FindUsScreen> {
   Widget _buildContactMethods() {
     return Column(
       children: [
-        _contactCard(Icons.message_outlined, 'WhatsApp Us', 'Instant replies', 'https://wa.me/919149621219'),
+        _contactCard(Icons.message_outlined, 'WhatsApp Us', 'Instant replies',
+            'https://wa.me/919149621219'),
         SizedBox(height: R.h(context, 12)),
-        _contactCard(Icons.email_outlined, 'support@nutripump.com', 'We reply within 24 hours', 'mailto:support@nutripump.com'),
+        _contactCard(Icons.email_outlined, 'support@nutripump.com',
+            'We reply within 24 hours', 'mailto:support@nutripump.com'),
         SizedBox(height: R.h(context, 12)),
-        _contactCard(Icons.phone_outlined, '+91 91496 21219', 'Mon – Sat, 10am – 7pm', 'tel:+919149621219'),
+        _contactCard(Icons.phone_outlined, '+91 91496 21219',
+            'Mon – Sat, 10am – 7pm', 'tel:+919149621219'),
       ],
     );
   }
 
-  Widget _contactCard(IconData icon, String title, String subtitle, String url) {
+  Widget _contactCard(
+      IconData icon, String title, String subtitle, String url) {
     return GestureDetector(
       onTap: () => _launchUrl(url),
       child: Container(
@@ -339,19 +360,25 @@ class _FindUsScreenState extends State<FindUsScreen> {
                 color: AppColors.primary.withValues(alpha: 0.15),
                 borderRadius: BorderRadius.circular(R.w(context, 12)),
               ),
-              child: Icon(icon, color: AppColors.primary, size: R.sp(context, 20)),
+              child:
+                  Icon(icon, color: AppColors.primary, size: R.sp(context, 20)),
             ),
             SizedBox(width: R.w(context, 16)),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(title, style: AppTypography.body(context).copyWith(color: Colors.white, fontWeight: FontWeight.bold)),
-                  Text(subtitle, style: AppTypography.bodySM(context).copyWith(color: Colors.white54, fontSize: R.sp(context, 12))),
+                  Text(title,
+                      style: AppTypography.body(context).copyWith(
+                          color: Colors.white, fontWeight: FontWeight.bold)),
+                  Text(subtitle,
+                      style: AppTypography.bodySM(context).copyWith(
+                          color: Colors.white54, fontSize: R.sp(context, 12))),
                 ],
               ),
             ),
-            Icon(Icons.arrow_forward_ios_rounded, color: Colors.white24, size: R.sp(context, 14)),
+            Icon(Icons.arrow_forward_ios_rounded,
+                color: Colors.white24, size: R.sp(context, 14)),
           ],
         ),
       ),
@@ -364,24 +391,29 @@ class _FindUsScreenState extends State<FindUsScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Send a Message', style: AppTypography.h3(context).copyWith(color: Colors.white)),
+          Text('Send a Message',
+              style: AppTypography.h3(context).copyWith(color: Colors.white)),
           SizedBox(height: R.h(context, 24)),
-          
           _inputLabel('Name *'),
           _buildInput(hintText: 'Jane Doe', onSaved: (v) => _name = v!),
-
           SizedBox(height: R.h(context, 16)),
           _inputLabel('Email *'),
-          _buildInput(hintText: 'jane@example.com', onSaved: (v) => _email = v!, keyboardType: TextInputType.emailAddress),
-
+          _buildInput(
+              hintText: 'jane@example.com',
+              onSaved: (v) => _email = v!,
+              keyboardType: TextInputType.emailAddress),
           SizedBox(height: R.h(context, 16)),
           _inputLabel('Subject'),
-          _buildInput(hintText: 'Partnership, Support, etc.', onSaved: (v) => _subject = v!, isRequired: false),
-
+          _buildInput(
+              hintText: 'Partnership, Support, etc.',
+              onSaved: (v) => _subject = v!,
+              isRequired: false),
           SizedBox(height: R.h(context, 16)),
           _inputLabel('Message *'),
-          _buildInput(hintText: 'How can we help?', onSaved: (v) => _message = v!, maxLines: 4),
-
+          _buildInput(
+              hintText: 'How can we help?',
+              onSaved: (v) => _message = v!,
+              maxLines: 4),
           SizedBox(height: R.h(context, 32)),
           PrimaryButton(
             text: 'Send Message',
@@ -405,22 +437,27 @@ class _FindUsScreenState extends State<FindUsScreen> {
             shape: BoxShape.circle,
             border: Border.all(color: AppColors.primary.withValues(alpha: 0.3)),
           ),
-          child: Icon(Icons.check_rounded, color: AppColors.primary, size: R.sp(context, 32)),
+          child: Icon(Icons.check_rounded,
+              color: AppColors.primary, size: R.sp(context, 32)),
         ),
         SizedBox(height: R.h(context, 24)),
         Text('Message Delivered', style: AppTypography.labelGold(context)),
         SizedBox(height: R.h(context, 8)),
-        Text('We\'ve got your note!', style: AppTypography.h3(context).copyWith(color: Colors.white)),
+        Text('We\'ve got your note!',
+            style: AppTypography.h3(context).copyWith(color: Colors.white)),
         SizedBox(height: R.h(context, 12)),
         Text(
           'Our team will personally reply within 24 hours. Thank you for reaching out.',
-          style: AppTypography.bodySM(context).copyWith(color: Colors.white70, height: 1.5),
+          style: AppTypography.bodySM(context)
+              .copyWith(color: Colors.white70, height: 1.5),
           textAlign: TextAlign.center,
         ),
         SizedBox(height: R.h(context, 32)),
         TextButton(
           onPressed: () => setState(() => _sent = false),
-          child: Text('Send another message', style: AppTypography.bodySM(context).copyWith(color: AppColors.primary)),
+          child: Text('Send another message',
+              style: AppTypography.bodySM(context)
+                  .copyWith(color: AppColors.primary)),
         ),
       ],
     );
@@ -431,7 +468,8 @@ class _FindUsScreenState extends State<FindUsScreen> {
       padding: EdgeInsets.only(bottom: R.h(context, 8)),
       child: Text(
         text.toUpperCase(),
-        style: AppTypography.label(context).copyWith(color: Colors.white54, fontWeight: FontWeight.bold),
+        style: AppTypography.label(context)
+            .copyWith(color: Colors.white54, fontWeight: FontWeight.bold),
       ),
     );
   }
@@ -449,10 +487,12 @@ class _FindUsScreenState extends State<FindUsScreen> {
       keyboardType: keyboardType,
       decoration: InputDecoration(
         hintText: hintText,
-        hintStyle: AppTypography.bodySM(context).copyWith(color: Colors.white.withValues(alpha: 0.3)),
+        hintStyle: AppTypography.bodySM(context)
+            .copyWith(color: Colors.white.withValues(alpha: 0.3)),
         filled: true,
         fillColor: Colors.white.withValues(alpha: 0.05),
-        contentPadding: EdgeInsets.symmetric(horizontal: R.w(context, 16), vertical: R.h(context, 16)),
+        contentPadding: EdgeInsets.symmetric(
+            horizontal: R.w(context, 16), vertical: R.h(context, 16)),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(R.w(context, 12)),
           borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.1)),
@@ -466,7 +506,8 @@ class _FindUsScreenState extends State<FindUsScreen> {
           borderSide: const BorderSide(color: AppColors.primary, width: 1.5),
         ),
       ),
-      validator: isRequired ? (v) => v == null || v.isEmpty ? 'Required' : null : null,
+      validator:
+          isRequired ? (v) => v == null || v.isEmpty ? 'Required' : null : null,
       onSaved: onSaved,
     );
   }

@@ -19,7 +19,7 @@ class ThemeNotifier extends StateNotifier<ThemeMode> {
     // Using the synchronous accessor eliminates the one-frame theme flash.
     final box = Hive.box(_boxName);
     final savedMode = box.get(_key, defaultValue: 'light');
-    
+
     switch (savedMode) {
       case 'dark':
         state = ThemeMode.dark;

@@ -19,11 +19,11 @@ class ProductService {
     }
 
     final sortMap = {
-      'price-asc':  ('price',     false),
-      'price-desc': ('price',     true),
-      'newest':     ('createdAt', true),
-      'rating':     ('rating',    true),
-      'featured':   ('featured',  true),
+      'price-asc': ('price', false),
+      'price-desc': ('price', true),
+      'newest': ('createdAt', true),
+      'rating': ('rating', true),
+      'featured': ('featured', true),
     };
     final sort = sortMap[sortBy ?? 'newest'] ?? ('createdAt', true);
     q = q.orderBy(sort.$1, descending: sort.$2).limit(pageSize);
@@ -38,7 +38,8 @@ class ProductService {
 
   /// Get a single product by slug
   Future<Product?> getProductBySlug(String slug) async {
-    final snap = await _db.collection(_col)
+    final snap = await _db
+        .collection(_col)
         .where('slug', isEqualTo: slug)
         .limit(1)
         .get();
@@ -48,7 +49,8 @@ class ProductService {
 
   /// Get featured products for home screen
   Future<List<Product>> getFeaturedProducts({int limit = 8}) async {
-    final snap = await _db.collection(_col)
+    final snap = await _db
+        .collection(_col)
         .where('featured', isEqualTo: true)
         .limit(limit)
         .get();
@@ -56,16 +58,18 @@ class ProductService {
   }
 
   /// Real-time stream of featured products
-  Stream<List<Product>> featuredProductsStream() => _db.collection(_col)
+  Stream<List<Product>> featuredProductsStream() => _db
+      .collection(_col)
       .where('featured', isEqualTo: true)
       .limit(8)
       .snapshots()
       .map((s) => s.docs.map(Product.fromFirestore).toList());
 
   /// Get products by category
-  Future<List<Product>> getProductsByCategory(
-    String category, {int limit = 12}) async {
-    final snap = await _db.collection(_col)
+  Future<List<Product>> getProductsByCategory(String category,
+      {int limit = 12}) async {
+    final snap = await _db
+        .collection(_col)
         .where('category', isEqualTo: category)
         .limit(limit)
         .get();

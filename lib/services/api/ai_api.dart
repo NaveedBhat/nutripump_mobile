@@ -35,10 +35,11 @@ class AiApi {
 
       if (response.statusCode == 200) {
         final data = response.data;
-        
-        final String messageText = data['message'] ?? 'Here are some recommendations for you!';
+
+        final String messageText =
+            data['message'] ?? 'Here are some recommendations for you!';
         final List<dynamic> productsJson = data['products'] ?? [];
-        
+
         final List<Product> products = productsJson
             .map((p) => Product.fromMap(p as Map<String, dynamic>))
             .toList();
@@ -50,7 +51,8 @@ class AiApi {
           timestamp: DateTime.now(),
         );
       } else {
-        throw Exception('Failed to connect to AI assistant (Status: ${response.statusCode})');
+        throw Exception(
+            'Failed to connect to AI assistant (Status: ${response.statusCode})');
       }
     } catch (e) {
       throw Exception('Could not reach the AI Assistant: $e');

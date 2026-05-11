@@ -7,11 +7,11 @@ String formatPrice(double amount) {
   final rounded = amount.round();
   final str = rounded.toString();
   if (str.length <= 3) return '₹$str';
-  
+
   final buffer = StringBuffer();
   final chars = str.split('');
   final len = chars.length;
-  
+
   for (int i = 0; i < len; i++) {
     if (i == len - 3 && i != 0) {
       buffer.write(',');
@@ -47,15 +47,29 @@ String truncate(String text, int length) {
 /// Format date as "Apr 23, 2026"
 String formatDate(DateTime date) {
   const months = [
-    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec'
   ];
   return '${months[date.month - 1]} ${date.day}, ${date.year}';
 }
 
 /// Format date with time: "Apr 23, 2026 at 11:30 AM"
 String formatDateTime(DateTime date) {
-  final hour = date.hour > 12 ? date.hour - 12 : date.hour == 0 ? 12 : date.hour;
+  final hour = date.hour > 12
+      ? date.hour - 12
+      : date.hour == 0
+          ? 12
+          : date.hour;
   final minute = date.minute.toString().padLeft(2, '0');
   final period = date.hour >= 12 ? 'PM' : 'AM';
   return '${formatDate(date)} at $hour:$minute $period';
@@ -71,6 +85,7 @@ String timeAgo(DateTime date) {
   if (diff.inDays < 7) return '${diff.inDays}d ago';
   return formatDate(date);
 }
+
 /// Format an order ID with NP- prefix — consistent across all screens.
 /// Admin panel shows the last 8 chars of the Firestore document ID (e.g. #J35KVTVX).
 /// Mobile shows the same suffix with NP- prefix: NP-J35KVTVX.

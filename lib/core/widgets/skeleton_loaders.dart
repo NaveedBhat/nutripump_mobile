@@ -41,8 +41,11 @@ class ProductCardSkeleton extends StatelessWidget {
                 children: [
                   Container(
                     decoration: BoxDecoration(
-                      color: isDark ? const Color(0xFF1A160F) : const Color(0xFFF5F3EC),
-                      borderRadius: const BorderRadius.vertical(top: Radius.circular(14)),
+                      color: isDark
+                          ? const Color(0xFF1A160F)
+                          : const Color(0xFFF5F3EC),
+                      borderRadius:
+                          const BorderRadius.vertical(top: Radius.circular(14)),
                     ),
                   ),
                   // Mock Badge (top-left)
@@ -70,8 +73,8 @@ class ProductCardSkeleton extends StatelessWidget {
             ),
             // Text area
             Padding(
-              padding: EdgeInsets.fromLTRB(
-                R.w(context, 10), R.h(context, 9), R.w(context, 10), R.h(context, 10)),
+              padding: EdgeInsets.fromLTRB(R.w(context, 10), R.h(context, 9),
+                  R.w(context, 10), R.h(context, 10)),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -106,7 +109,8 @@ class ProductCardSkeleton extends StatelessWidget {
 class HorizontalProductListSkeleton extends StatelessWidget {
   final int count;
   final double height;
-  const HorizontalProductListSkeleton({super.key, this.count = 4, this.height = 240});
+  const HorizontalProductListSkeleton(
+      {super.key, this.count = 4, this.height = 240});
 
   @override
   Widget build(BuildContext context) {
@@ -205,26 +209,42 @@ class BannerSkeleton extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            Bone(width: R.w(context, 70), height: R.h(context, 18), borderRadius: BorderRadius.circular(4)),
+            Bone(
+                width: R.w(context, 70),
+                height: R.h(context, 18),
+                borderRadius: BorderRadius.circular(4)),
             SizedBox(height: R.h(context, 8)),
-            Bone(width: R.w(context, 180), height: R.h(context, 26), borderRadius: BorderRadius.circular(4)),
+            Bone(
+                width: R.w(context, 180),
+                height: R.h(context, 26),
+                borderRadius: BorderRadius.circular(4)),
             SizedBox(height: R.h(context, 6)),
-            Bone(width: R.w(context, 140), height: R.h(context, 16), borderRadius: BorderRadius.circular(4)),
+            Bone(
+                width: R.w(context, 140),
+                height: R.h(context, 16),
+                borderRadius: BorderRadius.circular(4)),
             SizedBox(height: R.h(context, 16)),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Bone(width: R.w(context, 100), height: R.h(context, 36), borderRadius: BorderRadius.circular(20)),
+                Bone(
+                    width: R.w(context, 100),
+                    height: R.h(context, 36),
+                    borderRadius: BorderRadius.circular(20)),
                 Row(
-                  children: List.generate(4, (index) => Padding(
-                    padding: EdgeInsets.only(left: R.w(context, 5)),
-                    child: Bone(
-                      width: index == 0 ? R.w(context, 18) : R.w(context, 5),
-                      height: R.h(context, 5),
-                      borderRadius: BorderRadius.circular(3),
-                    ),
-                  )),
+                  children: List.generate(
+                      4,
+                      (index) => Padding(
+                            padding: EdgeInsets.only(left: R.w(context, 5)),
+                            child: Bone(
+                              width: index == 0
+                                  ? R.w(context, 18)
+                                  : R.w(context, 5),
+                              height: R.h(context, 5),
+                              borderRadius: BorderRadius.circular(3),
+                            ),
+                          )),
                 ),
               ],
             ),
@@ -256,10 +276,12 @@ class OrderCardSkeleton extends StatelessWidget {
           children: [
             // Header row
             Container(
-              padding: EdgeInsets.symmetric(horizontal: R.w(context, 12), vertical: R.h(context, 10)),
+              padding: EdgeInsets.symmetric(
+                  horizontal: R.w(context, 12), vertical: R.h(context, 10)),
               decoration: BoxDecoration(
                 color: AppColors.primary.withValues(alpha: 0.05),
-                borderRadius: BorderRadius.vertical(top: Radius.circular(R.w(context, 11))),
+                borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(R.w(context, 11))),
               ),
               child: Row(children: [
                 const Expanded(child: Bone.text(words: 2, fontSize: 12)),
@@ -277,29 +299,46 @@ class OrderCardSkeleton extends StatelessWidget {
                   Row(children: [
                     Bone.circle(size: R.w(context, 32)),
                     SizedBox(width: R.w(context, 12)),
-                    Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                      const Bone.text(words: 2, fontSize: 13),
-                      SizedBox(height: R.h(context, 4)),
-                      const Bone.text(words: 5, fontSize: 11),
-                    ])),
+                    Expanded(
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                          const Bone.text(words: 2, fontSize: 13),
+                          SizedBox(height: R.h(context, 4)),
+                          const Bone.text(words: 5, fontSize: 11),
+                        ])),
                   ]),
                   SizedBox(height: R.h(context, 10)),
                   Row(children: [
-                    Bone(width: R.w(context, 56), height: R.w(context, 56), borderRadius: BorderRadius.circular(R.w(context, 8))),
+                    Bone(
+                        width: R.w(context, 56),
+                        height: R.w(context, 56),
+                        borderRadius: BorderRadius.circular(R.w(context, 8))),
                     SizedBox(width: R.w(context, 12)),
-                    Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                      const Bone.text(words: 3, fontSize: 13),
-                      SizedBox(height: R.h(context, 4)),
-                      const Bone.text(words: 4, fontSize: 11),
-                      SizedBox(height: R.h(context, 4)),
-                      const Bone.text(words: 1, fontSize: 12),
-                    ])),
+                    Expanded(
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                          const Bone.text(words: 3, fontSize: 13),
+                          SizedBox(height: R.h(context, 4)),
+                          const Bone.text(words: 4, fontSize: 11),
+                          SizedBox(height: R.h(context, 4)),
+                          const Bone.text(words: 1, fontSize: 12),
+                        ])),
                   ]),
                   SizedBox(height: R.h(context, 12)),
                   Row(children: [
-                    Expanded(child: Bone(height: R.h(context, 32), borderRadius: BorderRadius.circular(R.w(context, 6)))),
+                    Expanded(
+                        child: Bone(
+                            height: R.h(context, 32),
+                            borderRadius:
+                                BorderRadius.circular(R.w(context, 6)))),
                     SizedBox(width: R.w(context, 8)),
-                    Expanded(child: Bone(height: R.h(context, 32), borderRadius: BorderRadius.circular(R.w(context, 6)))),
+                    Expanded(
+                        child: Bone(
+                            height: R.h(context, 32),
+                            borderRadius:
+                                BorderRadius.circular(R.w(context, 6)))),
                   ]),
                 ],
               ),
@@ -319,7 +358,8 @@ class OrdersListSkeleton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
-      padding: EdgeInsets.symmetric(horizontal: R.w(context, 16), vertical: R.h(context, 12)),
+      padding: EdgeInsets.symmetric(
+          horizontal: R.w(context, 16), vertical: R.h(context, 12)),
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       itemCount: count,
@@ -365,9 +405,15 @@ class AddressCardSkeleton extends StatelessWidget {
             SizedBox(width: R.w(context, 12)),
             Column(
               children: [
-                Bone(width: R.w(context, 28), height: R.w(context, 28), borderRadius: BorderRadius.circular(6)),
+                Bone(
+                    width: R.w(context, 28),
+                    height: R.w(context, 28),
+                    borderRadius: BorderRadius.circular(6)),
                 SizedBox(height: R.h(context, 6)),
-                Bone(width: R.w(context, 28), height: R.w(context, 28), borderRadius: BorderRadius.circular(6)),
+                Bone(
+                    width: R.w(context, 28),
+                    height: R.w(context, 28),
+                    borderRadius: BorderRadius.circular(6)),
               ],
             )
           ],
@@ -427,14 +473,16 @@ class ProductDetailSkeleton extends StatelessWidget {
                   SizedBox(height: R.h(context, 20)),
                   const Bone.text(words: 2, fontSize: 14),
                   SizedBox(height: R.h(context, 10)),
-                  ...List.generate(3, (_) => Padding(
-                    padding: EdgeInsets.only(bottom: R.h(context, 8)),
-                    child: Row(children: [
-                      const Bone.circle(size: 18),
-                      SizedBox(width: R.w(context, 8)),
-                      const Bone.text(words: 5, fontSize: 13),
-                    ]),
-                  )),
+                  ...List.generate(
+                      3,
+                      (_) => Padding(
+                            padding: EdgeInsets.only(bottom: R.h(context, 8)),
+                            child: Row(children: [
+                              const Bone.circle(size: 18),
+                              SizedBox(width: R.w(context, 8)),
+                              const Bone.text(words: 5, fontSize: 13),
+                            ]),
+                          )),
                   SizedBox(height: R.h(context, 20)),
                   const Bone.multiText(lines: 4, fontSize: 13),
                 ],
@@ -454,7 +502,8 @@ class SearchResultsSkeleton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: R.w(context, 16), vertical: R.h(context, 8)),
+      padding: EdgeInsets.symmetric(
+          horizontal: R.w(context, 16), vertical: R.h(context, 8)),
       child: GridView.builder(
         physics: const NeverScrollableScrollPhysics(),
         shrinkWrap: true,
@@ -495,24 +544,30 @@ class AccountScreenSkeleton extends StatelessWidget {
               ],
             ),
             SizedBox(height: R.h(context, 24)),
-            ...List.generate(5, (_) => Padding(
-              padding: EdgeInsets.only(bottom: R.h(context, 12)),
-              child: Container(
-                padding: EdgeInsets.all(R.w(context, 16)),
-                decoration: BoxDecoration(
-                  color: isDark ? AppColors.surfaceDark : Colors.white,
-                  borderRadius: BorderRadius.circular(R.w(context, 12)),
-                ),
-                child: Row(
-                  children: [
-                    Bone.circle(size: R.w(context, 36)),
-                    SizedBox(width: R.w(context, 12)),
-                    const Expanded(child: Bone.text(words: 2, fontSize: 14)),
-                    Bone(width: R.w(context, 16), height: R.h(context, 16), borderRadius: BorderRadius.circular(4)),
-                  ],
-                ),
-              ),
-            )),
+            ...List.generate(
+                5,
+                (_) => Padding(
+                      padding: EdgeInsets.only(bottom: R.h(context, 12)),
+                      child: Container(
+                        padding: EdgeInsets.all(R.w(context, 16)),
+                        decoration: BoxDecoration(
+                          color: isDark ? AppColors.surfaceDark : Colors.white,
+                          borderRadius: BorderRadius.circular(R.w(context, 12)),
+                        ),
+                        child: Row(
+                          children: [
+                            Bone.circle(size: R.w(context, 36)),
+                            SizedBox(width: R.w(context, 12)),
+                            const Expanded(
+                                child: Bone.text(words: 2, fontSize: 14)),
+                            Bone(
+                                width: R.w(context, 16),
+                                height: R.h(context, 16),
+                                borderRadius: BorderRadius.circular(4)),
+                          ],
+                        ),
+                      ),
+                    )),
           ],
         ),
       ),

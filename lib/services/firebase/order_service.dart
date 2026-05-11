@@ -19,22 +19,23 @@ class OrderService {
   }
 
   /// Stream of a single order (for real-time status updates)
-  Stream<Order?> orderStream(String id) => _db.collection(_col).doc(id)
+  Stream<Order?> orderStream(String id) => _db
+      .collection(_col)
+      .doc(id)
       .snapshots()
       .map((d) => d.exists ? Order.fromFirestore(d) : null);
 
   /// Get all orders for a user
   Future<List<Order>> getUserOrders(String userId) async {
-    final snap = await _db.collection(_col)
-        .where('userId', isEqualTo: userId)
-        .get();
+    final snap =
+        await _db.collection(_col).where('userId', isEqualTo: userId).get();
     return snap.docs.map(Order.fromFirestore).toList()
       ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
   }
 
   /// Stream of user orders (real-time)
-  Stream<List<Order>> userOrdersStream(String userId) =>
-      _db.collection(_col)
+  Stream<List<Order>> userOrdersStream(String userId) => _db
+          .collection(_col)
           .where('userId', isEqualTo: userId)
           .snapshots()
           .map((s) {

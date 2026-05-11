@@ -21,21 +21,22 @@ final navigatorKey = GlobalKey<NavigatorState>();
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   if (Firebase.apps.isEmpty) {
-    await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+    await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform);
   }
-  
+
   // Save notification to local Hive storage
   await Hive.initFlutter();
   final box = await Hive.openBox('nutripump_notifications');
-  
+
   final notification = message.notification;
   final title = notification?.title ?? message.data['title'] ?? 'NutriPump';
   final body = notification?.body ?? message.data['body'] ?? '';
-  final imageUrl = notification?.android?.imageUrl
-      ?? notification?.apple?.imageUrl
-      ?? message.data['imageUrl'];
+  final imageUrl = notification?.android?.imageUrl ??
+      notification?.apple?.imageUrl ??
+      message.data['imageUrl'];
   final route = message.data['deepLink'] ?? message.data['route'];
-  
+
   final payload = {
     'id': message.messageId ?? DateTime.now().millisecondsSinceEpoch.toString(),
     'title': title,
@@ -58,7 +59,8 @@ Future<void> main() async {
   final requiredEnvKeys = ['API_BASE_URL', 'RAZORPAY_KEY_ID'];
   for (final key in requiredEnvKeys) {
     if (!dotenv.env.containsKey(key) || dotenv.env[key]!.isEmpty) {
-      throw Exception('Missing required environment variable: $key. Please check your .env file.');
+      throw Exception(
+          'Missing required environment variable: $key. Please check your .env file.');
     }
   }
 

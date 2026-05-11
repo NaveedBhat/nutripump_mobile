@@ -98,4 +98,3 @@ class _ShimmerPlaceholderState extends State<_ShimmerPlaceholder>
     );
   }
 }
-

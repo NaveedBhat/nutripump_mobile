@@ -1,3 +1,13 @@
+import java.util.Properties
+import java.io.FileInputStream
+
+// ── Load signing credentials from key.properties (gitignored) ─────────────
+val keyPropertiesFile = rootProject.file("app/key.properties")
+val keyProperties = Properties()
+if (keyPropertiesFile.exists()) {
+    keyProperties.load(FileInputStream(keyPropertiesFile))
+}
+
 plugins {
     id("com.android.application")
     id("kotlin-android")
@@ -33,11 +43,25 @@ android {
         versionName = flutter.versionName
     }
 
+    signingConfigs {
+        create("release") {
+            if (keyPropertiesFile.exists()) {
+                keyAlias = keyProperties["keyAlias"] as String
+                keyPassword = keyProperties["keyPassword"] as String
+                storeFile = file(keyProperties["storeFile"] as String)
+                storePassword = keyProperties["storePassword"] as String
+            }
+        }
+    }
+
     buildTypes {
-            release {
-            // NOTE: Currently using debug signing for local testing.
-            // Before Play Store upload, replace with production keystore signingConfig.
-            signingConfig = signingConfigs.getByName("debug")
+        release {
+            signingConfig = if (keyPropertiesFile.exists()) {
+                signingConfigs.getByName("release")
+            } else {
+                // Fallback to debug signing when key.properties is absent (e.g. CI preview builds)
+                signingConfigs.getByName("debug")
+            }
 
             // ── R8 shrinking & obfuscation ────────────────────────────
             isMinifyEnabled = true

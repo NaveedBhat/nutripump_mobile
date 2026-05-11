@@ -17,21 +17,30 @@ class NotificationsScreen extends ConsumerWidget {
     final notifications = ref.watch(notificationsProvider);
 
     return Scaffold(
-      backgroundColor: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : AppColors.backgroundLight),
+      backgroundColor: (Theme.of(context).brightness == Brightness.dark
+          ? Theme.of(context).scaffoldBackgroundColor
+          : AppColors.backgroundLight),
       appBar: AppBar(
         title: Text('Notifications', style: AppTypography.h3(context)),
         centerTitle: true,
-        backgroundColor: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : AppColors.backgroundLight),
+        backgroundColor: (Theme.of(context).brightness == Brightness.dark
+            ? Theme.of(context).scaffoldBackgroundColor
+            : AppColors.backgroundLight),
         elevation: 0,
         actions: [
           if (notifications.isNotEmpty)
             IconButton(
-              icon: Icon(Icons.done_all, color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal)),
+              icon: Icon(Icons.done_all,
+                  color: (Theme.of(context).brightness == Brightness.dark
+                      ? Theme.of(context).colorScheme.onSurface
+                      : AppColors.deepCharcoal)),
               tooltip: 'Mark all as read',
               onPressed: () {
                 ref.read(notificationsProvider.notifier).markAllAsRead();
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(duration: Duration(milliseconds: 2000), content: Text('All notifications marked as read')),
+                  const SnackBar(
+                      duration: Duration(milliseconds: 2000),
+                      content: Text('All notifications marked as read')),
                 );
               },
             ),
@@ -40,12 +49,14 @@ class NotificationsScreen extends ConsumerWidget {
       body: notifications.isEmpty
           ? _buildEmptyState(context)
           : ListView.builder(
-              padding: EdgeInsets.only(top: R.h(context, 16), bottom: R.h(context, 32)),
+              padding: EdgeInsets.only(
+                  top: R.h(context, 16), bottom: R.h(context, 32)),
               itemCount: notifications.length,
               itemBuilder: (context, index) {
                 final notification = notifications[index];
                 return Padding(
-                  padding: EdgeInsets.symmetric(horizontal: R.w(context, 16), vertical: R.h(context, 6)),
+                  padding: EdgeInsets.symmetric(
+                      horizontal: R.w(context, 16), vertical: R.h(context, 6)),
                   child: Dismissible(
                     key: Key(notification.id),
                     direction: DismissDirection.endToStart,
@@ -56,23 +67,30 @@ class NotificationsScreen extends ConsumerWidget {
                       ),
                       alignment: Alignment.centerRight,
                       padding: EdgeInsets.only(right: R.w(context, 24)),
-                      child: Icon(Icons.delete_outline, color: Colors.white, size: R.sp(context, 28)),
+                      child: Icon(Icons.delete_outline,
+                          color: Colors.white, size: R.sp(context, 28)),
                     ),
                     onDismissed: (_) {
-                      ref.read(notificationsProvider.notifier).deleteNotification(notification.id);
+                      ref
+                          .read(notificationsProvider.notifier)
+                          .deleteNotification(notification.id);
                     },
                     child: Container(
                       decoration: BoxDecoration(
-                        color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? AppColors.surfaceDark
+                            : Colors.white,
                         borderRadius: BorderRadius.circular(R.w(context, 14)),
                         border: Border.all(
-                          color: notification.isRead ? AppColors.borderLight.withValues(alpha: 0.5) : AppColors.primary.withValues(alpha: 0.4),
+                          color: notification.isRead
+                              ? AppColors.borderLight.withValues(alpha: 0.5)
+                              : AppColors.primary.withValues(alpha: 0.4),
                           width: 1.0,
                         ),
                         boxShadow: [
                           BoxShadow(
-                            color: notification.isRead 
-                                ? Colors.black.withValues(alpha: 0.02) 
+                            color: notification.isRead
+                                ? Colors.black.withValues(alpha: 0.02)
                                 : AppColors.shadowGold.withValues(alpha: 0.1),
                             blurRadius: 8,
                             offset: const Offset(0, 2),
@@ -83,39 +101,57 @@ class NotificationsScreen extends ConsumerWidget {
                       child: InkWell(
                         onTap: () {
                           if (!notification.isRead) {
-                            ref.read(notificationsProvider.notifier).markAsRead(notification.id);
+                            ref
+                                .read(notificationsProvider.notifier)
+                                .markAsRead(notification.id);
                           }
-                          if (notification.route != null && notification.route!.isNotEmpty) {
+                          if (notification.route != null &&
+                              notification.route!.isNotEmpty) {
                             context.push(notification.route!);
                           }
                         },
                         child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: R.w(context, 16), vertical: R.h(context, 14)),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: R.w(context, 16),
+                              vertical: R.h(context, 14)),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              _buildIconOrImage(context, notification.imageUrl, notification.isRead),
+                              _buildIconOrImage(context, notification.imageUrl,
+                                  notification.isRead),
                               SizedBox(width: R.w(context, 12)),
                               Expanded(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Row(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Expanded(
                                           child: Text(
                                             notification.title,
-                                            style: AppTypography.bodySM(context).copyWith(
-                                              fontWeight: notification.isRead ? FontWeight.w600 : FontWeight.w800,
-                                              color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal),
+                                            style: AppTypography.bodySM(context)
+                                                .copyWith(
+                                              fontWeight: notification.isRead
+                                                  ? FontWeight.w600
+                                                  : FontWeight.w800,
+                                              color: (Theme.of(context)
+                                                          .brightness ==
+                                                      Brightness.dark
+                                                  ? Theme.of(context)
+                                                      .colorScheme
+                                                      .onSurface
+                                                  : AppColors.deepCharcoal),
                                               height: 1.2,
                                             ),
                                           ),
                                         ),
                                         if (!notification.isRead)
                                           Container(
-                                            margin: EdgeInsets.only(left: R.w(context, 8), top: R.h(context, 2)),
+                                            margin: EdgeInsets.only(
+                                                left: R.w(context, 8),
+                                                top: R.h(context, 2)),
                                             width: R.w(context, 6),
                                             height: R.w(context, 6),
                                             decoration: const BoxDecoration(
@@ -128,8 +164,15 @@ class NotificationsScreen extends ConsumerWidget {
                                     SizedBox(height: R.h(context, 4)),
                                     Text(
                                       notification.body,
-                                      style: AppTypography.caption(context).copyWith(
-                                        color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal).withValues(alpha: 0.7),
+                                      style: AppTypography.caption(context)
+                                          .copyWith(
+                                        color: (Theme.of(context).brightness ==
+                                                    Brightness.dark
+                                                ? Theme.of(context)
+                                                    .colorScheme
+                                                    .onSurface
+                                                : AppColors.deepCharcoal)
+                                            .withValues(alpha: 0.7),
                                         height: 1.3,
                                       ),
                                       maxLines: 2,
@@ -139,15 +182,19 @@ class NotificationsScreen extends ConsumerWidget {
                                     Row(
                                       children: [
                                         Icon(
-                                          Icons.access_time, 
-                                          size: R.sp(context, 12), 
-                                          color: AppColors.neutralGold.withValues(alpha: 0.8),
+                                          Icons.access_time,
+                                          size: R.sp(context, 12),
+                                          color: AppColors.neutralGold
+                                              .withValues(alpha: 0.8),
                                         ),
                                         SizedBox(width: R.w(context, 4)),
                                         Text(
-                                          timeago.format(notification.timestamp),
-                                          style: AppTypography.caption(context).copyWith(
-                                            color: AppColors.neutralGold.withValues(alpha: 0.8),
+                                          timeago
+                                              .format(notification.timestamp),
+                                          style: AppTypography.caption(context)
+                                              .copyWith(
+                                            color: AppColors.neutralGold
+                                                .withValues(alpha: 0.8),
                                             fontSize: R.sp(context, 11),
                                             fontWeight: FontWeight.w600,
                                           ),
@@ -169,7 +216,8 @@ class NotificationsScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildIconOrImage(BuildContext context, String? imageUrl, bool isRead) {
+  Widget _buildIconOrImage(
+      BuildContext context, String? imageUrl, bool isRead) {
     if (imageUrl != null && imageUrl.isNotEmpty) {
       return Container(
         width: R.w(context, 48),
@@ -191,16 +239,24 @@ class NotificationsScreen extends ConsumerWidget {
       width: R.w(context, 48),
       height: R.w(context, 48),
       decoration: BoxDecoration(
-        color: isRead ? (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : AppColors.backgroundLight) : AppColors.primary.withValues(alpha: 0.08),
+        color: isRead
+            ? (Theme.of(context).brightness == Brightness.dark
+                ? Theme.of(context).scaffoldBackgroundColor
+                : AppColors.backgroundLight)
+            : AppColors.primary.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(R.w(context, 10)),
         border: Border.all(
-          color: isRead ? AppColors.borderLight : AppColors.primary.withValues(alpha: 0.3),
+          color: isRead
+              ? AppColors.borderLight
+              : AppColors.primary.withValues(alpha: 0.3),
           width: 1.0,
         ),
       ),
       child: Icon(
         Icons.notifications_outlined,
-        color: isRead ? AppColors.neutralGold.withValues(alpha: 0.5) : AppColors.primary,
+        color: isRead
+            ? AppColors.neutralGold.withValues(alpha: 0.5)
+            : AppColors.primary,
         size: R.sp(context, 20),
       ),
     );
@@ -219,7 +275,8 @@ class NotificationsScreen extends ConsumerWidget {
           SizedBox(height: R.h(context, 16)),
           Text(
             'No notifications yet',
-            style: AppTypography.h3(context).copyWith(color: AppColors.neutralGold),
+            style: AppTypography.h3(context)
+                .copyWith(color: AppColors.neutralGold),
           ),
           SizedBox(height: R.h(context, 8)),
           Text(

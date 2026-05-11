@@ -13,11 +13,11 @@ import 'ai_gift_builder.dart';
 import '../../core/widgets/skeleton_loaders.dart';
 
 const _sortOptions = [
-  ('featured',   'Featured'),
-  ('newest',     'Newest'),
-  ('price-asc',  'Price: Low → High'),
+  ('featured', 'Featured'),
+  ('newest', 'Newest'),
+  ('price-asc', 'Price: Low → High'),
   ('price-desc', 'Price: High → Low'),
-  ('rating',     'Top Rated'),
+  ('rating', 'Top Rated'),
 ];
 
 class ShopScreen extends ConsumerStatefulWidget {
@@ -57,7 +57,9 @@ class _ShopScreenState extends ConsumerState<ShopScreen> {
           .doc('shopBanner')
           .get();
       if (snap.exists && snap.data()?['imageUrl'] != null) {
-        if (mounted) setState(() => _heroBg = snap.data()!['imageUrl'] as String);
+        if (mounted) {
+          setState(() => _heroBg = snap.data()!['imageUrl'] as String);
+        }
       }
     } catch (_) {}
   }
@@ -86,8 +88,7 @@ class _ShopScreenState extends ConsumerState<ShopScreen> {
     ref.listen<int?>(scrollTabEventProvider, (_, index) {
       if (index == 1 && _scrollController.hasClients) {
         _scrollController.animateTo(0,
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeOut);
+            duration: const Duration(milliseconds: 300), curve: Curves.easeOut);
       }
     });
 
@@ -96,7 +97,11 @@ class _ShopScreenState extends ConsumerState<ShopScreen> {
     final categoriesAsync = ref.watch(categoriesProvider);
 
     return Scaffold(
-      backgroundColor: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : const Color(0xFFF9F8F6))),
+      backgroundColor: (Theme.of(context).brightness == Brightness.dark
+          ? Theme.of(context).scaffoldBackgroundColor
+          : (Theme.of(context).brightness == Brightness.dark
+              ? Theme.of(context).scaffoldBackgroundColor
+              : const Color(0xFFF9F8F6))),
       body: CustomScrollView(
         controller: _scrollController,
         slivers: [
@@ -125,48 +130,68 @@ class _ShopScreenState extends ConsumerState<ShopScreen> {
             // ── Search + Sort/Filter row ────────────────────────────
             SliverToBoxAdapter(
               child: Padding(
-                padding: EdgeInsets.fromLTRB(R.w(context, 16), R.h(context, 12), R.w(context, 16), R.h(context, 8)),
+                padding: EdgeInsets.fromLTRB(R.w(context, 16), R.h(context, 12),
+                    R.w(context, 16), R.h(context, 8)),
                 child: Column(
                   children: [
                     // Search bar
                     Container(
                       decoration: BoxDecoration(
-                        color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? AppColors.surfaceDark
+                            : Colors.white,
                         borderRadius: BorderRadius.circular(R.w(context, 10)),
-                        border: Border.all(color: AppColors.primary.withValues(alpha: 0.2)),
+                        border: Border.all(
+                            color: AppColors.primary.withValues(alpha: 0.2)),
                       ),
                       child: Row(
                         children: [
                           SizedBox(width: R.w(context, 12)),
-                          Icon(Icons.search_rounded, color: Theme.of(context).brightness == Brightness.dark ? Colors.white : AppColors.neutralGold, size: R.sp(context, 16)),
+                          Icon(Icons.search_rounded,
+                              color: Theme.of(context).brightness ==
+                                      Brightness.dark
+                                  ? Colors.white
+                                  : AppColors.neutralGold,
+                              size: R.sp(context, 16)),
                           SizedBox(width: R.w(context, 8)),
                           Expanded(
                             child: TextField(
                               controller: _searchController,
                               onChanged: (v) {
-                                if (_debounceTimer?.isActive ?? false) _debounceTimer!.cancel();
-                                _debounceTimer = Timer(const Duration(milliseconds: 300), () {
-                                  ref.read(shopFiltersProvider.notifier).setSearchQuery(v);
+                                if (_debounceTimer?.isActive ?? false) {
+                                  _debounceTimer!.cancel();
+                                }
+                                _debounceTimer = Timer(
+                                    const Duration(milliseconds: 300), () {
+                                  ref
+                                      .read(shopFiltersProvider.notifier)
+                                      .setSearchQuery(v);
                                 });
                               },
                               decoration: InputDecoration(
                                 hintText: 'Search products, origins…',
-                                hintStyle: AppTypography.bodySM(context).copyWith(
-                                  color: AppColors.neutralGold.withValues(alpha: 0.6),
+                                hintStyle:
+                                    AppTypography.bodySM(context).copyWith(
+                                  color: AppColors.neutralGold
+                                      .withValues(alpha: 0.6),
                                   fontSize: R.sp(context, 11),
                                 ),
                                 border: InputBorder.none,
                                 isDense: true,
-                                contentPadding: EdgeInsets.symmetric(vertical: R.h(context, 8)),
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: R.h(context, 8)),
                               ),
                             ),
                           ),
                           if (filters.searchQuery.isNotEmpty)
                             IconButton(
-                              icon: Icon(Icons.close_rounded, size: R.sp(context, 16)),
+                              icon: Icon(Icons.close_rounded,
+                                  size: R.sp(context, 16)),
                               onPressed: () {
                                 _searchController.clear();
-                                ref.read(shopFiltersProvider.notifier).setSearchQuery('');
+                                ref
+                                    .read(shopFiltersProvider.notifier)
+                                    .setSearchQuery('');
                               },
                             ),
                           SizedBox(width: R.w(context, 4)),
@@ -180,26 +205,49 @@ class _ShopScreenState extends ConsumerState<ShopScreen> {
                     Row(
                       children: [
                         Expanded(
-                          child: filteredAsync.whenData((products) => Text(
-                            '${products.length} product${products.length != 1 ? 's' : ''}',
-                            style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, fontSize: R.sp(context, 11)),
-                          )).valueOrNull ?? const SizedBox(),
+                          child: filteredAsync
+                                  .whenData((products) => Text(
+                                        '${products.length} product${products.length != 1 ? 's' : ''}',
+                                        style: AppTypography.bodySM(context)
+                                            .copyWith(
+                                                color: AppColors.neutralGold,
+                                                fontSize: R.sp(context, 11)),
+                                      ))
+                                  .valueOrNull ??
+                              const SizedBox(),
                         ),
                         // Filters button
                         GestureDetector(
                           onTap: () => _openFilters(context),
                           child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: R.w(context, 12), vertical: R.h(context, 8)),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: R.w(context, 12),
+                                vertical: R.h(context, 8)),
                             decoration: BoxDecoration(
-                              color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
+                              color: Theme.of(context).brightness ==
+                                      Brightness.dark
+                                  ? AppColors.surfaceDark
+                                  : Colors.white,
                               border: Border.all(color: AppColors.borderLight),
-                              borderRadius: BorderRadius.circular(R.w(context, 8)),
+                              borderRadius:
+                                  BorderRadius.circular(R.w(context, 8)),
                             ),
                             child: Row(
                               children: [
-                                Icon(Icons.tune_rounded, size: R.sp(context, 13), color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal)),
+                                Icon(Icons.tune_rounded,
+                                    size: R.sp(context, 13),
+                                    color: (Theme.of(context).brightness ==
+                                            Brightness.dark
+                                        ? Theme.of(context)
+                                            .colorScheme
+                                            .onSurface
+                                        : AppColors.deepCharcoal)),
                                 SizedBox(width: R.w(context, 6)),
-                                Text('Filters', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: R.sp(context, 11))),
+                                Text('Filters',
+                                    style: AppTypography.bodySM(context)
+                                        .copyWith(
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: R.sp(context, 11))),
                               ],
                             ),
                           ),
@@ -208,31 +256,60 @@ class _ShopScreenState extends ConsumerState<ShopScreen> {
                         // Sort dropdown
                         Container(
                           decoration: BoxDecoration(
-                            color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
+                            color:
+                                Theme.of(context).brightness == Brightness.dark
+                                    ? AppColors.surfaceDark
+                                    : Colors.white,
                             border: Border.all(color: AppColors.borderLight),
-                            borderRadius: BorderRadius.circular(R.w(context, 8)),
+                            borderRadius:
+                                BorderRadius.circular(R.w(context, 8)),
                           ),
                           child: PopupMenuButton<String>(
                             initialValue: filters.sortBy,
-                            onSelected: (val) => ref.read(shopFiltersProvider.notifier).setSortBy(val),
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(R.w(context, 10))),
+                            onSelected: (val) => ref
+                                .read(shopFiltersProvider.notifier)
+                                .setSortBy(val),
+                            shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.circular(R.w(context, 10))),
                             child: Padding(
-                              padding: EdgeInsets.symmetric(horizontal: R.w(context, 12), vertical: R.h(context, 8)),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: R.w(context, 12),
+                                  vertical: R.h(context, 8)),
                               child: Row(
                                 children: [
                                   Text(
-                                    _sortOptions.firstWhere((o) => o.$1 == filters.sortBy, orElse: () => _sortOptions.first).$2,
-                                    style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: R.sp(context, 11)),
+                                    _sortOptions
+                                        .firstWhere(
+                                            (o) => o.$1 == filters.sortBy,
+                                            orElse: () => _sortOptions.first)
+                                        .$2,
+                                    style: AppTypography.bodySM(context)
+                                        .copyWith(
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: R.sp(context, 11)),
                                   ),
                                   SizedBox(width: R.w(context, 4)),
-                                  Icon(Icons.keyboard_arrow_down_rounded, size: R.sp(context, 14), color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal)),
+                                  Icon(Icons.keyboard_arrow_down_rounded,
+                                      size: R.sp(context, 14),
+                                      color: (Theme.of(context).brightness ==
+                                              Brightness.dark
+                                          ? Theme.of(context)
+                                              .colorScheme
+                                              .onSurface
+                                          : AppColors.deepCharcoal)),
                                 ],
                               ),
                             ),
-                            itemBuilder: (_) => _sortOptions.map((o) => PopupMenuItem(
-                              value: o.$1,
-                              child: Text(o.$2, style: AppTypography.bodySM(context).copyWith(fontSize: R.sp(context, 11))),
-                            )).toList(),
+                            itemBuilder: (_) => _sortOptions
+                                .map((o) => PopupMenuItem(
+                                      value: o.$1,
+                                      child: Text(o.$2,
+                                          style: AppTypography.bodySM(context)
+                                              .copyWith(
+                                                  fontSize: R.sp(context, 11))),
+                                    ))
+                                .toList(),
                           ),
                         ),
                       ],
@@ -251,18 +328,25 @@ class _ShopScreenState extends ConsumerState<ShopScreen> {
                       padding: const EdgeInsets.symmetric(vertical: 60),
                       child: Column(
                         children: [
-                          const Icon(Icons.inventory_2_outlined, size: 48, color: AppColors.borderLight),
+                          const Icon(Icons.inventory_2_outlined,
+                              size: 48, color: AppColors.borderLight),
                           const SizedBox(height: 16),
-                          Text('No products found', style: AppTypography.h3(context)),
+                          Text('No products found',
+                              style: AppTypography.h3(context)),
                           const SizedBox(height: 8),
-                          Text('Try adjusting your filters', style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold)),
+                          Text('Try adjusting your filters',
+                              style: AppTypography.bodySM(context)
+                                  .copyWith(color: AppColors.neutralGold)),
                           const SizedBox(height: 16),
                           TextButton(
                             onPressed: () {
                               _searchController.clear();
                               ref.read(shopFiltersProvider.notifier).reset();
                             },
-                            child: Text('Clear all filters', style: AppTypography.bodySM(context).copyWith(color: AppColors.primary, fontWeight: FontWeight.w700)),
+                            child: Text('Clear all filters',
+                                style: AppTypography.bodySM(context).copyWith(
+                                    color: AppColors.primary,
+                                    fontWeight: FontWeight.w700)),
                           ),
                         ],
                       ),
@@ -270,7 +354,8 @@ class _ShopScreenState extends ConsumerState<ShopScreen> {
                   );
                 }
                 return SliverPadding(
-                  padding: EdgeInsets.fromLTRB(R.w(context, 16), R.h(context, 20), R.w(context, 16), R.h(context, 40)),
+                  padding: EdgeInsets.fromLTRB(R.w(context, 16),
+                      R.h(context, 20), R.w(context, 16), R.h(context, 40)),
                   sliver: SliverGrid(
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
@@ -287,7 +372,10 @@ class _ShopScreenState extends ConsumerState<ShopScreen> {
               },
               loading: () => const ProductGridSkeleton(),
               error: (e, _) => SliverToBoxAdapter(
-                child: Center(child: Padding(padding: const EdgeInsets.all(32), child: Text('Error: $e'))),
+                child: Center(
+                    child: Padding(
+                        padding: const EdgeInsets.all(32),
+                        child: Text('Error: $e'))),
               ),
             ),
           ], // end else (catalog mode)
@@ -315,18 +403,28 @@ class _ShopScreenState extends ConsumerState<ShopScreen> {
             ),
           ),
           Padding(
-            padding: EdgeInsets.fromLTRB(R.w(context, 20), R.h(context, 48), R.w(context, 20), R.h(context, 20)),
+            padding: EdgeInsets.fromLTRB(R.w(context, 20), R.h(context, 48),
+                R.w(context, 20), R.h(context, 20)),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('HOME / SHOP', style: AppTypography.labelGold(context).copyWith(letterSpacing: 1.5, fontSize: R.sp(context, 9))),
+                Text('HOME / SHOP',
+                    style: AppTypography.labelGold(context).copyWith(
+                        letterSpacing: 1.5, fontSize: R.sp(context, 9))),
                 SizedBox(height: R.h(context, 6)),
-                Text('The Curated\nCollection', style: AppTypography.h1(context).copyWith(color: Colors.white, fontSize: R.sp(context, 22), height: 1.15)),
+                Text('The Curated\nCollection',
+                    style: AppTypography.h1(context).copyWith(
+                        color: Colors.white,
+                        fontSize: R.sp(context, 22),
+                        height: 1.15)),
                 SizedBox(height: R.h(context, 6)),
                 Text(
                   'Discover the essence of purity with our hand-harvested, artisanal selection from the heart of the valley.',
-                  style: AppTypography.bodySM(context).copyWith(color: Colors.white.withValues(alpha: 0.85), fontStyle: FontStyle.italic, fontSize: R.sp(context, 11)),
+                  style: AppTypography.bodySM(context).copyWith(
+                      color: Colors.white.withValues(alpha: 0.85),
+                      fontStyle: FontStyle.italic,
+                      fontSize: R.sp(context, 11)),
                 ),
               ],
             ),
@@ -340,7 +438,8 @@ class _ShopScreenState extends ConsumerState<ShopScreen> {
   Widget _buildToggle() {
     final isCatalog = _viewMode == 'catalog';
     return Container(
-      margin: EdgeInsets.fromLTRB(R.w(context, 16), R.h(context, 16), R.w(context, 16), R.h(context, 12)),
+      margin: EdgeInsets.fromLTRB(R.w(context, 16), R.h(context, 16),
+          R.w(context, 16), R.h(context, 12)),
       decoration: BoxDecoration(
         color: Theme.of(context).brightness == Brightness.dark
             ? AppColors.surfaceDark
@@ -359,20 +458,41 @@ class _ShopScreenState extends ConsumerState<ShopScreen> {
                 padding: EdgeInsets.symmetric(vertical: R.h(context, 10)),
                 decoration: BoxDecoration(
                   color: isCatalog
-                      ? (Theme.of(context).brightness == Brightness.dark ? AppColors.backgroundDark : Colors.white)
+                      ? (Theme.of(context).brightness == Brightness.dark
+                          ? AppColors.backgroundDark
+                          : Colors.white)
                       : Colors.transparent,
                   borderRadius: BorderRadius.circular(R.w(context, 11)),
-                  boxShadow: isCatalog ? [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 6, offset: const Offset(0, 2))] : null,
+                  boxShadow: isCatalog
+                      ? [
+                          BoxShadow(
+                              color: Colors.black.withValues(alpha: 0.05),
+                              blurRadius: 6,
+                              offset: const Offset(0, 2))
+                        ]
+                      : null,
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.grid_view_rounded, size: R.sp(context, 14), color: isCatalog ? (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal) : AppColors.neutralGold),
+                    Icon(Icons.grid_view_rounded,
+                        size: R.sp(context, 14),
+                        color: isCatalog
+                            ? (Theme.of(context).brightness == Brightness.dark
+                                ? Theme.of(context).colorScheme.onSurface
+                                : AppColors.deepCharcoal)
+                            : AppColors.neutralGold),
                     SizedBox(width: R.w(context, 6)),
-                    Text('Catalog', style: AppTypography.bodySM(context).copyWith(
-                      fontWeight: FontWeight.w800, fontSize: R.sp(context, 11),
-                      color: isCatalog ? (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal) : AppColors.neutralGold,
-                    )),
+                    Text('Catalog',
+                        style: AppTypography.bodySM(context).copyWith(
+                          fontWeight: FontWeight.w800,
+                          fontSize: R.sp(context, 11),
+                          color: isCatalog
+                              ? (Theme.of(context).brightness == Brightness.dark
+                                  ? Theme.of(context).colorScheme.onSurface
+                                  : AppColors.deepCharcoal)
+                              : AppColors.neutralGold,
+                        )),
                   ],
                 ),
               ),
@@ -392,12 +512,24 @@ class _ShopScreenState extends ConsumerState<ShopScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.auto_awesome_rounded, size: R.sp(context, 14), color: !isCatalog ? (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal) : AppColors.neutralGold),
+                    Icon(Icons.auto_awesome_rounded,
+                        size: R.sp(context, 14),
+                        color: !isCatalog
+                            ? (Theme.of(context).brightness == Brightness.dark
+                                ? Theme.of(context).colorScheme.onSurface
+                                : AppColors.deepCharcoal)
+                            : AppColors.neutralGold),
                     SizedBox(width: R.w(context, 6)),
-                    Text('AI Gift Builder', style: AppTypography.bodySM(context).copyWith(
-                      fontWeight: FontWeight.w800, fontSize: R.sp(context, 11),
-                      color: !isCatalog ? (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal) : AppColors.neutralGold,
-                    )),
+                    Text('AI Gift Builder',
+                        style: AppTypography.bodySM(context).copyWith(
+                          fontWeight: FontWeight.w800,
+                          fontSize: R.sp(context, 11),
+                          color: !isCatalog
+                              ? (Theme.of(context).brightness == Brightness.dark
+                                  ? Theme.of(context).colorScheme.onSurface
+                                  : AppColors.deepCharcoal)
+                              : AppColors.neutralGold,
+                        )),
                   ],
                 ),
               ),
@@ -410,7 +542,10 @@ class _ShopScreenState extends ConsumerState<ShopScreen> {
 
   // ── Category Pills ───────────────────────────────────────────────────────────
   Widget _buildCategoryPills(List<Category> cats, String? selectedCategory) {
-    final all = [const ('all', 'All Products'), ...cats.map((c) => (c.slug, c.name))];
+    final all = [
+      const ('all', 'All Products'),
+      ...cats.map((c) => (c.slug, c.name))
+    ];
     return SizedBox(
       height: R.h(context, 32),
       child: ListView.separated(
@@ -424,7 +559,9 @@ class _ShopScreenState extends ConsumerState<ShopScreen> {
               ? selectedCategory == null || selectedCategory == 'all'
               : selectedCategory == slug;
           return GestureDetector(
-            onTap: () => ref.read(shopFiltersProvider.notifier).setCategory(slug == 'all' ? null : slug),
+            onTap: () => ref
+                .read(shopFiltersProvider.notifier)
+                .setCategory(slug == 'all' ? null : slug),
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 180),
               padding: EdgeInsets.symmetric(horizontal: R.w(context, 14)),
@@ -432,15 +569,23 @@ class _ShopScreenState extends ConsumerState<ShopScreen> {
               decoration: BoxDecoration(
                 color: isSelected
                     ? AppColors.primary
-                    : (Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white),
+                    : (Theme.of(context).brightness == Brightness.dark
+                        ? AppColors.surfaceDark
+                        : Colors.white),
                 borderRadius: BorderRadius.circular(R.w(context, 16)),
-                border: Border.all(color: isSelected ? AppColors.primary : AppColors.borderLight),
+                border: Border.all(
+                    color:
+                        isSelected ? AppColors.primary : AppColors.borderLight),
               ),
               child: Text(
                 label,
                 style: AppTypography.bodySM(context).copyWith(
                   fontWeight: isSelected ? FontWeight.w800 : FontWeight.w600,
-                  color: isSelected ? (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal) : AppColors.neutralGold,
+                  color: isSelected
+                      ? (Theme.of(context).brightness == Brightness.dark
+                          ? Theme.of(context).colorScheme.onSurface
+                          : AppColors.deepCharcoal)
+                      : AppColors.neutralGold,
                   fontSize: R.sp(context, 11),
                 ),
               ),
@@ -467,33 +612,49 @@ class _FilterSheet extends ConsumerWidget {
     final categoriesAsync = ref.watch(categoriesProvider);
 
     final availableOrigins = productsAsync.valueOrNull != null
-        ? (productsAsync.value!.map((p) => p.origin).toSet().where((o) => o.isNotEmpty).toList()..sort())
+        ? (productsAsync.value!
+            .map((p) => p.origin)
+            .toSet()
+            .where((o) => o.isNotEmpty)
+            .toList()
+          ..sort())
         : <String>['Kashmir Valley', 'Ladakh Highlands', 'Himachal Slopes'];
 
     return Container(
       height: MediaQuery.of(context).size.height * 0.88,
       decoration: BoxDecoration(
-        color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(R.w(context, 24))),
+        color: Theme.of(context).brightness == Brightness.dark
+            ? AppColors.surfaceDark
+            : Colors.white,
+        borderRadius:
+            BorderRadius.vertical(top: Radius.circular(R.w(context, 24))),
       ),
       child: Column(
         children: [
           Center(
             child: Container(
-              margin: EdgeInsets.only(top: R.h(context, 12), bottom: R.h(context, 4)),
-              width: R.w(context, 40), height: R.h(context, 4),
-              decoration: BoxDecoration(color: Colors.grey.shade200, borderRadius: BorderRadius.circular(R.w(context, 2))),
+              margin: EdgeInsets.only(
+                  top: R.h(context, 12), bottom: R.h(context, 4)),
+              width: R.w(context, 40),
+              height: R.h(context, 4),
+              decoration: BoxDecoration(
+                  color: Colors.grey.shade200,
+                  borderRadius: BorderRadius.circular(R.w(context, 2))),
             ),
           ),
           Padding(
-            padding: EdgeInsets.fromLTRB(R.w(context, 20), R.h(context, 8), R.w(context, 8), R.h(context, 12)),
+            padding: EdgeInsets.fromLTRB(R.w(context, 20), R.h(context, 8),
+                R.w(context, 8), R.h(context, 12)),
             child: Row(
               children: [
                 Text('Filters', style: AppTypography.h3(context)),
                 const Spacer(),
                 TextButton(
                   onPressed: () => notifier.reset(),
-                  child: Text('Clear All', style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, fontSize: R.sp(context, 13))),
+                  child: Text('Clear All',
+                      style: AppTypography.bodySM(context).copyWith(
+                          color: AppColors.neutralGold,
+                          fontSize: R.sp(context, 13))),
                 ),
                 IconButton(
                   icon: const Icon(Icons.close_rounded),
@@ -508,34 +669,60 @@ class _FilterSheet extends ConsumerWidget {
               padding: EdgeInsets.all(R.w(context, 20)),
               children: [
                 // Category
-                Text('CATEGORY', style: AppTypography.label(context).copyWith(fontSize: R.sp(context, 10), color: AppColors.neutralGold, letterSpacing: 1.5)),
+                Text('CATEGORY',
+                    style: AppTypography.label(context).copyWith(
+                        fontSize: R.sp(context, 10),
+                        color: AppColors.neutralGold,
+                        letterSpacing: 1.5)),
                 SizedBox(height: R.h(context, 12)),
                 categoriesAsync.when(
                   data: (cats) {
-                    final all = [const ('all', 'All Products'), ...cats.map((c) => (c.slug, c.name))];
+                    final all = [
+                      const ('all', 'All Products'),
+                      ...cats.map((c) => (c.slug, c.name))
+                    ];
                     final products = productsAsync.valueOrNull ?? [];
                     return Column(
                       children: all.map((entry) {
                         final (slug, label) = entry;
                         final isSelected = slug == 'all'
-                            ? filters.category == null || filters.category == 'all'
+                            ? filters.category == null ||
+                                filters.category == 'all'
                             : filters.category == slug;
-                        final count = slug == 'all' ? products.length : products.where((p) => p.category == slug).length;
+                        final count = slug == 'all'
+                            ? products.length
+                            : products.where((p) => p.category == slug).length;
                         return InkWell(
-                          onTap: () => notifier.setCategory(slug == 'all' ? null : slug),
+                          onTap: () =>
+                              notifier.setCategory(slug == 'all' ? null : slug),
                           borderRadius: BorderRadius.circular(R.w(context, 10)),
                           child: Container(
-                            padding: EdgeInsets.symmetric(vertical: R.h(context, 11), horizontal: R.w(context, 12)),
+                            padding: EdgeInsets.symmetric(
+                                vertical: R.h(context, 11),
+                                horizontal: R.w(context, 12)),
                             decoration: BoxDecoration(
-                              color: isSelected ? AppColors.primary.withValues(alpha: 0.1) : Colors.transparent,
-                              borderRadius: BorderRadius.circular(R.w(context, 10)),
+                              color: isSelected
+                                  ? AppColors.primary.withValues(alpha: 0.1)
+                                  : Colors.transparent,
+                              borderRadius:
+                                  BorderRadius.circular(R.w(context, 10)),
                             ),
                             child: Row(
                               children: [
-                                Expanded(child: Text(label, style: AppTypography.bodySM(context).copyWith(
-                                  fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500, fontSize: R.sp(context, 14),
-                                ))),
-                                Text('$count', style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, fontSize: R.sp(context, 12))),
+                                Expanded(
+                                    child: Text(label,
+                                        style: AppTypography.bodySM(context)
+                                            .copyWith(
+                                          fontWeight: isSelected
+                                              ? FontWeight.w700
+                                              : FontWeight.w500,
+                                          fontSize: R.sp(context, 14),
+                                        ))),
+                                Text('$count',
+                                    style: AppTypography.bodySM(context)
+                                        .copyWith(
+                                            color: AppColors.neutralGold,
+                                            fontSize: R.sp(context, 12))),
                               ],
                             ),
                           ),
@@ -553,21 +740,31 @@ class _FilterSheet extends ConsumerWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('PRICE RANGE', style: AppTypography.label(context).copyWith(fontSize: R.sp(context, 10), color: AppColors.neutralGold, letterSpacing: 1.5)),
-                    Text('Up to ₹${filters.priceMax.toInt()}', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: R.sp(context, 13))),
+                    Text('PRICE RANGE',
+                        style: AppTypography.label(context).copyWith(
+                            fontSize: R.sp(context, 10),
+                            color: AppColors.neutralGold,
+                            letterSpacing: 1.5)),
+                    Text('Up to ₹${filters.priceMax.toInt()}',
+                        style: AppTypography.bodySM(context).copyWith(
+                            fontWeight: FontWeight.w700,
+                            fontSize: R.sp(context, 13))),
                   ],
                 ),
                 SizedBox(height: R.h(context, 10)),
                 SliderTheme(
                   data: SliderThemeData(
                     activeTrackColor: AppColors.primary,
-                    inactiveTrackColor: AppColors.primary.withValues(alpha: 0.15),
+                    inactiveTrackColor:
+                        AppColors.primary.withValues(alpha: 0.15),
                     thumbColor: AppColors.primary,
                     overlayColor: AppColors.primary.withValues(alpha: 0.1),
                     trackHeight: R.h(context, 3),
                   ),
                   child: Slider(
-                    min: 100, max: 10000, divisions: 99,
+                    min: 100,
+                    max: 10000,
+                    divisions: 99,
                     value: filters.priceMax,
                     onChanged: (v) => notifier.setPriceMax(v),
                   ),
@@ -575,74 +772,124 @@ class _FilterSheet extends ConsumerWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('₹100', style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, fontSize: R.sp(context, 11))),
-                    Text('₹10,000+', style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, fontSize: R.sp(context, 11))),
+                    Text('₹100',
+                        style: AppTypography.bodySM(context).copyWith(
+                            color: AppColors.neutralGold,
+                            fontSize: R.sp(context, 11))),
+                    Text('₹10,000+',
+                        style: AppTypography.bodySM(context).copyWith(
+                            color: AppColors.neutralGold,
+                            fontSize: R.sp(context, 11))),
                   ],
                 ),
                 SizedBox(height: R.h(context, 24)),
                 const Divider(),
                 SizedBox(height: R.h(context, 20)),
                 // Origin
-                Text('ORIGIN', style: AppTypography.label(context).copyWith(fontSize: R.sp(context, 10), color: AppColors.neutralGold, letterSpacing: 1.5)),
+                Text('ORIGIN',
+                    style: AppTypography.label(context).copyWith(
+                        fontSize: R.sp(context, 10),
+                        color: AppColors.neutralGold,
+                        letterSpacing: 1.5)),
                 SizedBox(height: R.h(context, 12)),
                 ...availableOrigins.map((origin) => InkWell(
-                  onTap: () => notifier.toggleOrigin(origin),
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: R.h(context, 8)),
-                    child: Row(
-                      children: [
-                        AnimatedContainer(
-                          duration: const Duration(milliseconds: 150),
-                          width: R.w(context, 20), height: R.w(context, 20),
-                          decoration: BoxDecoration(
-                            color: filters.origins.contains(origin) ? AppColors.primary : Colors.transparent,
-                            border: Border.all(
-                              color: filters.origins.contains(origin) ? AppColors.primary : AppColors.borderLight,
-                              width: 1.5,
+                      onTap: () => notifier.toggleOrigin(origin),
+                      child: Padding(
+                        padding:
+                            EdgeInsets.symmetric(vertical: R.h(context, 8)),
+                        child: Row(
+                          children: [
+                            AnimatedContainer(
+                              duration: const Duration(milliseconds: 150),
+                              width: R.w(context, 20),
+                              height: R.w(context, 20),
+                              decoration: BoxDecoration(
+                                color: filters.origins.contains(origin)
+                                    ? AppColors.primary
+                                    : Colors.transparent,
+                                border: Border.all(
+                                  color: filters.origins.contains(origin)
+                                      ? AppColors.primary
+                                      : AppColors.borderLight,
+                                  width: 1.5,
+                                ),
+                                borderRadius:
+                                    BorderRadius.circular(R.w(context, 5)),
+                              ),
+                              child: filters.origins.contains(origin)
+                                  ? Icon(Icons.check_rounded,
+                                      size: R.sp(context, 13),
+                                      color: (Theme.of(context).brightness ==
+                                              Brightness.dark
+                                          ? Theme.of(context)
+                                              .colorScheme
+                                              .onSurface
+                                          : AppColors.deepCharcoal))
+                                  : null,
                             ),
-                            borderRadius: BorderRadius.circular(R.w(context, 5)),
-                          ),
-                          child: filters.origins.contains(origin)
-                              ? Icon(Icons.check_rounded, size: R.sp(context, 13), color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal))
-                              : null,
+                            SizedBox(width: R.w(context, 12)),
+                            Expanded(
+                                child: Text(origin,
+                                    style: AppTypography.bodySM(context)
+                                        .copyWith(
+                                            fontSize: R.sp(context, 14)))),
+                          ],
                         ),
-                        SizedBox(width: R.w(context, 12)),
-                        Expanded(child: Text(origin, style: AppTypography.bodySM(context).copyWith(fontSize: R.sp(context, 14)))),
-                      ],
-                    ),
-                  ),
-                )),
+                      ),
+                    )),
                 SizedBox(height: R.h(context, 32)),
                 Container(
                   padding: EdgeInsets.all(R.w(context, 16)),
                   decoration: BoxDecoration(
                     color: AppColors.primary.withValues(alpha: 0.05),
-                    border: Border.all(color: AppColors.primary.withValues(alpha: 0.15)),
+                    border: Border.all(
+                        color: AppColors.primary.withValues(alpha: 0.15)),
                     borderRadius: BorderRadius.circular(R.w(context, 14)),
                   ),
                   child: Text(
                     '"Purity is not an opinion; it\'s our promise. Every product is sourced directly from heritage farmers."',
-                    style: AppTypography.bodySM(context).copyWith(fontStyle: FontStyle.italic, fontSize: R.sp(context, 12), color: AppColors.neutralGold, height: 1.6),
+                    style: AppTypography.bodySM(context).copyWith(
+                        fontStyle: FontStyle.italic,
+                        fontSize: R.sp(context, 12),
+                        color: AppColors.neutralGold,
+                        height: 1.6),
                   ),
                 ),
               ],
             ),
           ),
           Padding(
-            padding: EdgeInsets.fromLTRB(R.w(context, 20), R.h(context, 12), R.w(context, 20), MediaQuery.of(context).padding.bottom + R.h(context, 16)),
+            padding: EdgeInsets.fromLTRB(
+                R.w(context, 20),
+                R.h(context, 12),
+                R.w(context, 20),
+                MediaQuery.of(context).padding.bottom + R.h(context, 16)),
             child: GestureDetector(
               onTap: () => Navigator.pop(context),
               child: Container(
                 height: R.h(context, 52),
-                decoration: BoxDecoration(color: AppColors.primary, borderRadius: BorderRadius.circular(R.w(context, 14))),
+                decoration: BoxDecoration(
+                    color: AppColors.primary,
+                    borderRadius: BorderRadius.circular(R.w(context, 14))),
                 child: Center(
                   child: filteredAsync.when(
                     data: (products) => Text(
                       'Show ${products.length} Product${products.length != 1 ? 's' : ''}',
-                      style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: R.sp(context, 15), color: AppColors.deepCharcoal),
+                      style: AppTypography.bodySM(context).copyWith(
+                          fontWeight: FontWeight.w800,
+                          fontSize: R.sp(context, 15),
+                          color: AppColors.deepCharcoal),
                     ),
-                    loading: () => Text('Show Products', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: R.sp(context, 15), color: AppColors.deepCharcoal)),
-                    error: (_, __) => Text('Show Products', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: R.sp(context, 15), color: AppColors.deepCharcoal)),
+                    loading: () => Text('Show Products',
+                        style: AppTypography.bodySM(context).copyWith(
+                            fontWeight: FontWeight.w800,
+                            fontSize: R.sp(context, 15),
+                            color: AppColors.deepCharcoal)),
+                    error: (_, __) => Text('Show Products',
+                        style: AppTypography.bodySM(context).copyWith(
+                            fontWeight: FontWeight.w800,
+                            fontSize: R.sp(context, 15),
+                            color: AppColors.deepCharcoal)),
                   ),
                 ),
               ),

@@ -35,7 +35,8 @@ class LegalSectionWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(R.w(context, 16), 0, R.w(context, 16), R.h(context, 20)),
+      padding: EdgeInsets.fromLTRB(
+          R.w(context, 16), 0, R.w(context, 16), R.h(context, 20)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -51,8 +52,8 @@ class LegalSectionWidget extends StatelessWidget {
                   border: Border.all(
                       color: AppColors.primary.withValues(alpha: 0.15)),
                 ),
-                child:
-                    Icon(legalIconMap[section.icon] ?? Icons.shield_outlined, color: AppColors.primary, size: R.sp(context, 17)),
+                child: Icon(legalIconMap[section.icon] ?? Icons.shield_outlined,
+                    color: AppColors.primary, size: R.sp(context, 17)),
               ),
               SizedBox(width: R.w(context, 12)),
               Text(
@@ -67,7 +68,8 @@ class LegalSectionWidget extends StatelessWidget {
               Expanded(
                 child: Text(
                   section.title,
-                  style: AppTypography.h3(context).copyWith(fontSize: R.sp(context, 16)),
+                  style: AppTypography.h3(context)
+                      .copyWith(fontSize: R.sp(context, 16)),
                 ),
               ),
             ],
@@ -79,9 +81,14 @@ class LegalSectionWidget extends StatelessWidget {
                 child: Container(
                   padding: EdgeInsets.all(R.w(context, 15)),
                   decoration: BoxDecoration(
-                    color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? AppColors.surfaceDark
+                        : Colors.white,
                     borderRadius: BorderRadius.circular(R.w(context, 12)),
-                    border: Border.all(color: Theme.of(context).brightness == Brightness.dark ? AppColors.borderDark : AppColors.borderLight),
+                    border: Border.all(
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? AppColors.borderDark
+                            : AppColors.borderLight),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black.withValues(alpha: 0.03),
@@ -98,7 +105,10 @@ class LegalSectionWidget extends StatelessWidget {
                         style: AppTypography.bodySM(context).copyWith(
                           fontWeight: FontWeight.w700,
                           fontSize: R.sp(context, 13),
-                          color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal),
+                          color:
+                              (Theme.of(context).brightness == Brightness.dark
+                                  ? Theme.of(context).colorScheme.onSurface
+                                  : AppColors.deepCharcoal),
                         ),
                       ),
                       SizedBox(height: R.h(context, 5)),
@@ -107,8 +117,11 @@ class LegalSectionWidget extends StatelessWidget {
                         style: AppTypography.bodySM(context).copyWith(
                           fontSize: R.sp(context, 12.5),
                           height: 1.65,
-                          color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal)
-                              .withValues(alpha: 0.65),
+                          color:
+                              (Theme.of(context).brightness == Brightness.dark
+                                      ? Theme.of(context).colorScheme.onSurface
+                                      : AppColors.deepCharcoal)
+                                  .withValues(alpha: 0.65),
                         ),
                       ),
                     ],

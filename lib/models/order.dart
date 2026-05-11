@@ -12,8 +12,8 @@ enum OrderStatus {
 
   String get label => name[0].toUpperCase() + name.substring(1);
 
-  static OrderStatus fromString(String s) =>
-      OrderStatus.values.firstWhere((e) => e.name == s, orElse: () => OrderStatus.pending);
+  static OrderStatus fromString(String s) => OrderStatus.values
+      .firstWhere((e) => e.name == s, orElse: () => OrderStatus.pending);
 }
 
 enum PaymentStatus {
@@ -22,8 +22,8 @@ enum PaymentStatus {
   failed,
   refunded;
 
-  static PaymentStatus fromString(String s) =>
-      PaymentStatus.values.firstWhere((e) => e.name == s, orElse: () => PaymentStatus.pending);
+  static PaymentStatus fromString(String s) => PaymentStatus.values
+      .firstWhere((e) => e.name == s, orElse: () => PaymentStatus.pending);
 }
 
 enum ReturnStatus {
@@ -33,8 +33,8 @@ enum ReturnStatus {
   rejected,
   refunded;
 
-  static ReturnStatus fromString(String s) =>
-      ReturnStatus.values.firstWhere((e) => e.name == s, orElse: () => ReturnStatus.none);
+  static ReturnStatus fromString(String s) => ReturnStatus.values
+      .firstWhere((e) => e.name == s, orElse: () => ReturnStatus.none);
 }
 
 class Order {
@@ -91,7 +91,10 @@ class Order {
     return Order(
       id: doc.id,
       userId: d['userId'] as String? ?? '',
-      items: (d['items'] as List?)?.map((i) => CartItem.fromMap(i as Map<String, dynamic>)).toList() ?? [],
+      items: (d['items'] as List?)
+              ?.map((i) => CartItem.fromMap(i as Map<String, dynamic>))
+              .toList() ??
+          [],
       address: Address.fromMap(d['address'] as Map<String, dynamic>? ?? {}),
       subtotal: (d['subtotal'] as num?)?.toDouble() ?? 0,
       gst: (d['gst'] as num?)?.toDouble() ?? 0,
@@ -101,12 +104,14 @@ class Order {
       total: (d['total'] as num?)?.toDouble() ?? 0,
       status: OrderStatus.fromString(d['status'] as String? ?? 'pending'),
       paymentId: d['paymentId'] as String?,
-      paymentStatus: PaymentStatus.fromString(d['paymentStatus'] as String? ?? 'pending'),
+      paymentStatus:
+          PaymentStatus.fromString(d['paymentStatus'] as String? ?? 'pending'),
       razorpayOrderId: d['razorpayOrderId'] as String?,
       createdAt: (d['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
       updatedAt: (d['updatedAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
       trackingNumber: d['trackingNumber'] as String?,
-      returnStatus: ReturnStatus.fromString(d['returnStatus'] as String? ?? 'none'),
+      returnStatus:
+          ReturnStatus.fromString(d['returnStatus'] as String? ?? 'none'),
       returnReason: d['returnReason'] as String?,
       cancelledBy: d['cancelledBy'] as String?,
       cancellationReason: d['cancellationReason'] as String?,
@@ -143,52 +148,55 @@ class Order {
     String? cancelledBy,
     String? cancellationReason,
     DateTime? cancelledAt,
-  }) => Order(
-    id: id ?? this.id,
-    userId: userId ?? this.userId,
-    items: items ?? this.items,
-    address: address ?? this.address,
-    subtotal: subtotal ?? this.subtotal,
-    gst: gst ?? this.gst,
-    shipping: shipping ?? this.shipping,
-    discount: discount ?? this.discount,
-    appliedPromoCode: appliedPromoCode ?? this.appliedPromoCode,
-    total: total ?? this.total,
-    status: status ?? this.status,
-    paymentId: paymentId ?? this.paymentId,
-    paymentStatus: paymentStatus ?? this.paymentStatus,
-    razorpayOrderId: razorpayOrderId ?? this.razorpayOrderId,
-    createdAt: createdAt ?? this.createdAt,
-    updatedAt: updatedAt ?? this.updatedAt,
-    trackingNumber: trackingNumber ?? this.trackingNumber,
-    returnStatus: returnStatus ?? this.returnStatus,
-    returnReason: returnReason ?? this.returnReason,
-    cancelledBy: cancelledBy ?? this.cancelledBy,
-    cancellationReason: cancellationReason ?? this.cancellationReason,
-    cancelledAt: cancelledAt ?? this.cancelledAt,
-  );
+  }) =>
+      Order(
+        id: id ?? this.id,
+        userId: userId ?? this.userId,
+        items: items ?? this.items,
+        address: address ?? this.address,
+        subtotal: subtotal ?? this.subtotal,
+        gst: gst ?? this.gst,
+        shipping: shipping ?? this.shipping,
+        discount: discount ?? this.discount,
+        appliedPromoCode: appliedPromoCode ?? this.appliedPromoCode,
+        total: total ?? this.total,
+        status: status ?? this.status,
+        paymentId: paymentId ?? this.paymentId,
+        paymentStatus: paymentStatus ?? this.paymentStatus,
+        razorpayOrderId: razorpayOrderId ?? this.razorpayOrderId,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+        trackingNumber: trackingNumber ?? this.trackingNumber,
+        returnStatus: returnStatus ?? this.returnStatus,
+        returnReason: returnReason ?? this.returnReason,
+        cancelledBy: cancelledBy ?? this.cancelledBy,
+        cancellationReason: cancellationReason ?? this.cancellationReason,
+        cancelledAt: cancelledAt ?? this.cancelledAt,
+      );
 
   Map<String, dynamic> toFirestore() => {
-    'userId': userId,
-    'items': items.map((i) => i.toMap()).toList(),
-    'address': address.toMap(),
-    'subtotal': subtotal,
-    'gst': gst,
-    'shipping': shipping,
-    if (discount != null) 'discount': discount,
-    if (appliedPromoCode != null) 'appliedPromoCode': appliedPromoCode,
-    'total': total,
-    'status': status.name,
-    if (paymentId != null) 'paymentId': paymentId,
-    'paymentStatus': paymentStatus.name,
-    if (razorpayOrderId != null) 'razorpayOrderId': razorpayOrderId,
-    'createdAt': Timestamp.fromDate(createdAt),
-    'updatedAt': Timestamp.fromDate(updatedAt),
-    if (trackingNumber != null) 'trackingNumber': trackingNumber,
-    'returnStatus': returnStatus.name,
-    if (returnReason != null) 'returnReason': returnReason,
-    if (cancelledBy != null) 'cancelledBy': cancelledBy,
-    if (cancellationReason != null) 'cancellationReason': cancellationReason,
-    if (cancelledAt != null) 'cancelledAt': Timestamp.fromDate(cancelledAt!),
-  };
+        'userId': userId,
+        'items': items.map((i) => i.toMap()).toList(),
+        'address': address.toMap(),
+        'subtotal': subtotal,
+        'gst': gst,
+        'shipping': shipping,
+        if (discount != null) 'discount': discount,
+        if (appliedPromoCode != null) 'appliedPromoCode': appliedPromoCode,
+        'total': total,
+        'status': status.name,
+        if (paymentId != null) 'paymentId': paymentId,
+        'paymentStatus': paymentStatus.name,
+        if (razorpayOrderId != null) 'razorpayOrderId': razorpayOrderId,
+        'createdAt': Timestamp.fromDate(createdAt),
+        'updatedAt': Timestamp.fromDate(updatedAt),
+        if (trackingNumber != null) 'trackingNumber': trackingNumber,
+        'returnStatus': returnStatus.name,
+        if (returnReason != null) 'returnReason': returnReason,
+        if (cancelledBy != null) 'cancelledBy': cancelledBy,
+        if (cancellationReason != null)
+          'cancellationReason': cancellationReason,
+        if (cancelledAt != null)
+          'cancelledAt': Timestamp.fromDate(cancelledAt!),
+      };
 }

@@ -17,12 +17,18 @@ const _fallbackHero =
     'https://images.unsplash.com/photo-1587049352851-8d4e89133924?w=800&q=80';
 
 final _staticCategories = [
-  const _StaticCat('honey',        'Artisanal Honey',  'LIQUID GOLD',       'https://images.unsplash.com/photo-1587049352851-8d4e89133924?w=600&q=80'),
-  const _StaticCat('nut-butters',  'Nut Butters',      'PURE ENERGY',       'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=600&q=80'),
-  const _StaticCat('ghee-oils',    'Ghee & Oils',      'HERITAGE RECIPE',   'https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?w=600&q=80'),
-  const _StaticCat('dried-produce','Dried Produce',    'FROM THE VALLEY',   'https://images.unsplash.com/photo-1518977822534-7049a61ee0c2?w=600&q=80'),
-  const _StaticCat('apparel',      'Artisan Apparel',  'SUSTAINABLE LIVING','https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80'),
-  const _StaticCat('spices',       'Spices',           'AUTHENTIC FLAVOURS','https://images.unsplash.com/photo-1529543544282-ea669407fca3?w=600&q=80'),
+  const _StaticCat('honey', 'Artisanal Honey', 'LIQUID GOLD',
+      'https://images.unsplash.com/photo-1587049352851-8d4e89133924?w=600&q=80'),
+  const _StaticCat('nut-butters', 'Nut Butters', 'PURE ENERGY',
+      'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=600&q=80'),
+  const _StaticCat('ghee-oils', 'Ghee & Oils', 'HERITAGE RECIPE',
+      'https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?w=600&q=80'),
+  const _StaticCat('dried-produce', 'Dried Produce', 'FROM THE VALLEY',
+      'https://images.unsplash.com/photo-1518977822534-7049a61ee0c2?w=600&q=80'),
+  const _StaticCat('apparel', 'Artisan Apparel', 'SUSTAINABLE LIVING',
+      'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80'),
+  const _StaticCat('spices', 'Spices', 'AUTHENTIC FLAVOURS',
+      'https://images.unsplash.com/photo-1529543544282-ea669407fca3?w=600&q=80'),
 ];
 
 class _StaticCat {
@@ -65,9 +71,11 @@ class _CategoriesScreenState extends ConsumerState<CategoriesScreen>
   @override
   void initState() {
     super.initState();
-    _heroZoom = AnimationController(vsync: this, duration: const Duration(seconds: 9))
-      ..forward();
-    _headerFade = AnimationController(vsync: this, duration: const Duration(milliseconds: 700))
+    _heroZoom =
+        AnimationController(vsync: this, duration: const Duration(seconds: 9))
+          ..forward();
+    _headerFade = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 700))
       ..forward();
     _loadCategoryBanner();
   }
@@ -108,15 +116,16 @@ class _CategoriesScreenState extends ConsumerState<CategoriesScreen>
     ref.listen<int?>(scrollTabEventProvider, (_, index) {
       if (index == 2 && _scrollController.hasClients) {
         _scrollController.animateTo(0,
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeOut);
+            duration: const Duration(milliseconds: 300), curve: Curves.easeOut);
       }
     });
 
     final categoriesAsync = ref.watch(categoriesProvider);
 
     return Scaffold(
-      backgroundColor: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : AppColors.backgroundLight),
+      backgroundColor: (Theme.of(context).brightness == Brightness.dark
+          ? Theme.of(context).scaffoldBackgroundColor
+          : AppColors.backgroundLight),
       body: CustomScrollView(
         controller: _scrollController,
         slivers: [
@@ -134,14 +143,16 @@ class _CategoriesScreenState extends ConsumerState<CategoriesScreen>
           // ── Section Header ────────────────────────────────────────────
           SliverToBoxAdapter(
             child: Padding(
-              padding: EdgeInsets.fromLTRB(R.w(context, 20), R.h(context, 32), R.w(context, 20), R.h(context, 20)),
+              padding: EdgeInsets.fromLTRB(R.w(context, 20), R.h(context, 32),
+                  R.w(context, 20), R.h(context, 20)),
               child: FadeTransition(
                 opacity: _headerFade,
                 child: Column(
                   children: [
                     Text(
                       'CURATED SELECTION',
-                      style: AppTypography.labelGold(context).copyWith(letterSpacing: 3, fontSize: R.sp(context, 10)),
+                      style: AppTypography.labelGold(context).copyWith(
+                          letterSpacing: 3, fontSize: R.sp(context, 10)),
                     ),
                     SizedBox(height: R.h(context, 8)),
                     Text(
@@ -163,17 +174,20 @@ class _CategoriesScreenState extends ConsumerState<CategoriesScreen>
           categoriesAsync.when(
             data: (cats) {
               final list = cats.isEmpty
-                  ? _staticCategories.map((s) => Category(
-                        id: s.slug,
-                        name: s.label,
-                        slug: s.slug,
-                        image: s.imageUrl,
-                        sublabel: s.sublabel,
-                      )).toList()
+                  ? _staticCategories
+                      .map((s) => Category(
+                            id: s.slug,
+                            name: s.label,
+                            slug: s.slug,
+                            image: s.imageUrl,
+                            sublabel: s.sublabel,
+                          ))
+                      .toList()
                   : cats;
 
               return SliverPadding(
-                padding: EdgeInsets.fromLTRB(R.w(context, 16), R.h(context, 8), R.w(context, 16), R.h(context, 8)),
+                padding: EdgeInsets.fromLTRB(R.w(context, 16), R.h(context, 8),
+                    R.w(context, 16), R.h(context, 8)),
                 sliver: SliverGrid(
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
@@ -192,7 +206,8 @@ class _CategoriesScreenState extends ConsumerState<CategoriesScreen>
               );
             },
             loading: () => SliverPadding(
-              padding: EdgeInsets.fromLTRB(R.w(context, 16), R.h(context, 8), R.w(context, 16), R.h(context, 8)),
+              padding: EdgeInsets.fromLTRB(R.w(context, 16), R.h(context, 8),
+                  R.w(context, 16), R.h(context, 8)),
               sliver: SliverGrid(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
@@ -214,7 +229,8 @@ class _CategoriesScreenState extends ConsumerState<CategoriesScreen>
           const SliverToBoxAdapter(child: _MakersStorySection()),
 
           // ── Newsletter ────────────────────────────────────────────────
-          SliverToBoxAdapter(child: _NewsletterSection(controller: _emailController)),
+          SliverToBoxAdapter(
+              child: _NewsletterSection(controller: _emailController)),
 
           SliverToBoxAdapter(child: SizedBox(height: R.h(context, 32))),
         ],
@@ -305,7 +321,9 @@ class _HeroBannerState extends State<_HeroBanner> {
                     widget.title ?? 'Explore Our\nCollections',
                     textAlign: TextAlign.center,
                     style: AppTypography.h1(context).copyWith(
-                      color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? AppColors.surfaceDark
+                          : Colors.white,
                       fontSize: R.sp(context, 26),
                       height: 1.15,
                       letterSpacing: -0.5,
@@ -313,10 +331,14 @@ class _HeroBannerState extends State<_HeroBanner> {
                   ),
                   SizedBox(height: R.h(context, 12)),
                   Text(
-                    widget.description ?? 'A refined heritage of artisanal excellence and handcrafted perfection, curated for the modern connoisseur.',
+                    widget.description ??
+                        'A refined heritage of artisanal excellence and handcrafted perfection, curated for the modern connoisseur.',
                     textAlign: TextAlign.center,
                     style: AppTypography.bodySM(context).copyWith(
-                      color: (Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white).withValues(alpha: 0.80),
+                      color: (Theme.of(context).brightness == Brightness.dark
+                              ? AppColors.surfaceDark
+                              : Colors.white)
+                          .withValues(alpha: 0.80),
                       fontStyle: FontStyle.italic,
                       fontSize: R.sp(context, 11),
                       height: 1.6,
@@ -439,7 +461,8 @@ class _CategoryCardState extends State<_CategoryCard>
                       offset: _pressed ? const Offset(0, -0.03) : Offset.zero,
                       duration: const Duration(milliseconds: 200),
                       child: Padding(
-                        padding: EdgeInsets.fromLTRB(R.w(context, 12), 0, R.w(context, 12), R.h(context, 12)),
+                        padding: EdgeInsets.fromLTRB(R.w(context, 12), 0,
+                            R.w(context, 12), R.h(context, 12)),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisSize: MainAxisSize.min,
@@ -448,7 +471,8 @@ class _CategoryCardState extends State<_CategoryCard>
                             Text(
                               sublabel,
                               style: AppTypography.label(context).copyWith(
-                                color: AppColors.primary.withValues(alpha: 0.92),
+                                color:
+                                    AppColors.primary.withValues(alpha: 0.92),
                                 fontSize: R.sp(context, 8),
                                 letterSpacing: 1.8,
                               ),
@@ -473,14 +497,16 @@ class _CategoryCardState extends State<_CategoryCard>
                                   vertical: R.h(context, 8)),
                               decoration: BoxDecoration(
                                 color: AppColors.primary,
-                                borderRadius: BorderRadius.circular(R.w(context, 6)),
+                                borderRadius:
+                                    BorderRadius.circular(R.w(context, 6)),
                               ),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
                                     'SHOP NOW',
-                                    style: AppTypography.label(context).copyWith(
+                                    style:
+                                        AppTypography.label(context).copyWith(
                                       color: AppColors.deepCharcoal,
                                       fontSize: 8,
                                       letterSpacing: 1.4,
@@ -564,14 +590,23 @@ class _CategorySkeletonState extends State<_CategorySkeleton>
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(height: R.h(context, 8), width: R.w(context, 60), color: color.withValues(alpha: 0.5)),
+                      Container(
+                          height: R.h(context, 8),
+                          width: R.w(context, 60),
+                          color: color.withValues(alpha: 0.5)),
                       SizedBox(height: R.h(context, 4)),
-                      Container(height: R.h(context, 14), width: R.w(context, 100), color: color.withValues(alpha: 0.5)),
+                      Container(
+                          height: R.h(context, 14),
+                          width: R.w(context, 100),
+                          color: color.withValues(alpha: 0.5)),
                       SizedBox(height: R.h(context, 8)),
-                      Container(height: R.h(context, 28), decoration: BoxDecoration(
-                        color: color.withValues(alpha: 0.5),
-                        borderRadius: BorderRadius.circular(R.w(context, 6)),
-                      )),
+                      Container(
+                          height: R.h(context, 28),
+                          decoration: BoxDecoration(
+                            color: color.withValues(alpha: 0.5),
+                            borderRadius:
+                                BorderRadius.circular(R.w(context, 6)),
+                          )),
                     ],
                   ),
                 ),
@@ -593,8 +628,11 @@ class _MakersStorySection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal),
-      padding: EdgeInsets.symmetric(horizontal: R.w(context, 20), vertical: R.h(context, 40)),
+      color: (Theme.of(context).brightness == Brightness.dark
+          ? Theme.of(context).colorScheme.onSurface
+          : AppColors.deepCharcoal),
+      padding: EdgeInsets.symmetric(
+          horizontal: R.w(context, 20), vertical: R.h(context, 40)),
       child: Column(
         children: [
           // Image with gold accent offset
@@ -635,13 +673,16 @@ class _MakersStorySection extends StatelessWidget {
             children: [
               Text(
                 'THE MAKER\'S STORY',
-                style: AppTypography.labelGold(context).copyWith(letterSpacing: 3, fontSize: R.sp(context, 9)),
+                style: AppTypography.labelGold(context)
+                    .copyWith(letterSpacing: 3, fontSize: R.sp(context, 9)),
               ),
               SizedBox(height: R.h(context, 12)),
               Text(
                 'Preserving Heritage Through the Hands of Masters',
                 style: AppTypography.h2(context).copyWith(
-                  color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? AppColors.surfaceDark
+                      : Colors.white,
                   fontSize: R.sp(context, 24),
                   height: 1.25,
                 ),
@@ -650,7 +691,10 @@ class _MakersStorySection extends StatelessWidget {
               Text(
                 'Every piece in our collection tells a story of dedication, passing through the hands of master craftsmen in the valleys of Kashmir who preserve centuries-old traditions. We bridge the gap between ancient techniques and modern living.',
                 style: AppTypography.bodySM(context).copyWith(
-                  color: (Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white).withValues(alpha: 0.70),
+                  color: (Theme.of(context).brightness == Brightness.dark
+                          ? AppColors.surfaceDark
+                          : Colors.white)
+                      .withValues(alpha: 0.70),
                   height: 1.7,
                   fontSize: R.sp(context, 13),
                 ),
@@ -666,7 +710,10 @@ class _MakersStorySection extends StatelessWidget {
                 child: Text(
                   '"Our mission is to celebrate the soul of the maker in a world of mass production."',
                   style: AppTypography.bodySM(context).copyWith(
-                    color: (Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white).withValues(alpha: 0.70),
+                    color: (Theme.of(context).brightness == Brightness.dark
+                            ? AppColors.surfaceDark
+                            : Colors.white)
+                        .withValues(alpha: 0.70),
                     fontStyle: FontStyle.italic,
                     height: 1.7,
                     fontSize: R.sp(context, 13),
@@ -711,13 +758,15 @@ class _NewsletterSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: AppColors.primary.withValues(alpha: 0.10),
-      padding: EdgeInsets.symmetric(horizontal: R.w(context, 20), vertical: R.h(context, 40)),
+      padding: EdgeInsets.symmetric(
+          horizontal: R.w(context, 20), vertical: R.h(context, 40)),
       child: Column(
         children: [
           Text(
             'Join the Collective',
             textAlign: TextAlign.center,
-            style: AppTypography.h2(context).copyWith(fontSize: R.sp(context, 22)),
+            style:
+                AppTypography.h2(context).copyWith(fontSize: R.sp(context, 22)),
           ),
           SizedBox(height: R.h(context, 8)),
           Text(
@@ -740,18 +789,20 @@ class _NewsletterSection extends StatelessWidget {
                 fontSize: R.sp(context, 12),
               ),
               filled: true,
-              fillColor: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
+              fillColor: Theme.of(context).brightness == Brightness.dark
+                  ? AppColors.surfaceDark
+                  : Colors.white,
               contentPadding: EdgeInsets.symmetric(
                   horizontal: R.w(context, 16), vertical: R.h(context, 14)),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(R.w(context, 12)),
-                borderSide: BorderSide(
-                    color: AppColors.primary.withValues(alpha: 0.2)),
+                borderSide:
+                    BorderSide(color: AppColors.primary.withValues(alpha: 0.2)),
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(R.w(context, 12)),
-                borderSide: BorderSide(
-                    color: AppColors.primary.withValues(alpha: 0.2)),
+                borderSide:
+                    BorderSide(color: AppColors.primary.withValues(alpha: 0.2)),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(R.w(context, 12)),
@@ -778,7 +829,9 @@ class _NewsletterSection extends StatelessWidget {
                 style: AppTypography.bodySM(context).copyWith(
                   fontWeight: FontWeight.w800,
                   fontSize: R.sp(context, 14),
-                  color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal),
+                  color: (Theme.of(context).brightness == Brightness.dark
+                      ? Theme.of(context).colorScheme.onSurface
+                      : AppColors.deepCharcoal),
                 ),
               ),
             ),

@@ -25,7 +25,8 @@ class CartItem {
 
   factory CartItem.fromMap(Map<String, dynamic> d) {
     return CartItem(
-      cartItemId: d['cartItemId'] as String? ?? d['product']?['id'] as String? ?? '',
+      cartItemId:
+          d['cartItemId'] as String? ?? d['product']?['id'] as String? ?? '',
       product: Product.fromMap(d['product'] as Map<String, dynamic>? ?? {}),
       quantity: (d['quantity'] as num?)?.toInt() ?? 1,
       selectedWeight: d['selectedWeight'] as String?,
@@ -41,25 +42,26 @@ class CartItem {
     double? bundlePrice,
     bool? isGiftBox,
     String? giftNote,
-  }) => CartItem(
-    cartItemId: cartItemId,
-    product: product,
-    quantity: quantity ?? this.quantity,
-    selectedWeight: selectedWeight ?? this.selectedWeight,
-    bundlePrice: bundlePrice ?? this.bundlePrice,
-    isGiftBox: isGiftBox ?? this.isGiftBox,
-    giftNote: giftNote ?? this.giftNote,
-  );
+  }) =>
+      CartItem(
+        cartItemId: cartItemId,
+        product: product,
+        quantity: quantity ?? this.quantity,
+        selectedWeight: selectedWeight ?? this.selectedWeight,
+        bundlePrice: bundlePrice ?? this.bundlePrice,
+        isGiftBox: isGiftBox ?? this.isGiftBox,
+        giftNote: giftNote ?? this.giftNote,
+      );
 
   Map<String, dynamic> toMap() => {
-    'cartItemId': cartItemId,
-    'product': product.toMap(),
-    'quantity': quantity,
-    if (selectedWeight != null) 'selectedWeight': selectedWeight,
-    if (bundlePrice != null) 'bundlePrice': bundlePrice,
-    'isGiftBox': isGiftBox,
-    if (giftNote != null) 'giftNote': giftNote,
-  };
+        'cartItemId': cartItemId,
+        'product': product.toMap(),
+        'quantity': quantity,
+        if (selectedWeight != null) 'selectedWeight': selectedWeight,
+        if (bundlePrice != null) 'bundlePrice': bundlePrice,
+        'isGiftBox': isGiftBox,
+        if (giftNote != null) 'giftNote': giftNote,
+      };
 }
 
 class Address {
@@ -107,31 +109,31 @@ class Address {
   }
 
   factory Address.fromMap(Map<String, dynamic> d, {String? id}) => Address(
-    id: id,
-    fullName: d['fullName'] as String? ?? '',
-    phone: d['phone'] as String? ?? '',
-    addressLine1: d['addressLine1'] as String? ?? '',
-    locality: d['locality'] as String?,
-    addressLine2: d['addressLine2'] as String?,
-    city: d['city'] as String? ?? '',
-    state: d['state'] as String? ?? '',
-    pincode: d['pincode'] as String? ?? '',
-    country: d['country'] as String? ?? 'India',
-    isDefault: d['isDefault'] as bool? ?? false,
-  );
+        id: id,
+        fullName: d['fullName'] as String? ?? '',
+        phone: d['phone'] as String? ?? '',
+        addressLine1: d['addressLine1'] as String? ?? '',
+        locality: d['locality'] as String?,
+        addressLine2: d['addressLine2'] as String?,
+        city: d['city'] as String? ?? '',
+        state: d['state'] as String? ?? '',
+        pincode: d['pincode'] as String? ?? '',
+        country: d['country'] as String? ?? 'India',
+        isDefault: d['isDefault'] as bool? ?? false,
+      );
 
   Map<String, dynamic> toMap() => {
-    'fullName': fullName,
-    'phone': phone,
-    'addressLine1': addressLine1,
-    if (locality != null) 'locality': locality,
-    if (addressLine2 != null) 'addressLine2': addressLine2,
-    'city': city,
-    'state': state,
-    'pincode': pincode,
-    'country': country,
-    'isDefault': isDefault,
-  };
+        'fullName': fullName,
+        'phone': phone,
+        'addressLine1': addressLine1,
+        if (locality != null) 'locality': locality,
+        if (addressLine2 != null) 'addressLine2': addressLine2,
+        'city': city,
+        'state': state,
+        'pincode': pincode,
+        'country': country,
+        'isDefault': isDefault,
+      };
 
   String get oneLineAddress =>
       '$addressLine1${locality != null ? ', $locality' : ''}, $city, $state — $pincode';

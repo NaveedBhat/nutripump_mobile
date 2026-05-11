@@ -59,8 +59,9 @@ class _SupportScreenState extends ConsumerState<SupportScreen> {
     setState(() => _isSubmitting = true);
 
     try {
-      final accessKey = dotenv.env['NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY'] ?? 
-                        dotenv.env['WEB3FORMS_ACCESS_KEY'] ?? '';
+      final accessKey = dotenv.env['NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY'] ??
+          dotenv.env['WEB3FORMS_ACCESS_KEY'] ??
+          '';
 
       final dio = Dio();
       final response = await dio.post(
@@ -69,7 +70,8 @@ class _SupportScreenState extends ConsumerState<SupportScreen> {
           'access_key': accessKey,
           'email': _email,
           'subject': 'Priority Order Support: [$_orderId] — $_issueType',
-          'message': 'Order ID: $_orderId\nIssue Category: $_issueType\n\nCustomer Message:\n$_message',
+          'message':
+              'Order ID: $_orderId\nIssue Category: $_issueType\n\nCustomer Message:\n$_message',
         },
       );
 
@@ -88,7 +90,8 @@ class _SupportScreenState extends ConsumerState<SupportScreen> {
   void _showError(String message) {
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(duration: const Duration(milliseconds: 2000), 
+      SnackBar(
+        duration: const Duration(milliseconds: 2000),
         content: Row(
           children: [
             const Icon(Icons.error_outline_rounded, color: Colors.white),
@@ -106,9 +109,13 @@ class _SupportScreenState extends ConsumerState<SupportScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : AppColors.backgroundLight),
+      backgroundColor: (Theme.of(context).brightness == Brightness.dark
+          ? Theme.of(context).scaffoldBackgroundColor
+          : AppColors.backgroundLight),
       appBar: AppBar(
-        title: Text('Priority Support', style: AppTypography.h3(context).copyWith(fontSize: R.sp(context, 16))),
+        title: Text('Priority Support',
+            style: AppTypography.h3(context)
+                .copyWith(fontSize: R.sp(context, 16))),
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
@@ -127,7 +134,8 @@ class _SupportScreenState extends ConsumerState<SupportScreen> {
   Widget _buildSuccessState() {
     return AnimatedEnter(
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: R.w(context, 24), vertical: R.h(context, 48)),
+        padding: EdgeInsets.symmetric(
+            horizontal: R.w(context, 24), vertical: R.h(context, 48)),
         child: Column(
           children: [
             Container(
@@ -138,18 +146,21 @@ class _SupportScreenState extends ConsumerState<SupportScreen> {
                 shape: BoxShape.circle,
                 border: Border.all(color: Colors.green.withValues(alpha: 0.2)),
               ),
-              child: Icon(Icons.check_circle_rounded, color: Colors.green, size: R.sp(context, 40)),
+              child: Icon(Icons.check_circle_rounded,
+                  color: Colors.green, size: R.sp(context, 40)),
             ),
             SizedBox(height: R.h(context, 24)),
             Text(
               'Ticket Submitted',
-              style: AppTypography.h2(context).copyWith(fontSize: R.sp(context, 28)),
+              style: AppTypography.h2(context)
+                  .copyWith(fontSize: R.sp(context, 28)),
               textAlign: TextAlign.center,
             ),
             SizedBox(height: R.h(context, 12)),
             Text(
               'Our dedicated concierge team has received your request concerning order $_orderId. We will prioritize this and respond within 12 hours.',
-              style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, height: 1.6),
+              style: AppTypography.bodySM(context)
+                  .copyWith(color: AppColors.neutralGold, height: 1.6),
               textAlign: TextAlign.center,
             ),
             SizedBox(height: R.h(context, 32)),
@@ -166,14 +177,16 @@ class _SupportScreenState extends ConsumerState<SupportScreen> {
   Widget _buildFormState() {
     return AnimatedEnter(
       child: Padding(
-        padding: EdgeInsets.fromLTRB(R.w(context, 24), R.h(context, 24), R.w(context, 24), R.h(context, 48)),
+        padding: EdgeInsets.fromLTRB(R.w(context, 24), R.h(context, 24),
+            R.w(context, 24), R.h(context, 48)),
         child: Form(
           key: _formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                padding: EdgeInsets.symmetric(horizontal: R.w(context, 12), vertical: R.h(context, 6)),
+                padding: EdgeInsets.symmetric(
+                    horizontal: R.w(context, 12), vertical: R.h(context, 6)),
                 decoration: BoxDecoration(
                   color: Colors.red.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(R.w(context, 20)),
@@ -181,7 +194,8 @@ class _SupportScreenState extends ConsumerState<SupportScreen> {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(Icons.shield_rounded, color: Colors.red, size: R.sp(context, 14)),
+                    Icon(Icons.shield_rounded,
+                        color: Colors.red, size: R.sp(context, 14)),
                     SizedBox(width: R.w(context, 6)),
                     Text(
                       'PREMIUM SUPPORT',
@@ -194,14 +208,16 @@ class _SupportScreenState extends ConsumerState<SupportScreen> {
                 ),
               ),
               SizedBox(height: R.h(context, 16)),
-              Text('How can we help?', style: AppTypography.h1(context).copyWith(fontSize: R.sp(context, 32))),
+              Text('How can we help?',
+                  style: AppTypography.h1(context)
+                      .copyWith(fontSize: R.sp(context, 32))),
               SizedBox(height: R.h(context, 12)),
               Text(
                 'Experiencing an issue with your order? Submit a priority ticket below and our harvest concierge will resolve it immediately.',
-                style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, height: 1.5),
+                style: AppTypography.bodySM(context)
+                    .copyWith(color: AppColors.neutralGold, height: 1.5),
               ),
               SizedBox(height: R.h(context, 32)),
-
               _buildLabel('Order ID'),
               TextFormField(
                 initialValue: _orderId,
@@ -210,16 +226,17 @@ class _SupportScreenState extends ConsumerState<SupportScreen> {
                 onSaved: (v) => _orderId = v ?? '',
               ),
               SizedBox(height: R.h(context, 20)),
-
               _buildLabel('Issue Category'),
               DropdownButtonFormField<String>(
                 initialValue: _issueType,
                 decoration: _inputDecoration(''),
-                icon: const Icon(Icons.keyboard_arrow_down_rounded, color: AppColors.neutralGold),
+                icon: const Icon(Icons.keyboard_arrow_down_rounded,
+                    color: AppColors.neutralGold),
                 items: _issueOptions.map((opt) {
                   return DropdownMenuItem(
                     value: opt['value']!,
-                    child: Text(opt['label']!, style: AppTypography.bodySM(context)),
+                    child: Text(opt['label']!,
+                        style: AppTypography.bodySM(context)),
                   );
                 }).toList(),
                 onChanged: (v) {
@@ -227,26 +244,26 @@ class _SupportScreenState extends ConsumerState<SupportScreen> {
                 },
               ),
               SizedBox(height: R.h(context, 20)),
-
               _buildLabel('Contact Email'),
               TextFormField(
                 initialValue: _email,
                 keyboardType: TextInputType.emailAddress,
                 decoration: _inputDecoration('your@email.com'),
-                validator: (v) => v == null || !v.contains('@') ? 'Valid email required' : null,
+                validator: (v) => v == null || !v.contains('@')
+                    ? 'Valid email required'
+                    : null,
                 onSaved: (v) => _email = v ?? '',
               ),
               SizedBox(height: R.h(context, 20)),
-
               _buildLabel('Details'),
               TextFormField(
                 maxLines: 4,
-                decoration: _inputDecoration('Please provide specific details...'),
+                decoration:
+                    _inputDecoration('Please provide specific details...'),
                 validator: (v) => v == null || v.isEmpty ? 'Required' : null,
                 onSaved: (v) => _message = v ?? '',
               ),
               SizedBox(height: R.h(context, 32)),
-
               PrimaryButton(
                 text: 'Submit Priority Ticket',
                 isLoading: _isSubmitting,
@@ -264,7 +281,8 @@ class _SupportScreenState extends ConsumerState<SupportScreen> {
       padding: EdgeInsets.only(bottom: R.h(context, 8), left: R.w(context, 4)),
       child: Text(
         text.toUpperCase(),
-        style: AppTypography.labelGold(context).copyWith(fontWeight: FontWeight.bold),
+        style: AppTypography.labelGold(context)
+            .copyWith(fontWeight: FontWeight.bold),
       ),
     );
   }
@@ -272,10 +290,14 @@ class _SupportScreenState extends ConsumerState<SupportScreen> {
   InputDecoration _inputDecoration(String hint) {
     return InputDecoration(
       hintText: hint,
-      hintStyle: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold.withValues(alpha: 0.5)),
+      hintStyle: AppTypography.bodySM(context)
+          .copyWith(color: AppColors.neutralGold.withValues(alpha: 0.5)),
       filled: true,
-      fillColor: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
-      contentPadding: EdgeInsets.symmetric(horizontal: R.w(context, 16), vertical: R.h(context, 16)),
+      fillColor: Theme.of(context).brightness == Brightness.dark
+          ? AppColors.surfaceDark
+          : Colors.white,
+      contentPadding: EdgeInsets.symmetric(
+          horizontal: R.w(context, 16), vertical: R.h(context, 16)),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(R.w(context, 12)),
         borderSide: BorderSide(color: AppColors.primary.withValues(alpha: 0.1)),
@@ -294,7 +316,9 @@ class _SupportScreenState extends ConsumerState<SupportScreen> {
   Widget _buildSupportPromise() {
     return Container(
       width: double.infinity,
-      color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
+      color: Theme.of(context).brightness == Brightness.dark
+          ? AppColors.surfaceDark
+          : Colors.white,
       padding: EdgeInsets.all(R.w(context, 32)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -319,11 +343,15 @@ class _SupportScreenState extends ConsumerState<SupportScreen> {
             'Delivery delayed? We communicate with logistics partners to expedite it.',
           ),
           SizedBox(height: R.h(context, 48)),
-          Text('DIRECT LINE', style: AppTypography.labelGold(context).copyWith(fontWeight: FontWeight.bold)),
+          Text('DIRECT LINE',
+              style: AppTypography.labelGold(context)
+                  .copyWith(fontWeight: FontWeight.bold)),
           SizedBox(height: R.h(context, 8)),
           Text('support@nutripump.com', style: AppTypography.h3(context)),
           SizedBox(height: R.h(context, 4)),
-          Text('Available Mon - Sat, 9am - 7pm EST', style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, fontSize: R.sp(context, 12))),
+          Text('Available Mon - Sat, 9am - 7pm EST',
+              style: AppTypography.bodySM(context).copyWith(
+                  color: AppColors.neutralGold, fontSize: R.sp(context, 12))),
         ],
       ),
     );
@@ -337,7 +365,9 @@ class _SupportScreenState extends ConsumerState<SupportScreen> {
           width: R.w(context, 48),
           height: R.w(context, 48),
           decoration: BoxDecoration(
-            color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
+            color: Theme.of(context).brightness == Brightness.dark
+                ? AppColors.surfaceDark
+                : Colors.white,
             borderRadius: BorderRadius.circular(R.w(context, 16)),
             border: Border.all(color: AppColors.primary.withValues(alpha: 0.2)),
             boxShadow: [
@@ -355,9 +385,15 @@ class _SupportScreenState extends ConsumerState<SupportScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(title, style: AppTypography.body(context).copyWith(fontWeight: FontWeight.bold)),
+              Text(title,
+                  style: AppTypography.body(context)
+                      .copyWith(fontWeight: FontWeight.bold)),
               SizedBox(height: R.h(context, 4)),
-              Text(desc, style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, fontSize: R.sp(context, 13), height: 1.5)),
+              Text(desc,
+                  style: AppTypography.bodySM(context).copyWith(
+                      color: AppColors.neutralGold,
+                      fontSize: R.sp(context, 13),
+                      height: 1.5)),
             ],
           ),
         ),

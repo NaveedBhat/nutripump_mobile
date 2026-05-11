@@ -38,7 +38,8 @@ class EmptyState extends StatelessWidget {
             Text(
               message,
               textAlign: TextAlign.center,
-              style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold),
+              style: AppTypography.bodySM(context)
+                  .copyWith(color: AppColors.neutralGold),
             ),
             if (action != null) ...[
               const SizedBox(height: 24),

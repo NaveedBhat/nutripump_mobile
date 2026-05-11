@@ -19,7 +19,9 @@ class TermsOfServiceScreen extends ConsumerWidget {
     final contactEmail = storeSettings?.storeEmail ?? 'contact@nutripump.in';
 
     return Scaffold(
-      backgroundColor: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : AppColors.backgroundLight),
+      backgroundColor: (Theme.of(context).brightness == Brightness.dark
+          ? Theme.of(context).scaffoldBackgroundColor
+          : AppColors.backgroundLight),
       body: CustomScrollView(
         slivers: [
           // ── App Bar ──────────────────────────────────────────────────
@@ -34,12 +36,17 @@ class TermsOfServiceScreen extends ConsumerWidget {
             ),
             title: Text(
               'Terms of Service',
-              style: AppTypography.h3(context).copyWith(color: Colors.white, fontSize: R.sp(context, 16)),
+              style: AppTypography.h3(context)
+                  .copyWith(color: Colors.white, fontSize: R.sp(context, 16)),
             ),
             bottom: PreferredSize(
               preferredSize: const Size.fromHeight(1),
               child: Container(
-                  height: 1, color: (Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white).withValues(alpha: 0.1)),
+                  height: 1,
+                  color: (Theme.of(context).brightness == Brightness.dark
+                          ? AppColors.surfaceDark
+                          : Colors.white)
+                      .withValues(alpha: 0.1)),
             ),
           ),
 
@@ -56,7 +63,8 @@ class TermsOfServiceScreen extends ConsumerWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.error_outline, color: Colors.red, size: R.sp(context, 48)),
+                      Icon(Icons.error_outline,
+                          color: Colors.red, size: R.sp(context, 48)),
                       SizedBox(height: R.h(context, 16)),
                       Text(
                         'Failed to load terms of service.',
@@ -91,16 +99,19 @@ class TermsOfServiceScreen extends ConsumerWidget {
                     Container(
                       width: double.infinity,
                       color: AppColors.deepCharcoal,
-                      padding: EdgeInsets.fromLTRB(R.w(context, 24), R.h(context, 24), R.w(context, 24), R.h(context, 32)),
+                      padding: EdgeInsets.fromLTRB(R.w(context, 24),
+                          R.h(context, 24), R.w(context, 24), R.h(context, 32)),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
                             padding: EdgeInsets.symmetric(
-                                horizontal: R.w(context, 10), vertical: R.h(context, 5)),
+                                horizontal: R.w(context, 10),
+                                vertical: R.h(context, 5)),
                             decoration: BoxDecoration(
                               color: AppColors.primary.withValues(alpha: 0.12),
-                              borderRadius: BorderRadius.circular(R.w(context, 20)),
+                              borderRadius:
+                                  BorderRadius.circular(R.w(context, 20)),
                               border: Border.all(
                                   color:
                                       AppColors.primary.withValues(alpha: 0.2)),
@@ -109,7 +120,8 @@ class TermsOfServiceScreen extends ConsumerWidget {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Icon(Icons.balance_outlined,
-                                    color: AppColors.primary, size: R.sp(context, 11)),
+                                    color: AppColors.primary,
+                                    size: R.sp(context, 11)),
                                 SizedBox(width: R.w(context, 5)),
                                 Text(
                                   'LEGAL AGREEMENT',
@@ -135,7 +147,11 @@ class TermsOfServiceScreen extends ConsumerWidget {
                           Text(
                             'Last updated: $lastUpdated',
                             style: AppTypography.label(context).copyWith(
-                              color: (Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white).withValues(alpha: 0.3),
+                              color: (Theme.of(context).brightness ==
+                                          Brightness.dark
+                                      ? AppColors.surfaceDark
+                                      : Colors.white)
+                                  .withValues(alpha: 0.3),
                               fontSize: R.sp(context, 10),
                               fontFamily: 'monospace',
                             ),
@@ -146,18 +162,20 @@ class TermsOfServiceScreen extends ConsumerWidget {
 
                     // ── Intro Card ────────────────────────────────────────
                     Padding(
-                      padding: EdgeInsets.fromLTRB(R.w(context, 16), R.h(context, 16), R.w(context, 16), 0),
+                      padding: EdgeInsets.fromLTRB(R.w(context, 16),
+                          R.h(context, 16), R.w(context, 16), 0),
                       child: Container(
                         padding: EdgeInsets.all(R.w(context, 18)),
                         decoration: BoxDecoration(
-                          color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? AppColors.surfaceDark
+                              : Colors.white,
                           borderRadius: BorderRadius.circular(R.w(context, 16)),
                           border: Border.all(
                               color: AppColors.primary.withValues(alpha: 0.15)),
                           boxShadow: [
                             BoxShadow(
-                              color:
-                                  Colors.black.withValues(alpha: 0.04),
+                              color: Colors.black.withValues(alpha: 0.04),
                               blurRadius: 12,
                               offset: const Offset(0, 3),
                             ),
@@ -168,8 +186,11 @@ class TermsOfServiceScreen extends ConsumerWidget {
                           style: AppTypography.bodySM(context).copyWith(
                             fontSize: R.sp(context, 13),
                             height: 1.7,
-                            color:
-                                (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal).withValues(alpha: 0.75),
+                            color: (Theme.of(context).brightness ==
+                                        Brightness.dark
+                                    ? Theme.of(context).colorScheme.onSurface
+                                    : AppColors.deepCharcoal)
+                                .withValues(alpha: 0.75),
                           ),
                         ),
                       ),
@@ -184,7 +205,8 @@ class TermsOfServiceScreen extends ConsumerWidget {
 
                     // ── Entire Agreement Banner ───────────────────────────
                     Padding(
-                      padding: EdgeInsets.fromLTRB(R.w(context, 16), 0, R.w(context, 16), R.h(context, 16)),
+                      padding: EdgeInsets.fromLTRB(R.w(context, 16), 0,
+                          R.w(context, 16), R.h(context, 16)),
                       child: Container(
                         padding: EdgeInsets.all(R.w(context, 18)),
                         decoration: BoxDecoration(
@@ -192,15 +214,18 @@ class TermsOfServiceScreen extends ConsumerWidget {
                               ? AppColors.surfaceDark
                               : const Color(0xFFFFFBEB),
                           borderRadius: BorderRadius.circular(R.w(context, 14)),
-                          border: Border.all(color: Theme.of(context).brightness == Brightness.dark
-                              ? AppColors.borderDark
-                              : const Color(0xFFFDE68A)),
+                          border: Border.all(
+                              color: Theme.of(context).brightness ==
+                                      Brightness.dark
+                                  ? AppColors.borderDark
+                                  : const Color(0xFFFDE68A)),
                         ),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Icon(Icons.balance_outlined,
-                                color: const Color(0xFFD97706), size: R.sp(context, 20)),
+                                color: const Color(0xFFD97706),
+                                size: R.sp(context, 20)),
                             SizedBox(width: R.w(context, 12)),
                             Expanded(
                               child: Column(
@@ -208,19 +233,31 @@ class TermsOfServiceScreen extends ConsumerWidget {
                                 children: [
                                   Text(
                                     'Entire Agreement',
-                                    style: AppTypography.bodySM(context).copyWith(
+                                    style:
+                                        AppTypography.bodySM(context).copyWith(
                                       fontWeight: FontWeight.w700,
                                       fontSize: R.sp(context, 13),
-                                      color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal),
+                                      color: (Theme.of(context).brightness ==
+                                              Brightness.dark
+                                          ? Theme.of(context)
+                                              .colorScheme
+                                              .onSurface
+                                          : AppColors.deepCharcoal),
                                     ),
                                   ),
                                   SizedBox(height: R.h(context, 4)),
                                   Text(
                                     'These Terms of Service, together with our Privacy Policy, constitute the entire agreement between you and NutriPump Artisanal regarding your use of our services and supersede all prior agreements between the parties.',
-                                    style: AppTypography.bodySM(context).copyWith(
+                                    style:
+                                        AppTypography.bodySM(context).copyWith(
                                       fontSize: R.sp(context, 12),
                                       height: 1.6,
-                                      color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal)
+                                      color: (Theme.of(context).brightness ==
+                                                  Brightness.dark
+                                              ? Theme.of(context)
+                                                  .colorScheme
+                                                  .onSurface
+                                              : AppColors.deepCharcoal)
                                           .withValues(alpha: 0.7),
                                     ),
                                   ),
@@ -234,7 +271,8 @@ class TermsOfServiceScreen extends ConsumerWidget {
 
                     // ── Contact Block ─────────────────────────────────────
                     Padding(
-                      padding: EdgeInsets.fromLTRB(R.w(context, 16), 0, R.w(context, 16), R.h(context, 32)),
+                      padding: EdgeInsets.fromLTRB(R.w(context, 16), 0,
+                          R.w(context, 16), R.h(context, 32)),
                       child: Container(
                         padding: EdgeInsets.all(R.w(context, 24)),
                         decoration: BoxDecoration(
@@ -252,20 +290,25 @@ class TermsOfServiceScreen extends ConsumerWidget {
                                   width: R.w(context, 42),
                                   height: R.w(context, 42),
                                   decoration: BoxDecoration(
-                                    color: AppColors.primary.withValues(alpha: 0.15),
-                                    borderRadius: BorderRadius.circular(R.w(context, 12)),
+                                    color: AppColors.primary
+                                        .withValues(alpha: 0.15),
+                                    borderRadius:
+                                        BorderRadius.circular(R.w(context, 12)),
                                   ),
                                   child: Icon(Icons.balance_outlined,
-                                      color: AppColors.primary, size: R.sp(context, 20)),
+                                      color: AppColors.primary,
+                                      size: R.sp(context, 20)),
                                 ),
                                 SizedBox(width: R.w(context, 14)),
                                 Expanded(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         'Legal Questions?',
-                                        style: AppTypography.bodySM(context).copyWith(
+                                        style: AppTypography.bodySM(context)
+                                            .copyWith(
                                           color: Colors.white,
                                           fontWeight: FontWeight.w700,
                                           fontSize: R.sp(context, 15),
@@ -274,8 +317,14 @@ class TermsOfServiceScreen extends ConsumerWidget {
                                       SizedBox(height: R.h(context, 3)),
                                       Text(
                                         'Our legal team is here to help',
-                                        style: AppTypography.label(context).copyWith(
-                                          color: (Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white).withValues(alpha: 0.45),
+                                        style: AppTypography.label(context)
+                                            .copyWith(
+                                          color:
+                                              (Theme.of(context).brightness ==
+                                                          Brightness.dark
+                                                      ? AppColors.surfaceDark
+                                                      : Colors.white)
+                                                  .withValues(alpha: 0.45),
                                           fontSize: R.sp(context, 11),
                                         ),
                                       ),
@@ -295,7 +344,11 @@ class TermsOfServiceScreen extends ConsumerWidget {
                             Text(
                               'If you have questions about these Terms, want to report a violation, or need legal documentation, please reach out.',
                               style: AppTypography.bodySM(context).copyWith(
-                                color: (Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white).withValues(alpha: 0.55),
+                                color: (Theme.of(context).brightness ==
+                                            Brightness.dark
+                                        ? AppColors.surfaceDark
+                                        : Colors.white)
+                                    .withValues(alpha: 0.55),
                                 fontSize: R.sp(context, 12.5),
                                 height: 1.6,
                               ),
@@ -305,26 +358,35 @@ class TermsOfServiceScreen extends ConsumerWidget {
 
                             // Email CTA
                             GestureDetector(
-                              onTap: () => launchUrl(
-                                  Uri.parse('mailto:$contactEmail')),
+                              onTap: () =>
+                                  launchUrl(Uri.parse('mailto:$contactEmail')),
                               child: Container(
                                 width: double.infinity,
                                 padding: EdgeInsets.symmetric(
-                                    horizontal: R.w(context, 18), vertical: R.h(context, 14)),
+                                    horizontal: R.w(context, 18),
+                                    vertical: R.h(context, 14)),
                                 decoration: BoxDecoration(
                                   color: AppColors.primary,
-                                  borderRadius: BorderRadius.circular(R.w(context, 12)),
+                                  borderRadius:
+                                      BorderRadius.circular(R.w(context, 12)),
                                 ),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Icon(Icons.mail_outline_rounded,
-                                        color: AppColors.deepCharcoal, size: R.sp(context, 17)),
+                                        color: AppColors.deepCharcoal,
+                                        size: R.sp(context, 17)),
                                     SizedBox(width: R.w(context, 8)),
                                     Text(
                                       contactEmail,
-                                      style: AppTypography.bodySM(context).copyWith(
-                                        color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal),
+                                      style: AppTypography.bodySM(context)
+                                          .copyWith(
+                                        color: (Theme.of(context).brightness ==
+                                                Brightness.dark
+                                            ? Theme.of(context)
+                                                .colorScheme
+                                                .onSurface
+                                            : AppColors.deepCharcoal),
                                         fontWeight: FontWeight.w700,
                                         fontSize: R.sp(context, 13),
                                       ),

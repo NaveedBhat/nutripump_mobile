@@ -13,7 +13,11 @@ class OurStoryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : const Color(0xFFF9F8F6))),
+      backgroundColor: (Theme.of(context).brightness == Brightness.dark
+          ? Theme.of(context).scaffoldBackgroundColor
+          : (Theme.of(context).brightness == Brightness.dark
+              ? Theme.of(context).scaffoldBackgroundColor
+              : const Color(0xFFF9F8F6))),
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
@@ -29,7 +33,8 @@ class OurStoryScreen extends StatelessWidget {
                 fit: StackFit.expand,
                 children: [
                   const CustomNetworkImage(
-                    imageUrl: 'https://images.unsplash.com/photo-1596662951362-b48c66a4bc2c?q=80&w=800&auto=format&fit=crop', // Saffron field or Kashmir
+                    imageUrl:
+                        'https://images.unsplash.com/photo-1596662951362-b48c66a4bc2c?q=80&w=800&auto=format&fit=crop', // Saffron field or Kashmir
                     fit: BoxFit.cover,
                   ),
                   Container(
@@ -39,7 +44,10 @@ class OurStoryScreen extends StatelessWidget {
                         end: Alignment.bottomCenter,
                         colors: [
                           Colors.transparent,
-                          (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal).withValues(alpha: 0.8),
+                          (Theme.of(context).brightness == Brightness.dark
+                                  ? Theme.of(context).colorScheme.onSurface
+                                  : AppColors.deepCharcoal)
+                              .withValues(alpha: 0.8),
                         ],
                       ),
                     ),
@@ -52,9 +60,15 @@ class OurStoryScreen extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('OUR HERITAGE', style: AppTypography.labelGold(context).copyWith(letterSpacing: 2)),
+                          Text('OUR HERITAGE',
+                              style: AppTypography.labelGold(context)
+                                  .copyWith(letterSpacing: 2)),
                           SizedBox(height: R.h(context, 8)),
-                          Text('Rooted in\nthe Valley', style: AppTypography.h1(context).copyWith(color: Colors.white, fontSize: R.sp(context, 36), height: 1.1)),
+                          Text('Rooted in\nthe Valley',
+                              style: AppTypography.h1(context).copyWith(
+                                  color: Colors.white,
+                                  fontSize: R.sp(context, 36),
+                                  height: 1.1)),
                         ],
                       ),
                     ),
@@ -73,7 +87,14 @@ class OurStoryScreen extends StatelessWidget {
                     delay: const Duration(milliseconds: 100),
                     child: Text(
                       'NutriPump Artisanal was born from a simple realization: the purest treasures of the Earth are being lost to mass production. We journey to the heart of Kashmir and the high altitudes of the Himalayas to source ingredients exactly as nature intended — unadulterated, raw, and vibrant.',
-                      style: AppTypography.bodySM(context).copyWith(fontSize: R.sp(context, 15), height: 1.8, color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal).withValues(alpha: 0.8)),
+                      style: AppTypography.bodySM(context).copyWith(
+                          fontSize: R.sp(context, 15),
+                          height: 1.8,
+                          color:
+                              (Theme.of(context).brightness == Brightness.dark
+                                      ? Theme.of(context).colorScheme.onSurface
+                                      : AppColors.deepCharcoal)
+                                  .withValues(alpha: 0.8)),
                     ),
                   ),
                   SizedBox(height: R.h(context, 40)),
@@ -124,7 +145,8 @@ class OurStoryScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildValueProp(BuildContext context, IconData icon, String title, String description) {
+  Widget _buildValueProp(
+      BuildContext context, IconData icon, String title, String description) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -141,11 +163,14 @@ class OurStoryScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(title, style: AppTypography.h3(context).copyWith(fontSize: R.sp(context, 18))),
+              Text(title,
+                  style: AppTypography.h3(context)
+                      .copyWith(fontSize: R.sp(context, 18))),
               SizedBox(height: R.h(context, 6)),
               Text(
                 description,
-                style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, height: 1.5),
+                style: AppTypography.bodySM(context)
+                    .copyWith(color: AppColors.neutralGold, height: 1.5),
               ),
             ],
           ),

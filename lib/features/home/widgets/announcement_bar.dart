@@ -46,7 +46,8 @@ class _AnnouncementBarState extends ConsumerState<AnnouncementBar> {
           duration: const Duration(milliseconds: 300),
           width: double.infinity,
           color: bgColor,
-          padding: EdgeInsets.symmetric(horizontal: R.w(context, 16), vertical: R.h(context, 7)),
+          padding: EdgeInsets.symmetric(
+              horizontal: R.w(context, 16), vertical: R.h(context, 7)),
           child: Stack(
             alignment: Alignment.center,
             children: [

@@ -26,13 +26,34 @@ class MainShell extends ConsumerStatefulWidget {
 
 class _MainShellState extends ConsumerState<MainShell> {
   bool _showBottomBar = true;
+  int _prevTabIndex = 0; // tracks tab changes to avoid rebuild-loop
 
   static const _tabs = [
-    _TabItem(label: 'Home',       icon: Icons.home_outlined,      activeIcon: Icons.home,           path: '/'),
-    _TabItem(label: 'Shop',       icon: Icons.shopping_bag_outlined, activeIcon: Icons.shopping_bag, path: '/shop'),
-    _TabItem(label: 'Categories', icon: Icons.grid_view_outlined,  activeIcon: Icons.grid_view,      path: '/categories'),
-    _TabItem(label: 'Wishlist',   icon: Icons.favorite_border,     activeIcon: Icons.favorite,       path: '/wishlist'),
-    _TabItem(label: 'Account',    icon: Icons.person_outline,      activeIcon: Icons.person,         path: '/account'),
+    _TabItem(
+        label: 'Home',
+        icon: Icons.home_outlined,
+        activeIcon: Icons.home,
+        path: '/'),
+    _TabItem(
+        label: 'Shop',
+        icon: Icons.shopping_bag_outlined,
+        activeIcon: Icons.shopping_bag,
+        path: '/shop'),
+    _TabItem(
+        label: 'Categories',
+        icon: Icons.grid_view_outlined,
+        activeIcon: Icons.grid_view,
+        path: '/categories'),
+    _TabItem(
+        label: 'Wishlist',
+        icon: Icons.favorite_border,
+        activeIcon: Icons.favorite,
+        path: '/wishlist'),
+    _TabItem(
+        label: 'Account',
+        icon: Icons.person_outline,
+        activeIcon: Icons.person,
+        path: '/account'),
   ];
 
   @override
@@ -40,12 +61,16 @@ class _MainShellState extends ConsumerState<MainShell> {
     final idx = widget.navigationShell.currentIndex;
     final popupAsync = ref.watch(inAppPopupProvider);
 
-    // Reset bottom bar visibility whenever the active tab changes
-    // so the bar is never hidden when arriving on a fresh tab.
-    if (kHideBottomBarOnScroll && !_showBottomBar) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted) setState(() => _showBottomBar = true);
-      });
+    // Reset bottom bar visibility when the tab CHANGES (not on every build).
+    // Gating on idx != _prevTabIndex prevents the addPostFrameCallback from
+    // scheduling a setState → rebuild → callback → setState infinite loop.
+    if (kHideBottomBarOnScroll && idx != _prevTabIndex) {
+      _prevTabIndex = idx;
+      if (!_showBottomBar) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted) setState(() => _showBottomBar = true);
+        });
+      }
     }
 
     return PopScope(
@@ -106,80 +131,93 @@ class _MainShellState extends ConsumerState<MainShell> {
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal).withValues(alpha: 0.06),
+                        color: (Theme.of(context).brightness == Brightness.dark
+                                ? Theme.of(context).colorScheme.onSurface
+                                : AppColors.deepCharcoal)
+                            .withValues(alpha: 0.06),
                         blurRadius: 16,
                         offset: const Offset(0, -4),
                       ),
                     ],
                   ),
-        child: SafeArea(
-          top: false,
-          child: SizedBox(
-            height: 56,
-            child: Row(
-              children: _tabs.asMap().entries.map((e) {
-                final i = e.key;
-                final tab = e.value;
-                final active = i == idx;
-                return Expanded(
-                  child: GestureDetector(
-                    behavior: HitTestBehavior.opaque,
-                    onTap: () {
-                      HapticFeedback.lightImpact();
-                      // If tapping Account while not logged in → go straight to login
-                      if (tab.path == '/account') {
-                        final user = FirebaseAuth.instance.currentUser;
-                        if (user == null) {
-                          context.push('/auth/login');
-                          return;
-                        }
-                      }
-                      if (active) {
-                        ref.read(scrollTabEventProvider.notifier).state = i;
-                      }
+                  child: SafeArea(
+                    top: false,
+                    child: SizedBox(
+                      height: 56,
+                      child: Row(
+                        children: _tabs.asMap().entries.map((e) {
+                          final i = e.key;
+                          final tab = e.value;
+                          final active = i == idx;
+                          return Expanded(
+                            child: GestureDetector(
+                              behavior: HitTestBehavior.opaque,
+                              onTap: () {
+                                HapticFeedback.lightImpact();
+                                // If tapping Account while not logged in → go straight to login
+                                if (tab.path == '/account') {
+                                  final user =
+                                      FirebaseAuth.instance.currentUser;
+                                  if (user == null) {
+                                    context.push('/auth/login');
+                                    return;
+                                  }
+                                }
+                                if (active) {
+                                  ref
+                                      .read(scrollTabEventProvider.notifier)
+                                      .state = i;
+                                }
 
-                      widget.navigationShell.goBranch(
-                        i,
-                        initialLocation: i == widget.navigationShell.currentIndex,
-                      );
-                    },
-                    child: AnimatedContainer(
-                      duration: const Duration(milliseconds: 200),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          AnimatedSwitcher(
-                            duration: const Duration(milliseconds: 200),
-                            child: Icon(
-                              active ? tab.activeIcon : tab.icon,
-                              key: ValueKey(active),
-                              size: 22,
-                              color: active
-                                  ? AppColors.primary
-                                  : AppColors.neutralGold.withValues(alpha: 0.6),
+                                widget.navigationShell.goBranch(
+                                  i,
+                                  initialLocation:
+                                      i == widget.navigationShell.currentIndex,
+                                );
+                              },
+                              child: AnimatedContainer(
+                                duration: const Duration(milliseconds: 200),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    AnimatedSwitcher(
+                                      duration:
+                                          const Duration(milliseconds: 200),
+                                      child: Icon(
+                                        active ? tab.activeIcon : tab.icon,
+                                        key: ValueKey(active),
+                                        size: 22,
+                                        color: active
+                                            ? AppColors.primary
+                                            : AppColors.neutralGold
+                                                .withValues(alpha: 0.6),
+                                      ),
+                                    ),
+                                    const SizedBox(height: 3),
+                                    Text(
+                                      tab.label,
+                                      style:
+                                          AppTypography.label(context).copyWith(
+                                        fontSize: 9,
+                                        color: active
+                                            ? const Color(0xFFEEBD2B)
+                                            : const Color(0xFF9A864C)
+                                                .withValues(alpha: 0.6),
+                                        fontWeight: active
+                                            ? FontWeight.w800
+                                            : FontWeight.w500,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
-                          ),
-                          const SizedBox(height: 3),
-                          Text(
-                            tab.label,
-                            style: AppTypography.label(context).copyWith(
-                              fontSize: 9,
-                              color: active
-                                  ? const Color(0xFFEEBD2B)
-                                  : const Color(0xFF9A864C).withValues(alpha: 0.6),
-                              fontWeight: active ? FontWeight.w800 : FontWeight.w500,
-                            ),
-                          ),
-                        ],
+                          );
+                        }).toList(),
                       ),
                     ),
                   ),
-                );
-              }).toList(),
-            ),
-          ),
-        ),
-        ), // Closes Container
+                ), // Closes Container
         ), // Closes AnimatedSize
       ), // Closes Scaffold
     ); // Closes PopScope

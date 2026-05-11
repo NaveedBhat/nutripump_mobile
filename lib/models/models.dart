@@ -71,7 +71,10 @@ class Category {
     final d = doc.data() as Map<String, dynamic>;
     return Category(
       id: doc.id,
-      name: d['name']?.toString() ?? d['label']?.toString() ?? d['title']?.toString() ?? '',
+      name: d['name']?.toString() ??
+          d['label']?.toString() ??
+          d['title']?.toString() ??
+          '',
       slug: d['slug']?.toString() ?? d['id']?.toString() ?? '',
       image: d['image']?.toString() ?? d['imageUrl']?.toString(),
       description: d['description']?.toString(),
@@ -132,13 +135,15 @@ class StoreSettings {
       instagramUrl: d['instagramUrl'] as String? ?? '',
       facebookUrl: d['facebookUrl'] as String? ?? '',
       twitterUrl: d['twitterUrl'] as String? ?? '',
-      freeShippingThreshold: (d['freeShippingThreshold'] as num?)?.toDouble() ?? 499,
+      freeShippingThreshold:
+          (d['freeShippingThreshold'] as num?)?.toDouble() ?? 499,
       shippingCost: (d['shippingCost'] as num?)?.toDouble() ?? 99,
       gstRate: (d['gstRate'] as num?)?.toDouble() ?? 5,
       allowGuestCheckout: d['allowGuestCheckout'] as bool? ?? true,
       enableReviews: d['enableReviews'] as bool? ?? true,
       maintenanceMode: d['maintenanceMode'] as bool? ?? false,
-      cancellationWindowHours: (d['cancellationWindowHours'] as num?)?.toInt() ?? 24,
+      cancellationWindowHours:
+          (d['cancellationWindowHours'] as num?)?.toInt() ?? 24,
       returnWindowDays: (d['returnWindowDays'] as num?)?.toInt() ?? 5,
     );
   }
@@ -191,7 +196,9 @@ class PromoCode {
       oneTimeUsePerUser: d['oneTimeUsePerUser'] as bool? ?? false,
       productId: d['productId'] as String?,
       productName: d['productName'] as String?,
-      expiresAt: d['expiresAt'] != null ? (d['expiresAt'] as Timestamp).toDate() : null,
+      expiresAt: d['expiresAt'] != null
+          ? (d['expiresAt'] as Timestamp).toDate()
+          : null,
       active: d['active'] as bool? ?? true,
     );
   }
@@ -203,7 +210,8 @@ class PromoCode {
   /// a previously-used code; the server will reject it at checkout. Do not add
   /// a client-side check here — that would require an extra Firestore read per
   /// cart update and can be bypassed anyway.
-  bool isValidFor(double orderTotal, bool isFirstOrder, List<String> cartProductIds) {
+  bool isValidFor(
+      double orderTotal, bool isFirstOrder, List<String> cartProductIds) {
     if (!active) return false;
     if (expiresAt != null && DateTime.now().isAfter(expiresAt!)) return false;
     if (orderTotal < minOrderValue) return false;
@@ -264,7 +272,8 @@ class AnnouncementSettings {
 
   const AnnouncementSettings({
     this.activeMobile = true,
-    this.text = '🚚 FREE DELIVERY ABOVE ₹499  🌿 100% NATURAL  🏔️ MADE IN KASHMIR',
+    this.text =
+        '🚚 FREE DELIVERY ABOVE ₹499  🌿 100% NATURAL  🏔️ MADE IN KASHMIR',
     this.bgColor = '#ebd177',
     this.textColor = '#1f1f1f',
   });
@@ -274,7 +283,8 @@ class AnnouncementSettings {
     final d = doc.data() as Map<String, dynamic>;
     return AnnouncementSettings(
       activeMobile: d['activeMobile'] as bool? ?? d['active'] as bool? ?? true,
-      text: d['text'] as String? ?? '🚚 FREE DELIVERY ABOVE ₹499  🌿 100% NATURAL  🏔️ MADE IN KASHMIR',
+      text: d['text'] as String? ??
+          '🚚 FREE DELIVERY ABOVE ₹499  🌿 100% NATURAL  🏔️ MADE IN KASHMIR',
       bgColor: d['bgColor'] as String? ?? '#ebd177',
       textColor: d['textColor'] as String? ?? '#1f1f1f',
     );

@@ -15,18 +15,18 @@ class ProductSize {
   });
 
   factory ProductSize.fromMap(Map<String, dynamic> m) => ProductSize(
-    label: m['label'] as String,
-    price: (m['price'] as num).toDouble(),
-    compareAtPrice: m['compareAtPrice'] != null
-        ? (m['compareAtPrice'] as num).toDouble()
-        : null,
-  );
+        label: m['label'] as String,
+        price: (m['price'] as num).toDouble(),
+        compareAtPrice: m['compareAtPrice'] != null
+            ? (m['compareAtPrice'] as num).toDouble()
+            : null,
+      );
 
   Map<String, dynamic> toMap() => {
-    'label': label,
-    'price': price,
-    if (compareAtPrice != null) 'compareAtPrice': compareAtPrice,
-  };
+        'label': label,
+        'price': price,
+        if (compareAtPrice != null) 'compareAtPrice': compareAtPrice,
+      };
 }
 
 class Product {
@@ -140,12 +140,14 @@ class Product {
       flavorProfile: d['flavor_profile']?.toString(),
       vibe: d['vibe']?.toString(),
       texture: d['texture']?.toString(),
-      createdAt: d['createdAt'] is Timestamp 
-          ? (d['createdAt'] as Timestamp).toDate() 
-          : DateTime.tryParse(d['createdAt']?.toString() ?? '') ?? DateTime.now(),
-      updatedAt: d['updatedAt'] is Timestamp 
-          ? (d['updatedAt'] as Timestamp).toDate() 
-          : DateTime.tryParse(d['updatedAt']?.toString() ?? '') ?? DateTime.now(),
+      createdAt: d['createdAt'] is Timestamp
+          ? (d['createdAt'] as Timestamp).toDate()
+          : DateTime.tryParse(d['createdAt']?.toString() ?? '') ??
+              DateTime.now(),
+      updatedAt: d['updatedAt'] is Timestamp
+          ? (d['updatedAt'] as Timestamp).toDate()
+          : DateTime.tryParse(d['updatedAt']?.toString() ?? '') ??
+              DateTime.now(),
     );
   }
 
@@ -160,51 +162,73 @@ class Product {
 
   Product copyWithBundlePrice(double bundlePrice) {
     return Product(
-      id: id, name: name, slug: slug, description: description,
-      shortDescription: shortDescription, price: price,
-      compareAtPrice: compareAtPrice, images: images, category: category,
-      tags: tags, origin: origin, weight: weight, inStock: inStock,
-      stockCount: stockCount, rating: rating, reviewCount: reviewCount,
-      badge: badge, benefits: benefits, sizes: sizes, featured: featured,
-      bundlePrice: bundlePrice, ingredients: ingredients, nutrition: nutrition,
-      calories: calories, fat: fat, protein: protein, carbs: carbs,
-      flavorProfile: flavorProfile, vibe: vibe, texture: texture,
-      createdAt: createdAt, updatedAt: updatedAt,
+      id: id,
+      name: name,
+      slug: slug,
+      description: description,
+      shortDescription: shortDescription,
+      price: price,
+      compareAtPrice: compareAtPrice,
+      images: images,
+      category: category,
+      tags: tags,
+      origin: origin,
+      weight: weight,
+      inStock: inStock,
+      stockCount: stockCount,
+      rating: rating,
+      reviewCount: reviewCount,
+      badge: badge,
+      benefits: benefits,
+      sizes: sizes,
+      featured: featured,
+      bundlePrice: bundlePrice,
+      ingredients: ingredients,
+      nutrition: nutrition,
+      calories: calories,
+      fat: fat,
+      protein: protein,
+      carbs: carbs,
+      flavorProfile: flavorProfile,
+      vibe: vibe,
+      texture: texture,
+      createdAt: createdAt,
+      updatedAt: updatedAt,
     );
   }
 
   Map<String, dynamic> toMap() => {
-    'id': id,
-    'name': name,
-    'slug': slug,
-    'description': description,
-    'shortDescription': shortDescription,
-    'price': price,
-    if (compareAtPrice != null) 'compareAtPrice': compareAtPrice,
-    'images': images,
-    'category': category,
-    'tags': tags,
-    'origin': origin,
-    'weight': weight,
-    'inStock': inStock,
-    'stockCount': stockCount,
-    'rating': rating,
-    'reviewCount': reviewCount,
-    if (badge != null) 'badge': badge,
-    if (benefits != null) 'benefits': benefits,
-    if (sizes != null) 'sizes': sizes!.map((s) => s.toMap()).toList(),
-    'featured': featured,
-    if (bundlePrice != null) 'bundlePrice': bundlePrice,
-    if (ingredients != null) 'ingredients': ingredients,
-    if (nutrition != null) 'nutrition': nutrition,
-    if (calories != null) 'calories': calories,
-    if (fat != null) 'fat': fat,
-    if (protein != null) 'protein': protein,
-    if (carbs != null) 'carbs': carbs,
-    if (flavorProfile != null) 'flavor_profile': flavorProfile,
-    if (vibe != null) 'vibe': vibe,
-    if (texture != null) 'texture': texture,
-    'createdAt': createdAt.toIso8601String(),
-    'updatedAt': updatedAt.toIso8601String(),
-  };
+        'id': id,
+        'name': name,
+        'slug': slug,
+        'description': description,
+        'shortDescription': shortDescription,
+        'price': price,
+        if (compareAtPrice != null) 'compareAtPrice': compareAtPrice,
+        'images': images,
+        'category': category,
+        'tags': tags,
+        'origin': origin,
+        'weight': weight,
+        'inStock': inStock,
+        'stockCount': stockCount,
+        'rating': rating,
+        'reviewCount': reviewCount,
+        if (badge != null) 'badge': badge,
+        if (benefits != null) 'benefits': benefits,
+        if (sizes != null) 'sizes': sizes!.map((s) => s.toMap()).toList(),
+        'featured': featured,
+        if (bundlePrice != null) 'bundlePrice': bundlePrice,
+        if (ingredients != null) 'ingredients': ingredients,
+        if (nutrition != null) 'nutrition': nutrition,
+        if (calories != null) 'calories': calories,
+        if (fat != null) 'fat': fat,
+        if (protein != null) 'protein': protein,
+        if (carbs != null) 'carbs': carbs,
+        if (flavorProfile != null) 'flavor_profile': flavorProfile,
+        if (vibe != null) 'vibe': vibe,
+        if (texture != null) 'texture': texture,
+        'createdAt': createdAt.toIso8601String(),
+        'updatedAt': updatedAt.toIso8601String(),
+      };
 }

@@ -32,16 +32,15 @@ class NotificationService {
     // ── Android notification channel ─────────────────────────────────────────
     const channel = AndroidNotificationChannel(
       'nutripump_high_importance', // channel id
-      'NutriPump Notifications',   // channel name
+      'NutriPump Notifications', // channel name
       description: 'Order updates, promotions & alerts from NutriPump.',
       importance: Importance.max,
       enableVibration: true,
       playSound: true,
     );
 
-    final androidPlugin = _fln
-        .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>();
+    final androidPlugin = _fln.resolvePlatformSpecificImplementation<
+        AndroidFlutterLocalNotificationsPlugin>();
 
     await androidPlugin?.createNotificationChannel(channel);
 
@@ -114,21 +113,18 @@ class NotificationService {
     try {
       final token = await _messaging.getToken();
       if (token == null) return;
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(uid)
-          .set({'fcmToken': token, 'fcmUpdatedAt': FieldValue.serverTimestamp()},
-              SetOptions(merge: true));
+      await FirebaseFirestore.instance.collection('users').doc(uid).set(
+          {'fcmToken': token, 'fcmUpdatedAt': FieldValue.serverTimestamp()},
+          SetOptions(merge: true));
       debugPrint('[FCM] Token saved for $uid');
 
       // Cancel any previous refresh listener before attaching a new one
       await _tokenRefreshSub?.cancel();
       _tokenRefreshSub = _messaging.onTokenRefresh.listen((newToken) async {
-        await FirebaseFirestore.instance
-            .collection('users')
-            .doc(uid)
-            .set({'fcmToken': newToken, 'fcmUpdatedAt': FieldValue.serverTimestamp()},
-                SetOptions(merge: true));
+        await FirebaseFirestore.instance.collection('users').doc(uid).set({
+          'fcmToken': newToken,
+          'fcmUpdatedAt': FieldValue.serverTimestamp()
+        }, SetOptions(merge: true));
         debugPrint('[FCM] Token refreshed for $uid');
       });
     } catch (e) {
@@ -143,16 +139,18 @@ class NotificationService {
     final body = notification?.body ?? message.data['body'] ?? '';
     // Check platform-specific image first, then fall back to data payload.
     // The top-level notification.imageUrl does not exist in this SDK version.
-    final imageUrl = notification?.android?.imageUrl
-        ?? notification?.apple?.imageUrl
-        ?? message.data['imageUrl'];
+    final imageUrl = notification?.android?.imageUrl ??
+        notification?.apple?.imageUrl ??
+        message.data['imageUrl'];
     final route = message.data['deepLink'] ?? message.data['route'];
 
-    debugPrint('[FCM] Foreground message — title: $title, body: $body, image: $imageUrl');
+    debugPrint(
+        '[FCM] Foreground message — title: $title, body: $body, image: $imageUrl');
 
     // ── Save to local history ────────────────────────────────────────────────
     final payload = {
-      'id': message.messageId ?? DateTime.now().millisecondsSinceEpoch.toString(),
+      'id':
+          message.messageId ?? DateTime.now().millisecondsSinceEpoch.toString(),
       'title': title,
       'body': body,
       'imageUrl': imageUrl,
@@ -171,7 +169,7 @@ class NotificationService {
     if (imageUrl != null && imageUrl.isNotEmpty) {
       try {
         final response = await Dio().get<List<int>>(imageUrl,
-          options: Options(responseType: ResponseType.bytes));
+            options: Options(responseType: ResponseType.bytes));
         // Use a fixed filename to prevent unbounded accumulation of temp files
         final file = File('${Directory.systemTemp.path}/fcm_img_latest.jpg');
         await file.writeAsBytes(response.data!);

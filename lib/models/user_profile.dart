@@ -37,9 +37,12 @@ class UserProfile {
 
   String get initials {
     if (displayName != null && displayName!.trim().isNotEmpty) {
-      final parts = displayName!.trim().split(' ').where((p) => p.isNotEmpty).toList();
+      final parts =
+          displayName!.trim().split(' ').where((p) => p.isNotEmpty).toList();
       if (parts.isNotEmpty) {
-        if (parts.length >= 2) return '${parts[0][0]}${parts[1][0]}'.toUpperCase();
+        if (parts.length >= 2) {
+          return '${parts[0][0]}${parts[1][0]}'.toUpperCase();
+        }
         return parts[0][0].toUpperCase();
       }
     }
@@ -68,16 +71,16 @@ class UserProfile {
   }
 
   Map<String, dynamic> toMap() => {
-    'uid': uid,
-    'email': email,
-    if (displayName != null) 'displayName': displayName,
-    if (photoURL != null) 'photoURL': photoURL,
-    'role': role,
-    'emailVerified': emailVerified,
-    if (phone != null) 'phone': phone,
-    'totalOrders': totalOrders,
-    'totalSpent': totalSpent,
-  };
+        'uid': uid,
+        'email': email,
+        if (displayName != null) 'displayName': displayName,
+        if (photoURL != null) 'photoURL': photoURL,
+        'role': role,
+        'emailVerified': emailVerified,
+        if (phone != null) 'phone': phone,
+        'totalOrders': totalOrders,
+        'totalSpent': totalSpent,
+      };
 
   UserProfile copyWith({
     String? displayName,
@@ -86,20 +89,21 @@ class UserProfile {
     String? dob,
     String? gender,
     String? bio,
-  }) => UserProfile(
-    uid: uid,
-    email: email,
-    displayName: displayName ?? this.displayName,
-    photoURL: photoURL ?? this.photoURL,
-    role: role,
-    emailVerified: emailVerified,
-    phone: phone ?? this.phone,
-    totalOrders: totalOrders,
-    totalSpent: totalSpent,
-    createdAt: createdAt,
-    lastLoginAt: lastLoginAt,
-    dob: dob ?? this.dob,
-    gender: gender ?? this.gender,
-    bio: bio ?? this.bio,
-  );
+  }) =>
+      UserProfile(
+        uid: uid,
+        email: email,
+        displayName: displayName ?? this.displayName,
+        photoURL: photoURL ?? this.photoURL,
+        role: role,
+        emailVerified: emailVerified,
+        phone: phone ?? this.phone,
+        totalOrders: totalOrders,
+        totalSpent: totalSpent,
+        createdAt: createdAt,
+        lastLoginAt: lastLoginAt,
+        dob: dob ?? this.dob,
+        gender: gender ?? this.gender,
+        bio: bio ?? this.bio,
+      );
 }

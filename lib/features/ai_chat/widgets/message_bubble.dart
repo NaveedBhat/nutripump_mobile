@@ -26,35 +26,45 @@ class MessageBubble extends StatelessWidget {
             constraints: BoxConstraints(
               maxWidth: MediaQuery.of(context).size.width * 0.85,
             ),
-            padding: EdgeInsets.symmetric(horizontal: R.w(context, 14), vertical: R.h(context, 10)),
+            padding: EdgeInsets.symmetric(
+                horizontal: R.w(context, 14), vertical: R.h(context, 10)),
             decoration: BoxDecoration(
               color: isUser
                   ? AppColors.primary
                   : (Theme.of(context).brightness == Brightness.dark
                       ? AppColors.backgroundDark
                       : Colors.white),
-              border:
-                  isUser ? null : Border.all(color: AppColors.primary.withValues(alpha: 0.1)),
+              border: isUser
+                  ? null
+                  : Border.all(color: AppColors.primary.withValues(alpha: 0.1)),
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(R.w(context, 16)),
                 topRight: Radius.circular(R.w(context, 16)),
-                bottomLeft: Radius.circular(isUser ? R.w(context, 16) : R.w(context, 4)),
-                bottomRight: Radius.circular(isUser ? R.w(context, 4) : R.w(context, 16)),
+                bottomLeft: Radius.circular(
+                    isUser ? R.w(context, 16) : R.w(context, 4)),
+                bottomRight: Radius.circular(
+                    isUser ? R.w(context, 4) : R.w(context, 16)),
               ),
             ),
             child: Text(
               message.text,
               style: AppTypography.bodySM(context).copyWith(
                 color: isUser
-                    ? (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal)
+                    ? (Theme.of(context).brightness == Brightness.dark
+                        ? Theme.of(context).colorScheme.onSurface
+                        : AppColors.deepCharcoal)
                     : (Theme.of(context).brightness == Brightness.dark
                         ? const Color(0xFFF5F0E8)
-                        : (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal)),
+                        : (Theme.of(context).brightness == Brightness.dark
+                            ? Theme.of(context).colorScheme.onSurface
+                            : AppColors.deepCharcoal)),
                 fontWeight: isUser ? FontWeight.w500 : FontWeight.normal,
               ),
             ),
           ),
-          if (!isUser && message.products != null && message.products!.isNotEmpty)
+          if (!isUser &&
+              message.products != null &&
+              message.products!.isNotEmpty)
             Padding(
               padding: EdgeInsets.only(top: R.h(context, 8)),
               child: Container(
@@ -74,7 +84,8 @@ class MessageBubble extends StatelessWidget {
                             context.push('/shop');
                           },
                           style: TextButton.styleFrom(
-                            padding: EdgeInsets.symmetric(vertical: R.h(context, 4)),
+                            padding:
+                                EdgeInsets.symmetric(vertical: R.h(context, 4)),
                             minimumSize: Size.zero,
                             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                           ),
@@ -132,12 +143,14 @@ class _TypingIndicatorState extends State<TypingIndicator>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: EdgeInsets.symmetric(horizontal: R.w(context, 16), vertical: R.h(context, 12)),
+            padding: EdgeInsets.symmetric(
+                horizontal: R.w(context, 16), vertical: R.h(context, 12)),
             decoration: BoxDecoration(
               color: Theme.of(context).brightness == Brightness.dark
                   ? AppColors.backgroundDark
                   : Colors.white,
-              border: Border.all(color: AppColors.primary.withValues(alpha: 0.1)),
+              border:
+                  Border.all(color: AppColors.primary.withValues(alpha: 0.1)),
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(R.w(context, 16)),
                 topRight: Radius.circular(R.w(context, 16)),
@@ -155,11 +168,14 @@ class _TypingIndicatorState extends State<TypingIndicator>
                     final progress = (_controller.value - delay) % 1.0;
                     final offset = progress < 0 || progress > 0.6
                         ? 0.0
-                        : (progress < 0.3 ? -3.0 * (progress / 0.3) : -3.0 * (1 - ((progress - 0.3) / 0.3)));
+                        : (progress < 0.3
+                            ? -3.0 * (progress / 0.3)
+                            : -3.0 * (1 - ((progress - 0.3) / 0.3)));
                     return Transform.translate(
                       offset: Offset(0, offset),
                       child: Container(
-                        margin: EdgeInsets.only(right: index < 2 ? R.w(context, 4) : 0),
+                        margin: EdgeInsets.only(
+                            right: index < 2 ? R.w(context, 4) : 0),
                         width: R.w(context, 6),
                         height: R.w(context, 6),
                         decoration: BoxDecoration(

@@ -30,7 +30,7 @@ class _SecurityScreenState extends ConsumerState<SecurityScreen> {
 
   Future<void> _changePassword() async {
     if (!_formKey.currentState!.validate()) return;
-    
+
     final user = FirebaseAuth.instance.currentUser;
     if (user == null || user.email == null) return;
 
@@ -46,13 +46,16 @@ class _SecurityScreenState extends ConsumerState<SecurityScreen> {
 
       // Then update password
       await user.updatePassword(_passwordCtrl.text);
-      
+
       if (mounted) {
         _oldPasswordCtrl.clear();
         _passwordCtrl.clear();
         _confirmPasswordCtrl.clear();
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(duration: Duration(milliseconds: 2000), content: Text('Password updated successfully'), backgroundColor: AppColors.success),
+          const SnackBar(
+              duration: Duration(milliseconds: 2000),
+              content: Text('Password updated successfully'),
+              backgroundColor: AppColors.success),
         );
       }
     } on FirebaseAuthException catch (e) {
@@ -64,7 +67,10 @@ class _SecurityScreenState extends ConsumerState<SecurityScreen> {
           msg = 'Too many failed attempts. Please try again later.';
         }
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(duration: const Duration(milliseconds: 2000), content: Text(msg), backgroundColor: AppColors.error),
+          SnackBar(
+              duration: const Duration(milliseconds: 2000),
+              content: Text(msg),
+              backgroundColor: AppColors.error),
         );
       }
     } finally {
@@ -75,12 +81,18 @@ class _SecurityScreenState extends ConsumerState<SecurityScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : AppColors.backgroundLight),
+      backgroundColor: (Theme.of(context).brightness == Brightness.dark
+          ? Theme.of(context).scaffoldBackgroundColor
+          : AppColors.backgroundLight),
       appBar: AppBar(
-        backgroundColor: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : Colors.white),
+        backgroundColor: (Theme.of(context).brightness == Brightness.dark
+            ? Theme.of(context).scaffoldBackgroundColor
+            : Colors.white),
         elevation: 0,
         centerTitle: true,
-        title: Text('Security', style: AppTypography.h3(context).copyWith(fontSize: R.sp(context, 16))),
+        title: Text('Security',
+            style: AppTypography.h3(context)
+                .copyWith(fontSize: R.sp(context, 16))),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1),
           child: Container(height: 1, color: AppColors.borderLight),
@@ -93,54 +105,70 @@ class _SecurityScreenState extends ConsumerState<SecurityScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Change Password', style: AppTypography.h3(context).copyWith(fontSize: R.sp(context, 16))),
+              Text('Change Password',
+                  style: AppTypography.h3(context)
+                      .copyWith(fontSize: R.sp(context, 16))),
               SizedBox(height: R.h(context, 8)),
               Text(
                 'Ensure your account is using a long, random password to stay secure.',
-                style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold),
+                style: AppTypography.bodySM(context)
+                    .copyWith(color: AppColors.neutralGold),
               ),
               SizedBox(height: R.h(context, 24)),
-
-              Text('Current Password', style: AppTypography.label(context).copyWith(fontSize: R.sp(context, 11))),
+              Text('Current Password',
+                  style: AppTypography.label(context)
+                      .copyWith(fontSize: R.sp(context, 11))),
               SizedBox(height: R.h(context, 6)),
               TextFormField(
                 controller: _oldPasswordCtrl,
                 obscureText: _obscurePassword,
-                validator: (val) => val == null || val.isEmpty ? 'Current password is required' : null,
+                validator: (val) => val == null || val.isEmpty
+                    ? 'Current password is required'
+                    : null,
                 style: AppTypography.bodySM(context),
                 decoration: _inputDecoration('Enter current password').copyWith(
                   suffixIcon: IconButton(
-                    icon: Icon(_obscurePassword ? Icons.visibility_off_outlined : Icons.visibility_outlined, size: R.sp(context, 20), color: AppColors.neutralGold),
-                    onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
+                    icon: Icon(
+                        _obscurePassword
+                            ? Icons.visibility_off_outlined
+                            : Icons.visibility_outlined,
+                        size: R.sp(context, 20),
+                        color: AppColors.neutralGold),
+                    onPressed: () =>
+                        setState(() => _obscurePassword = !_obscurePassword),
                   ),
                 ),
               ),
               SizedBox(height: R.h(context, 16)),
               const Divider(color: AppColors.borderLight),
               SizedBox(height: R.h(context, 16)),
-
-              Text('New Password', style: AppTypography.label(context).copyWith(fontSize: R.sp(context, 11))),
+              Text('New Password',
+                  style: AppTypography.label(context)
+                      .copyWith(fontSize: R.sp(context, 11))),
               SizedBox(height: R.h(context, 6)),
               TextFormField(
                 controller: _passwordCtrl,
                 obscureText: _obscurePassword,
-                validator: (val) => val != null && val.length < 6 ? 'Password must be at least 6 characters' : null,
+                validator: (val) => val != null && val.length < 6
+                    ? 'Password must be at least 6 characters'
+                    : null,
                 style: AppTypography.bodySM(context),
                 decoration: _inputDecoration('Enter new password'),
               ),
               SizedBox(height: R.h(context, 16)),
-
-              Text('Confirm New Password', style: AppTypography.label(context).copyWith(fontSize: R.sp(context, 11))),
+              Text('Confirm New Password',
+                  style: AppTypography.label(context)
+                      .copyWith(fontSize: R.sp(context, 11))),
               SizedBox(height: R.h(context, 6)),
               TextFormField(
                 controller: _confirmPasswordCtrl,
                 obscureText: _obscurePassword,
-                validator: (val) => val != _passwordCtrl.text ? 'Passwords do not match' : null,
+                validator: (val) =>
+                    val != _passwordCtrl.text ? 'Passwords do not match' : null,
                 style: AppTypography.bodySM(context),
                 decoration: _inputDecoration('Confirm new password'),
               ),
               SizedBox(height: R.h(context, 24)),
-
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
@@ -150,11 +178,24 @@ class _SecurityScreenState extends ConsumerState<SecurityScreen> {
                     foregroundColor: AppColors.deepCharcoal,
                     elevation: 0,
                     padding: EdgeInsets.symmetric(vertical: R.h(context, 14)),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(R.w(context, 12))),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(R.w(context, 12))),
                   ),
                   child: _isLoading
-                      ? SizedBox(width: R.w(context, 24), height: R.w(context, 24), child: CircularProgressIndicator(strokeWidth: 2, color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal)))
-                      : Text('Update Password', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: R.sp(context, 16), color: AppColors.deepCharcoal)),
+                      ? SizedBox(
+                          width: R.w(context, 24),
+                          height: R.w(context, 24),
+                          child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: (Theme.of(context).brightness ==
+                                      Brightness.dark
+                                  ? Theme.of(context).colorScheme.onSurface
+                                  : AppColors.deepCharcoal)))
+                      : Text('Update Password',
+                          style: AppTypography.bodySM(context).copyWith(
+                              fontWeight: FontWeight.w800,
+                              fontSize: R.sp(context, 16),
+                              color: AppColors.deepCharcoal)),
                 ),
               ),
             ],
@@ -167,14 +208,26 @@ class _SecurityScreenState extends ConsumerState<SecurityScreen> {
   InputDecoration _inputDecoration(String hint) {
     return InputDecoration(
       hintText: hint,
-      hintStyle: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold.withValues(alpha: 0.5)),
-      contentPadding: EdgeInsets.symmetric(horizontal: R.w(context, 16), vertical: R.h(context, 16)),
+      hintStyle: AppTypography.bodySM(context)
+          .copyWith(color: AppColors.neutralGold.withValues(alpha: 0.5)),
+      contentPadding: EdgeInsets.symmetric(
+          horizontal: R.w(context, 16), vertical: R.h(context, 16)),
       filled: true,
-      fillColor: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
-      border: OutlineInputBorder(borderRadius: BorderRadius.circular(R.w(context, 12)), borderSide: const BorderSide(color: AppColors.borderLight)),
-      enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(R.w(context, 12)), borderSide: const BorderSide(color: AppColors.borderLight)),
-      focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(R.w(context, 12)), borderSide: const BorderSide(color: AppColors.primary)),
-      errorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(R.w(context, 12)), borderSide: const BorderSide(color: AppColors.error)),
+      fillColor: Theme.of(context).brightness == Brightness.dark
+          ? AppColors.surfaceDark
+          : Colors.white,
+      border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(R.w(context, 12)),
+          borderSide: const BorderSide(color: AppColors.borderLight)),
+      enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(R.w(context, 12)),
+          borderSide: const BorderSide(color: AppColors.borderLight)),
+      focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(R.w(context, 12)),
+          borderSide: const BorderSide(color: AppColors.primary)),
+      errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(R.w(context, 12)),
+          borderSide: const BorderSide(color: AppColors.error)),
     );
   }
 }

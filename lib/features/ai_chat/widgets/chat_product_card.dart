@@ -23,7 +23,9 @@ class ChatProductCard extends StatelessWidget {
         margin: EdgeInsets.only(bottom: R.h(context, 6)),
         padding: EdgeInsets.all(R.w(context, 8)),
         decoration: BoxDecoration(
-          color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
+          color: Theme.of(context).brightness == Brightness.dark
+              ? AppColors.surfaceDark
+              : Colors.white,
           borderRadius: BorderRadius.circular(R.w(context, 12)),
           border: Border.all(color: AppColors.primary.withValues(alpha: 0.15)),
         ),

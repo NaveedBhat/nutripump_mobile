@@ -15,24 +15,55 @@ List<Product> getGiftingRecommendations(
   int limit = 3,
 }) {
   const personaTags = <String, List<String>>{
-    'The Health Nut': ['wellness', 'health', 'immunity', 'honey', 'seeds', 'nuts', 'organic'],
-    'The Traditionalist': ['heritage', 'traditional', 'kashmiri', 'spices', 'tea', 'kahwa', 'culture'],
-    'The Luxury Connoisseur': ['luxury', 'rare', 'saffron', 'reserve', 'artisanal', 'premium', 'exclusive'],
+    'The Health Nut': [
+      'wellness',
+      'health',
+      'immunity',
+      'honey',
+      'seeds',
+      'nuts',
+      'organic'
+    ],
+    'The Traditionalist': [
+      'heritage',
+      'traditional',
+      'kashmiri',
+      'spices',
+      'tea',
+      'kahwa',
+      'culture'
+    ],
+    'The Luxury Connoisseur': [
+      'luxury',
+      'rare',
+      'saffron',
+      'reserve',
+      'artisanal',
+      'premium',
+      'exclusive'
+    ],
   };
 
-  final targetTags = personaTags[persona] ?? personaTags['The Luxury Connoisseur']!;
+  final targetTags =
+      personaTags[persona] ?? personaTags['The Luxury Connoisseur']!;
   final inStock = allProducts.where((p) => p.inStock).toList();
   if (inStock.isEmpty) return [];
 
-  final sorted = List<Product>.from(inStock)..sort((a, b) => a.price.compareTo(b.price));
+  final sorted = List<Product>.from(inStock)
+    ..sort((a, b) => a.price.compareTo(b.price));
   final total = sorted.length;
   final tierSize = (total / 3).ceil().clamp(1, total);
 
-  final petite    = sorted.sublist(0, tierSize);
-  final signature = sorted.sublist(tierSize.clamp(0, total), (tierSize * 2).clamp(0, total));
-  final grand     = sorted.sublist((tierSize * 2).clamp(0, total));
+  final petite = sorted.sublist(0, tierSize);
+  final signature =
+      sorted.sublist(tierSize.clamp(0, total), (tierSize * 2).clamp(0, total));
+  final grand = sorted.sublist((tierSize * 2).clamp(0, total));
 
-  var tierPool = budget == 'Petite' ? petite : budget == 'Grand' ? grand : signature;
+  var tierPool = budget == 'Petite'
+      ? petite
+      : budget == 'Grand'
+          ? grand
+          : signature;
   if (tierPool.isEmpty) tierPool = sorted;
 
   final scored = tierPool.map((p) {
@@ -48,15 +79,19 @@ List<Product> getGiftingRecommendations(
     score += p.rating * 0.5;
     if (p.featured) score += 2;
     return (product: p, score: score);
-  }).toList()..sort((a, b) => b.score.compareTo(a.score));
+  }).toList()
+    ..sort((a, b) => b.score.compareTo(a.score));
 
   var results = scored.take(limit).map((s) => s.product).toList();
   if (results.length < limit) {
     final ids = results.map((p) => p.id).toSet();
-    final supplement = inStock.where((p) => !ids.contains(p.id)).take(limit - results.length);
+    final supplement =
+        inStock.where((p) => !ids.contains(p.id)).take(limit - results.length);
     results = [...results, ...supplement];
   }
-  return results.map((p) => p.copyWithBundlePrice((p.price * 0.85).floor().toDouble())).toList();
+  return results
+      .map((p) => p.copyWithBundlePrice((p.price * 0.85).floor().toDouble()))
+      .toList();
 }
 
 class AIGiftBuilder extends ConsumerStatefulWidget {
@@ -91,8 +126,10 @@ class _AIGiftBuilderState extends ConsumerState<AIGiftBuilder> {
 
     return productsAsync.when(
       data: (allProducts) {
-        final bundle = getGiftingRecommendations(allProducts, persona: _persona, budget: _budget);
-        final bundleTotal = bundle.fold<double>(0, (acc, p) => acc + (p.bundlePrice ?? p.price));
+        final bundle = getGiftingRecommendations(allProducts,
+            persona: _persona, budget: _budget);
+        final bundleTotal = bundle.fold<double>(
+            0, (acc, p) => acc + (p.bundlePrice ?? p.price));
         final originalTotal = bundle.fold<double>(0, (acc, p) => acc + p.price);
 
         return SingleChildScrollView(
@@ -102,49 +139,80 @@ class _AIGiftBuilderState extends ConsumerState<AIGiftBuilder> {
             children: [
               Row(
                 children: [
-                  Icon(Icons.card_giftcard_rounded, color: AppColors.primary, size: R.sp(context, 22)),
+                  Icon(Icons.card_giftcard_rounded,
+                      color: AppColors.primary, size: R.sp(context, 22)),
                   SizedBox(width: R.w(context, 10)),
                   Expanded(
-                    child: Text('Build an Artisanal Gift Box', style: AppTypography.h3(context).copyWith(fontSize: R.sp(context, 18))),
+                    child: Text('Build an Artisanal Gift Box',
+                        style: AppTypography.h3(context)
+                            .copyWith(fontSize: R.sp(context, 18))),
                   ),
                 ],
               ),
               SizedBox(height: R.h(context, 8)),
               Text(
                 'Tell us about the recipient and our intelligence will curate an exquisite Himalayan bundle at a 15% combo concession.',
-                style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, fontSize: R.sp(context, 12)),
+                style: AppTypography.bodySM(context).copyWith(
+                    color: AppColors.neutralGold, fontSize: R.sp(context, 12)),
               ),
               SizedBox(height: R.h(context, 28)),
-
               _stepLabel('🎨', '1. SELECT PERSONA'),
               SizedBox(height: R.h(context, 10)),
               Column(
-                children: ['The Health Nut', 'The Traditionalist', 'The Luxury Connoisseur'].map((p) {
+                children: [
+                  'The Health Nut',
+                  'The Traditionalist',
+                  'The Luxury Connoisseur'
+                ].map((p) {
                   final selected = _persona == p;
                   return GestureDetector(
-                    onTap: () { setState(() => _persona = p); _curate(); },
+                    onTap: () {
+                      setState(() => _persona = p);
+                      _curate();
+                    },
                     child: AnimatedContainer(
                       duration: const Duration(milliseconds: 200),
                       width: double.infinity,
                       margin: EdgeInsets.only(bottom: R.h(context, 10)),
-                      padding: EdgeInsets.symmetric(horizontal: R.w(context, 16), vertical: R.h(context, 13)),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: R.w(context, 16),
+                          vertical: R.h(context, 13)),
                       decoration: BoxDecoration(
                         color: selected
                             ? AppColors.primary.withValues(alpha: 0.12)
-                            : (Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white),
-                        border: Border.all(color: selected ? AppColors.primary : AppColors.borderLight, width: selected ? 1.5 : 1),
+                            : (Theme.of(context).brightness == Brightness.dark
+                                ? AppColors.surfaceDark
+                                : Colors.white),
+                        border: Border.all(
+                            color: selected
+                                ? AppColors.primary
+                                : AppColors.borderLight,
+                            width: selected ? 1.5 : 1),
                         borderRadius: BorderRadius.circular(R.w(context, 12)),
                       ),
                       child: Row(
                         children: [
                           Expanded(
-                            child: Text(p, style: AppTypography.bodySM(context).copyWith(
-                              fontWeight: selected ? FontWeight.w800 : FontWeight.w600,
-                              color: selected ? (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal) : AppColors.neutralGold,
-                              fontSize: R.sp(context, 13),
-                            )),
+                            child: Text(p,
+                                style: AppTypography.bodySM(context).copyWith(
+                                  fontWeight: selected
+                                      ? FontWeight.w800
+                                      : FontWeight.w600,
+                                  color: selected
+                                      ? (Theme.of(context).brightness ==
+                                              Brightness.dark
+                                          ? Theme.of(context)
+                                              .colorScheme
+                                              .onSurface
+                                          : AppColors.deepCharcoal)
+                                      : AppColors.neutralGold,
+                                  fontSize: R.sp(context, 13),
+                                )),
                           ),
-                          if (selected) Icon(Icons.check_circle_rounded, size: R.sp(context, 18), color: AppColors.primary),
+                          if (selected)
+                            Icon(Icons.check_circle_rounded,
+                                size: R.sp(context, 18),
+                                color: AppColors.primary),
                         ],
                       ),
                     ),
@@ -152,7 +220,6 @@ class _AIGiftBuilderState extends ConsumerState<AIGiftBuilder> {
                 }).toList(),
               ),
               SizedBox(height: R.h(context, 24)),
-
               _stepLabel('💰', '2. SELECT SCALE'),
               SizedBox(height: R.h(context, 10)),
               Container(
@@ -169,24 +236,51 @@ class _AIGiftBuilderState extends ConsumerState<AIGiftBuilder> {
                     final selected = _budget == b;
                     return Expanded(
                       child: GestureDetector(
-                        onTap: () { setState(() => _budget = b); _curate(); },
+                        onTap: () {
+                          setState(() => _budget = b);
+                          _curate();
+                        },
                         child: AnimatedContainer(
                           duration: const Duration(milliseconds: 200),
-                          padding: EdgeInsets.symmetric(vertical: R.h(context, 10)),
+                          padding:
+                              EdgeInsets.symmetric(vertical: R.h(context, 10)),
                           decoration: BoxDecoration(
                             color: selected
-                                ? (Theme.of(context).brightness == Brightness.dark ? AppColors.backgroundDark : Colors.white)
+                                ? (Theme.of(context).brightness ==
+                                        Brightness.dark
+                                    ? AppColors.backgroundDark
+                                    : Colors.white)
                                 : Colors.transparent,
-                            borderRadius: BorderRadius.circular(R.w(context, 9)),
-                            border: selected ? Border.all(color: AppColors.borderLight) : null,
-                            boxShadow: selected ? [BoxShadow(color: Colors.black.withValues(alpha: 0.04), blurRadius: 6)] : null,
+                            borderRadius:
+                                BorderRadius.circular(R.w(context, 9)),
+                            border: selected
+                                ? Border.all(color: AppColors.borderLight)
+                                : null,
+                            boxShadow: selected
+                                ? [
+                                    BoxShadow(
+                                        color: Colors.black
+                                            .withValues(alpha: 0.04),
+                                        blurRadius: 6)
+                                  ]
+                                : null,
                           ),
                           child: Center(
-                            child: Text(b, style: AppTypography.bodySM(context).copyWith(
-                              fontWeight: selected ? FontWeight.w800 : FontWeight.w600,
-                              color: selected ? (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal) : AppColors.neutralGold,
-                              fontSize: R.sp(context, 12),
-                            )),
+                            child: Text(b,
+                                style: AppTypography.bodySM(context).copyWith(
+                                  fontWeight: selected
+                                      ? FontWeight.w800
+                                      : FontWeight.w600,
+                                  color: selected
+                                      ? (Theme.of(context).brightness ==
+                                              Brightness.dark
+                                          ? Theme.of(context)
+                                              .colorScheme
+                                              .onSurface
+                                          : AppColors.deepCharcoal)
+                                      : AppColors.neutralGold,
+                                  fontSize: R.sp(context, 12),
+                                )),
                           ),
                         ),
                       ),
@@ -195,7 +289,6 @@ class _AIGiftBuilderState extends ConsumerState<AIGiftBuilder> {
                 ),
               ),
               SizedBox(height: R.h(context, 24)),
-
               _stepLabel('✍️', '3. ADD A PERSONAL NOTE'),
               SizedBox(height: R.h(context, 10)),
               TextField(
@@ -203,24 +296,36 @@ class _AIGiftBuilderState extends ConsumerState<AIGiftBuilder> {
                 maxLines: 3,
                 decoration: InputDecoration(
                   hintText: 'e.g., Wishing you a joyous harvest season...',
-                  hintStyle: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold.withValues(alpha: 0.6), fontSize: R.sp(context, 12)),
+                  hintStyle: AppTypography.bodySM(context).copyWith(
+                      color: AppColors.neutralGold.withValues(alpha: 0.6),
+                      fontSize: R.sp(context, 12)),
                   filled: true,
                   fillColor: Theme.of(context).brightness == Brightness.dark
                       ? AppColors.surfaceDark
                       : const Color(0xFFF8F8F5),
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(R.w(context, 12)), borderSide: const BorderSide(color: AppColors.borderLight)),
-                  enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(R.w(context, 12)), borderSide: const BorderSide(color: AppColors.borderLight)),
-                  focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(R.w(context, 12)), borderSide: const BorderSide(color: AppColors.primary, width: 1.5)),
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(R.w(context, 12)),
+                      borderSide:
+                          const BorderSide(color: AppColors.borderLight)),
+                  enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(R.w(context, 12)),
+                      borderSide:
+                          const BorderSide(color: AppColors.borderLight)),
+                  focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(R.w(context, 12)),
+                      borderSide: const BorderSide(
+                          color: AppColors.primary, width: 1.5)),
                   contentPadding: EdgeInsets.all(R.w(context, 14)),
                 ),
               ),
               SizedBox(height: R.h(context, 28)),
-
               Container(
                 decoration: BoxDecoration(
                   color: Theme.of(context).brightness == Brightness.dark
-                    ? AppColors.surfaceDark
-                    : (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal),
+                      ? AppColors.surfaceDark
+                      : (Theme.of(context).brightness == Brightness.dark
+                          ? Theme.of(context).colorScheme.onSurface
+                          : AppColors.deepCharcoal),
                   borderRadius: BorderRadius.circular(R.w(context, 20)),
                 ),
                 padding: EdgeInsets.all(R.w(context, 20)),
@@ -230,68 +335,114 @@ class _AIGiftBuilderState extends ConsumerState<AIGiftBuilder> {
                     Row(
                       children: [
                         Expanded(
-                          child: Text('The $_budget Box', style: AppTypography.h3(context).copyWith(color: Colors.white, fontSize: R.sp(context, 18))),
+                          child: Text('The $_budget Box',
+                              style: AppTypography.h3(context).copyWith(
+                                  color: Colors.white,
+                                  fontSize: R.sp(context, 18))),
                         ),
                         Container(
-                          padding: EdgeInsets.symmetric(horizontal: R.w(context, 10), vertical: R.h(context, 5)),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: R.w(context, 10),
+                              vertical: R.h(context, 5)),
                           decoration: BoxDecoration(
                             color: AppColors.primary.withValues(alpha: 0.2),
-                            border: Border.all(color: AppColors.primary.withValues(alpha: 0.3)),
-                            borderRadius: BorderRadius.circular(R.w(context, 8)),
+                            border: Border.all(
+                                color:
+                                    AppColors.primary.withValues(alpha: 0.3)),
+                            borderRadius:
+                                BorderRadius.circular(R.w(context, 8)),
                           ),
-                          child: Text(_persona, style: AppTypography.label(context).copyWith(fontSize: R.sp(context, 9), color: AppColors.primary, letterSpacing: 0.5)),
+                          child: Text(_persona,
+                              style: AppTypography.label(context).copyWith(
+                                  fontSize: R.sp(context, 9),
+                                  color: AppColors.primary,
+                                  letterSpacing: 0.5)),
                         ),
                       ],
                     ),
                     SizedBox(height: R.h(context, 16)),
-
                     if (_isCurating)
                       Padding(
-                        padding: EdgeInsets.symmetric(vertical: R.h(context, 24)),
+                        padding:
+                            EdgeInsets.symmetric(vertical: R.h(context, 24)),
                         child: Center(
                           child: Column(
                             children: [
-                              Icon(Icons.auto_awesome_rounded, color: AppColors.primary, size: R.sp(context, 28)),
+                              Icon(Icons.auto_awesome_rounded,
+                                  color: AppColors.primary,
+                                  size: R.sp(context, 28)),
                               SizedBox(height: R.h(context, 12)),
-                              Text('Curating your Himalayan assortment...', style: AppTypography.bodySM(context).copyWith(color: Colors.white70, fontSize: R.sp(context, 12))),
+                              Text('Curating your Himalayan assortment...',
+                                  style: AppTypography.bodySM(context).copyWith(
+                                      color: Colors.white70,
+                                      fontSize: R.sp(context, 12))),
                             ],
                           ),
                         ),
                       )
                     else
                       ...bundle.map((item) => Container(
-                        margin: EdgeInsets.only(bottom: R.h(context, 10)),
-                        padding: EdgeInsets.all(R.w(context, 10)),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white.withValues(alpha: 0.06),
-                          border: Border.all(color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white.withValues(alpha: 0.1)),
-                          borderRadius: BorderRadius.circular(R.w(context, 12)),
-                        ),
-                        child: Row(
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(R.w(context, 8)),
-                              child: SizedBox(
-                                width: R.w(context, 48), height: R.w(context, 48),
-                                child: CustomNetworkImage(imageUrl: item.primaryImage, fit: BoxFit.cover),
-                              ),
+                            margin: EdgeInsets.only(bottom: R.h(context, 10)),
+                            padding: EdgeInsets.all(R.w(context, 10)),
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).brightness ==
+                                      Brightness.dark
+                                  ? AppColors.surfaceDark
+                                  : Colors.white.withValues(alpha: 0.06),
+                              border: Border.all(
+                                  color: Theme.of(context).brightness ==
+                                          Brightness.dark
+                                      ? AppColors.surfaceDark
+                                      : Colors.white.withValues(alpha: 0.1)),
+                              borderRadius:
+                                  BorderRadius.circular(R.w(context, 12)),
                             ),
-                            SizedBox(width: R.w(context, 12)),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(item.name, style: AppTypography.bodySM(context).copyWith(color: Colors.white, fontWeight: FontWeight.w700, fontSize: R.sp(context, 12)), maxLines: 1, overflow: TextOverflow.ellipsis),
-                                  SizedBox(height: R.h(context, 2)),
-                                  Text(item.category.toUpperCase(), style: AppTypography.label(context).copyWith(color: Colors.white38, fontSize: R.sp(context, 8), letterSpacing: 0.8)),
-                                ],
-                              ),
+                            child: Row(
+                              children: [
+                                ClipRRect(
+                                  borderRadius:
+                                      BorderRadius.circular(R.w(context, 8)),
+                                  child: SizedBox(
+                                    width: R.w(context, 48),
+                                    height: R.w(context, 48),
+                                    child: CustomNetworkImage(
+                                        imageUrl: item.primaryImage,
+                                        fit: BoxFit.cover),
+                                  ),
+                                ),
+                                SizedBox(width: R.w(context, 12)),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(item.name,
+                                          style: AppTypography.bodySM(context)
+                                              .copyWith(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.w700,
+                                                  fontSize: R.sp(context, 12)),
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis),
+                                      SizedBox(height: R.h(context, 2)),
+                                      Text(item.category.toUpperCase(),
+                                          style: AppTypography.label(context)
+                                              .copyWith(
+                                                  color: Colors.white38,
+                                                  fontSize: R.sp(context, 8),
+                                                  letterSpacing: 0.8)),
+                                    ],
+                                  ),
+                                ),
+                                Text(
+                                    formatPrice(item.bundlePrice ?? item.price),
+                                    style: AppTypography.priceSM(context)
+                                        .copyWith(
+                                            color: AppColors.primary,
+                                            fontSize: R.sp(context, 13))),
+                              ],
                             ),
-                            Text(formatPrice(item.bundlePrice ?? item.price), style: AppTypography.priceSM(context).copyWith(color: AppColors.primary, fontSize: R.sp(context, 13))),
-                          ],
-                        ),
-                      )),
-
+                          )),
                     if (!_isCurating) ...[
                       SizedBox(height: R.h(context, 12)),
                       const Divider(color: Colors.white12),
@@ -299,27 +450,53 @@ class _AIGiftBuilderState extends ConsumerState<AIGiftBuilder> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Standard Value', style: AppTypography.bodySM(context).copyWith(color: Colors.white54, fontSize: R.sp(context, 12))),
-                          Text(formatPrice(originalTotal), style: AppTypography.bodySM(context).copyWith(color: Colors.white38, fontSize: R.sp(context, 12), decoration: TextDecoration.lineThrough)),
+                          Text('Standard Value',
+                              style: AppTypography.bodySM(context).copyWith(
+                                  color: Colors.white54,
+                                  fontSize: R.sp(context, 12))),
+                          Text(formatPrice(originalTotal),
+                              style: AppTypography.bodySM(context).copyWith(
+                                  color: Colors.white38,
+                                  fontSize: R.sp(context, 12),
+                                  decoration: TextDecoration.lineThrough)),
                         ],
                       ),
                       SizedBox(height: R.h(context, 6)),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Curated Combo Total', style: AppTypography.bodySM(context).copyWith(color: Colors.white, fontWeight: FontWeight.w700, fontSize: R.sp(context, 13))),
+                          Text('Curated Combo Total',
+                              style: AppTypography.bodySM(context).copyWith(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: R.sp(context, 13))),
                           Row(
                             children: [
-                              Text(formatPrice(bundleTotal), style: AppTypography.priceSM(context).copyWith(color: AppColors.primary, fontSize: R.sp(context, 20))),
+                              Text(formatPrice(bundleTotal),
+                                  style: AppTypography.priceSM(context)
+                                      .copyWith(
+                                          color: AppColors.primary,
+                                          fontSize: R.sp(context, 20))),
                               SizedBox(width: R.w(context, 6)),
                               Container(
-                                padding: EdgeInsets.symmetric(horizontal: R.w(context, 6), vertical: R.h(context, 2)),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: R.w(context, 6),
+                                    vertical: R.h(context, 2)),
                                 decoration: BoxDecoration(
-                                  color: AppColors.primary.withValues(alpha: 0.15),
-                                  borderRadius: BorderRadius.circular(R.w(context, 5)),
-                                  border: Border.all(color: AppColors.primary.withValues(alpha: 0.3)),
+                                  color:
+                                      AppColors.primary.withValues(alpha: 0.15),
+                                  borderRadius:
+                                      BorderRadius.circular(R.w(context, 5)),
+                                  border: Border.all(
+                                      color: AppColors.primary
+                                          .withValues(alpha: 0.3)),
                                 ),
-                                child: Text('-15%', style: AppTypography.label(context).copyWith(color: AppColors.primary, fontSize: R.sp(context, 9), fontWeight: FontWeight.w800)),
+                                child: Text('-15%',
+                                    style: AppTypography.label(context)
+                                        .copyWith(
+                                            color: AppColors.primary,
+                                            fontSize: R.sp(context, 9),
+                                            fontWeight: FontWeight.w800)),
                               ),
                             ],
                           ),
@@ -327,29 +504,49 @@ class _AIGiftBuilderState extends ConsumerState<AIGiftBuilder> {
                       ),
                       SizedBox(height: R.h(context, 16)),
                       GestureDetector(
-                        onTap: bundle.isNotEmpty ? () {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(duration: const Duration(milliseconds: 2000), 
-                              content: Text('Gift Box added to cart!', style: AppTypography.bodySM(context).copyWith(color: Colors.white)),
-                              backgroundColor: AppColors.deepCharcoal,
-                              behavior: SnackBarBehavior.floating,
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(R.w(context, 10))),
-                            ),
-                          );
-                        } : null,
+                        onTap: bundle.isNotEmpty
+                            ? () {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    duration:
+                                        const Duration(milliseconds: 2000),
+                                    content: Text('Gift Box added to cart!',
+                                        style: AppTypography.bodySM(context)
+                                            .copyWith(color: Colors.white)),
+                                    backgroundColor: AppColors.deepCharcoal,
+                                    behavior: SnackBarBehavior.floating,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(
+                                            R.w(context, 10))),
+                                  ),
+                                );
+                              }
+                            : null,
                         child: Container(
                           width: double.infinity,
-                          padding: EdgeInsets.symmetric(vertical: R.h(context, 16)),
+                          padding:
+                              EdgeInsets.symmetric(vertical: R.h(context, 16)),
                           decoration: BoxDecoration(
-                            color: bundle.isNotEmpty ? AppColors.primary : AppColors.primary.withValues(alpha: 0.4),
-                            borderRadius: BorderRadius.circular(R.w(context, 14)),
+                            color: bundle.isNotEmpty
+                                ? AppColors.primary
+                                : AppColors.primary.withValues(alpha: 0.4),
+                            borderRadius:
+                                BorderRadius.circular(R.w(context, 14)),
                           ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(Icons.check_rounded, size: R.sp(context, 18), color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal)),
+                              Icon(Icons.check_rounded,
+                                  size: R.sp(context, 18),
+                                  color: (Theme.of(context).brightness ==
+                                          Brightness.dark
+                                      ? Theme.of(context).colorScheme.onSurface
+                                      : AppColors.deepCharcoal)),
                               SizedBox(width: R.w(context, 8)),
-                              Text('Add Curated Box to Cart', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: R.sp(context, 14))),
+                              Text('Add Curated Box to Cart',
+                                  style: AppTypography.bodySM(context).copyWith(
+                                      fontWeight: FontWeight.w800,
+                                      fontSize: R.sp(context, 14))),
                             ],
                           ),
                         ),
@@ -363,7 +560,10 @@ class _AIGiftBuilderState extends ConsumerState<AIGiftBuilder> {
           ),
         );
       },
-      loading: () => Center(child: Padding(padding: EdgeInsets.all(R.w(context, 60)), child: const CircularProgressIndicator())),
+      loading: () => Center(
+          child: Padding(
+              padding: EdgeInsets.all(R.w(context, 60)),
+              child: const CircularProgressIndicator())),
       error: (e, _) => Center(child: Text('Error: $e')),
     );
   }
@@ -373,7 +573,12 @@ class _AIGiftBuilderState extends ConsumerState<AIGiftBuilder> {
       children: [
         Text(emoji, style: TextStyle(fontSize: R.sp(context, 14))),
         SizedBox(width: R.w(context, 8)),
-        Text(label, style: AppTypography.label(context).copyWith(fontSize: R.sp(context, 10), color: AppColors.neutralGold, letterSpacing: 1.4, fontWeight: FontWeight.w700)),
+        Text(label,
+            style: AppTypography.label(context).copyWith(
+                fontSize: R.sp(context, 10),
+                color: AppColors.neutralGold,
+                letterSpacing: 1.4,
+                fontWeight: FontWeight.w700)),
       ],
     );
   }

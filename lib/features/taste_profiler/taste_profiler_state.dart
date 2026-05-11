@@ -42,12 +42,12 @@ class TasteProfilerState {
 
 class TasteProfilerNotifier extends StateNotifier<TasteProfilerState> {
   final Ref _ref;
-  
+
   TasteProfilerNotifier(this._ref) : super(TasteProfilerState.initial());
 
   void selectAnswer(String stepId, String answerId) {
     TasteProfile newProfile = state.profile;
-    
+
     switch (stepId) {
       case 'morning':
         newProfile = newProfile.copyWith(morning: answerId);
@@ -74,7 +74,7 @@ class TasteProfilerNotifier extends StateNotifier<TasteProfilerState> {
         profile: newProfile,
         isRevealing: true,
       );
-      
+
       _matchProducts(newProfile);
     }
   }
@@ -82,13 +82,13 @@ class TasteProfilerNotifier extends StateNotifier<TasteProfilerState> {
   Future<void> _matchProducts(TasteProfile finalProfile) async {
     // Artificial delay for the cool animation
     await Future.delayed(const Duration(milliseconds: 1500));
-    
+
     // Get all products
     final asyncProducts = _ref.read(allProductsProvider);
     final products = asyncProducts.value ?? [];
-    
+
     final ranked = AiMatcher.scoreProfileMatch(products, finalProfile);
-    
+
     if (mounted) {
       state = state.copyWith(
         results: ranked,
@@ -103,6 +103,7 @@ class TasteProfilerNotifier extends StateNotifier<TasteProfilerState> {
   }
 }
 
-final tasteProfilerProvider = StateNotifierProvider<TasteProfilerNotifier, TasteProfilerState>((ref) {
+final tasteProfilerProvider =
+    StateNotifierProvider<TasteProfilerNotifier, TasteProfilerState>((ref) {
   return TasteProfilerNotifier(ref);
 });

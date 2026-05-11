@@ -43,7 +43,8 @@ final _protectedRoutes = ['/checkout', '/account', '/orders'];
 final appRouter = GoRouter(
   // ── Shared navigator key lets NotificationService navigate on tap ──────────
   navigatorKey: navigatorKey,
-  refreshListenable: GoRouterRefreshStream(FirebaseAuth.instance.authStateChanges()),
+  refreshListenable:
+      GoRouterRefreshStream(FirebaseAuth.instance.authStateChanges()),
   initialLocation: '/',
   redirect: (context, state) async {
     final authUser = FirebaseAuth.instance.currentUser;
@@ -51,8 +52,7 @@ final appRouter = GoRouter(
     final loc = state.matchedLocation;
 
     // Guard protected routes
-    if (!isLoggedIn &&
-        _protectedRoutes.any((r) => loc.startsWith(r))) {
+    if (!isLoggedIn && _protectedRoutes.any((r) => loc.startsWith(r))) {
       return '/auth/login?from=${Uri.encodeComponent(loc)}';
     }
 
@@ -72,7 +72,8 @@ final appRouter = GoRouter(
   routes: [
     // ── Main Shell (Bottom Nav) ──────────────────────────────
     StatefulShellRoute.indexedStack(
-      builder: (context, state, navigationShell) => MainShell(navigationShell: navigationShell),
+      builder: (context, state, navigationShell) =>
+          MainShell(navigationShell: navigationShell),
       branches: [
         StatefulShellBranch(
           routes: [
@@ -91,17 +92,21 @@ final appRouter = GoRouter(
         ),
         StatefulShellBranch(
           routes: [
-            GoRoute(path: '/categories', builder: (_, __) => const CategoriesScreen()),
+            GoRoute(
+                path: '/categories',
+                builder: (_, __) => const CategoriesScreen()),
           ],
         ),
         StatefulShellBranch(
           routes: [
-            GoRoute(path: '/wishlist', builder: (_, __) => const WishlistScreen()),
+            GoRoute(
+                path: '/wishlist', builder: (_, __) => const WishlistScreen()),
           ],
         ),
         StatefulShellBranch(
           routes: [
-            GoRoute(path: '/account', builder: (_, __) => const AccountScreen()),
+            GoRoute(
+                path: '/account', builder: (_, __) => const AccountScreen()),
           ],
         ),
       ],
@@ -161,21 +166,29 @@ final appRouter = GoRouter(
     ),
 
     // ── Account subpages ──────────────────────────────────────
-    GoRoute(path: '/account/edit', builder: (_, __) => const EditProfileScreen()),
-    GoRoute(path: '/account/addresses', builder: (_, __) => const AddressBookScreen()),
+    GoRoute(
+        path: '/account/edit', builder: (_, __) => const EditProfileScreen()),
+    GoRoute(
+        path: '/account/addresses',
+        builder: (_, __) => const AddressBookScreen()),
     GoRoute(
       path: '/account/returns',
       builder: (_, state) => ReturnRequestScreen(
         preselectedOrderId: state.uri.queryParameters['orderId'],
       ),
     ),
-    GoRoute(path: '/account/security', builder: (_, __) => const SecurityScreen()),
+    GoRoute(
+        path: '/account/security', builder: (_, __) => const SecurityScreen()),
 
     // ── Auth ──────────────────────────────────────────────────
     GoRoute(path: '/auth/login', builder: (_, __) => const LoginScreen()),
     GoRoute(path: '/auth/register', builder: (_, __) => const RegisterScreen()),
-    GoRoute(path: '/auth/forgot-password', builder: (_, __) => const ForgotPasswordScreen()),
-    GoRoute(path: '/auth/verify-email', builder: (_, __) => const VerifyEmailScreen()),
+    GoRoute(
+        path: '/auth/forgot-password',
+        builder: (_, __) => const ForgotPasswordScreen()),
+    GoRoute(
+        path: '/auth/verify-email',
+        builder: (_, __) => const VerifyEmailScreen()),
 
     // ── Journal ───────────────────────────────────────────────
     GoRoute(
@@ -184,14 +197,15 @@ final appRouter = GoRouter(
       routes: [
         GoRoute(
           path: ':id',
-          builder: (_, state) =>
-              ArticleScreen(id: state.pathParameters['id']!),
+          builder: (_, state) => ArticleScreen(id: state.pathParameters['id']!),
         ),
       ],
     ),
 
     // ── Content ───────────────────────────────────────────────
-    GoRoute(path: '/taste-profiler', builder: (_, __) => const TasteProfilerScreen()),
+    GoRoute(
+        path: '/taste-profiler',
+        builder: (_, __) => const TasteProfilerScreen()),
     GoRoute(path: '/our-story', builder: (_, __) => const OurStoryScreen()),
     GoRoute(path: '/contact', builder: (_, __) => const ContactScreen()),
     GoRoute(
@@ -212,8 +226,8 @@ class GoRouterRefreshStream extends ChangeNotifier {
   GoRouterRefreshStream(Stream<dynamic> stream) {
     notifyListeners();
     _subscription = stream.asBroadcastStream().listen(
-      (dynamic _) => notifyListeners(),
-    );
+          (dynamic _) => notifyListeners(),
+        );
   }
   @override
   void dispose() {

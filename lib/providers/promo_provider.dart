@@ -12,7 +12,8 @@ final availablePromosProvider = StreamProvider<List<PromoCode>>((ref) {
     final now = DateTime.now();
     return snapshot.docs
         .map((doc) => PromoCode.fromFirestore(doc))
-        .where((promo) => promo.expiresAt == null || now.isBefore(promo.expiresAt!))
+        .where((promo) =>
+            promo.expiresAt == null || now.isBefore(promo.expiresAt!))
         .toList();
   });
 });

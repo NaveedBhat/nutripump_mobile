@@ -65,13 +65,22 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
     final productsAsync = ref.watch(allProductsProvider);
 
     return Scaffold(
-      backgroundColor: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : const Color(0xFFF8F6F1))),
+      backgroundColor: (Theme.of(context).brightness == Brightness.dark
+          ? Theme.of(context).scaffoldBackgroundColor
+          : (Theme.of(context).brightness == Brightness.dark
+              ? Theme.of(context).scaffoldBackgroundColor
+              : const Color(0xFFF8F6F1))),
       appBar: AppBar(
-        backgroundColor: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : Colors.white),
+        backgroundColor: (Theme.of(context).brightness == Brightness.dark
+            ? Theme.of(context).scaffoldBackgroundColor
+            : Colors.white),
         elevation: 0,
         surfaceTintColor: Colors.transparent,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Theme.of(context).brightness == Brightness.dark ? Colors.white : AppColors.deepCharcoal),
+          icon: Icon(Icons.arrow_back,
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? Colors.white
+                  : AppColors.deepCharcoal),
           onPressed: () => context.pop(),
         ),
         title: Container(
@@ -88,23 +97,32 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
           child: TextField(
             controller: _searchController,
             autofocus: true,
-            style: AppTypography.bodySM(context).copyWith(color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal)),
+            style: AppTypography.bodySM(context).copyWith(
+                color: (Theme.of(context).brightness == Brightness.dark
+                    ? Theme.of(context).colorScheme.onSurface
+                    : AppColors.deepCharcoal)),
             decoration: InputDecoration(
               hintText: 'Search honey, saffron, nuts...',
-              hintStyle: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold.withValues(alpha: 0.7)),
-              prefixIcon: Icon(Icons.search_rounded, color: AppColors.neutralGold, size: R.sp(context, 20)),
+              hintStyle: AppTypography.bodySM(context).copyWith(
+                  color: AppColors.neutralGold.withValues(alpha: 0.7)),
+              prefixIcon: Icon(Icons.search_rounded,
+                  color: AppColors.neutralGold, size: R.sp(context, 20)),
               border: InputBorder.none,
               contentPadding: EdgeInsets.symmetric(vertical: R.h(context, 10)),
               suffixIcon: _query.isNotEmpty
                   ? IconButton(
-                      icon: Icon(Icons.close, size: R.sp(context, 18), color: AppColors.neutralGold),
+                      icon: Icon(Icons.close,
+                          size: R.sp(context, 18),
+                          color: AppColors.neutralGold),
                       onPressed: () {
                         _searchController.clear();
                         setState(() => _query = '');
                       },
                     )
                   : IconButton(
-                      icon: Icon(Icons.mic_none, size: R.sp(context, 18), color: AppColors.neutralGold),
+                      icon: Icon(Icons.mic_none,
+                          size: R.sp(context, 18),
+                          color: AppColors.neutralGold),
                       onPressed: _startVoiceSearch,
                     ),
             ),
@@ -127,9 +145,9 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
             if (_query.isEmpty) return false;
             final q = _query.toLowerCase();
             return p.name.toLowerCase().contains(q) ||
-                   p.description.toLowerCase().contains(q) ||
-                   p.category.toLowerCase().contains(q) ||
-                   p.tags.any((t) => t.toLowerCase().contains(q));
+                p.description.toLowerCase().contains(q) ||
+                p.category.toLowerCase().contains(q) ||
+                p.tags.any((t) => t.toLowerCase().contains(q));
           }).toList();
 
           if (_query.isEmpty) {
@@ -145,19 +163,22 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                         color: AppColors.primary.withValues(alpha: 0.08),
                         shape: BoxShape.circle,
                       ),
-                      child: Icon(Icons.search_rounded, size: R.sp(context, 32), color: AppColors.primary),
+                      child: Icon(Icons.search_rounded,
+                          size: R.sp(context, 32), color: AppColors.primary),
                     ),
                     SizedBox(height: R.h(context, 24)),
                     Text(
                       'What are you looking for?',
                       textAlign: TextAlign.center,
-                      style: AppTypography.h2(context).copyWith(fontSize: R.sp(context, 18)),
+                      style: AppTypography.h2(context)
+                          .copyWith(fontSize: R.sp(context, 18)),
                     ),
                     SizedBox(height: R.h(context, 12)),
                     Text(
                       'Search for pure honey, premium saffron, dry fruits, or specific collections.',
                       textAlign: TextAlign.center,
-                      style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, height: 1.5),
+                      style: AppTypography.bodySM(context)
+                          .copyWith(color: AppColors.neutralGold, height: 1.5),
                     ),
                   ],
                 ),
@@ -178,19 +199,23 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                         color: AppColors.borderLight.withValues(alpha: 0.5),
                         shape: BoxShape.circle,
                       ),
-                      child: Icon(Icons.search_off_rounded, size: R.sp(context, 32), color: AppColors.neutralGold),
+                      child: Icon(Icons.search_off_rounded,
+                          size: R.sp(context, 32),
+                          color: AppColors.neutralGold),
                     ),
                     SizedBox(height: R.h(context, 24)),
                     Text(
                       'No results found',
                       textAlign: TextAlign.center,
-                      style: AppTypography.h2(context).copyWith(fontSize: R.sp(context, 18)),
+                      style: AppTypography.h2(context)
+                          .copyWith(fontSize: R.sp(context, 18)),
                     ),
                     SizedBox(height: R.h(context, 12)),
                     Text(
                       'We couldn\'t find anything matching "$_query".\nTry checking your spelling or use more general terms.',
                       textAlign: TextAlign.center,
-                      style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, height: 1.5),
+                      style: AppTypography.bodySM(context)
+                          .copyWith(color: AppColors.neutralGold, height: 1.5),
                     ),
                   ],
                 ),

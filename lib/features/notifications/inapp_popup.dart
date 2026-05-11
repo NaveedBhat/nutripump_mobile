@@ -97,7 +97,8 @@ class _InAppPopupState extends State<InAppPopup>
           // NutriPump branding pill
           Container(
             margin: EdgeInsets.only(bottom: R.h(context, 12)),
-            padding: EdgeInsets.symmetric(horizontal: R.w(context, 10), vertical: R.h(context, 4)),
+            padding: EdgeInsets.symmetric(
+                horizontal: R.w(context, 10), vertical: R.h(context, 4)),
             decoration: BoxDecoration(
               color: AppColors.primary.withValues(alpha: 0.18),
               borderRadius: BorderRadius.circular(R.w(context, 20)),
@@ -120,7 +121,8 @@ class _InAppPopupState extends State<InAppPopup>
 
           Text(
             widget.title,
-            style: AppTypography.h1(context).copyWith(color: textCol, height: 1.2),
+            style:
+                AppTypography.h1(context).copyWith(color: textCol, height: 1.2),
           ),
           SizedBox(height: R.h(context, 8)),
           Text(
@@ -140,7 +142,8 @@ class _InAppPopupState extends State<InAppPopup>
                   }
                 },
                 child: Container(
-                  padding: EdgeInsets.symmetric(vertical: R.h(context, 10), horizontal: R.w(context, 20)),
+                  padding: EdgeInsets.symmetric(
+                      vertical: R.h(context, 10), horizontal: R.w(context, 20)),
                   decoration: BoxDecoration(
                     color: AppColors.primary,
                     borderRadius: BorderRadius.circular(R.w(context, 10)),
@@ -205,7 +208,8 @@ class _InAppPopupState extends State<InAppPopup>
                   clipBehavior: Clip.none,
                   children: [
                     AspectRatio(
-                      aspectRatio: 0.85, // Enforces a beautiful proportionate height
+                      aspectRatio:
+                          0.85, // Enforces a beautiful proportionate height
                       child: Container(
                         width: double.infinity,
                         decoration: BoxDecoration(
@@ -225,7 +229,8 @@ class _InAppPopupState extends State<InAppPopup>
                           ],
                         ),
                         clipBehavior: Clip.antiAlias,
-                        child: widget.imageUrl != null && widget.imageUrl!.isNotEmpty
+                        child: widget.imageUrl != null &&
+                                widget.imageUrl!.isNotEmpty
                             ? Stack(
                                 children: [
                                   Positioned.fill(
@@ -233,7 +238,8 @@ class _InAppPopupState extends State<InAppPopup>
                                       widget.imageUrl!,
                                       fit: BoxFit.cover,
                                       errorBuilder: (_, __, ___) => Container(
-                                        color: AppColors.primary.withValues(alpha: 0.1),
+                                        color: AppColors.primary
+                                            .withValues(alpha: 0.1),
                                       ),
                                     ),
                                   ),
@@ -295,7 +301,10 @@ class _InAppPopupState extends State<InAppPopup>
                           ),
                           child: Icon(
                             Icons.close,
-                            color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
+                            color:
+                                Theme.of(context).brightness == Brightness.dark
+                                    ? AppColors.surfaceDark
+                                    : Colors.white,
                             size: R.sp(context, 18),
                           ),
                         ),

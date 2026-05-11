@@ -49,18 +49,26 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     final name = form.control('name').value as String;
 
     try {
-      await ref.read(authServiceProvider).registerWithEmail(email, password, name);
-      
+      await ref
+          .read(authServiceProvider)
+          .registerWithEmail(email, password, name);
+
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(duration: Duration(milliseconds: 2000), content: Text('Account created! Please check your email to verify.')),
+          const SnackBar(
+              duration: Duration(milliseconds: 2000),
+              content:
+                  Text('Account created! Please check your email to verify.')),
         );
         context.go('/auth/login');
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(duration: const Duration(milliseconds: 2000), content: Text('Error: ${e.toString().replaceAll('Exception: ', '').split(']').last.trim()}')),
+          SnackBar(
+              duration: const Duration(milliseconds: 2000),
+              content: Text(
+                  'Error: ${e.toString().replaceAll('Exception: ', '').split(']').last.trim()}')),
         );
       }
     } finally {
@@ -74,14 +82,18 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
       final user = await ref.read(authServiceProvider).signInWithGoogle();
       if (user != null && mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(duration: Duration(milliseconds: 2000), content: Text('Welcome to NutriPump! 🌿')),
+          const SnackBar(
+              duration: Duration(milliseconds: 2000),
+              content: Text('Welcome to NutriPump! 🌿')),
         );
         context.go('/');
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(duration: Duration(milliseconds: 2000), content: Text('Google sign up failed.')),
+          const SnackBar(
+              duration: Duration(milliseconds: 2000),
+              content: Text('Google sign up failed.')),
         );
       }
     } finally {
@@ -101,11 +113,13 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
             children: [
               // Top Header
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: R.w(context, 16), vertical: R.h(context, 8)),
+                padding: EdgeInsets.symmetric(
+                    horizontal: R.w(context, 16), vertical: R.h(context, 8)),
                 child: Row(
                   children: [
                     IconButton(
-                      icon: const Icon(Icons.arrow_back_rounded, color: Colors.white),
+                      icon: const Icon(Icons.arrow_back_rounded,
+                          color: Colors.white),
                       onPressed: () {
                         if (context.canPop()) {
                           context.pop();
@@ -118,7 +132,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 ),
               ),
               SizedBox(height: R.h(context, 5)),
-              
+
               // Logo
               Center(
                 child: Column(
@@ -126,7 +140,8 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                     Image.asset(
                       'assets/images/nutripumplogo.webp',
                       height: R.h(context, 50),
-                      errorBuilder: (_, __, ___) => Icon(Icons.eco_rounded, size: R.sp(context, 40), color: AppColors.primary),
+                      errorBuilder: (_, __, ___) => Icon(Icons.eco_rounded,
+                          size: R.sp(context, 40), color: AppColors.primary),
                     ),
                   ],
                 ),
@@ -138,32 +153,52 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 child: Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
-                    color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : AppColors.backgroundLight),
-                    borderRadius: BorderRadius.vertical(top: Radius.circular(R.w(context, 32))),
+                    color: (Theme.of(context).brightness == Brightness.dark
+                        ? Theme.of(context).scaffoldBackgroundColor
+                        : AppColors.backgroundLight),
+                    borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(R.w(context, 32))),
                   ),
                   child: SingleChildScrollView(
-                    padding: EdgeInsets.fromLTRB(R.w(context, 28), R.h(context, 36), R.w(context, 28), R.h(context, 40)),
+                    padding: EdgeInsets.fromLTRB(R.w(context, 28),
+                        R.h(context, 36), R.w(context, 28), R.h(context, 40)),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Create account', style: AppTypography.h2(context).copyWith(fontSize: R.sp(context, 28))),
+                        Text('Create account',
+                            style: AppTypography.h2(context)
+                                .copyWith(fontSize: R.sp(context, 28))),
                         SizedBox(height: R.h(context, 6)),
-                        Text('Join to experience premium artisanal sourcing.', style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, fontSize: R.sp(context, 14))),
+                        Text('Join to experience premium artisanal sourcing.',
+                            style: AppTypography.bodySM(context).copyWith(
+                                color: AppColors.neutralGold,
+                                fontSize: R.sp(context, 14))),
                         SizedBox(height: R.h(context, 36)),
 
                         // Google Button
                         ElevatedButton(
-                          onPressed: _isGoogleLoading ? null : _handleGoogleRegister,
+                          onPressed:
+                              _isGoogleLoading ? null : _handleGoogleRegister,
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : Colors.white),
+                            backgroundColor:
+                                (Theme.of(context).brightness == Brightness.dark
+                                    ? Theme.of(context).scaffoldBackgroundColor
+                                    : Colors.white),
                             foregroundColor: AppColors.deepCharcoal,
                             elevation: 2,
                             shadowColor: Colors.black.withValues(alpha: 0.05),
-                            padding: EdgeInsets.symmetric(vertical: R.h(context, 16)),
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(R.w(context, 14))),
+                            padding: EdgeInsets.symmetric(
+                                vertical: R.h(context, 16)),
+                            shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.circular(R.w(context, 14))),
                           ),
                           child: _isGoogleLoading
-                              ? SizedBox(height: R.h(context, 20), width: R.w(context, 20), child: const CircularProgressIndicator(strokeWidth: 2))
+                              ? SizedBox(
+                                  height: R.h(context, 20),
+                                  width: R.w(context, 20),
+                                  child: const CircularProgressIndicator(
+                                      strokeWidth: 2))
                               : Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
@@ -173,7 +208,11 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                                       height: R.w(context, 22),
                                     ),
                                     SizedBox(width: R.w(context, 12)),
-                                    Text('Sign up with Google', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: R.sp(context, 14))),
+                                    Text('Sign up with Google',
+                                        style: AppTypography.bodySM(context)
+                                            .copyWith(
+                                                fontWeight: FontWeight.w700,
+                                                fontSize: R.sp(context, 14))),
                                   ],
                                 ),
                         ),
@@ -182,18 +221,32 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                         // Divider
                         Row(
                           children: [
-                            Expanded(child: Divider(color: AppColors.primary.withValues(alpha: 0.2))),
+                            Expanded(
+                                child: Divider(
+                                    color: AppColors.primary
+                                        .withValues(alpha: 0.2))),
                             Padding(
-                              padding: EdgeInsets.symmetric(horizontal: R.w(context, 16)),
-                              child: Text('OR SIGN UP WITH EMAIL', style: AppTypography.labelGold(context).copyWith(fontSize: R.sp(context, 10), letterSpacing: 1.5)),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: R.w(context, 16)),
+                              child: Text('OR SIGN UP WITH EMAIL',
+                                  style: AppTypography.labelGold(context)
+                                      .copyWith(
+                                          fontSize: R.sp(context, 10),
+                                          letterSpacing: 1.5)),
                             ),
-                            Expanded(child: Divider(color: AppColors.primary.withValues(alpha: 0.2))),
+                            Expanded(
+                                child: Divider(
+                                    color: AppColors.primary
+                                        .withValues(alpha: 0.2))),
                           ],
                         ),
                         SizedBox(height: R.h(context, 28)),
 
                         // Full Name
-                        Text('FULL NAME', style: AppTypography.label(context).copyWith(color: AppColors.neutralGold, fontSize: R.sp(context, 10))),
+                        Text('FULL NAME',
+                            style: AppTypography.label(context).copyWith(
+                                color: AppColors.neutralGold,
+                                fontSize: R.sp(context, 10))),
                         SizedBox(height: R.h(context, 8)),
                         ReactiveTextField<String>(
                           formControlName: 'name',
@@ -201,13 +254,21 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                           textInputAction: TextInputAction.next,
                           decoration: InputDecoration(
                             hintText: 'John Doe',
-                            prefixIcon: Icon(Icons.person_outline_rounded, size: R.sp(context, 18), color: Theme.of(context).brightness == Brightness.dark ? const Color(0xFFF5F0E8) : AppColors.neutralGold),
+                            prefixIcon: Icon(Icons.person_outline_rounded,
+                                size: R.sp(context, 18),
+                                color: Theme.of(context).brightness ==
+                                        Brightness.dark
+                                    ? const Color(0xFFF5F0E8)
+                                    : AppColors.neutralGold),
                           ),
                         ),
                         SizedBox(height: R.h(context, 20)),
 
                         // Email
-                        Text('EMAIL ADDRESS', style: AppTypography.label(context).copyWith(color: AppColors.neutralGold, fontSize: R.sp(context, 10))),
+                        Text('EMAIL ADDRESS',
+                            style: AppTypography.label(context).copyWith(
+                                color: AppColors.neutralGold,
+                                fontSize: R.sp(context, 10))),
                         SizedBox(height: R.h(context, 8)),
                         ReactiveTextField<String>(
                           formControlName: 'email',
@@ -215,13 +276,21 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                           textInputAction: TextInputAction.next,
                           decoration: InputDecoration(
                             hintText: 'you@example.com',
-                            prefixIcon: Icon(Icons.mail_outline_rounded, size: R.sp(context, 18), color: Theme.of(context).brightness == Brightness.dark ? const Color(0xFFF5F0E8) : AppColors.neutralGold),
+                            prefixIcon: Icon(Icons.mail_outline_rounded,
+                                size: R.sp(context, 18),
+                                color: Theme.of(context).brightness ==
+                                        Brightness.dark
+                                    ? const Color(0xFFF5F0E8)
+                                    : AppColors.neutralGold),
                           ),
                         ),
                         SizedBox(height: R.h(context, 20)),
 
                         // Password
-                        Text('PASSWORD', style: AppTypography.label(context).copyWith(color: AppColors.neutralGold, fontSize: R.sp(context, 10))),
+                        Text('PASSWORD',
+                            style: AppTypography.label(context).copyWith(
+                                color: AppColors.neutralGold,
+                                fontSize: R.sp(context, 10))),
                         SizedBox(height: R.h(context, 8)),
                         ReactiveTextField<String>(
                           formControlName: 'password',
@@ -230,17 +299,34 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                           onSubmitted: (_) => _handleEmailRegister(),
                           decoration: InputDecoration(
                             hintText: '••••••••',
-                            prefixIcon: Icon(Icons.lock_outline_rounded, size: R.sp(context, 18), color: Theme.of(context).brightness == Brightness.dark ? const Color(0xFFF5F0E8) : AppColors.neutralGold),
+                            prefixIcon: Icon(Icons.lock_outline_rounded,
+                                size: R.sp(context, 18),
+                                color: Theme.of(context).brightness ==
+                                        Brightness.dark
+                                    ? const Color(0xFFF5F0E8)
+                                    : AppColors.neutralGold),
                             suffixIcon: IconButton(
-                              icon: Icon(_obscurePassword ? Icons.visibility_off_outlined : Icons.visibility_outlined, size: R.sp(context, 18), color: Theme.of(context).brightness == Brightness.dark ? const Color(0xFFF5F0E8) : AppColors.neutralGold),
-                              onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
+                              icon: Icon(
+                                  _obscurePassword
+                                      ? Icons.visibility_off_outlined
+                                      : Icons.visibility_outlined,
+                                  size: R.sp(context, 18),
+                                  color: Theme.of(context).brightness ==
+                                          Brightness.dark
+                                      ? const Color(0xFFF5F0E8)
+                                      : AppColors.neutralGold),
+                              onPressed: () => setState(
+                                  () => _obscurePassword = !_obscurePassword),
                             ),
                           ),
                         ),
                         SizedBox(height: R.h(context, 20)),
 
                         // Confirm Password
-                        Text('CONFIRM PASSWORD', style: AppTypography.label(context).copyWith(color: AppColors.neutralGold, fontSize: R.sp(context, 10))),
+                        Text('CONFIRM PASSWORD',
+                            style: AppTypography.label(context).copyWith(
+                                color: AppColors.neutralGold,
+                                fontSize: R.sp(context, 10))),
                         SizedBox(height: R.h(context, 8)),
                         ReactiveTextField<String>(
                           formControlName: 'confirmPassword',
@@ -249,10 +335,25 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                           onSubmitted: (_) => _handleEmailRegister(),
                           decoration: InputDecoration(
                             hintText: '••••••••',
-                            prefixIcon: Icon(Icons.lock_outline_rounded, size: R.sp(context, 18), color: Theme.of(context).brightness == Brightness.dark ? const Color(0xFFF5F0E8) : AppColors.neutralGold),
+                            prefixIcon: Icon(Icons.lock_outline_rounded,
+                                size: R.sp(context, 18),
+                                color: Theme.of(context).brightness ==
+                                        Brightness.dark
+                                    ? const Color(0xFFF5F0E8)
+                                    : AppColors.neutralGold),
                             suffixIcon: IconButton(
-                              icon: Icon(_obscureConfirmPassword ? Icons.visibility_off_outlined : Icons.visibility_outlined, size: R.sp(context, 18), color: Theme.of(context).brightness == Brightness.dark ? const Color(0xFFF5F0E8) : AppColors.neutralGold),
-                              onPressed: () => setState(() => _obscureConfirmPassword = !_obscureConfirmPassword),
+                              icon: Icon(
+                                  _obscureConfirmPassword
+                                      ? Icons.visibility_off_outlined
+                                      : Icons.visibility_outlined,
+                                  size: R.sp(context, 18),
+                                  color: Theme.of(context).brightness ==
+                                          Brightness.dark
+                                      ? const Color(0xFFF5F0E8)
+                                      : AppColors.neutralGold),
+                              onPressed: () => setState(() =>
+                                  _obscureConfirmPassword =
+                                      !_obscureConfirmPassword),
                             ),
                           ),
                         ),
@@ -265,17 +366,33 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                             backgroundColor: AppColors.primary,
                             foregroundColor: AppColors.deepCharcoal,
                             elevation: 0,
-                            minimumSize: Size(double.infinity, R.h(context, 54)),
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(R.w(context, 14))),
+                            minimumSize:
+                                Size(double.infinity, R.h(context, 54)),
+                            shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.circular(R.w(context, 14))),
                           ),
                           child: _isLoading
-                              ? SizedBox(height: R.h(context, 20), width: R.w(context, 20), child: const CircularProgressIndicator(strokeWidth: 2, valueColor: AlwaysStoppedAnimation(AppColors.deepCharcoal)))
+                              ? SizedBox(
+                                  height: R.h(context, 20),
+                                  width: R.w(context, 20),
+                                  child: const CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      valueColor: AlwaysStoppedAnimation(
+                                          AppColors.deepCharcoal)))
                               : Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text('Create Account', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w800, fontSize: R.sp(context, 16), color: AppColors.deepCharcoal)),
+                                    Text('Create Account',
+                                        style: AppTypography.bodySM(context)
+                                            .copyWith(
+                                                fontWeight: FontWeight.w800,
+                                                fontSize: R.sp(context, 16),
+                                                color: AppColors.deepCharcoal)),
                                     SizedBox(width: R.w(context, 8)),
-                                    Icon(Icons.arrow_forward_rounded, size: R.sp(context, 18), color: AppColors.deepCharcoal),
+                                    Icon(Icons.arrow_forward_rounded,
+                                        size: R.sp(context, 18),
+                                        color: AppColors.deepCharcoal),
                                   ],
                                 ),
                         ),
@@ -285,10 +402,17 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text("Already have an account? ", style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, fontSize: R.sp(context, 14))),
+                            Text("Already have an account? ",
+                                style: AppTypography.bodySM(context).copyWith(
+                                    color: AppColors.neutralGold,
+                                    fontSize: R.sp(context, 14))),
                             GestureDetector(
                               onTap: () => context.pop(),
-                              child: Text('Sign In', style: AppTypography.bodySM(context).copyWith(color: AppColors.primaryDark, fontSize: R.sp(context, 14), fontWeight: FontWeight.w700)),
+                              child: Text('Sign In',
+                                  style: AppTypography.bodySM(context).copyWith(
+                                      color: AppColors.primaryDark,
+                                      fontSize: R.sp(context, 14),
+                                      fontWeight: FontWeight.w700)),
                             ),
                           ],
                         ),

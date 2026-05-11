@@ -19,21 +19,32 @@ class ArticleScreen extends ConsumerWidget {
     );
 
     return Scaffold(
-      backgroundColor: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : Colors.white),
+      backgroundColor: (Theme.of(context).brightness == Brightness.dark
+          ? Theme.of(context).scaffoldBackgroundColor
+          : Colors.white),
       body: CustomScrollView(
         slivers: [
           // ── App Bar / Header Image ────────────────────────────
           SliverAppBar(
             expandedHeight: R.h(context, 300),
             pinned: true,
-            backgroundColor: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : Colors.white),
+            backgroundColor: (Theme.of(context).brightness == Brightness.dark
+                ? Theme.of(context).scaffoldBackgroundColor
+                : Colors.white),
             elevation: 0,
             leading: Padding(
               padding: EdgeInsets.all(R.w(context, 8)),
               child: CircleAvatar(
-                backgroundColor: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : Colors.white).withValues(alpha: 0.8),
+                backgroundColor:
+                    (Theme.of(context).brightness == Brightness.dark
+                            ? Theme.of(context).scaffoldBackgroundColor
+                            : Colors.white)
+                        .withValues(alpha: 0.8),
                 child: IconButton(
-                  icon: Icon(Icons.arrow_back_rounded, color: Theme.of(context).brightness == Brightness.dark ? Colors.white : AppColors.deepCharcoal),
+                  icon: Icon(Icons.arrow_back_rounded,
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Colors.white
+                          : AppColors.deepCharcoal),
                   onPressed: () => context.pop(),
                 ),
               ),
@@ -65,8 +76,11 @@ class ArticleScreen extends ConsumerWidget {
           SliverToBoxAdapter(
             child: Container(
               decoration: BoxDecoration(
-                color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
-                borderRadius: BorderRadius.vertical(top: Radius.circular(R.w(context, 24))),
+                color: Theme.of(context).brightness == Brightness.dark
+                    ? AppColors.surfaceDark
+                    : Colors.white,
+                borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(R.w(context, 24))),
               ),
               transform: Matrix4.translationValues(0, -R.h(context, 24), 0),
               padding: EdgeInsets.all(R.w(context, 24)),
@@ -78,20 +92,28 @@ class ArticleScreen extends ConsumerWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Container(
-                        padding: EdgeInsets.symmetric(horizontal: R.w(context, 10), vertical: R.h(context, 4)),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: R.w(context, 10),
+                            vertical: R.h(context, 4)),
                         decoration: BoxDecoration(
                           color: AppColors.primary.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(R.w(context, 20)),
                         ),
                         child: Text(article.category.toUpperCase(),
-                            style: AppTypography.label(context).copyWith(fontSize: R.sp(context, 10), color: AppColors.primary)),
+                            style: AppTypography.label(context).copyWith(
+                                fontSize: R.sp(context, 10),
+                                color: AppColors.primary)),
                       ),
                       Row(
                         children: [
-                          Icon(Icons.access_time_rounded, size: R.sp(context, 14), color: AppColors.neutralGold),
+                          Icon(Icons.access_time_rounded,
+                              size: R.sp(context, 14),
+                              color: AppColors.neutralGold),
                           SizedBox(width: R.w(context, 4)),
                           Text('${article.readTimeMinutes} min read',
-                              style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, fontSize: R.sp(context, 12))),
+                              style: AppTypography.bodySM(context).copyWith(
+                                  color: AppColors.neutralGold,
+                                  fontSize: R.sp(context, 12))),
                         ],
                       ),
                     ],
@@ -99,7 +121,9 @@ class ArticleScreen extends ConsumerWidget {
                   SizedBox(height: R.h(context, 16)),
 
                   // Title
-                  Text(article.title, style: AppTypography.h2(context).copyWith(fontSize: R.sp(context, 26), height: 1.2)),
+                  Text(article.title,
+                      style: AppTypography.h2(context)
+                          .copyWith(fontSize: R.sp(context, 26), height: 1.2)),
                   SizedBox(height: R.h(context, 16)),
 
                   // Author & Date
@@ -107,15 +131,26 @@ class ArticleScreen extends ConsumerWidget {
                     children: [
                       CircleAvatar(
                         radius: R.w(context, 16),
-                        backgroundColor: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).scaffoldBackgroundColor : AppColors.backgroundLight),
-                        child: Text(article.author[0], style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700)),
+                        backgroundColor:
+                            (Theme.of(context).brightness == Brightness.dark
+                                ? Theme.of(context).scaffoldBackgroundColor
+                                : AppColors.backgroundLight),
+                        child: Text(article.author[0],
+                            style: AppTypography.bodySM(context)
+                                .copyWith(fontWeight: FontWeight.w700)),
                       ),
                       SizedBox(width: R.w(context, 10)),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(article.author, style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: R.sp(context, 13))),
-                          Text(_formatDate(article.publishedAt), style: AppTypography.bodySM(context).copyWith(color: AppColors.neutralGold, fontSize: R.sp(context, 11))),
+                          Text(article.author,
+                              style: AppTypography.bodySM(context).copyWith(
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: R.sp(context, 13))),
+                          Text(_formatDate(article.publishedAt),
+                              style: AppTypography.bodySM(context).copyWith(
+                                  color: AppColors.neutralGold,
+                                  fontSize: R.sp(context, 11))),
                         ],
                       ),
                     ],
@@ -131,7 +166,10 @@ class ArticleScreen extends ConsumerWidget {
                       fontSize: R.sp(context, 16),
                       fontWeight: FontWeight.w600,
                       height: 1.5,
-                      color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal).withValues(alpha: 0.8),
+                      color: (Theme.of(context).brightness == Brightness.dark
+                              ? Theme.of(context).colorScheme.onSurface
+                              : AppColors.deepCharcoal)
+                          .withValues(alpha: 0.8),
                     ),
                   ),
                   SizedBox(height: R.h(context, 24)),
@@ -142,7 +180,9 @@ class ArticleScreen extends ConsumerWidget {
                     style: AppTypography.bodySM(context).copyWith(
                       fontSize: R.sp(context, 15),
                       height: 1.8,
-                      color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal),
+                      color: (Theme.of(context).brightness == Brightness.dark
+                          ? Theme.of(context).colorScheme.onSurface
+                          : AppColors.deepCharcoal),
                     ),
                   ),
                   SizedBox(height: R.h(context, 40)),
@@ -156,7 +196,20 @@ class ArticleScreen extends ConsumerWidget {
   }
 
   String _formatDate(DateTime dt) {
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const months = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec'
+    ];
     return '${months[dt.month - 1]} ${dt.day}, ${dt.year}';
   }
 }

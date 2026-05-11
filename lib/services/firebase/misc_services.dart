@@ -6,11 +6,11 @@ import '../../models/product.dart';
 class CategoryService {
   final _db = FirebaseFirestore.instance;
 
-  Stream<List<Category>> categoriesStream() =>
-      _db.collection('categories')
-          .orderBy('order')
-          .snapshots()
-          .map((s) => s.docs.map(Category.fromFirestore).toList());
+  Stream<List<Category>> categoriesStream() => _db
+      .collection('categories')
+      .orderBy('order')
+      .snapshots()
+      .map((s) => s.docs.map(Category.fromFirestore).toList());
 
   Future<List<Category>> getCategories() async {
     final snap = await _db.collection('categories').orderBy('order').get();
@@ -34,25 +34,31 @@ class SettingsService {
 
   Stream<StoreSettings> settingsStream() =>
       _db.collection('settings').doc('general').snapshots().map(
-        (d) => d.exists ? StoreSettings.fromFirestore(d) : _defaults,
-      );
+            (d) => d.exists ? StoreSettings.fromFirestore(d) : _defaults,
+          );
 
   Stream<PaymentSettings> paymentSettingsStream() =>
       _db.collection('settings').doc('paymentMethods').snapshots().map(
-        (d) => d.exists ? PaymentSettings.fromFirestore(d) : const PaymentSettings(),
-      );
+            (d) => d.exists
+                ? PaymentSettings.fromFirestore(d)
+                : const PaymentSettings(),
+          );
 
   Stream<AnnouncementSettings> announcementStream() =>
       _db.collection('settings').doc('announcement').snapshots().map(
-        (d) => d.exists ? AnnouncementSettings.fromFirestore(d) : const AnnouncementSettings(),
-      );
+            (d) => d.exists
+                ? AnnouncementSettings.fromFirestore(d)
+                : const AnnouncementSettings(),
+          );
 }
 
 class ReviewService {
   final _db = FirebaseFirestore.instance;
 
-  Future<List<Review>> getProductReviews(String productId, {int limit = 20}) async {
-    final snap = await _db.collection('reviews')
+  Future<List<Review>> getProductReviews(String productId,
+      {int limit = 20}) async {
+    final snap = await _db
+        .collection('reviews')
         .where('productId', isEqualTo: productId)
         .orderBy('createdAt', descending: true)
         .limit(limit)
@@ -68,12 +74,13 @@ class ReviewService {
     required String title,
     required String body,
   }) async {
-    final existing = await _db.collection('reviews')
+    final existing = await _db
+        .collection('reviews')
         .where('productId', isEqualTo: productId)
         .where('userId', isEqualTo: userId)
         .limit(1)
         .get();
-    
+
     if (existing.docs.isNotEmpty) {
       throw Exception('You have already submitted a review for this product.');
     }
@@ -104,9 +111,9 @@ class AddressService {
   }
 
   Stream<List<Address>> addressesStream(String uid) {
-    return _col(uid).snapshots().map(
-      (snap) => snap.docs.map(Address.fromFirestore).toList()
-    );
+    return _col(uid)
+        .snapshots()
+        .map((snap) => snap.docs.map(Address.fromFirestore).toList());
   }
 
   Future<String> addAddress(String uid, Address address) async {
@@ -114,7 +121,8 @@ class AddressService {
     return ref.id;
   }
 
-  Future<void> updateAddress(String uid, String addressId, Address address) async {
+  Future<void> updateAddress(
+      String uid, String addressId, Address address) async {
     await _col(uid).doc(addressId).update(address.toMap());
   }
 
@@ -149,7 +157,9 @@ class WishlistService {
       final data = doc.data();
       if (data == null) return [];
       final rawItems = data['items'] as List<dynamic>? ?? [];
-      return rawItems.map((item) => Product.fromMap(item as Map<String, dynamic>)).toList();
+      return rawItems
+          .map((item) => Product.fromMap(item as Map<String, dynamic>))
+          .toList();
     });
   }
 }
@@ -160,10 +170,8 @@ class PromoCodeService {
   /// Validates a promo code by looking it up as a Firestore document ID.
   /// The promo code IS the document ID — not a field inside the document.
   Future<PromoCode?> validate(String code) async {
-    final doc = await _db
-        .collection('promoCodes')
-        .doc(code.toUpperCase())
-        .get();
+    final doc =
+        await _db.collection('promoCodes').doc(code.toUpperCase()).get();
     if (!doc.exists) return null;
     return PromoCode.fromFirestore(doc);
   }

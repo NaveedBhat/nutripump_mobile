@@ -42,11 +42,16 @@ class ProductCard extends ConsumerWidget {
       onTap: () => context.push('/product/${product.slug}'),
       child: Container(
         decoration: BoxDecoration(
-          color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
+          color: Theme.of(context).brightness == Brightness.dark
+              ? AppColors.surfaceDark
+              : Colors.white,
           borderRadius: BorderRadius.circular(14),
           boxShadow: [
             BoxShadow(
-              color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal).withValues(alpha: 0.06),
+              color: (Theme.of(context).brightness == Brightness.dark
+                      ? Theme.of(context).colorScheme.onSurface
+                      : AppColors.deepCharcoal)
+                  .withValues(alpha: 0.06),
               blurRadius: 10,
               offset: const Offset(0, 3),
             ),
@@ -61,7 +66,8 @@ class ProductCard extends ConsumerWidget {
                 fit: StackFit.expand,
                 children: [
                   ClipRRect(
-                    borderRadius: const BorderRadius.vertical(top: Radius.circular(14)),
+                    borderRadius:
+                        const BorderRadius.vertical(top: Radius.circular(14)),
                     child: CustomNetworkImage(
                       imageUrl: product.primaryImage,
                       fit: BoxFit.cover,
@@ -76,7 +82,8 @@ class ProductCard extends ConsumerWidget {
                         final colors = _badgeColors(context, product.badge!);
                         return Container(
                           padding: EdgeInsets.symmetric(
-                            horizontal: R.w(context, 5), vertical: R.h(context, 3)),
+                              horizontal: R.w(context, 5),
+                              vertical: R.h(context, 3)),
                           decoration: BoxDecoration(
                             color: colors.bg,
                             borderRadius: BorderRadius.circular(4),
@@ -100,7 +107,8 @@ class ProductCard extends ConsumerWidget {
                       right: R.w(context, 8),
                       child: Container(
                         padding: EdgeInsets.symmetric(
-                          horizontal: R.w(context, 5), vertical: R.h(context, 3)),
+                            horizontal: R.w(context, 5),
+                            vertical: R.h(context, 3)),
                         decoration: BoxDecoration(
                           color: const Color(0xFFD32F2F),
                           borderRadius: BorderRadius.circular(4),
@@ -121,19 +129,21 @@ class ProductCard extends ConsumerWidget {
 
             // ── Text + Add button ─────────────────────────────────
             Padding(
-              padding: EdgeInsets.fromLTRB(
-                R.w(context, 10), R.h(context, 9), R.w(context, 10), R.h(context, 10)),
+              padding: EdgeInsets.fromLTRB(R.w(context, 10), R.h(context, 9),
+                  R.w(context, 10), R.h(context, 10)),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Origin · Weight
                   Text(
                     [
-                      if (product.origin.isNotEmpty) product.origin.toUpperCase(),
+                      if (product.origin.isNotEmpty)
+                        product.origin.toUpperCase(),
                       product.weight,
                     ].join(' · '),
                     style: AppTypography.labelGold(context).copyWith(
-                      fontSize: R.sp(context, compact ? 7.5 : 8.5), letterSpacing: 0.4),
+                        fontSize: R.sp(context, compact ? 7.5 : 8.5),
+                        letterSpacing: 0.4),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -161,13 +171,16 @@ class ProductCard extends ConsumerWidget {
                           children: [
                             Text(
                               formatPrice(product.price),
-                              style: AppTypography.priceSM(context).copyWith(fontSize: R.sp(context, 14)),
+                              style: AppTypography.priceSM(context)
+                                  .copyWith(fontSize: R.sp(context, 14)),
                             ),
-                            if (product.compareAtPrice != null && product.compareAtPrice! > product.price) ...[
+                            if (product.compareAtPrice != null &&
+                                product.compareAtPrice! > product.price) ...[
                               SizedBox(width: R.w(context, 4)),
                               Text(
                                 formatPrice(product.compareAtPrice!),
-                                style: AppTypography.priceStrike(context).copyWith(fontSize: R.sp(context, 10)),
+                                style: AppTypography.priceStrike(context)
+                                    .copyWith(fontSize: R.sp(context, 10)),
                               ),
                             ],
                           ],
@@ -177,11 +190,12 @@ class ProductCard extends ConsumerWidget {
                       GestureDetector(
                         onTap: () {
                           ref.read(cartProvider.notifier).addItem(
-                            product,
-                            weight: product.weight,
-                          );
+                                product,
+                                weight: product.weight,
+                              );
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(duration: const Duration(milliseconds: 2000), 
+                            SnackBar(
+                              duration: const Duration(milliseconds: 2000),
                               content: Text('${product.name} added to cart'),
                               behavior: SnackBarBehavior.floating,
                               backgroundColor: AppColors.deepCharcoal,

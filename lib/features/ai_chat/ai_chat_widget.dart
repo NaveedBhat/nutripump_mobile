@@ -20,7 +20,7 @@ class _AiChatWidgetState extends State<AiChatWidget>
   late Animation<double> _ringAnimation;
   late Animation<double> _ringOpacity;
   late Animation<double> _spinAnimation;
-  
+
   bool _isOpen = false;
   bool _showRings = false;
 
@@ -118,7 +118,7 @@ class _AiChatWidgetState extends State<AiChatWidget>
               child: Container(color: Colors.transparent),
             ),
           ),
-          
+
         // Chat Sheet
         AnimatedPositioned(
           duration: const Duration(milliseconds: 300),
@@ -152,7 +152,8 @@ class _AiChatWidgetState extends State<AiChatWidget>
                 width: R.w(context, 56),
                 height: R.w(context, 56),
                 child: AnimatedBuilder(
-                  animation: Listenable.merge([_scaleAnimation, _ringAnimation, _spinAnimation]),
+                  animation: Listenable.merge(
+                      [_scaleAnimation, _ringAnimation, _spinAnimation]),
                   builder: (context, child) {
                     return Stack(
                       alignment: Alignment.center,
@@ -168,7 +169,8 @@ class _AiChatWidgetState extends State<AiChatWidget>
                                 height: R.w(context, 56),
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
-                                  border: Border.all(color: AppColors.primary, width: 2),
+                                  border: Border.all(
+                                      color: AppColors.primary, width: 2),
                                 ),
                               ),
                             ),
@@ -185,7 +187,8 @@ class _AiChatWidgetState extends State<AiChatWidget>
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   border: Border.all(
-                                    color: AppColors.primary.withValues(alpha: 0.5),
+                                    color: AppColors.primary
+                                        .withValues(alpha: 0.5),
                                     width: 1,
                                   ),
                                 ),
@@ -204,10 +207,12 @@ class _AiChatWidgetState extends State<AiChatWidget>
                               decoration: BoxDecoration(
                                 color: Colors.black,
                                 shape: BoxShape.circle,
-                                border: Border.all(color: AppColors.primary, width: 2),
+                                border: Border.all(
+                                    color: AppColors.primary, width: 2),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: AppColors.primary.withValues(alpha: _isOpen ? 0.15 : 0.45),
+                                    color: AppColors.primary.withValues(
+                                        alpha: _isOpen ? 0.15 : 0.45),
                                     blurRadius: _isOpen ? 10 : 20,
                                     spreadRadius: 1,
                                   ),
@@ -215,12 +220,16 @@ class _AiChatWidgetState extends State<AiChatWidget>
                               ),
                               child: AnimatedSwitcher(
                                 duration: const Duration(milliseconds: 300),
-                                transitionBuilder: (Widget child, Animation<double> animation) {
+                                transitionBuilder: (Widget child,
+                                    Animation<double> animation) {
                                   return RotationTransition(
-                                    turns: child.key == const ValueKey('icon') 
-                                        ? Tween<double>(begin: 0.5, end: 1.0).animate(animation)
-                                        : Tween<double>(begin: 0.0, end: 0.5).animate(animation),
-                                    child: FadeTransition(opacity: animation, child: child),
+                                    turns: child.key == const ValueKey('icon')
+                                        ? Tween<double>(begin: 0.5, end: 1.0)
+                                            .animate(animation)
+                                        : Tween<double>(begin: 0.0, end: 0.5)
+                                            .animate(animation),
+                                    child: FadeTransition(
+                                        opacity: animation, child: child),
                                   );
                                 },
                                 child: _isOpen
@@ -232,14 +241,18 @@ class _AiChatWidgetState extends State<AiChatWidget>
                                       )
                                     : Padding(
                                         key: const ValueKey('image'),
-                                        padding: EdgeInsets.all(R.w(context, 8)),
+                                        padding:
+                                            EdgeInsets.all(R.w(context, 8)),
                                         child: Transform.rotate(
                                           angle: 3.14159 + _spinAnimation.value,
                                           child: Image.asset(
                                             'assets/images/chatbotlogo.webp',
                                             gaplessPlayback: true,
-                                            errorBuilder: (context, error, stackTrace) =>
-                                                const Icon(Icons.support_agent_rounded, color: AppColors.primary),
+                                            errorBuilder: (context, error,
+                                                    stackTrace) =>
+                                                const Icon(
+                                                    Icons.support_agent_rounded,
+                                                    color: AppColors.primary),
                                           ),
                                         ),
                                       ),

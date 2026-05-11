@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import '../../models/cart_item.dart';
 
-
 class CheckoutApi {
   late final Dio _dio;
 
@@ -52,18 +51,20 @@ class CheckoutApi {
     String? appliedPromoCode,
   }) async {
     final response = await _dio.post('/api/checkout/create-order', data: {
-      'items': items.map((i) => {
-        'product': {
-          'id': i.product.id,
-          'name': i.product.name,
-          'price': i.product.price,
-          'images': i.product.images,
-          'weight': i.product.weight,
-        },
-        'quantity': i.quantity,
-        'selectedWeight': i.selectedWeight ?? i.product.weight,
-        if (i.bundlePrice != null) 'bundlePrice': i.bundlePrice,
-      }).toList(),
+      'items': items
+          .map((i) => {
+                'product': {
+                  'id': i.product.id,
+                  'name': i.product.name,
+                  'price': i.product.price,
+                  'images': i.product.images,
+                  'weight': i.product.weight,
+                },
+                'quantity': i.quantity,
+                'selectedWeight': i.selectedWeight ?? i.product.weight,
+                if (i.bundlePrice != null) 'bundlePrice': i.bundlePrice,
+              })
+          .toList(),
       'address': address.toMap(),
       'userId': userId,
       if (appliedPromoCode != null) 'appliedPromoCode': appliedPromoCode,
@@ -104,18 +105,20 @@ class CheckoutApi {
     String? appliedPromoCode,
   }) async {
     final response = await _dio.post('/api/checkout/create-cod-order', data: {
-      'items': items.map((i) => {
-        'product': {
-          'id': i.product.id,
-          'name': i.product.name,
-          'price': i.product.price,
-          'images': i.product.images,
-          'weight': i.product.weight,
-        },
-        'quantity': i.quantity,
-        'selectedWeight': i.selectedWeight ?? i.product.weight,
-        if (i.bundlePrice != null) 'bundlePrice': i.bundlePrice,
-      }).toList(),
+      'items': items
+          .map((i) => {
+                'product': {
+                  'id': i.product.id,
+                  'name': i.product.name,
+                  'price': i.product.price,
+                  'images': i.product.images,
+                  'weight': i.product.weight,
+                },
+                'quantity': i.quantity,
+                'selectedWeight': i.selectedWeight ?? i.product.weight,
+                if (i.bundlePrice != null) 'bundlePrice': i.bundlePrice,
+              })
+          .toList(),
       'address': address.toMap(),
       'userId': userId,
       if (appliedPromoCode != null) 'appliedPromoCode': appliedPromoCode,
@@ -126,6 +129,6 @@ class CheckoutApi {
   /// Cancel abandoned order — mirrors POST /api/checkout/cancel-order
   Future<void> cancelOrder(String firestoreOrderId) async {
     await _dio.post('/api/checkout/cancel-order',
-      data: {'firestoreOrderId': firestoreOrderId});
+        data: {'firestoreOrderId': firestoreOrderId});
   }
 }

@@ -49,7 +49,7 @@ class AuthService {
 
   Future<User> signInWithEmail(String email, String password) async {
     final result = await _auth.signInWithEmailAndPassword(
-      email: email, password: password);
+        email: email, password: password);
     try {
       await _db.collection('users').doc(result.user!.uid).set({
         'lastLoginAt': FieldValue.serverTimestamp(),
@@ -61,9 +61,9 @@ class AuthService {
   }
 
   Future<User> registerWithEmail(
-    String email, String password, String displayName) async {
+      String email, String password, String displayName) async {
     final result = await _auth.createUserWithEmailAndPassword(
-      email: email, password: password);
+        email: email, password: password);
     await result.user!.updateDisplayName(displayName);
     await result.user!.sendEmailVerification();
     return result.user!;

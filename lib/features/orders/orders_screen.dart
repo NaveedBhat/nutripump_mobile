@@ -12,7 +12,8 @@ import '../../core/widgets/skeleton_loaders.dart';
 
 // ── Order filter options ────────────────────────────────────────────────────
 enum _OrderFilter { all, active, delivered, cancelled, paymentFailed }
-enum _DateFilter  { all, last30Days, last3Months, last6Months, thisYear }
+
+enum _DateFilter { all, last30Days, last3Months, last6Months, thisYear }
 
 class OrdersScreen extends ConsumerStatefulWidget {
   const OrdersScreen({super.key});
@@ -23,8 +24,8 @@ class OrdersScreen extends ConsumerStatefulWidget {
 
 class _OrdersScreenState extends ConsumerState<OrdersScreen> {
   final _searchController = TextEditingController();
-  _OrderFilter _selectedFilter     = _OrderFilter.all;
-  _DateFilter  _selectedDateFilter = _DateFilter.all;
+  _OrderFilter _selectedFilter = _OrderFilter.all;
+  _DateFilter _selectedDateFilter = _DateFilter.all;
   String _searchQuery = '';
 
   @override
@@ -34,20 +35,20 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
   }
 
   String _filterLabel(_OrderFilter f) => switch (f) {
-    _OrderFilter.all           => 'All Orders',
-    _OrderFilter.active        => 'Active',
-    _OrderFilter.delivered     => 'Delivered',
-    _OrderFilter.cancelled     => 'Cancelled',
-    _OrderFilter.paymentFailed => 'Payment Failed',
-  };
+        _OrderFilter.all => 'All Orders',
+        _OrderFilter.active => 'Active',
+        _OrderFilter.delivered => 'Delivered',
+        _OrderFilter.cancelled => 'Cancelled',
+        _OrderFilter.paymentFailed => 'Payment Failed',
+      };
 
   String _dateFilterLabel(_DateFilter f) => switch (f) {
-    _DateFilter.all         => 'All Time',
-    _DateFilter.last30Days  => 'Last 30 Days',
-    _DateFilter.last3Months => 'Last 3 Months',
-    _DateFilter.last6Months => 'Last 6 Months',
-    _DateFilter.thisYear    => 'This Year (${DateTime.now().year})',
-  };
+        _DateFilter.all => 'All Time',
+        _DateFilter.last30Days => 'Last 30 Days',
+        _DateFilter.last3Months => 'Last 3 Months',
+        _DateFilter.last6Months => 'Last 6 Months',
+        _DateFilter.thisYear => 'This Year (${DateTime.now().year})',
+      };
 
   // Pure client-side filter — no providers touched
   List<Order> _applyFilters(List<Order> orders) {
@@ -62,7 +63,7 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
               o.status == OrderStatus.shipped)
           .toList(),
       _OrderFilter.delivered =>
-          orders.where((o) => o.status == OrderStatus.delivered).toList(),
+        orders.where((o) => o.status == OrderStatus.delivered).toList(),
       _OrderFilter.cancelled => orders
           .where((o) =>
               o.status == OrderStatus.cancelled &&
@@ -78,8 +79,8 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
     // Step 2: date filter
     final now = DateTime.now();
     final List<Order> dateFiltered = switch (_selectedDateFilter) {
-      _DateFilter.all         => statusFiltered,
-      _DateFilter.last30Days  => statusFiltered
+      _DateFilter.all => statusFiltered,
+      _DateFilter.last30Days => statusFiltered
           .where((o) => now.difference(o.createdAt).inDays <= 30)
           .toList(),
       _DateFilter.last3Months => statusFiltered
@@ -88,9 +89,8 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
       _DateFilter.last6Months => statusFiltered
           .where((o) => now.difference(o.createdAt).inDays <= 180)
           .toList(),
-      _DateFilter.thisYear    => statusFiltered
-          .where((o) => o.createdAt.year == now.year)
-          .toList(),
+      _DateFilter.thisYear =>
+        statusFiltered.where((o) => o.createdAt.year == now.year).toList(),
     };
 
     // Step 3: search filter (order ID or product name)
@@ -111,7 +111,7 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
     _searchController.clear();
     setState(() {
       _searchQuery = '';
-      _selectedFilter     = _OrderFilter.all;
+      _selectedFilter = _OrderFilter.all;
       _selectedDateFilter = _DateFilter.all;
     });
   }
@@ -124,7 +124,9 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
       builder: (_) => _DateFilterSheet(
         current: _selectedDateFilter,
         labelFn: _dateFilterLabel,
-        onApply: (f) { if (mounted) setState(() => _selectedDateFilter = f); },
+        onApply: (f) {
+          if (mounted) setState(() => _selectedDateFilter = f);
+        },
       ),
     );
   }
@@ -149,7 +151,8 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
           onPressed: () => context.canPop() ? context.pop() : context.go('/'),
         ),
         title: Text('My Orders',
-            style: AppTypography.h3(context).copyWith(fontSize: R.sp(context, 16))),
+            style: AppTypography.h3(context)
+                .copyWith(fontSize: R.sp(context, 16))),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1),
           child: Container(height: 1, color: AppColors.borderLight),
@@ -173,7 +176,8 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
             error: (e, __) => Center(child: Text('Error loading orders: $e')),
             data: (dynamicOrders) {
               // All orders — payment-abandoned ones use dedicated 'Payment Failed' UI
-              final List<Order> allOrders = dynamicOrders.cast<Order>().toList();
+              final List<Order> allOrders =
+                  dynamicOrders.cast<Order>().toList();
               final List<Order> orders = _applyFilters(allOrders);
 
               return Column(
@@ -194,8 +198,8 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
                               borderRadius:
                                   BorderRadius.circular(R.w(context, 12)),
                               border: Border.all(
-                                  color:
-                                      AppColors.primary.withValues(alpha: 0.25)),
+                                  color: AppColors.primary
+                                      .withValues(alpha: 0.25)),
                               boxShadow: [
                                 BoxShadow(
                                   color: AppColors.deepCharcoal
@@ -288,8 +292,7 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
                   // ── Filter Chips ─────────────────────────────────────────
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
-                    padding: EdgeInsets.symmetric(
-                        horizontal: R.w(context, 16)),
+                    padding: EdgeInsets.symmetric(horizontal: R.w(context, 16)),
                     child: Row(
                       children: _OrderFilter.values.map((f) {
                         final isSelected = _selectedFilter == f;
@@ -393,8 +396,8 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
                                         ? 'Try adjusting your search or filter.'
                                         : 'Your artisanal pantry awaits.',
                                     textAlign: TextAlign.center,
-                                    style: AppTypography.bodySM(context)
-                                        .copyWith(
+                                    style:
+                                        AppTypography.bodySM(context).copyWith(
                                       color: AppColors.neutralGold,
                                       height: 1.6,
                                       fontSize: R.sp(context, 13),
@@ -419,8 +422,7 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
                                           style: AppTypography.bodySM(context)
                                               .copyWith(
                                                   fontWeight: FontWeight.w700,
-                                                  fontSize:
-                                                      R.sp(context, 13))),
+                                                  fontSize: R.sp(context, 13))),
                                     )
                                   else
                                     ElevatedButton(
@@ -440,8 +442,7 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
                                           style: AppTypography.bodySM(context)
                                               .copyWith(
                                                   fontWeight: FontWeight.w800,
-                                                  fontSize:
-                                                      R.sp(context, 14))),
+                                                  fontSize: R.sp(context, 14))),
                                     ),
                                 ],
                               ),
@@ -500,11 +501,10 @@ class _DateFilterSheetState extends State<_DateFilterSheet> {
         color: Theme.of(context).brightness == Brightness.dark
             ? AppColors.surfaceDark
             : Colors.white,
-        borderRadius: BorderRadius.vertical(
-            top: Radius.circular(R.w(context, 20))),
+        borderRadius:
+            BorderRadius.vertical(top: Radius.circular(R.w(context, 20))),
       ),
-      padding: EdgeInsets.fromLTRB(
-          R.w(context, 20), R.h(context, 16),
+      padding: EdgeInsets.fromLTRB(R.w(context, 20), R.h(context, 16),
           R.w(context, 20), R.h(context, 32)),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -564,9 +564,8 @@ class _DateFilterSheetState extends State<_DateFilterSheet> {
                       height: R.w(context, 20),
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: isSelected
-                            ? AppColors.primary
-                            : Colors.transparent,
+                        color:
+                            isSelected ? AppColors.primary : Colors.transparent,
                         border: Border.all(
                           color: isSelected
                               ? AppColors.primary
@@ -586,9 +585,8 @@ class _DateFilterSheetState extends State<_DateFilterSheet> {
                         widget.labelFn(f),
                         style: AppTypography.bodySM(context).copyWith(
                           fontSize: R.sp(context, 14),
-                          fontWeight: isSelected
-                              ? FontWeight.w700
-                              : FontWeight.w500,
+                          fontWeight:
+                              isSelected ? FontWeight.w700 : FontWeight.w500,
                         ),
                       ),
                     ),
@@ -599,8 +597,7 @@ class _DateFilterSheetState extends State<_DateFilterSheet> {
                             vertical: R.h(context, 3)),
                         decoration: BoxDecoration(
                           color: AppColors.primary.withValues(alpha: 0.15),
-                          borderRadius:
-                              BorderRadius.circular(R.w(context, 20)),
+                          borderRadius: BorderRadius.circular(R.w(context, 20)),
                         ),
                         child: Text(
                           'Popular',
@@ -616,8 +613,7 @@ class _DateFilterSheetState extends State<_DateFilterSheet> {
               ),
             );
           }),
-          Divider(
-              color: AppColors.borderLight, height: R.h(context, 24)),
+          Divider(color: AppColors.borderLight, height: R.h(context, 24)),
           // Apply button
           SizedBox(
             width: double.infinity,
@@ -632,14 +628,12 @@ class _DateFilterSheetState extends State<_DateFilterSheet> {
                 elevation: 0,
                 padding: EdgeInsets.symmetric(vertical: R.h(context, 14)),
                 shape: RoundedRectangleBorder(
-                    borderRadius:
-                        BorderRadius.circular(R.w(context, 12))),
+                    borderRadius: BorderRadius.circular(R.w(context, 12))),
               ),
               child: Text(
                 'Apply Filter',
                 style: AppTypography.bodySM(context).copyWith(
-                    fontWeight: FontWeight.w800,
-                    fontSize: R.sp(context, 14)),
+                    fontWeight: FontWeight.w800, fontSize: R.sp(context, 14)),
               ),
             ),
           ),
@@ -659,8 +653,7 @@ class _OrderCard extends ConsumerWidget {
     // Backend sets paymentStatus='failed' when the Razorpay payment is
     // cancelled or fails. COD cancellations always have paymentStatus='pending'.
     // This is the reliable, backend-verified discriminator.
-    final bool isPaymentAbandoned =
-        order.status == OrderStatus.cancelled &&
+    final bool isPaymentAbandoned = order.status == OrderStatus.cancelled &&
         order.paymentStatus == PaymentStatus.failed;
 
     final statusColor = isPaymentAbandoned
@@ -675,22 +668,30 @@ class _OrderCard extends ConsumerWidget {
 
     // Fallback store settings if provider isn't loaded yet
     final settingsAsync = ref.watch(storeSettingsProvider);
-    final cancelHours = settingsAsync.valueOrNull?.cancellationWindowHours ?? 24;
+    final cancelHours =
+        settingsAsync.valueOrNull?.cancellationWindowHours ?? 24;
     final returnDays = settingsAsync.valueOrNull?.returnWindowDays ?? 5;
 
     // Payment-abandoned orders must not show the regular Cancel button
     final canCancel = !isPaymentAbandoned &&
-        order.canCancel && _isWithinWindow(order.createdAt, cancelHours);
-    final canReturn = order.canReturn && _isWithinReturnWindow(order.updatedAt, returnDays);
+        order.canCancel &&
+        _isWithinWindow(order.createdAt, cancelHours);
+    final canReturn =
+        order.canReturn && _isWithinReturnWindow(order.updatedAt, returnDays);
 
     return Container(
       decoration: BoxDecoration(
-        color: Theme.of(context).brightness == Brightness.dark ? AppColors.surfaceDark : Colors.white,
+        color: Theme.of(context).brightness == Brightness.dark
+            ? AppColors.surfaceDark
+            : Colors.white,
         borderRadius: BorderRadius.circular(R.w(context, 12)),
         border: Border.all(color: AppColors.primary.withValues(alpha: 0.2)),
         boxShadow: [
           BoxShadow(
-            color: (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal).withValues(alpha: 0.02),
+            color: (Theme.of(context).brightness == Brightness.dark
+                    ? Theme.of(context).colorScheme.onSurface
+                    : AppColors.deepCharcoal)
+                .withValues(alpha: 0.02),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -701,12 +702,15 @@ class _OrderCard extends ConsumerWidget {
         children: [
           // ── Header ──────────────────────────────────────────────────────────
           Container(
-            padding: EdgeInsets.symmetric(horizontal: R.w(context, 12), vertical: R.h(context, 10)),
+            padding: EdgeInsets.symmetric(
+                horizontal: R.w(context, 12), vertical: R.h(context, 10)),
             decoration: BoxDecoration(
               color: AppColors.primary.withValues(alpha: 0.05),
-              borderRadius: BorderRadius.vertical(top: Radius.circular(R.w(context, 11))),
+              borderRadius:
+                  BorderRadius.vertical(top: Radius.circular(R.w(context, 11))),
               border: Border(
-                bottom: BorderSide(color: AppColors.primary.withValues(alpha: 0.15)),
+                bottom: BorderSide(
+                    color: AppColors.primary.withValues(alpha: 0.15)),
               ),
             ),
             child: Row(
@@ -744,7 +748,8 @@ class _OrderCard extends ConsumerWidget {
                         color: statusBg,
                         shape: BoxShape.circle,
                       ),
-                      child: Icon(statusIcon, size: R.sp(context, 16), color: statusColor),
+                      child: Icon(statusIcon,
+                          size: R.sp(context, 16), color: statusColor),
                     ),
                     SizedBox(width: R.w(context, 12)),
                     Expanded(
@@ -798,12 +803,15 @@ class _OrderCard extends ConsumerWidget {
                           height: R.w(context, 56),
                           decoration: BoxDecoration(
                             color: AppColors.primary.withValues(alpha: 0.05),
-                            borderRadius: BorderRadius.circular(R.w(context, 8)),
+                            borderRadius:
+                                BorderRadius.circular(R.w(context, 8)),
                             border: Border.all(
-                                color: AppColors.primary.withValues(alpha: 0.1)),
+                                color:
+                                    AppColors.primary.withValues(alpha: 0.1)),
                           ),
                           child: ClipRRect(
-                            borderRadius: BorderRadius.circular(R.w(context, 8)),
+                            borderRadius:
+                                BorderRadius.circular(R.w(context, 8)),
                             child: p.images.isNotEmpty
                                 ? CachedNetworkImage(
                                     imageUrl: p.images.first,
@@ -829,9 +837,12 @@ class _OrderCard extends ConsumerWidget {
                               ),
                               SizedBox(height: R.h(context, 2)),
                               () {
-                                final displayWeight = item.selectedWeight?.isNotEmpty == true
-                                    ? item.selectedWeight!
-                                    : p.weight.isNotEmpty ? p.weight : null;
+                                final displayWeight =
+                                    item.selectedWeight?.isNotEmpty == true
+                                        ? item.selectedWeight!
+                                        : p.weight.isNotEmpty
+                                            ? p.weight
+                                            : null;
                                 return Text(
                                   [
                                     'Qty: ${item.quantity}',
@@ -846,7 +857,8 @@ class _OrderCard extends ConsumerWidget {
                               }(),
                               SizedBox(height: R.h(context, 4)),
                               Text(
-                                formatPrice(item.effectivePrice * item.quantity),
+                                formatPrice(
+                                    item.effectivePrice * item.quantity),
                                 style: AppTypography.bodySM(context).copyWith(
                                   color: AppColors.primaryDark,
                                   fontWeight: FontWeight.w700,
@@ -926,7 +938,8 @@ class _OrderCard extends ConsumerWidget {
                         minimumSize: const Size(0, 36),
                         elevation: 0,
                         shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(R.w(context, 8))),
+                            borderRadius:
+                                BorderRadius.circular(R.w(context, 8))),
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -954,7 +967,8 @@ class _OrderCard extends ConsumerWidget {
                       padding: EdgeInsets.only(bottom: R.h(context, 12)),
                       child: _TimeRemainingLabel(
                         icon: Icons.access_time_rounded,
-                        text: _getCancelWithinText(order.createdAt, cancelHours),
+                        text:
+                            _getCancelWithinText(order.createdAt, cancelHours),
                         color: Colors.amber.shade700,
                       ),
                     ),
@@ -975,32 +989,47 @@ class _OrderCard extends ConsumerWidget {
                       children: [
                         Expanded(
                           child: OutlinedButton(
-                            onPressed: () => context.push('/orders/${order.id}'),
+                            onPressed: () =>
+                                context.push('/orders/${order.id}'),
                             style: OutlinedButton.styleFrom(
                               foregroundColor: AppColors.deepCharcoal,
-                              side: BorderSide(color: AppColors.neutralGold.withValues(alpha: 0.3)),
-                              backgroundColor: AppColors.neutralGold.withValues(alpha: 0.05),
+                              side: BorderSide(
+                                  color: AppColors.neutralGold
+                                      .withValues(alpha: 0.3)),
+                              backgroundColor:
+                                  AppColors.neutralGold.withValues(alpha: 0.05),
                               padding: EdgeInsets.zero,
                               minimumSize: const Size(0, 32),
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(R.w(context, 6))),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.circular(R.w(context, 6))),
                             ),
-                            child: Text('View Details', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: R.sp(context, 10))),
+                            child: Text('View Details',
+                                style: AppTypography.bodySM(context).copyWith(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: R.sp(context, 10))),
                           ),
                         ),
                         if (canReturn) ...[
                           SizedBox(width: R.w(context, 8)),
                           Expanded(
                             child: ElevatedButton(
-                              onPressed: () => context.push('/account/returns?orderId=${order.id}'),
+                              onPressed: () => context
+                                  .push('/account/returns?orderId=${order.id}'),
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: AppColors.primary,
                                 foregroundColor: AppColors.deepCharcoal,
                                 padding: EdgeInsets.zero,
                                 minimumSize: const Size(0, 32),
                                 elevation: 0,
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(R.w(context, 6))),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.circular(R.w(context, 6))),
                               ),
-                              child: Text('Return Item', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: R.sp(context, 10))),
+                              child: Text('Return Item',
+                                  style: AppTypography.bodySM(context).copyWith(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: R.sp(context, 10))),
                             ),
                           ),
                         ],
@@ -1013,16 +1042,27 @@ class _OrderCard extends ConsumerWidget {
                           // Cancelled orders: View Details → shows full invoice + cancellation reason
                           Expanded(
                             child: OutlinedButton(
-                              onPressed: () => context.push('/orders/${order.id}'),
+                              onPressed: () =>
+                                  context.push('/orders/${order.id}'),
                               style: OutlinedButton.styleFrom(
                                 foregroundColor: AppColors.deepCharcoal,
-                                side: BorderSide(color: AppColors.neutralGold.withValues(alpha: 0.3)),
-                                backgroundColor: AppColors.neutralGold.withValues(alpha: 0.05),
+                                side: BorderSide(
+                                    color: AppColors.neutralGold
+                                        .withValues(alpha: 0.3)),
+                                backgroundColor: AppColors.neutralGold
+                                    .withValues(alpha: 0.05),
                                 padding: EdgeInsets.zero,
                                 minimumSize: const Size(0, 32),
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(R.w(context, 6))),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.circular(R.w(context, 6))),
                               ),
-                              child: Text('View Details', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: R.sp(context, 10)), maxLines: 1, overflow: TextOverflow.ellipsis),
+                              child: Text('View Details',
+                                  style: AppTypography.bodySM(context).copyWith(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: R.sp(context, 10)),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis),
                             ),
                           ),
                           SizedBox(width: R.w(context, 6)),
@@ -1030,49 +1070,79 @@ class _OrderCard extends ConsumerWidget {
                           // Active orders: Track Live
                           Expanded(
                             child: OutlinedButton(
-                              onPressed: () => context.push('/orders/${order.id}'),
+                              onPressed: () =>
+                                  context.push('/orders/${order.id}'),
                               style: OutlinedButton.styleFrom(
                                 foregroundColor: AppColors.deepCharcoal,
-                                side: const BorderSide(color: AppColors.primary),
-                                backgroundColor: AppColors.primary.withValues(alpha: 0.1),
+                                side:
+                                    const BorderSide(color: AppColors.primary),
+                                backgroundColor:
+                                    AppColors.primary.withValues(alpha: 0.1),
                                 padding: EdgeInsets.zero,
                                 minimumSize: const Size(0, 32),
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(R.w(context, 6))),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.circular(R.w(context, 6))),
                               ),
-                              child: Text('Track Live', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: R.sp(context, 10)), maxLines: 1, overflow: TextOverflow.ellipsis),
+                              child: Text('Track Live',
+                                  style: AppTypography.bodySM(context).copyWith(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: R.sp(context, 10)),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis),
                             ),
                           ),
                           SizedBox(width: R.w(context, 6)),
                         ],
                         Expanded(
                           child: OutlinedButton(
-                            onPressed: () =>
-                                context.push('/support?orderId=${formatOrderId(order.id)}'),
+                            onPressed: () => context.push(
+                                '/support?orderId=${formatOrderId(order.id)}'),
                             style: OutlinedButton.styleFrom(
                               foregroundColor: AppColors.deepCharcoal,
-                              side: BorderSide(color: AppColors.neutralGold.withValues(alpha: 0.3)),
-                              backgroundColor: AppColors.neutralGold.withValues(alpha: 0.05),
+                              side: BorderSide(
+                                  color: AppColors.neutralGold
+                                      .withValues(alpha: 0.3)),
+                              backgroundColor:
+                                  AppColors.neutralGold.withValues(alpha: 0.05),
                               padding: EdgeInsets.zero,
                               minimumSize: const Size(0, 32),
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(R.w(context, 6))),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.circular(R.w(context, 6))),
                             ),
-                            child: Text('Contact', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, fontSize: R.sp(context, 10)), maxLines: 1, overflow: TextOverflow.ellipsis),
+                            child: Text('Contact',
+                                style: AppTypography.bodySM(context).copyWith(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: R.sp(context, 10)),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis),
                           ),
                         ),
                         if (canCancel) ...[
                           SizedBox(width: R.w(context, 6)),
                           Expanded(
                             child: OutlinedButton(
-                              onPressed: () => _showCancelDialog(context, ref, order),
+                              onPressed: () =>
+                                  _showCancelDialog(context, ref, order),
                               style: OutlinedButton.styleFrom(
                                 foregroundColor: Colors.red,
                                 side: const BorderSide(color: Colors.red),
-                                backgroundColor: Colors.red.withValues(alpha: 0.05),
+                                backgroundColor:
+                                    Colors.red.withValues(alpha: 0.05),
                                 padding: EdgeInsets.zero,
                                 minimumSize: const Size(0, 32),
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(R.w(context, 6))),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.circular(R.w(context, 6))),
                               ),
-                              child: Text('Cancel', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, color: Colors.red, fontSize: R.sp(context, 10)), maxLines: 1, overflow: TextOverflow.ellipsis),
+                              child: Text('Cancel',
+                                  style: AppTypography.bodySM(context).copyWith(
+                                      fontWeight: FontWeight.w700,
+                                      color: Colors.red,
+                                      fontSize: R.sp(context, 10)),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis),
                             ),
                           ),
                         ],
@@ -1101,7 +1171,9 @@ class _OrderCard extends ConsumerWidget {
     if (remainingMs <= 0) return 'Cancellation window expired';
     final remainHrs = remainingMs ~/ (1000 * 60 * 60);
     final remainMins = (remainingMs % (1000 * 60 * 60)) ~/ (1000 * 60);
-    return remainHrs > 0 ? 'Cancel within ${remainHrs}h ${remainMins}m' : 'Cancel within ${remainMins}m';
+    return remainHrs > 0
+        ? 'Cancel within ${remainHrs}h ${remainMins}m'
+        : 'Cancel within ${remainMins}m';
   }
 
   String _getReturnWithinText(DateTime updatedAt, int returnDays) {
@@ -1126,8 +1198,18 @@ class _OrderCard extends ConsumerWidget {
 
   String _formatDate(DateTime dt) {
     const months = [
-      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec'
     ];
     return '${months[dt.month - 1]} ${dt.day}, ${dt.year}';
   }
@@ -1139,11 +1221,15 @@ class _OrderCard extends ConsumerWidget {
       case OrderStatus.shipped:
         return Colors.blue.shade700;
       case OrderStatus.confirmed:
-        return (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal);
+        return (Theme.of(context).brightness == Brightness.dark
+            ? Theme.of(context).colorScheme.onSurface
+            : AppColors.deepCharcoal);
       case OrderStatus.cancelled:
         return Colors.red.shade700;
       default:
-        return (Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.onSurface : AppColors.deepCharcoal);
+        return (Theme.of(context).brightness == Brightness.dark
+            ? Theme.of(context).colorScheme.onSurface
+            : AppColors.deepCharcoal);
     }
   }
 
@@ -1248,17 +1334,22 @@ class _CancelOrderDialogState extends ConsumerState<_CancelOrderDialog> {
     setState(() => _isLoading = true);
     try {
       final service = ref.read(orderServiceProvider);
-      await service.cancelOrder(widget.order.id, 'User cancelled from mobile app');
+      await service.cancelOrder(
+          widget.order.id, 'User cancelled from mobile app');
       if (mounted) {
         Navigator.of(context).pop();
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(duration: Duration(milliseconds: 2000), content: Text('Order cancelled successfully.')),
+          const SnackBar(
+              duration: Duration(milliseconds: 2000),
+              content: Text('Order cancelled successfully.')),
         );
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(duration: const Duration(milliseconds: 2000), content: Text('Failed to cancel order: $e')),
+          SnackBar(
+              duration: const Duration(milliseconds: 2000),
+              content: Text('Failed to cancel order: $e')),
         );
       }
     } finally {
@@ -1280,25 +1371,37 @@ class _CancelOrderDialogState extends ConsumerState<_CancelOrderDialog> {
           style: OutlinedButton.styleFrom(
             foregroundColor: AppColors.deepCharcoal,
             side: const BorderSide(color: AppColors.borderLight),
-            padding: EdgeInsets.symmetric(horizontal: R.w(context, 16), vertical: R.h(context, 8)),
+            padding: EdgeInsets.symmetric(
+                horizontal: R.w(context, 16), vertical: R.h(context, 8)),
             minimumSize: Size(0, R.h(context, 36)),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(R.w(context, 8))),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(R.w(context, 8))),
           ),
-          child: Text('Keep Order', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700)),
+          child: Text('Keep Order',
+              style: AppTypography.bodySM(context)
+                  .copyWith(fontWeight: FontWeight.w700)),
         ),
         ElevatedButton(
           onPressed: _isLoading ? null : _handleCancel,
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.red,
             foregroundColor: Colors.white,
-            padding: EdgeInsets.symmetric(horizontal: R.w(context, 16), vertical: R.h(context, 8)),
+            padding: EdgeInsets.symmetric(
+                horizontal: R.w(context, 16), vertical: R.h(context, 8)),
             minimumSize: Size(0, R.h(context, 36)),
             elevation: 0,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(R.w(context, 8))),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(R.w(context, 8))),
           ),
           child: _isLoading
-              ? SizedBox(width: R.w(context, 16), height: R.w(context, 16), child: const CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
-              : Text('Confirm Cancel', style: AppTypography.bodySM(context).copyWith(fontWeight: FontWeight.w700, color: Colors.white)),
+              ? SizedBox(
+                  width: R.w(context, 16),
+                  height: R.w(context, 16),
+                  child: const CircularProgressIndicator(
+                      strokeWidth: 2, color: Colors.white))
+              : Text('Confirm Cancel',
+                  style: AppTypography.bodySM(context).copyWith(
+                      fontWeight: FontWeight.w700, color: Colors.white)),
         ),
       ],
     );
