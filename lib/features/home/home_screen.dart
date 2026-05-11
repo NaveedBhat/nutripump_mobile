@@ -9,6 +9,7 @@ import 'widgets/hero_carousel.dart';
 import 'widgets/trust_strip.dart';
 import 'widgets/categories_section.dart';
 import 'widgets/featured_products_section.dart';
+import 'widgets/advertisement_banners_section.dart';
 import 'widgets/why_nutripump.dart';
 import 'widgets/all_products_section.dart';
 import 'widgets/taste_profiler_cta.dart';
@@ -81,6 +82,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             const CategoriesSection(),
                             _SectionGap(),
                             const FeaturedProductsSection(),
+                            _SectionGap(),
+                            const AdvertisementBannersSection(),
                             _SectionGap(),
                             const WhyNutriPump(),
                             _SectionGap(),

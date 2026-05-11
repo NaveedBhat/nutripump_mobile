@@ -480,7 +480,9 @@ class ProductDetailSkeleton extends StatelessWidget {
                             child: Row(children: [
                               const Bone.circle(size: 18),
                               SizedBox(width: R.w(context, 8)),
-                              const Bone.text(words: 5, fontSize: 13),
+                              const Expanded(
+                                child: Bone.text(words: 5, fontSize: 13),
+                              ),
                             ]),
                           )),
                   SizedBox(height: R.h(context, 20)),

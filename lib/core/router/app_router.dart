@@ -35,6 +35,7 @@ import '../../features/wishlist/wishlist_screen.dart';
 import '../../features/legal/privacy_policy_screen.dart';
 import '../../features/legal/terms_of_service_screen.dart';
 import '../../providers/providers.dart';
+import '../widgets/not_found_screen.dart';
 import 'main_shell.dart';
 import '../../../main.dart' show navigatorKey;
 
@@ -46,6 +47,7 @@ final appRouter = GoRouter(
   refreshListenable:
       GoRouterRefreshStream(FirebaseAuth.instance.authStateChanges()),
   initialLocation: '/',
+  errorBuilder: (context, state) => NotFoundScreen(state: state),
   redirect: (context, state) async {
     final authUser = FirebaseAuth.instance.currentUser;
     final isLoggedIn = authUser != null;
