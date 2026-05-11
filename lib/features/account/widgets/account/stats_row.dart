@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../../../core/constants/app_colors.dart';
-import '../../../core/constants/app_typography.dart';
-import '../../../core/utils/responsive.dart';
-import '../../../providers/providers.dart';
+import '../../../../core/constants/app_colors.dart';
+import '../../../../core/constants/app_typography.dart';
+import '../../../../core/utils/responsive.dart';
+import '../../../../providers/providers.dart';
 
 class StatsRow extends ConsumerWidget {
   final dynamic user;

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../../core/constants/app_colors.dart';
-import '../../core/constants/app_typography.dart';
-import '../../core/utils/responsive.dart';
-import '../../services/legal_service.dart';
+import '../../../core/constants/app_colors.dart';
+import '../../../core/constants/app_typography.dart';
+import '../../../core/utils/responsive.dart';
+import '../../../services/legal_service.dart';
 
 const Map<String, IconData> legalIconMap = {
   'shield': Icons.shield_outlined,
@@ -25,7 +25,6 @@ const Map<String, IconData> legalIconMap = {
   'link': Icons.link_outlined,
 };
 
-/// Shared widget for legal screens (Privacy Policy & Terms).
 class LegalSectionWidget extends StatelessWidget {
   final LegalSection section;
   final int index;

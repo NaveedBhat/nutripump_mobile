@@ -9,10 +9,10 @@ import '../../providers/providers.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import '../../core/widgets/skeleton_loaders.dart';
-import 'widgets/profile_card.dart';
-import 'widgets/stats_row.dart';
-import 'widgets/account_nav_tile.dart';
-import 'widgets/theme_selection.dart';
+import 'widgets/account/profile_card.dart';
+import 'widgets/account/stats_row.dart';
+import 'widgets/account/account_nav_tile.dart';
+import 'widgets/account/theme_selection.dart';
 
 final appVersionProvider = FutureProvider<String>((ref) async {
   final info = await PackageInfo.fromPlatform();

@@ -5,6 +5,10 @@ import '../../core/constants/app_typography.dart';
 import '../../core/utils/responsive.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'widgets/contact_header_banner.dart';
+import 'widgets/contact_quick_options.dart';
+import 'widgets/contact_success_message.dart';
+import 'widgets/contact_business_hours.dart';
 
 class ContactScreen extends StatefulWidget {
   const ContactScreen({super.key});
@@ -136,86 +140,11 @@ class _ContactScreenState extends State<ContactScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Header banner
-            Container(
-              width: double.infinity,
-              padding: EdgeInsets.all(R.w(context, 20)),
-              decoration: BoxDecoration(
-                color: AppColors.primary.withValues(alpha: 0.08),
-                borderRadius: BorderRadius.circular(R.w(context, 16)),
-                border: Border.all(
-                    color: AppColors.primary.withValues(alpha: 0.15)),
-              ),
-              child: Row(
-                children: [
-                  Container(
-                    width: R.w(context, 48),
-                    height: R.w(context, 48),
-                    decoration: BoxDecoration(
-                      color: AppColors.primary.withValues(alpha: 0.15),
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(Icons.support_agent_rounded,
-                        size: R.sp(context, 26), color: AppColors.primary),
-                  ),
-                  SizedBox(width: R.w(context, 16)),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('We\'re here to help!',
-                            style: AppTypography.bodySM(context).copyWith(
-                                fontWeight: FontWeight.w800,
-                                fontSize: R.sp(context, 15))),
-                        SizedBox(height: R.h(context, 4)),
-                        Text('Typically reply within 2–4 hours',
-                            style: AppTypography.bodySM(context).copyWith(
-                                color: AppColors.neutralGold,
-                                fontSize: R.sp(context, 12))),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            const ContactHeaderBanner(),
             SizedBox(height: R.h(context, 32)),
 
             // Quick contact options
-            Text('Reach Us Directly',
-                style: AppTypography.h3(context)
-                    .copyWith(fontSize: R.sp(context, 16))),
-            SizedBox(height: R.h(context, 16)),
-
-            _ContactTile(
-              icon: Icons.email_outlined,
-              title: 'Email Support',
-              subtitle: 'support@nutripump.store',
-              onTap: () => _launchUrl('mailto:support@nutripump.store'),
-              trailingIcon: Icons.open_in_new_rounded,
-            ),
-            SizedBox(height: R.h(context, 12)),
-            _ContactTile(
-              icon: Icons.chat_bubble_outline_rounded,
-              title: 'WhatsApp',
-              subtitle: 'Chat with us instantly',
-              onTap: () => _launchUrl('https://wa.me/919149621219'),
-              trailingIcon: Icons.open_in_new_rounded,
-            ),
-            SizedBox(height: R.h(context, 12)),
-            _ContactTile(
-              icon: Icons.language_rounded,
-              title: 'Help Centre',
-              subtitle: 'FAQs & Guides',
-              onTap: () => _launchUrl('https://nutripump.store/support'),
-              trailingIcon: Icons.open_in_new_rounded,
-            ),
-            SizedBox(height: R.h(context, 12)),
-            _ContactTile(
-              icon: Icons.alternate_email_rounded,
-              title: 'Instagram',
-              subtitle: '@nutripump.store',
-              onTap: () => _launchUrl('https://instagram.com/nutripump.store'),
-              trailingIcon: Icons.open_in_new_rounded,
-            ),
+            ContactQuickOptions(onLaunchUrl: _launchUrl),
 
             SizedBox(height: R.h(context, 40)),
 
@@ -231,56 +160,8 @@ class _ContactScreenState extends State<ContactScreen> {
             SizedBox(height: R.h(context, 24)),
 
             if (_isSuccess)
-              Container(
-                width: double.infinity,
-                padding: EdgeInsets.symmetric(
-                    vertical: R.h(context, 40), horizontal: R.w(context, 20)),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).brightness == Brightness.dark
-                      ? AppColors.surfaceDark
-                      : Colors.white,
-                  borderRadius: BorderRadius.circular(R.w(context, 16)),
-                  border: Border.all(color: AppColors.borderLight),
-                ),
-                child: Column(
-                  children: [
-                    Container(
-                      width: R.w(context, 64),
-                      height: R.w(context, 64),
-                      decoration: BoxDecoration(
-                        color: AppColors.primary.withValues(alpha: 0.15),
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(Icons.check_circle_rounded,
-                          color: AppColors.primary, size: R.sp(context, 32)),
-                    ),
-                    SizedBox(height: R.h(context, 24)),
-                    Text('Message Delivered',
-                        style: AppTypography.label(context).copyWith(
-                            color: AppColors.primary,
-                            fontSize: R.sp(context, 11))),
-                    SizedBox(height: R.h(context, 8)),
-                    Text('We\'ve got your note!',
-                        style: AppTypography.h3(context)
-                            .copyWith(fontSize: R.sp(context, 16))),
-                    SizedBox(height: R.h(context, 8)),
-                    Text(
-                        'Our team will personally reply within 24 hours. Thank you for reaching out.',
-                        textAlign: TextAlign.center,
-                        style: AppTypography.bodySM(context)
-                            .copyWith(color: AppColors.neutralGold)),
-                    SizedBox(height: R.h(context, 24)),
-                    TextButton.icon(
-                      onPressed: () => setState(() => _isSuccess = false),
-                      icon: Icon(Icons.send_rounded, size: R.sp(context, 14)),
-                      label: Text('Send another message',
-                          style: AppTypography.bodySM(context)
-                              .copyWith(fontWeight: FontWeight.w700)),
-                      style: TextButton.styleFrom(
-                          foregroundColor: AppColors.primaryDark),
-                    ),
-                  ],
-                ),
+              ContactSuccessMessage(
+                onReset: () => setState(() => _isSuccess = false),
               )
             else
               Form(
@@ -447,40 +328,7 @@ class _ContactScreenState extends State<ContactScreen> {
             SizedBox(height: R.h(context, 40)),
 
             // Business hours
-            Container(
-              width: double.infinity,
-              padding: EdgeInsets.all(R.w(context, 20)),
-              decoration: BoxDecoration(
-                color: Theme.of(context).brightness == Brightness.dark
-                    ? AppColors.surfaceDark
-                    : Colors.white,
-                borderRadius: BorderRadius.circular(R.w(context, 12)),
-                border: Border.all(color: AppColors.borderLight),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Icon(Icons.access_time_rounded,
-                          size: R.sp(context, 18),
-                          color: AppColors.neutralGold),
-                      SizedBox(width: R.w(context, 8)),
-                      Text('Business Hours',
-                          style: AppTypography.bodySM(context)
-                              .copyWith(fontWeight: FontWeight.w800)),
-                    ],
-                  ),
-                  SizedBox(height: R.h(context, 12)),
-                  const _HoursRow(
-                      day: 'Mon – Fri', hours: '10:00 AM – 7:00 PM'),
-                  SizedBox(height: R.h(context, 6)),
-                  const _HoursRow(day: 'Saturday', hours: '10:00 AM – 4:00 PM'),
-                  SizedBox(height: R.h(context, 6)),
-                  const _HoursRow(day: 'Sunday', hours: 'Closed'),
-                ],
-              ),
-            ),
+            const ContactBusinessHours(),
             SizedBox(height: R.h(context, 24)),
           ],
         ),
@@ -511,104 +359,6 @@ class _ContactScreenState extends State<ContactScreen> {
       errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(R.w(context, 12)),
           borderSide: const BorderSide(color: AppColors.error)),
-    );
-  }
-}
-
-class _ContactTile extends StatelessWidget {
-  final IconData icon;
-  final String title;
-  final String subtitle;
-  final VoidCallback onTap;
-  final IconData trailingIcon;
-
-  const _ContactTile({
-    required this.icon,
-    required this.title,
-    required this.subtitle,
-    required this.onTap,
-    required this.trailingIcon,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: EdgeInsets.symmetric(
-            horizontal: R.w(context, 16), vertical: R.h(context, 14)),
-        decoration: BoxDecoration(
-          color: Theme.of(context).brightness == Brightness.dark
-              ? AppColors.surfaceDark
-              : Colors.white,
-          borderRadius: BorderRadius.circular(R.w(context, 12)),
-          border: Border.all(color: AppColors.borderLight),
-          boxShadow: [
-            BoxShadow(
-              color: (Theme.of(context).brightness == Brightness.dark
-                      ? Theme.of(context).colorScheme.onSurface
-                      : AppColors.deepCharcoal)
-                  .withValues(alpha: 0.02),
-              blurRadius: 6,
-              offset: const Offset(0, 2),
-            ),
-          ],
-        ),
-        child: Row(
-          children: [
-            Container(
-              width: R.w(context, 40),
-              height: R.w(context, 40),
-              decoration: BoxDecoration(
-                color: AppColors.primary.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(R.w(context, 10)),
-              ),
-              child:
-                  Icon(icon, size: R.sp(context, 20), color: AppColors.primary),
-            ),
-            SizedBox(width: R.w(context, 14)),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(title,
-                      style: AppTypography.bodySM(context).copyWith(
-                          fontWeight: FontWeight.w700,
-                          fontSize: R.sp(context, 14))),
-                  SizedBox(height: R.h(context, 2)),
-                  Text(subtitle,
-                      style: AppTypography.bodySM(context).copyWith(
-                          color: AppColors.neutralGold,
-                          fontSize: R.sp(context, 12))),
-                ],
-              ),
-            ),
-            Icon(trailingIcon,
-                size: R.sp(context, 16), color: AppColors.neutralGold),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _HoursRow extends StatelessWidget {
-  final String day;
-  final String hours;
-  const _HoursRow({required this.day, required this.hours});
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(day,
-            style: AppTypography.bodySM(context).copyWith(
-                color: AppColors.neutralGold, fontSize: R.sp(context, 13))),
-        Text(hours,
-            style: AppTypography.bodySM(context).copyWith(
-                fontWeight: FontWeight.w700, fontSize: R.sp(context, 13))),
-      ],
     );
   }
 }

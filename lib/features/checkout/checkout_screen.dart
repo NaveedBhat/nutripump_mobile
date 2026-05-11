@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:dio/dio.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_typography.dart';
-import '../../core/utils/formatters.dart';
+
 import '../../models/cart_item.dart';
 import '../../providers/cart_provider.dart';
 import '../../providers/providers.dart';
@@ -15,6 +15,9 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'widgets/address_selection_section.dart';
 import 'widgets/payment_selection_section.dart';
+import 'widgets/checkout_progress_bar.dart';
+import 'widgets/checkout_review_step.dart';
+import 'widgets/checkout_bottom_actions.dart';
 
 // ── Providers for Checkout State ──────────────────────────────────────────
 final checkoutStepProvider = StateProvider.autoDispose<int>((ref) => 0);
@@ -307,9 +310,14 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
             )
           : CustomScrollView(
               slivers: [
-                SliverToBoxAdapter(child: _buildProgressBar(step)),
+                SliverToBoxAdapter(
+                  child: CheckoutProgressBar(
+                    currentStep: step,
+                    steps: _CheckoutScreenState.steps,
+                  ),
+                ),
                 if (step == 0) _buildStep0Details(),
-                if (step == 1) _buildStep1Review(cartState),
+                if (step == 1) CheckoutReviewStep(cart: cartState),
                 SliverToBoxAdapter(
                     child: SizedBox(
                         height: MediaQuery.of(context).padding.bottom + 120)),
@@ -317,121 +325,18 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
             ),
       bottomSheet: isProcessing || cartState.items.isEmpty
           ? null
-          : _buildBottomActions(step, cartState),
-    );
-  }
-
-  Widget _buildProgressBar(int currentStep) {
-    const steps = _CheckoutScreenState.steps;
-    return Container(
-      color: Theme.of(context).brightness == Brightness.dark
-          ? AppColors.surfaceDark
-          : Colors.white,
-      padding: EdgeInsets.symmetric(
-          vertical: R.h(context, 24), horizontal: R.w(context, 32)),
-      child: Stack(
-        alignment: Alignment.topCenter,
-        children: [
-          // ── Background Connector Lines ──
-          Positioned(
-            top: R.h(context,
-                15), // Centers the 2px line exactly behind the 32px circles
-            left: R.w(context, 16), // Offset by half the circle width
-            right: R.w(context, 16),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    height: R.h(context, 2),
-                    color: 0 < currentStep
-                        ? AppColors.primary
-                        : AppColors.borderLight,
-                  ),
-                ),
-                Expanded(
-                  child: Container(
-                    height: R.h(context, 2),
-                    color: 1 < currentStep
-                        ? AppColors.primary
-                        : AppColors.borderLight,
-                  ),
-                ),
-              ],
+          : CheckoutBottomActions(
+              step: step,
+              cart: cartState,
+              onPlaceOrder: () => _handlePlaceOrder(
+                  cartState,
+                  ref.read(selectedAddressProvider)!,
+                  ref.read(paymentMethodProvider)),
             ),
-          ),
-          // ── Foreground Circles & Labels ──
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: List.generate(steps.length, (i) {
-              final isCompleted = i < currentStep;
-              final isActive = i <= currentStep;
-              final isCurrent = i == currentStep;
-
-              return GestureDetector(
-                  onTap: isCompleted
-                      ? () => ref.read(checkoutStepProvider.notifier).state = i
-                      : null,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Container(
-                        width: R.w(context, 32),
-                        height: R.w(context, 32),
-                        decoration: BoxDecoration(
-                          color: isActive ? AppColors.primary : Colors.white,
-                          border: Border.all(
-                            color: isActive
-                                ? AppColors.primary
-                                : AppColors.borderLight,
-                            width: R.w(context, 2),
-                          ),
-                          shape: BoxShape.circle,
-                          boxShadow: isCurrent
-                              ? [
-                                  BoxShadow(
-                                      color: AppColors.primary
-                                          .withValues(alpha: 0.35),
-                                      blurRadius: 10,
-                                      spreadRadius: 1)
-                                ]
-                              : null,
-                        ),
-                        alignment: Alignment.center,
-                        child: isCompleted
-                            ? Icon(Icons.check_rounded,
-                                size: R.sp(context, 16), color: Colors.white)
-                            : Text(
-                                '${i + 1}',
-                                style: AppTypography.label(context).copyWith(
-                                  color: isActive
-                                      ? Colors.white
-                                      : AppColors.neutralGold,
-                                  fontWeight: FontWeight.w800,
-                                ),
-                              ),
-                      ),
-                      SizedBox(height: R.h(context, 10)),
-                      Text(
-                        steps[i].toUpperCase(),
-                        style: AppTypography.label(context).copyWith(
-                          fontSize: R.sp(context, 8),
-                          letterSpacing: 1.2,
-                          color: isActive
-                              ? AppColors.primary
-                              : AppColors.neutralGold,
-                          fontWeight:
-                              isActive ? FontWeight.w800 : FontWeight.w600,
-                        ),
-                      ),
-                    ],
-                  ));
-            }),
-          ),
-        ],
-      ),
     );
   }
+
+
 
   Widget _buildStep0Details() {
     return SliverToBoxAdapter(
@@ -453,307 +358,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
     );
   }
 
-  Widget _buildStep1Review(CartState cart) {
-    return SliverToBoxAdapter(
-      child: Padding(
-        padding: EdgeInsets.all(R.w(context, 16)),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Review Order',
-                    style: AppTypography.h2(context)
-                        .copyWith(fontSize: R.sp(context, 24))),
-                TextButton(
-                  onPressed: () =>
-                      ref.read(checkoutStepProvider.notifier).state = 0,
-                  style: TextButton.styleFrom(
-                      backgroundColor: AppColors.primary.withValues(alpha: 0.1),
-                      padding:
-                          EdgeInsets.symmetric(horizontal: R.w(context, 16))),
-                  child: Text('EDIT DETAILS',
-                      style: AppTypography.label(context).copyWith(
-                          color: AppColors.primary,
-                          fontWeight: FontWeight.w800)),
-                )
-              ],
-            ),
-            SizedBox(height: R.h(context, 24)),
 
-            // Delivery Review
-            Container(
-              padding: EdgeInsets.all(R.w(context, 20)),
-              decoration: BoxDecoration(
-                  color: Theme.of(context).brightness == Brightness.dark
-                      ? AppColors.surfaceDark
-                      : Colors.white,
-                  borderRadius: BorderRadius.circular(R.w(context, 20)),
-                  border: Border.all(
-                      color: AppColors.primary.withValues(alpha: 0.2)),
-                  boxShadow: [
-                    BoxShadow(
-                        color: AppColors.primary.withValues(alpha: 0.05),
-                        blurRadius: 20)
-                  ]),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Icon(Icons.local_shipping_outlined,
-                          size: R.sp(context, 16), color: AppColors.primary),
-                      SizedBox(width: R.w(context, 8)),
-                      Text('DELIVERING TO',
-                          style: AppTypography.label(context).copyWith(
-                              color: AppColors.primary,
-                              letterSpacing: 1.5,
-                              fontSize: R.sp(context, 10))),
-                    ],
-                  ),
-                  SizedBox(height: R.h(context, 12)),
-                  Consumer(builder: (context, ref, _) {
-                    final address = ref.watch(selectedAddressProvider);
-                    if (address == null) {
-                      return const Text('No address selected');
-                    }
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(address.fullName,
-                            style: AppTypography.bodySM(context).copyWith(
-                                fontWeight: FontWeight.w800,
-                                fontSize: R.sp(context, 15))),
-                        SizedBox(height: R.h(context, 4)),
-                        Text(
-                            '${address.addressLine1}${address.locality != null ? ', ${address.locality}' : ''}',
-                            style: AppTypography.bodySM(context)
-                                .copyWith(color: AppColors.neutralGold)),
-                        Text(
-                            '${address.city}, ${address.state} - ${address.pincode}',
-                            style: AppTypography.bodySM(context)
-                                .copyWith(color: AppColors.neutralGold)),
-                        SizedBox(height: R.h(context, 6)),
-                        Text(address.phone,
-                            style: AppTypography.bodySM(context)
-                                .copyWith(fontWeight: FontWeight.w600)),
-                      ],
-                    );
-                  }),
-                ],
-              ),
-            ),
-            SizedBox(height: R.h(context, 16)),
-
-            // Payment Review
-            Container(
-              padding: EdgeInsets.all(R.w(context, 20)),
-              decoration: BoxDecoration(
-                  color: Theme.of(context).brightness == Brightness.dark
-                      ? AppColors.surfaceDark
-                      : Colors.white,
-                  borderRadius: BorderRadius.circular(R.w(context, 20)),
-                  border: Border.all(
-                      color: AppColors.primary.withValues(alpha: 0.2)),
-                  boxShadow: [
-                    BoxShadow(
-                        color: AppColors.primary.withValues(alpha: 0.05),
-                        blurRadius: 20)
-                  ]),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Icon(Icons.account_balance_wallet_outlined,
-                          size: R.sp(context, 16), color: AppColors.primary),
-                      SizedBox(width: R.w(context, 8)),
-                      Text('PAYMENT METHOD',
-                          style: AppTypography.label(context).copyWith(
-                              color: AppColors.primary,
-                              letterSpacing: 1.5,
-                              fontSize: R.sp(context, 10))),
-                    ],
-                  ),
-                  SizedBox(height: R.h(context, 12)),
-                  Consumer(builder: (context, ref, _) {
-                    final method = ref.watch(paymentMethodProvider);
-                    final label = method == 'upi'
-                        ? 'UPI'
-                        : method == 'card'
-                            ? 'Credit/Debit Card'
-                            : method == 'netbanking'
-                                ? 'Net Banking'
-                                : 'Cash on Delivery';
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(label,
-                            style: AppTypography.bodySM(context).copyWith(
-                                fontWeight: FontWeight.w800,
-                                fontSize: R.sp(context, 15))),
-                        SizedBox(height: R.h(context, 4)),
-                        Text(
-                            method == 'cod'
-                                ? 'Awaiting payment upon confirmed delivery.'
-                                : 'Secured digitally via Razorpay gateway.',
-                            style: AppTypography.bodySM(context)
-                                .copyWith(color: AppColors.neutralGold)),
-                      ],
-                    );
-                  }),
-                ],
-              ),
-            ),
-            SizedBox(height: R.h(context, 32)),
-
-            Text('Artisan Products to Ship', style: AppTypography.h3(context)),
-            SizedBox(height: R.h(context, 16)),
-            ...cart.items.map((item) => Padding(
-                  padding: EdgeInsets.only(bottom: R.h(context, 16)),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: R.w(context, 64),
-                        height: R.w(context, 64),
-                        decoration: BoxDecoration(
-                            color: AppColors.primary.withValues(alpha: 0.05),
-                            borderRadius:
-                                BorderRadius.circular(R.w(context, 12)),
-                            image: item.product.primaryImage.isNotEmpty
-                                ? DecorationImage(
-                                    image:
-                                        NetworkImage(item.product.primaryImage),
-                                    fit: BoxFit.cover)
-                                : null),
-                      ),
-                      SizedBox(width: R.w(context, 16)),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(item.product.name,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: AppTypography.bodySM(context)
-                                    .copyWith(fontWeight: FontWeight.bold)),
-                            SizedBox(height: R.h(context, 4)),
-                            Text(
-                                '${item.selectedWeight ?? item.product.weight} · Qty ${item.quantity}',
-                                style: AppTypography.label(context).copyWith(
-                                    fontSize: R.sp(context, 10),
-                                    color: AppColors.neutralGold,
-                                    letterSpacing: 1.2)),
-                          ],
-                        ),
-                      ),
-                      Text(formatPrice(item.effectivePrice * item.quantity),
-                          style: AppTypography.price(context).copyWith(
-                              fontSize: R.sp(context, 14),
-                              color: Theme.of(context).brightness ==
-                                      Brightness.dark
-                                  ? const Color(0xFFF5F0E8)
-                                  : AppColors.deepCharcoal)),
-                    ],
-                  ),
-                )),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildBottomActions(int step, CartState cart) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Theme.of(context).brightness == Brightness.dark
-            ? AppColors.surfaceDark
-            : Colors.white,
-        boxShadow: [
-          BoxShadow(
-              color: Colors.black.withValues(alpha: 0.05),
-              offset: const Offset(0, -10),
-              blurRadius: 30)
-        ],
-      ),
-      padding: EdgeInsets.fromLTRB(
-          R.w(context, 24),
-          R.h(context, 20),
-          R.w(context, 24),
-          MediaQuery.of(context).padding.bottom + R.h(context, 20)),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text('Estimated Total',
-                  style: AppTypography.bodySM(context)
-                      .copyWith(fontWeight: FontWeight.bold)),
-              Consumer(builder: (context, ref, _) {
-                final method = ref.watch(paymentMethodProvider);
-                final settings = ref.watch(paymentSettingsProvider).value;
-                final codCharge = (method == 'cod' && settings != null)
-                    ? settings.codCharge
-                    : 0.0;
-                return Text(formatPrice(cart.total + codCharge),
-                    style: AppTypography.h2(context)
-                        .copyWith(fontSize: R.sp(context, 24), height: 1));
-              }),
-            ],
-          ),
-          SizedBox(height: R.h(context, 16)),
-          SizedBox(
-            width: double.infinity,
-            height: R.h(context, 56),
-            child: ElevatedButton(
-              onPressed: () {
-                if (step == 0) {
-                  if (ref.read(selectedAddressProvider) == null) {
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                        duration: Duration(milliseconds: 2000),
-                        content: Text('Please select a delivery address')));
-                    return;
-                  }
-                  ref.read(checkoutStepProvider.notifier).state = 1;
-                } else if (step == 1) {
-                  // Final Place Order
-                  _handlePlaceOrder(cart, ref.read(selectedAddressProvider)!,
-                      ref.read(paymentMethodProvider));
-                }
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primary,
-                foregroundColor: AppColors.deepCharcoal,
-                elevation: 8,
-                shadowColor: AppColors.primary.withValues(alpha: 0.3),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(R.w(context, 16))),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(step == 0 ? 'Review Order' : 'Place Order & Pay',
-                      style: AppTypography.bodySM(context).copyWith(
-                          fontWeight: FontWeight.w800,
-                          fontSize: R.sp(context, 16),
-                          color: AppColors.deepCharcoal)),
-                  SizedBox(width: R.w(context, 8)),
-                  Icon(
-                      step == 0
-                          ? Icons.arrow_forward_rounded
-                          : Icons.lock_outline_rounded,
-                      size: R.sp(context, 20),
-                      color: AppColors.deepCharcoal),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 }
 
 

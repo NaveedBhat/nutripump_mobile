@@ -1,17 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../features/account/widgets/address_book/address_form_sheet.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_typography.dart';
 import '../../../core/utils/responsive.dart';
 import '../../../providers/providers.dart';
-import '../../account/address_book_screen.dart' show AddressFormSheet;
 import '../../../models/cart_item.dart' show Address;
-
-// We need access to the selectedAddressProvider from checkout screen. 
-// However, the cleanest way to avoid circular dependency is to move the state provider
-// to a shared checkout_state.dart file, OR pass it as a parameter, OR declare it here.
-// Since it's tightly coupled to the checkout, moving the StateProviders to a separate file is best.
-// Wait, I will just import the providers from checkout_screen.dart since they are defined there.
 import '../checkout_screen.dart' show selectedAddressProvider;
 
 class AddressSelectionSection extends ConsumerWidget {

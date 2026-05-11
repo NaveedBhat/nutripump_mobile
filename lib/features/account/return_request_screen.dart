@@ -3,10 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_typography.dart';
-import '../../core/utils/formatters.dart';
+
 import '../../core/utils/responsive.dart';
 import '../../models/order.dart';
 import '../../providers/providers.dart';
+import 'widgets/return_request/return_order_selection_card.dart';
+import 'widgets/return_request/return_reason_tile.dart';
 
 class ReturnRequestScreen extends ConsumerStatefulWidget {
   final String? preselectedOrderId;
@@ -224,7 +226,7 @@ class _ReturnRequestScreenState extends ConsumerState<ReturnRequestScreen> {
                         ),
                       )
                     else
-                      ...returnableOrders.map((order) => _OrderSelectionCard(
+                      ...returnableOrders.map((order) => ReturnOrderSelectionCard(
                             order: order,
                             isSelected: _selectedOrder?.id == order.id,
                             onTap: () => setState(() => _selectedOrder = order),
@@ -239,7 +241,7 @@ class _ReturnRequestScreenState extends ConsumerState<ReturnRequestScreen> {
                               .copyWith(fontSize: R.sp(context, 16))),
                       SizedBox(height: R.h(context, 12)),
 
-                      ..._reasons.map((reason) => _ReasonTile(
+                      ..._reasons.map((reason) => ReturnReasonTile(
                             reason: reason,
                             isSelected: _selectedReason == reason,
                             onTap: () =>
@@ -330,154 +332,6 @@ class _ReturnRequestScreenState extends ConsumerState<ReturnRequestScreen> {
             },
           );
         },
-      ),
-    );
-  }
-}
-
-// ── Order Selection Card ───────────────────────────────────────────────────
-class _OrderSelectionCard extends StatelessWidget {
-  final Order order;
-  final bool isSelected;
-  final VoidCallback onTap;
-  const _OrderSelectionCard(
-      {required this.order, required this.isSelected, required this.onTap});
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        margin: EdgeInsets.only(bottom: R.h(context, 10)),
-        padding: EdgeInsets.all(R.w(context, 14)),
-        decoration: BoxDecoration(
-          color: Theme.of(context).brightness == Brightness.dark
-              ? AppColors.surfaceDark
-              : Colors.white,
-          borderRadius: BorderRadius.circular(R.w(context, 12)),
-          border: Border.all(
-            color: isSelected ? AppColors.primary : AppColors.borderLight,
-            width: isSelected ? 2 : 1,
-          ),
-          boxShadow: [
-            BoxShadow(
-                color: (Theme.of(context).brightness == Brightness.dark
-                        ? Theme.of(context).colorScheme.onSurface
-                        : AppColors.deepCharcoal)
-                    .withValues(alpha: 0.02),
-                blurRadius: 6,
-                offset: const Offset(0, 2))
-          ],
-        ),
-        child: Row(
-          children: [
-            Container(
-              width: R.w(context, 20),
-              height: R.w(context, 20),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: isSelected ? AppColors.primary : Colors.white,
-                border: Border.all(
-                    color:
-                        isSelected ? AppColors.primary : AppColors.borderLight,
-                    width: 1.5),
-              ),
-              child: isSelected
-                  ? Icon(Icons.check_rounded,
-                      size: R.sp(context, 12),
-                      color: (Theme.of(context).brightness == Brightness.dark
-                          ? Theme.of(context).colorScheme.onSurface
-                          : AppColors.deepCharcoal))
-                  : null,
-            ),
-            SizedBox(width: R.w(context, 12)),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(formatOrderId(order.id),
-                      style: AppTypography.bodySM(context).copyWith(
-                          fontWeight: FontWeight.w800,
-                          fontSize: R.sp(context, 13))),
-                  SizedBox(height: R.h(context, 2)),
-                  Text(
-                    order.items
-                        .map((i) => i.product.name)
-                        .where((n) => n.isNotEmpty)
-                        .take(2)
-                        .join(', '),
-                    style: AppTypography.bodySM(context).copyWith(
-                        fontSize: R.sp(context, 11),
-                        color: AppColors.neutralGold),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
-              ),
-            ),
-            Text(formatPrice(order.total),
-                style: AppTypography.bodySM(context).copyWith(
-                    fontWeight: FontWeight.w700, fontSize: R.sp(context, 13))),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-// ── Reason Tile ────────────────────────────────────────────────────────────
-class _ReasonTile extends StatelessWidget {
-  final String reason;
-  final bool isSelected;
-  final VoidCallback onTap;
-  const _ReasonTile(
-      {required this.reason, required this.isSelected, required this.onTap});
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        margin: EdgeInsets.only(bottom: R.h(context, 8)),
-        padding: EdgeInsets.symmetric(
-            horizontal: R.w(context, 14), vertical: R.h(context, 12)),
-        decoration: BoxDecoration(
-          color: isSelected
-              ? AppColors.primary.withValues(alpha: 0.05)
-              : Colors.white,
-          borderRadius: BorderRadius.circular(R.w(context, 10)),
-          border: Border.all(
-            color: isSelected ? AppColors.primary : AppColors.borderLight,
-            width: isSelected ? 1.5 : 1,
-          ),
-        ),
-        child: Row(
-          children: [
-            Container(
-              width: R.w(context, 18),
-              height: R.w(context, 18),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: isSelected ? AppColors.primary : Colors.white,
-                border: Border.all(
-                    color:
-                        isSelected ? AppColors.primary : AppColors.borderLight,
-                    width: 1.5),
-              ),
-              child: isSelected
-                  ? Icon(Icons.check_rounded,
-                      size: R.sp(context, 10),
-                      color: (Theme.of(context).brightness == Brightness.dark
-                          ? Theme.of(context).colorScheme.onSurface
-                          : AppColors.deepCharcoal))
-                  : null,
-            ),
-            SizedBox(width: R.w(context, 10)),
-            Text(reason,
-                style: AppTypography.bodySM(context)
-                    .copyWith(fontSize: R.sp(context, 13))),
-          ],
-        ),
       ),
     );
   }

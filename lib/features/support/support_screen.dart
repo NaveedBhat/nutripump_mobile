@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
+
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import '../../core/constants/app_colors.dart';
@@ -9,6 +9,8 @@ import '../../core/widgets/primary_button.dart';
 import '../../core/widgets/animated_enter.dart';
 import '../../core/utils/responsive.dart';
 import '../../providers/providers.dart';
+import 'widgets/support_success_state.dart';
+import 'widgets/support_promise_section.dart';
 
 class SupportScreen extends ConsumerStatefulWidget {
   final String? initialOrderId;
@@ -123,56 +125,14 @@ class _SupportScreenState extends ConsumerState<SupportScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            _sent ? _buildSuccessState() : _buildFormState(),
-            _buildSupportPromise(),
+            _sent ? SupportSuccessState(orderId: _orderId) : _buildFormState(),
+            const SupportPromiseSection(),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildSuccessState() {
-    return AnimatedEnter(
-      child: Padding(
-        padding: EdgeInsets.symmetric(
-            horizontal: R.w(context, 24), vertical: R.h(context, 48)),
-        child: Column(
-          children: [
-            Container(
-              width: R.w(context, 80),
-              height: R.w(context, 80),
-              decoration: BoxDecoration(
-                color: Colors.green.withValues(alpha: 0.1),
-                shape: BoxShape.circle,
-                border: Border.all(color: Colors.green.withValues(alpha: 0.2)),
-              ),
-              child: Icon(Icons.check_circle_rounded,
-                  color: Colors.green, size: R.sp(context, 40)),
-            ),
-            SizedBox(height: R.h(context, 24)),
-            Text(
-              'Ticket Submitted',
-              style: AppTypography.h2(context)
-                  .copyWith(fontSize: R.sp(context, 28)),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: R.h(context, 12)),
-            Text(
-              'Our dedicated concierge team has received your request concerning order $_orderId. We will prioritize this and respond within 12 hours.',
-              style: AppTypography.bodySM(context)
-                  .copyWith(color: AppColors.neutralGold, height: 1.6),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: R.h(context, 32)),
-            PrimaryButton(
-              text: 'Return to Dashboard',
-              onPressed: () => context.go('/account'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 
   Widget _buildFormState() {
     return AnimatedEnter(
@@ -313,91 +273,5 @@ class _SupportScreenState extends ConsumerState<SupportScreen> {
     );
   }
 
-  Widget _buildSupportPromise() {
-    return Container(
-      width: double.infinity,
-      color: Theme.of(context).brightness == Brightness.dark
-          ? AppColors.surfaceDark
-          : Colors.white,
-      padding: EdgeInsets.all(R.w(context, 32)),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text('Our Support Promise', style: AppTypography.h2(context)),
-          SizedBox(height: R.h(context, 32)),
-          _buildPromiseItem(
-            Icons.schedule_rounded,
-            '12-Hour Priority Response',
-            'As an esteemed customer, your ticket bypasses the general queue.',
-          ),
-          SizedBox(height: R.h(context, 24)),
-          _buildPromiseItem(
-            Icons.inventory_2_outlined,
-            'No-Hassle Replacements',
-            'If any product arrived damaged, we dispatch a replacement batch immediately.',
-          ),
-          SizedBox(height: R.h(context, 24)),
-          _buildPromiseItem(
-            Icons.local_shipping_outlined,
-            'Real-Time Transit Tracking',
-            'Delivery delayed? We communicate with logistics partners to expedite it.',
-          ),
-          SizedBox(height: R.h(context, 48)),
-          Text('DIRECT LINE',
-              style: AppTypography.labelGold(context)
-                  .copyWith(fontWeight: FontWeight.bold)),
-          SizedBox(height: R.h(context, 8)),
-          Text('support@nutripump.com', style: AppTypography.h3(context)),
-          SizedBox(height: R.h(context, 4)),
-          Text('Available Mon - Sat, 9am - 7pm EST',
-              style: AppTypography.bodySM(context).copyWith(
-                  color: AppColors.neutralGold, fontSize: R.sp(context, 12))),
-        ],
-      ),
-    );
-  }
 
-  Widget _buildPromiseItem(IconData icon, String title, String desc) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          width: R.w(context, 48),
-          height: R.w(context, 48),
-          decoration: BoxDecoration(
-            color: Theme.of(context).brightness == Brightness.dark
-                ? AppColors.surfaceDark
-                : Colors.white,
-            borderRadius: BorderRadius.circular(R.w(context, 16)),
-            border: Border.all(color: AppColors.primary.withValues(alpha: 0.2)),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.02),
-                blurRadius: 8,
-                offset: const Offset(0, 2),
-              ),
-            ],
-          ),
-          child: Icon(icon, color: AppColors.primary, size: R.sp(context, 20)),
-        ),
-        SizedBox(width: R.w(context, 16)),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(title,
-                  style: AppTypography.body(context)
-                      .copyWith(fontWeight: FontWeight.bold)),
-              SizedBox(height: R.h(context, 4)),
-              Text(desc,
-                  style: AppTypography.bodySM(context).copyWith(
-                      color: AppColors.neutralGold,
-                      fontSize: R.sp(context, 13),
-                      height: 1.5)),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
 }
