@@ -1,0 +1,688 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import '../../../core/constants/app_colors.dart';
+import '../../../core/constants/app_typography.dart';
+import '../../../core/utils/formatters.dart';
+import '../../../core/utils/responsive.dart';
+import '../../../models/order.dart';
+import '../../../providers/providers.dart';
+import 'cancel_order_dialog.dart';
+
+class OrderCard extends ConsumerWidget {
+  final Order order;
+  const OrderCard({super.key, required this.order});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    // Detect payment-abandoned orders:
+    // Backend sets paymentStatus='failed' when the Razorpay payment is
+    // cancelled or fails. COD cancellations always have paymentStatus='pending'.
+    // This is the reliable, backend-verified discriminator.
+    final bool isPaymentAbandoned = order.status == OrderStatus.cancelled &&
+        order.paymentStatus == PaymentStatus.failed;
+
+    final statusColor = isPaymentAbandoned
+        ? Colors.orange.shade700
+        : _getStatusColor(context, order.status);
+    final statusBg = isPaymentAbandoned
+        ? Colors.orange.shade100
+        : _getStatusBgColor(order.status);
+    final statusIcon = isPaymentAbandoned
+        ? Icons.payment_rounded
+        : _getStatusIcon(order.status);
+
+    // Fallback store settings if provider isn't loaded yet
+    final settingsAsync = ref.watch(storeSettingsProvider);
+    final cancelHours =
+        settingsAsync.valueOrNull?.cancellationWindowHours ?? 24;
+    final returnDays = settingsAsync.valueOrNull?.returnWindowDays ?? 5;
+
+    // Payment-abandoned orders must not show the regular Cancel button
+    final canCancel = !isPaymentAbandoned &&
+        order.canCancel &&
+        _isWithinWindow(order.createdAt, cancelHours);
+    final canReturn =
+        order.canReturn && _isWithinReturnWindow(order.updatedAt, returnDays);
+
+    return Container(
+      decoration: BoxDecoration(
+        color: Theme.of(context).brightness == Brightness.dark
+            ? AppColors.surfaceDark
+            : Colors.white,
+        borderRadius: BorderRadius.circular(R.w(context, 12)),
+        border: Border.all(color: AppColors.primary.withValues(alpha: 0.2)),
+        boxShadow: [
+          BoxShadow(
+            color: (Theme.of(context).brightness == Brightness.dark
+                    ? Theme.of(context).colorScheme.onSurface
+                    : AppColors.deepCharcoal)
+                .withValues(alpha: 0.02),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // ── Header ──────────────────────────────────────────────────────────
+          Container(
+            padding: EdgeInsets.symmetric(
+                horizontal: R.w(context, 12), vertical: R.h(context, 10)),
+            decoration: BoxDecoration(
+              color: AppColors.primary.withValues(alpha: 0.05),
+              borderRadius:
+                  BorderRadius.vertical(top: Radius.circular(R.w(context, 11))),
+              border: Border(
+                bottom: BorderSide(
+                    color: AppColors.primary.withValues(alpha: 0.15)),
+              ),
+            ),
+            child: Row(
+              children: [
+                HeaderInfoBlock(
+                  label: 'Date Placed',
+                  value: _formatDate(order.createdAt),
+                ),
+                SizedBox(width: R.w(context, 12)),
+                HeaderInfoBlock(
+                  label: 'Total',
+                  value: formatPrice(order.total),
+                ),
+                SizedBox(width: R.w(context, 12)),
+                HeaderInfoBlock(
+                  label: 'Order #',
+                  value: formatOrderId(order.id),
+                ),
+              ],
+            ),
+          ),
+
+          Padding(
+            padding: EdgeInsets.all(R.w(context, 12)),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // ── Status ──────────────────────────────────────────────────
+                Row(
+                  children: [
+                    Container(
+                      width: R.w(context, 32),
+                      height: R.w(context, 32),
+                      decoration: BoxDecoration(
+                        color: statusBg,
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(statusIcon,
+                          size: R.sp(context, 16), color: statusColor),
+                    ),
+                    SizedBox(width: R.w(context, 12)),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            isPaymentAbandoned
+                                ? 'Payment Failed'
+                                : order.status == OrderStatus.delivered
+                                    ? 'Delivered near door'
+                                    : 'Status: ${order.status.label}',
+                            style: AppTypography.bodySM(context).copyWith(
+                              fontWeight: FontWeight.w700,
+                              fontSize: R.sp(context, 13),
+                            ),
+                          ),
+                          SizedBox(height: R.h(context, 2)),
+                          Text(
+                            isPaymentAbandoned
+                                ? 'Revise your payment to complete this order'
+                                : order.status == OrderStatus.delivered
+                                    ? 'Your order has been delivered. Enjoy!'
+                                    : order.status == OrderStatus.cancelled
+                                        ? 'This order has been cancelled.'
+                                        : order.trackingNumber != null
+                                            ? 'Tracking: ${order.trackingNumber}'
+                                            : 'Your order is moving through our artisan network.',
+                            style: AppTypography.bodySM(context).copyWith(
+                              color: AppColors.neutralGold,
+                              fontSize: R.sp(context, 11),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: R.h(context, 10)),
+
+                // ── Items (Up to 2) ───────────────────────────────────────
+                ...order.items.take(2).map((item) {
+                  final p = item.product;
+                  return Padding(
+                    padding: EdgeInsets.only(bottom: R.h(context, 8)),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          width: R.w(context, 56),
+                          height: R.w(context, 56),
+                          decoration: BoxDecoration(
+                            color: AppColors.primary.withValues(alpha: 0.05),
+                            borderRadius:
+                                BorderRadius.circular(R.w(context, 8)),
+                            border: Border.all(
+                                color:
+                                    AppColors.primary.withValues(alpha: 0.1)),
+                          ),
+                          child: ClipRRect(
+                            borderRadius:
+                                BorderRadius.circular(R.w(context, 8)),
+                            child: p.images.isNotEmpty
+                                ? CachedNetworkImage(
+                                    imageUrl: p.images.first,
+                                    fit: BoxFit.cover,
+                                  )
+                                : const Icon(Icons.image,
+                                    color: AppColors.borderLight),
+                          ),
+                        ),
+                        SizedBox(width: R.w(context, 12)),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                p.name,
+                                style: AppTypography.bodySM(context).copyWith(
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: R.sp(context, 13),
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              SizedBox(height: R.h(context, 2)),
+                              () {
+                                final displayWeight =
+                                    item.selectedWeight?.isNotEmpty == true
+                                        ? item.selectedWeight!
+                                        : p.weight.isNotEmpty
+                                            ? p.weight
+                                            : null;
+                                return Text(
+                                  [
+                                    'Qty: ${item.quantity}',
+                                    if (displayWeight != null) displayWeight,
+                                    if (p.category.isNotEmpty) p.category,
+                                  ].join(' • '),
+                                  style: AppTypography.bodySM(context).copyWith(
+                                    color: AppColors.neutralGold,
+                                    fontSize: R.sp(context, 11),
+                                  ),
+                                );
+                              }(),
+                              SizedBox(height: R.h(context, 4)),
+                              Text(
+                                formatPrice(
+                                    item.effectivePrice * item.quantity),
+                                style: AppTypography.bodySM(context).copyWith(
+                                  color: AppColors.primaryDark,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: R.sp(context, 12),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }),
+
+                // ── More Items indicator ──────────────────────────────────
+                if (order.items.length > 2)
+                  Row(
+                    children: [
+                      Container(
+                        width: R.w(context, 56),
+                        height: R.w(context, 56),
+                        decoration: BoxDecoration(
+                          color: AppColors.primary.withValues(alpha: 0.1),
+                          borderRadius: BorderRadius.circular(R.w(context, 8)),
+                          border: Border.all(
+                              color: AppColors.primary.withValues(alpha: 0.2)),
+                        ),
+                        child: Center(
+                          child: Text(
+                            '+${order.items.length - 2}',
+                            style: AppTypography.h3(context).copyWith(
+                              color: AppColors.primaryDark,
+                              fontSize: R.sp(context, 16),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: R.w(context, 12)),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'More Items',
+                              style: AppTypography.bodySM(context).copyWith(
+                                fontWeight: FontWeight.w700,
+                                fontSize: R.sp(context, 13),
+                              ),
+                            ),
+                            SizedBox(height: R.h(context, 2)),
+                            Text(
+                              'Included in this shipment securely packed.',
+                              style: AppTypography.bodySM(context).copyWith(
+                                color: AppColors.neutralGold,
+                                fontSize: R.sp(context, 11),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+
+                // ── Action Buttons ─────────────────────────────────────────
+                SizedBox(height: R.h(context, 12)),
+
+                if (isPaymentAbandoned) ...[
+                  // Payment-abandoned: full-width Retry Payment CTA (Flipkart-style)
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () => context.push('/checkout'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.primary,
+                        foregroundColor: AppColors.deepCharcoal,
+                        padding: EdgeInsets.zero,
+                        minimumSize: const Size(0, 36),
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.circular(R.w(context, 8))),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.refresh_rounded,
+                              size: R.sp(context, 14),
+                              color: AppColors.deepCharcoal),
+                          SizedBox(width: R.w(context, 6)),
+                          Text(
+                            'Retry Payment',
+                            style: AppTypography.bodySM(context).copyWith(
+                              fontWeight: FontWeight.w700,
+                              fontSize: R.sp(context, 12),
+                              color: AppColors.deepCharcoal,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ] else ...[
+                  // Cancellation countdown label
+                  if (canCancel)
+                    Padding(
+                      padding: EdgeInsets.only(bottom: R.h(context, 12)),
+                      child: TimeRemainingLabel(
+                        icon: Icons.access_time_rounded,
+                        text:
+                            _getCancelWithinText(order.createdAt, cancelHours),
+                        color: Colors.amber.shade700,
+                      ),
+                    ),
+
+                  // Return countdown label
+                  if (canReturn)
+                    Padding(
+                      padding: EdgeInsets.only(bottom: R.h(context, 12)),
+                      child: TimeRemainingLabel(
+                        icon: Icons.access_time_rounded,
+                        text: _getReturnWithinText(order.updatedAt, returnDays),
+                        color: Colors.amber.shade700,
+                      ),
+                    ),
+
+                  if (order.status == OrderStatus.delivered)
+                    Row(
+                      children: [
+                        Expanded(
+                          child: OutlinedButton(
+                            onPressed: () =>
+                                context.push('/orders/${order.id}'),
+                            style: OutlinedButton.styleFrom(
+                              foregroundColor: AppColors.deepCharcoal,
+                              side: BorderSide(
+                                  color: AppColors.neutralGold
+                                      .withValues(alpha: 0.3)),
+                              backgroundColor:
+                                  AppColors.neutralGold.withValues(alpha: 0.05),
+                              padding: EdgeInsets.zero,
+                              minimumSize: const Size(0, 32),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.circular(R.w(context, 6))),
+                            ),
+                            child: Text('View Details',
+                                style: AppTypography.bodySM(context).copyWith(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: R.sp(context, 10))),
+                          ),
+                        ),
+                        if (canReturn) ...[
+                          SizedBox(width: R.w(context, 8)),
+                          Expanded(
+                            child: ElevatedButton(
+                              onPressed: () => context
+                                  .push('/account/returns?orderId=${order.id}'),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: AppColors.primary,
+                                foregroundColor: AppColors.deepCharcoal,
+                                padding: EdgeInsets.zero,
+                                minimumSize: const Size(0, 32),
+                                elevation: 0,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.circular(R.w(context, 6))),
+                              ),
+                              child: Text('Return Item',
+                                  style: AppTypography.bodySM(context).copyWith(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: R.sp(context, 10))),
+                            ),
+                          ),
+                        ],
+                      ],
+                    )
+                  else
+                    Row(
+                      children: [
+                        if (order.status == OrderStatus.cancelled) ...[
+                          // Cancelled orders: View Details → shows full invoice + cancellation reason
+                          Expanded(
+                            child: OutlinedButton(
+                              onPressed: () =>
+                                  context.push('/orders/${order.id}'),
+                              style: OutlinedButton.styleFrom(
+                                foregroundColor: AppColors.deepCharcoal,
+                                side: BorderSide(
+                                    color: AppColors.neutralGold
+                                        .withValues(alpha: 0.3)),
+                                backgroundColor: AppColors.neutralGold
+                                    .withValues(alpha: 0.05),
+                                padding: EdgeInsets.zero,
+                                minimumSize: const Size(0, 32),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.circular(R.w(context, 6))),
+                              ),
+                              child: Text('View Details',
+                                  style: AppTypography.bodySM(context).copyWith(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: R.sp(context, 10)),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis),
+                            ),
+                          ),
+                          SizedBox(width: R.w(context, 6)),
+                        ] else ...[
+                          // Active orders: Track Live
+                          Expanded(
+                            child: OutlinedButton(
+                              onPressed: () =>
+                                  context.push('/orders/${order.id}'),
+                              style: OutlinedButton.styleFrom(
+                                foregroundColor: AppColors.deepCharcoal,
+                                side:
+                                    const BorderSide(color: AppColors.primary),
+                                backgroundColor:
+                                    AppColors.primary.withValues(alpha: 0.1),
+                                padding: EdgeInsets.zero,
+                                minimumSize: const Size(0, 32),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.circular(R.w(context, 6))),
+                              ),
+                              child: Text('Track Live',
+                                  style: AppTypography.bodySM(context).copyWith(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: R.sp(context, 10)),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis),
+                            ),
+                          ),
+                          SizedBox(width: R.w(context, 6)),
+                        ],
+                        Expanded(
+                          child: OutlinedButton(
+                            onPressed: () => context.push(
+                                '/support?orderId=${formatOrderId(order.id)}'),
+                            style: OutlinedButton.styleFrom(
+                              foregroundColor: AppColors.deepCharcoal,
+                              side: BorderSide(
+                                  color: AppColors.neutralGold
+                                      .withValues(alpha: 0.3)),
+                              backgroundColor:
+                                  AppColors.neutralGold.withValues(alpha: 0.05),
+                              padding: EdgeInsets.zero,
+                              minimumSize: const Size(0, 32),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.circular(R.w(context, 6))),
+                            ),
+                            child: Text('Contact',
+                                style: AppTypography.bodySM(context).copyWith(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: R.sp(context, 10)),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis),
+                          ),
+                        ),
+                        if (canCancel) ...[
+                          SizedBox(width: R.w(context, 6)),
+                          Expanded(
+                            child: OutlinedButton(
+                              onPressed: () =>
+                                  _showCancelDialog(context, ref, order),
+                              style: OutlinedButton.styleFrom(
+                                foregroundColor: Colors.red,
+                                side: const BorderSide(color: Colors.red),
+                                backgroundColor:
+                                    Colors.red.withValues(alpha: 0.05),
+                                padding: EdgeInsets.zero,
+                                minimumSize: const Size(0, 32),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.circular(R.w(context, 6))),
+                              ),
+                              child: Text('Cancel',
+                                  style: AppTypography.bodySM(context).copyWith(
+                                      fontWeight: FontWeight.w700,
+                                      color: Colors.red,
+                                      fontSize: R.sp(context, 10)),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis),
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
+                ],
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showCancelDialog(BuildContext context, WidgetRef ref, Order order) {
+    showDialog(
+      context: context,
+      builder: (ctx) => CancelOrderDialog(order: order),
+    );
+  }
+
+  String _getCancelWithinText(DateTime createdAt, int cancelHours) {
+    final windowMs = cancelHours * 60 * 60 * 1000;
+    final expiresAt = createdAt.millisecondsSinceEpoch + windowMs;
+    final remainingMs = expiresAt - DateTime.now().millisecondsSinceEpoch;
+    if (remainingMs <= 0) return 'Cancellation window expired';
+    final remainHrs = remainingMs ~/ (1000 * 60 * 60);
+    final remainMins = (remainingMs % (1000 * 60 * 60)) ~/ (1000 * 60);
+    return remainHrs > 0
+        ? 'Cancel within ${remainHrs}h ${remainMins}m'
+        : 'Cancel within ${remainMins}m';
+  }
+
+  String _getReturnWithinText(DateTime updatedAt, int returnDays) {
+    final windowMs = returnDays * 24 * 60 * 60 * 1000;
+    final expiresAt = updatedAt.millisecondsSinceEpoch + windowMs;
+    final remainingMs = expiresAt - DateTime.now().millisecondsSinceEpoch;
+    if (remainingMs <= 0) return 'Return window expired';
+    final remainDays = remainingMs ~/ (1000 * 60 * 60 * 24);
+    final remainHrs = (remainingMs % (1000 * 60 * 60 * 24)) ~/ (1000 * 60 * 60);
+    if (remainDays > 0) return 'Return within ${remainDays}d ${remainHrs}h';
+    if (remainHrs > 0) return 'Return window closes in ${remainHrs}h';
+    return 'Return window closing soon';
+  }
+
+  bool _isWithinWindow(DateTime date, int hours) {
+    return DateTime.now().difference(date).inHours < hours;
+  }
+
+  bool _isWithinReturnWindow(DateTime date, int days) {
+    return DateTime.now().difference(date).inDays < days;
+  }
+
+  String _formatDate(DateTime dt) {
+    const months = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec'
+    ];
+    return '${months[dt.month - 1]} ${dt.day}, ${dt.year}';
+  }
+
+  Color _getStatusColor(BuildContext context, OrderStatus status) {
+    switch (status) {
+      case OrderStatus.delivered:
+        return Colors.green.shade700;
+      case OrderStatus.shipped:
+        return Colors.blue.shade700;
+      case OrderStatus.confirmed:
+        return (Theme.of(context).brightness == Brightness.dark
+            ? Theme.of(context).colorScheme.onSurface
+            : AppColors.deepCharcoal);
+      case OrderStatus.cancelled:
+        return Colors.red.shade700;
+      default:
+        return (Theme.of(context).brightness == Brightness.dark
+            ? Theme.of(context).colorScheme.onSurface
+            : AppColors.deepCharcoal);
+    }
+  }
+
+  Color _getStatusBgColor(OrderStatus status) {
+    switch (status) {
+      case OrderStatus.delivered:
+        return Colors.green.shade100;
+      case OrderStatus.shipped:
+        return Colors.blue.shade100;
+      case OrderStatus.confirmed:
+        return AppColors.primary.withValues(alpha: 0.2);
+      case OrderStatus.cancelled:
+        return Colors.red.shade100;
+      default:
+        return AppColors.neutralGold.withValues(alpha: 0.2);
+    }
+  }
+
+  IconData _getStatusIcon(OrderStatus status) {
+    switch (status) {
+      case OrderStatus.delivered:
+        return Icons.inventory_2_rounded;
+      case OrderStatus.shipped:
+        return Icons.local_shipping_rounded;
+      case OrderStatus.confirmed:
+        return Icons.check_circle_rounded;
+      case OrderStatus.cancelled:
+        return Icons.cancel_rounded;
+      default:
+        return Icons.rotate_right_rounded;
+    }
+  }
+}
+
+class HeaderInfoBlock extends StatelessWidget {
+  final String label;
+  final String value;
+  const HeaderInfoBlock({super.key, required this.label, required this.value});
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            value,
+            style: AppTypography.bodySM(context).copyWith(
+              fontWeight: FontWeight.w800,
+              fontSize: R.sp(context, 12),
+            ),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class TimeRemainingLabel extends StatelessWidget {
+  final IconData icon;
+  final String text;
+  final Color color;
+  const TimeRemainingLabel({
+    super.key,
+    required this.icon,
+    required this.text,
+    required this.color,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Icon(icon, size: R.sp(context, 10), color: color),
+        SizedBox(width: R.w(context, 4)),
+        Text(
+          text,
+          style: AppTypography.bodySM(context).copyWith(
+            color: color,
+            fontSize: R.sp(context, 9),
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+      ],
+    );
+  }
+}
