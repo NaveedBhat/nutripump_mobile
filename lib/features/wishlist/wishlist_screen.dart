@@ -24,16 +24,6 @@ class _WishlistScreenState extends ConsumerState<WishlistScreen> {
   @override
   void initState() {
     super.initState();
-    // Listen for tab re-tap to scroll to top (Wishlist is index 3)
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.listen<int?>(scrollTabEventProvider, (_, index) {
-        if (index == 3 && _scrollController.hasClients) {
-          _scrollController.animateTo(0,
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.easeOut);
-        }
-      });
-    });
   }
 
   @override
@@ -44,6 +34,16 @@ class _WishlistScreenState extends ConsumerState<WishlistScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Listen for tab re-tap to scroll to top (Wishlist is index 3).
+    // ref.listen MUST be called inside build — not initState.
+    ref.listen<int?>(scrollTabEventProvider, (_, index) {
+      if (index == 3 && _scrollController.hasClients) {
+        _scrollController.animateTo(0,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeOut);
+      }
+    });
+
     final items = ref.watch(wishlistProvider);
 
     return Scaffold(

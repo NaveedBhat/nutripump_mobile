@@ -70,16 +70,6 @@ class _CategoriesScreenState extends ConsumerState<CategoriesScreen>
     _headerFade = AnimationController(vsync: this, duration: const Duration(milliseconds: 700))
       ..forward();
     _loadCategoryBanner();
-    // Listen for tab re-tap to scroll to top (Categories is index 2)
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.listen<int?>(scrollTabEventProvider, (_, index) {
-        if (index == 2 && _scrollController.hasClients) {
-          _scrollController.animateTo(0,
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.easeOut);
-        }
-      });
-    });
   }
 
   Future<void> _loadCategoryBanner() async {
@@ -113,6 +103,16 @@ class _CategoriesScreenState extends ConsumerState<CategoriesScreen>
 
   @override
   Widget build(BuildContext context) {
+    // Listen for tab re-tap to scroll to top (Categories is index 2).
+    // ref.listen MUST be called inside build — not initState.
+    ref.listen<int?>(scrollTabEventProvider, (_, index) {
+      if (index == 2 && _scrollController.hasClients) {
+        _scrollController.animateTo(0,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeOut);
+      }
+    });
+
     final categoriesAsync = ref.watch(categoriesProvider);
 
     return Scaffold(

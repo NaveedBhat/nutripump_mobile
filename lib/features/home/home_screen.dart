@@ -28,16 +28,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    // Listen for tab re-tap to scroll to top (Home is index 0)
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.listen<int?>(scrollTabEventProvider, (_, index) {
-        if (index == 0 && _scrollController.hasClients) {
-          _scrollController.animateTo(0,
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.easeOut);
-        }
-      });
-    });
   }
 
   @override
@@ -48,6 +38,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Listen for tab re-tap to scroll to top (Home is index 0).
+    // ref.listen MUST be called inside build — not initState.
+    ref.listen<int?>(scrollTabEventProvider, (_, index) {
+      if (index == 0 && _scrollController.hasClients) {
+        _scrollController.animateTo(0,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeOut);
+      }
+    });
+
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: Theme.of(context).brightness == Brightness.dark ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark,
       child: Scaffold(

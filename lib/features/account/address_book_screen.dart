@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:geocoding/geocoding.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_typography.dart';
 import '../../core/utils/responsive.dart';
@@ -320,6 +322,7 @@ class _AddressFormSheetState extends State<AddressFormSheet> {
   bool _isDefault = false;
 
   bool _isLoading = false;
+  bool _isLocating = false;
 
   @override
   void initState() {
@@ -347,6 +350,134 @@ class _AddressFormSheetState extends State<AddressFormSheet> {
     _stateCtrl.dispose();
     _pincodeCtrl.dispose();
     super.dispose();
+  }
+
+  Future<void> _useCurrentLocation() async {
+    setState(() => _isLocating = true);
+    try {
+      // Check & request location permission
+      LocationPermission permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+      }
+      if (permission == LocationPermission.deniedForever) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              duration: const Duration(seconds: 3),
+              content: const Text('Location permission is permanently denied. Please enable it in Settings.'),
+              backgroundColor: AppColors.error,
+              action: SnackBarAction(
+                label: 'Open Settings',
+                textColor: Colors.white,
+                onPressed: () => Geolocator.openAppSettings(),
+              ),
+            ),
+          );
+        }
+        return;
+      }
+      if (permission == LocationPermission.denied) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              duration: Duration(seconds: 2),
+              content: Text('Location permission denied.'),
+            ),
+          );
+        }
+        return;
+      }
+
+      // Get current position
+      final Position position = await Geolocator.getCurrentPosition(
+        locationSettings: const LocationSettings(
+          accuracy: LocationAccuracy.high,
+          timeLimit: Duration(seconds: 15),
+        ),
+      );
+
+      // Reverse geocode
+      final List<Placemark> placemarks = await placemarkFromCoordinates(
+        position.latitude,
+        position.longitude,
+      );
+
+      if (placemarks.isEmpty) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              duration: Duration(seconds: 2),
+              content: Text('Could not determine address from your location.'),
+            ),
+          );
+        }
+        return;
+      }
+
+      final Placemark p = placemarks.first;
+
+      // ── Address Line 1: house/flat number + street name ──────────────────
+      final String line1 = [
+        p.subThoroughfare,
+        p.thoroughfare,
+      ].where((s) => s != null && s.isNotEmpty).join(', ');
+
+      // ── Address Line 2: neighbourhood / sub-locality only ────────────────
+      // Do NOT include locality here — it will be written to the City field.
+      final String line2 = (p.subLocality ?? '').trim();
+
+      // ── City: locality → subAdministrativeArea fallback ──────────────────
+      // Indian geocoding sometimes leaves locality null for smaller towns;
+      // subAdministrativeArea (district) is a reasonable stand-in.
+      final String city = [
+        p.locality,
+        p.subAdministrativeArea,
+      ].firstWhere((s) => s != null && s.isNotEmpty, orElse: () => '') ?? '';
+
+      // ── State: administrativeArea → subAdministrativeArea fallback ────────
+      // J&K and some Indian regions occasionally return null in
+      // administrativeArea; try subAdministrativeArea only when city is already
+      // populated (to avoid writing the district name into both fields).
+      String state = (p.administrativeArea ?? '').trim();
+      if (state.isEmpty && city.isNotEmpty) {
+        state = (p.subAdministrativeArea ?? '').trim();
+      }
+
+      if (mounted) {
+        setState(() {
+          if (line1.isNotEmpty) _line1Ctrl.text = line1;
+          if (line2.isNotEmpty) _line2Ctrl.text = line2;
+          // Landmark: prefer subAdministrativeArea (district/county)
+          if ((p.subAdministrativeArea ?? '').isNotEmpty) {
+            _localityCtrl.text = p.subAdministrativeArea!.trim();
+          }
+          if ((p.postalCode ?? '').isNotEmpty) _pincodeCtrl.text = p.postalCode!.trim();
+          if (city.isNotEmpty) _cityCtrl.text = city;
+          if (state.isNotEmpty) _stateCtrl.text = state;
+        });
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            duration: Duration(seconds: 2),
+            content: Text('📍 Address filled from your current location!'),
+            backgroundColor: AppColors.primary,
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            duration: const Duration(seconds: 2),
+            content: Text('Failed to get location: $e'),
+            backgroundColor: AppColors.error,
+          ),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _isLocating = false);
+    }
   }
 
   Future<void> _save() async {
@@ -426,8 +557,52 @@ class _AddressFormSheetState extends State<AddressFormSheet> {
                     ),
                   ],
                 ),
-                SizedBox(height: R.h(context, 24)),
-                
+                SizedBox(height: R.h(context, 16)),
+
+                // ── Use Current Location Button ─────────────────────────
+                SizedBox(
+                  width: double.infinity,
+                  child: OutlinedButton.icon(
+                    onPressed: _isLocating ? null : _useCurrentLocation,
+                    icon: _isLocating
+                        ? SizedBox(
+                            width: R.w(context, 16),
+                            height: R.w(context, 16),
+                            child: const CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: AppColors.primary,
+                            ),
+                          )
+                        : Icon(Icons.my_location_rounded,
+                            size: R.sp(context, 16),
+                            color: AppColors.primary),
+                    label: Text(
+                      _isLocating ? 'Detecting location…' : 'Use My Current Location',
+                      style: AppTypography.bodySM(context).copyWith(
+                        color: AppColors.primary,
+                        fontWeight: FontWeight.w700,
+                        fontSize: R.sp(context, 13),
+                      ),
+                    ),
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: AppColors.primary,
+                      side: BorderSide(
+                        color: AppColors.primary.withValues(alpha: 0.5),
+                      ),
+                      backgroundColor: AppColors.primary.withValues(alpha: 0.05),
+                      padding: EdgeInsets.symmetric(
+                        vertical: R.h(context, 12),
+                        horizontal: R.w(context, 16),
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(R.w(context, 10)),
+                      ),
+                    ),
+                  ),
+                ),
+
+                SizedBox(height: R.h(context, 20)),
+
                 Row(
                   children: [
                     Expanded(child: _buildField('Full Name', _nameCtrl)),

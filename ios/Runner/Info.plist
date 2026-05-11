@@ -49,6 +49,8 @@
 		<string>This app requires access to the microphone for voice search.</string>
 		<key>NSSpeechRecognitionUsageDescription</key>
 		<string>This app requires speech recognition to transcribe your voice searches.</string>
+		<key>NSLocationWhenInUseUsageDescription</key>
+		<string>NutriPump uses your location to auto-fill your delivery address.</string>
 		<key>UIStatusBarHidden</key>
 		<false/>
 		<key>CFBundleURLTypes</key>

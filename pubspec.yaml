@@ -53,6 +53,8 @@ dependencies:
   flutter_animate: ^4.5.2
   speech_to_text: ^7.0.0
   permission_handler: ^12.0.1
+  geolocator: ^13.0.2
+  geocoding: ^3.0.0
 
   flutter_local_notifications: ^18.0.1
   timeago: ^3.7.1

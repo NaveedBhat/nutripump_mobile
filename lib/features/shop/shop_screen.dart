@@ -42,18 +42,11 @@ class _ShopScreenState extends ConsumerState<ShopScreen> {
   void initState() {
     super.initState();
     _loadHeroBg();
+    // One-time category pre-selection — ref.read is allowed anywhere.
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (widget.category != null) {
         ref.read(shopFiltersProvider.notifier).setCategory(widget.category);
       }
-      // Listen for tab re-tap to scroll to top (Shop is index 1)
-      ref.listen<int?>(scrollTabEventProvider, (_, index) {
-        if (index == 1 && _scrollController.hasClients) {
-          _scrollController.animateTo(0,
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.easeOut);
-        }
-      });
     });
   }
 
@@ -88,6 +81,16 @@ class _ShopScreenState extends ConsumerState<ShopScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Listen for tab re-tap to scroll to top (Shop is index 1).
+    // ref.listen MUST be called inside build — not initState.
+    ref.listen<int?>(scrollTabEventProvider, (_, index) {
+      if (index == 1 && _scrollController.hasClients) {
+        _scrollController.animateTo(0,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeOut);
+      }
+    });
+
     final filteredAsync = ref.watch(filteredProductsProvider);
     final filters = ref.watch(shopFiltersProvider);
     final categoriesAsync = ref.watch(categoriesProvider);
